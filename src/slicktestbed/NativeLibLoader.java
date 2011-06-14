@@ -71,21 +71,22 @@ public class NativeLibLoader {
     private String findCurrentDirectory()
     {
         String output = "";
-        try{
-            output = new File(this.getClass().getProtectionDomain().getCodeSource().getLocation().toURI()).getParent();
-        }
-        catch(URISyntaxException URIe){
-            try{
-                URIe.printStackTrace();
-                output = new File(".").getCanonicalPath();
-            }
-            catch(IOException IOe)
-            {
-                IOe.printStackTrace();
-                //JOptionPane.showMessageDialog(this, "Failed to locate native library directory. " + "Error:\n" + IOe.toString(),"Error", JOptionPane.ERROR_MESSAGE);
-                System.exit(-1);
-            }
-        }
+        //try{
+            output = System.getProperty("user.dir");
+            //output = new File(this.getClass().getProtectionDomain().getCodeSource().getLocation().toURI()).getParent();
+        //}
+//        catch(URISyntaxException URIe){
+//            try{
+//                URIe.printStackTrace();
+//                output = new File(".").getCanonicalPath();
+//            }
+//            catch(IOException IOe)
+//            {
+//                IOe.printStackTrace();
+//                //JOptionPane.showMessageDialog(this, "Failed to locate native library directory. " + "Error:\n" + IOe.toString(),"Error", JOptionPane.ERROR_MESSAGE);
+//                System.exit(-1);
+//            }
+//        }
         return output;
     }
 }
