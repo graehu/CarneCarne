@@ -5,7 +5,6 @@
 package Level;
 
 import Physics.sPhysics;
-import java.util.Hashtable;
 import org.jbox2d.common.Vec2;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.tiled.TiledMap;
@@ -14,7 +13,7 @@ import org.newdawn.slick.tiled.TiledMap;
  * @author alasdair
  */
 public class sLevel {
-    private static TiledMap tiledMap;
+    private static TiledMap mTiledMap;
     
     private sLevel()
     {
@@ -22,13 +21,13 @@ public class sLevel {
     }
     public static void init() throws SlickException
     {
-        tiledMap = new TiledMap("data/GiantPoo.tmx");
-        for (int i = 0; i < tiledMap.getWidth(); i++)
+        mTiledMap = new TiledMap("data/GiantPoo.tmx");
+        for (int i = 0; i < mTiledMap.getWidth(); i++)
         {
-            for (int ii = 0; ii < tiledMap.getHeight(); ii++)
+            for (int ii = 0; ii < mTiledMap.getHeight(); ii++)
             {
-                int id = tiledMap.getTileId(i, ii, 0);
-                String type = tiledMap.getTileProperty(id, "Type", "None");
+                int id = mTiledMap.getTileId(i, ii, 0);
+                String type = mTiledMap.getTileProperty(id, "Type", "None");
                 if (!type.equals("None"))
                 {
                     float x = i;
@@ -43,6 +42,7 @@ public class sLevel {
     }
     public static void render()
     {
-        tiledMap.render(0, 0);
+        Vec2 translation = sPhysics.getPixelTranslation();
+        mTiledMap.render((int)translation.x,(int)translation.y);
     }
 }

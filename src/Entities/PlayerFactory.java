@@ -4,6 +4,9 @@
  */
 package Entities;
 
+import AI.PlayerInputController;
+import Events.PlayerCreatedEvent;
+import Events.sEvents;
 import Physics.sPhysics;
 import org.jbox2d.common.Vec2;
 import Graphics.sSkinFactory;
@@ -27,13 +30,17 @@ public class PlayerFactory implements iEntityFactory {
         {
             used = true;
             HashMap animDef = new HashMap();
-            animDef.put("ref", "sprites.png");
-            animDef.put("x1", 0);
-            animDef.put("y1", 1);
-            animDef.put("x2", 6);
-            animDef.put("y2", 1);
-            Entity entity = new Player(sSkinFactory.create("animated", animDef));
-            entity.mBody = sPhysics.create(entity, position);
+            animDef.put("ref", "char1.png");
+            AIEntity entity = new AIEntity(sSkinFactory.create("animated", animDef));
+            entity.mBody = sPhysics.createAIBody(entity, position);
+            PlayerInputController controller = new PlayerInputController(entity);
+            entity.mController = controller;
+            sEvents.subscribeToEvent("KeyDownEvent"+'w', controller);
+            sEvents.subscribeToEvent("KeyDownEvent"+'a', controller);
+            sEvents.subscribeToEvent("KeyDownEvent"+'s', controller);
+            sEvents.subscribeToEvent("KeyDownEvent"+'d', controller);
+            sPhysics.createBodyCamera(entity.mBody);
+            sEvents.triggerEvent(new PlayerCreatedEvent(entity));
             return entity;
         }
         /*Entity entity = new Player(sSkinFactory.create("static"));

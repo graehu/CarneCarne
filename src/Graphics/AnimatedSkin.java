@@ -22,7 +22,7 @@ class AnimatedSkin implements iSkin{
     }
     AnimatedSkin(String spriteSheet, int _x1, int _y1, int _x2, int _y2, boolean _horizontalScan, int _duration) throws SlickException
     {
-        mAnimation = new Animation(new SpriteSheet(new Image(spriteSheet), 32, 32), _x1, _y1, _x2, _y2, _horizontalScan, _duration, false);
+        mAnimation = new Animation(new SpriteSheet(new Image(spriteSheet), 64, 64), _x1, _y1, _x2, _y2, _horizontalScan, _duration, false);
         mAnimation.setAutoUpdate(true);
     }
     public void render(float _x, float _y)

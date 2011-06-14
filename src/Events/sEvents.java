@@ -23,7 +23,7 @@ public class sEvents {
         mTable = new Hashtable();
     }
     
-    public static void subscribeToEvent(String _eventName, iEventListener _listener) throws Throwable
+    public static void subscribeToEvent(String _eventName, iEventListener _listener)
     {
         iEventListener oldListener = (iEventListener)mTable.put(_eventName, _listener);
         if (oldListener != null)
