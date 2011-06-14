@@ -11,9 +11,10 @@ import org.newdawn.slick.SlickException;
  *
  * @author Almax
  */
-class StaticSkin implements iSkin
+public class StaticSkin implements iSkin
 {
     Image mImage;
+    //constructor public to graphics package only
     StaticSkin(String _image) throws SlickException
     {
         mImage = new Image(_image);
