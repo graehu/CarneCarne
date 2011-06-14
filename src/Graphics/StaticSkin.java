@@ -22,4 +22,8 @@ class StaticSkin implements iSkin
     {
         mImage.draw(_x, _y);
     }
+    public void render(float _x, float _y, float _w, float _h)
+    {
+        mImage.draw(_x, _y, _w, _h);
+    }
 }

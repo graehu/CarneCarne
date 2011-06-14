@@ -12,7 +12,7 @@ import Events.KeyDownEvent;
 import Events.MapClickEvent;
 import Graphics.sSkinFactory;
 import Level.sLevel;
-import java.util.Hashtable;
+import java.util.HashMap;
 import org.jbox2d.common.Vec2;
 
 /**
@@ -30,7 +30,7 @@ public class Game {
         sSkinFactory.init();
         sPhysics.init();
         sLevel.init();
-        Hashtable parameters = new Hashtable();
+        HashMap parameters = new HashMap();
         parameters.put("position",new Vec2(2,3));
         sEntityFactory.create("Player",parameters);
     }

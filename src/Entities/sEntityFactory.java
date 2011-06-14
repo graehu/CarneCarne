@@ -4,7 +4,7 @@
  */
 package Entities;
 
-import java.util.Hashtable;
+import java.util.HashMap;
 import Entities.Entity;
 /**
  *
@@ -12,7 +12,7 @@ import Entities.Entity;
  */
 public class sEntityFactory {
     
-    private static Hashtable mFactories;
+    private static HashMap mFactories;
     private sEntityFactory()
     {
         
@@ -20,11 +20,11 @@ public class sEntityFactory {
     
     public static void init()
     {
-        mFactories = new Hashtable();
+        mFactories = new HashMap();
         mFactories.put("Player", new PlayerFactory());
     }
     
-    public static Entity create(String _factoryname, Hashtable _parameters)
+    public static Entity create(String _factoryname, HashMap _parameters)
     {
         iEntityFactory factory = (iEntityFactory)mFactories.get(_factoryname);
         return factory.useFactory(_parameters);

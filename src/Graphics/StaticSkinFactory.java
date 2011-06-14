@@ -4,6 +4,7 @@
  */
 package Graphics;
 
+import java.util.HashMap;
 import org.newdawn.slick.SlickException;
 
 /**
@@ -12,8 +13,8 @@ import org.newdawn.slick.SlickException;
  */
 class StaticSkinFactory implements iSkinFactory
 {
-    public iSkin useFactory() throws SlickException
+    public iSkin useFactory(HashMap _params) throws SlickException
     {
-        return new StaticSkin("data/temp.png");
+        return new StaticSkin("data" + (String)_params.get("ref"));
     }
 }

@@ -4,12 +4,12 @@
  */
 package Entities;
 
-import java.util.Hashtable;
+import java.util.HashMap;
 /**
  *
  * @author alasdair
  */
 public interface iEntityFactory {
     
-    public Entity useFactory(Hashtable _parameters);
+    public Entity useFactory(HashMap _parameters);
 }
