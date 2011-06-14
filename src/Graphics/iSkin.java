@@ -13,4 +13,5 @@ import org.newdawn.slick.*;
 //class public to package only
 public interface iSkin {
     abstract void render(float _x, float _y);
+    abstract void render(float _x, float _y, float _w, float _h);
 }
