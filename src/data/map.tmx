@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="50" height="50" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="ScrollerTiles" tilewidth="32" tileheight="32">
+  <image source="sprites.png" width="256" height="256"/>
+  <tile id="1">
+   <properties>
+    <property name="blocked" value="true"/>
+   </properties>
+  </tile>
+  <tile id="2">
+   <properties>
+    <property name="Type" value="GregIsGay"/>
+   </properties>
+  </tile>
+ </tileset>
+ <layer name="Layer 0" width="50" height="50">
+  <data encoding="base64" compression="zlib">
+   eJzt2FsWwyAIRVGbdv5j7ggSeZxLjOGDv1TZCrhWjzHGsVl8nLHiHt71rftE1416FHtQhqpz+56EwhE9O4uz8j6yDus3q1p2ccxqq2ouquvZ61DO4rN5M5tBEQPpodbOOrKe1RyKmq7MPWtZ8T5Ih6JOqx1RA21qB+eorC26N8j+qHCQuWYtkd9X5m+1WNf43Zg/mU87fPVhrZOnOGaWOx3k7H6rg3o/6LfU4yDf7dUdVgtpUDlm+9IGuj9UDsv60bkTdRAG0jHLqeL/dcpxZVHfB9FTs7zUvaGwvNXxlNrKnAHpzfS8InYwKGq6o6Ojo6PDG39nrRAT
+  </data>
+ </layer>
+</map>
