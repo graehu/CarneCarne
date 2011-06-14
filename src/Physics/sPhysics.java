@@ -28,19 +28,30 @@ public class sPhysics {
         //mWorld.setDebugDraw(new DebugDraw());
     }
     
-        /*PolygonDef shape = new PolygonDef();
-        shape.setAsBox(2, 2);
-        shape.density = 1;
-        BodyDef def = new BodyDef();
-        def.userData = _entity;
-        def.massData = new MassData();
-        def.massData.mass = 1;
-        def.position = _position;
-        Body body = mWorld.createBody(def);
-        body.createShape(shape);
-        
-        body.setMassFromShapes();
-        shape.setAsBox(30, 30);*/
+    public static boolean rayCast(Vec2 start, Vec2 end)
+    {
+        if (start.x > end.x)
+        {
+            float x = start.x;
+            start.x = end.x;
+            end.x = x;
+        }
+        if (start.y > end.y)
+        {
+            float y = start.y;
+            start.y = end.y;
+            end.y = y;
+        }
+        AABB aabb = new AABB(start,end);
+        Shape[] shapes = mWorld.query(aabb, 100000); /// FIXME try setting this to 0 or -1
+        Shape closestHit;
+        float distance;
+        /*for (int i = 0; i < shapes.length; i++)
+        {
+            shapes[i].
+        }*/
+        return false;
+    }
     public static void createBodyCamera(Body _body)
     {
         mCamera = new BodyCamera(_body);
@@ -105,7 +116,7 @@ public class sPhysics {
         
         Body body = mWorld.createBody(def);
         body.createShape(shape);
-        return body; 
+        return body;
     }
     
     public static void update(float _time)

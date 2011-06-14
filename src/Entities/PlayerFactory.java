@@ -35,10 +35,6 @@ public class PlayerFactory implements iEntityFactory {
             entity.mBody = sPhysics.createAIBody(entity, position);
             PlayerInputController controller = new PlayerInputController(entity);
             entity.mController = controller;
-            sEvents.subscribeToEvent("KeyDownEvent"+'w', controller);
-            sEvents.subscribeToEvent("KeyDownEvent"+'a', controller);
-            sEvents.subscribeToEvent("KeyDownEvent"+'s', controller);
-            sEvents.subscribeToEvent("KeyDownEvent"+'d', controller);
             sPhysics.createBodyCamera(entity.mBody);
             sEvents.triggerEvent(new PlayerCreatedEvent(entity));
             return entity;

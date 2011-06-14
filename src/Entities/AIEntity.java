@@ -21,7 +21,7 @@ public class AIEntity extends Entity {
     }
     public void update()
     {
-        
+        mController.update();
     }
     public void walkLeft()
     {
