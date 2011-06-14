@@ -9,6 +9,7 @@ import Physics.sPhysics;
 import Events.sEvents;
 import Entities.sEntityFactory;
 import Events.KeyDownEvent;
+import Events.MapClickEvent;
 import Graphics.sSkinFactory;
 import Level.sLevel;
 import java.util.Hashtable;
@@ -52,6 +53,14 @@ public class Game {
         if (input.isKeyDown(Input.KEY_D))
         {
             sEvents.triggerEvent(new KeyDownEvent('d'));
+        }
+        if (input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON))
+        {
+            sEvents.triggerEvent(new MapClickEvent(new Vec2(0,0),true));
+        }
+        if (input.isMouseButtonDown(Input.MOUSE_RIGHT_BUTTON))
+        {
+            sEvents.triggerEvent(new MapClickEvent(new Vec2(0,0),false));
         }
         mGameMode.update(time);
     }

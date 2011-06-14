@@ -10,4 +10,5 @@ package AI;
  */
 public interface iAIController {
     
+    public void update();
 }
