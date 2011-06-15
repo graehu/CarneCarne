@@ -4,6 +4,7 @@
  */
 package Graphics;
 
+import Graphics.iSkin;
 import java.util.HashMap;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.PackedSpriteSheet;
@@ -15,52 +16,59 @@ import org.newdawn.slick.SpriteSheet;
  * @author Aaron
  */
 public class AnimatedSkin implements iSkin{
-    HashMap<String, Animation> mAnimations;
-    Animation mCurrentAnim;
-    PackedSpriteSheet mPackedSpriteSheet;
+    Animation mAnim;
     
     //constructor public to graphics package only
-    AnimatedSkin(String _packedSpriteSheet, int _duration) throws SlickException
+    AnimatedSkin(String _spriteSheet, int _duration) throws SlickException
     {
-        mAnimations = new HashMap<String, Animation>();
-        mPackedSpriteSheet = new PackedSpriteSheet(_packedSpriteSheet);
-        //set default animation !!!this needs to be called default in every pack!!!
-        Animation newAnim = new Animation(mPackedSpriteSheet.getSpriteSheet("wlk"), 41); //~24fps
-        mAnimations.put("wlk", newAnim);
-        mCurrentAnim = newAnim;
-        mCurrentAnim.restart();
+        mAnim = new Animation(new SpriteSheet("data/" + _spriteSheet + ".png", 64, 64), _duration);
+        mAnim.restart();
+    }
+    //constructor public to graphics package only
+    AnimatedSkin(SpriteSheet _spriteSheet, int _duration) throws SlickException
+    {
+        mAnim = new Animation(_spriteSheet, _duration);
+        mAnim.restart();
     }
     public void render(float _x, float _y)
     {
         //add to render list under given sprite sheet (batch rending)
-        mCurrentAnim.draw(_x, _y); //quick fix for render
+        mAnim.draw(_x, _y); //quick fix for render
     }
     public void render(float _x, float _y, float _w, float _h)
     {
-        mCurrentAnim.draw(_x, _y, _w, _h);
+        mAnim.draw(_x, _y, _w, _h);
     }
     //internal graphics function for batch rendering
     void renderInUse(float _x, float _y)
     {
         //mAnimation.renderInUse(_x, _y);
     }
-    //sets animation to play and returns the expected duration
-    int setAnimation(String anim)
-    {
-        if(mAnimations.containsKey(anim))
-        {
-            mCurrentAnim = mAnimations.get(anim);
-            mCurrentAnim.restart();
-        }
-        else
-        {
-            SpriteSheet ss = mPackedSpriteSheet.getSpriteSheet(anim);
-            Animation newAnim = new Animation(ss, 41); //~24fps
-            mAnimations.put(anim, newAnim);
-            mCurrentAnim = newAnim;
-            mCurrentAnim.restart();
-        }
-        return mCurrentAnim.getFrameCount()*mCurrentAnim.getDuration(0);
+    //sets rotation of current frame
+    public void setRotation(float _radians) {
+        mAnim.getCurrentFrame().setRotation(_radians);
     }
     
+    //animation control functions
+    public void restart()
+    {
+        mAnim.restart();
+    }
+
+    public void startAnim(String _animation) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void stopAnim(String _animation) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void restart(String _animation) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void setRotation(String _animation, float _radians) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
 }
