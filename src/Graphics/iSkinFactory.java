@@ -4,6 +4,7 @@
  */
 package Graphics;
 
+import Graphics.iSkin;
 import java.util.HashMap;
 import org.newdawn.slick.SlickException;
 

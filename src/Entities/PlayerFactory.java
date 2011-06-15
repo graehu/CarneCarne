@@ -7,9 +7,11 @@ package Entities;
 import AI.PlayerInputController;
 import Events.PlayerCreatedEvent;
 import Events.sEvents;
+import Graphics.iSkin;
 import Physics.sPhysics;
 import org.jbox2d.common.Vec2;
 import Graphics.sSkinFactory;
+import java.util.Arrays;
 import java.util.HashMap;
 /**
  *
@@ -31,7 +33,10 @@ public class PlayerFactory implements iEntityFactory {
             used = true;
             HashMap animDef = new HashMap();
             animDef.put("ref", "ss_1");
-            AIEntity entity = new AIEntity(sSkinFactory.create("animated", animDef));
+            animDef.put("anims", Arrays.asList("spy", "body"));
+            iSkin skin = sSkinFactory.create("character", animDef);
+            skin.startAnim("body");
+            AIEntity entity = new AIEntity(skin);
             entity.mBody = sPhysics.createPlayerBody(entity, position);
             PlayerInputController controller = new PlayerInputController(entity);
             entity.mController = controller;
