@@ -15,6 +15,7 @@ public class Main extends BasicGame
     public static void main(String[] arguments)
     {
         //setup native libs
+        
         NativeLibLoader nativeLibLoader = new NativeLibLoader("org.lwjgl.librarypath");
         nativeLibLoader.init();
         nativeLibLoader.setupPath();
