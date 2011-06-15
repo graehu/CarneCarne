@@ -41,7 +41,7 @@ public class AIEntity extends Entity {
         while (edge != null)
         {
             Body body = edge.other;
-            if (body.m_fixtureList.m_filter.categoryBits == sPhysics.BodyCategories.eTiles.ordinal())
+            if (body.m_fixtureList.m_filter.categoryBits == (1 << sPhysics.BodyCategories.eTiles.ordinal()))
             {
                 if (body.getPosition().y > mBody.getPosition().y)
                 {
@@ -82,7 +82,7 @@ public class AIEntity extends Entity {
     }
     public void render()
     {
-        Vec2 pixelPosition = sPhysics.translate(mBody.getPosition());
+        Vec2 pixelPosition = sPhysics.translateToWorld(mBody.getPosition());
         mSkin.render(pixelPosition.x,pixelPosition.y);
     }
 }

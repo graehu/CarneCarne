@@ -42,6 +42,7 @@ public class TongueStateMachine {
         mAIController = _aIController;
         mState = State.eStart;
         currentStateTimer = 0;
+        mBlockMaterial = "SomeSoftMaterial";
     }
     private boolean grabBlock()
     {
