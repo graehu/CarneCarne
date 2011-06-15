@@ -85,5 +85,6 @@ public class AIEntity extends Entity {
     {
         Vec2 pixelPosition = sPhysics.translateToWorld(mBody.getPosition());
         mSkin.render(pixelPosition.x,pixelPosition.y);
+        mSkin.setRotation("body", mBody.getAngle()*(180/3.14f));
     }
 }

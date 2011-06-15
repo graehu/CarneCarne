@@ -9,6 +9,7 @@ import Entities.Entity;
 import Events.TileDestroyedEvent;
 import Events.sEvents;
 import Graphics.BodyCamera;
+import Graphics.SlickDebugDraw;
 import Graphics.iCamera;
 import Level.sLevel;
 import org.jbox2d.callbacks.RayCastCallback;
@@ -35,11 +36,11 @@ public class sPhysics {
     }
     private sPhysics()
     {
-
+           
     }
     public static void init()
     {
-        mWorld = new World(new Vec2(0,9.8f),true);
+        mWorld = new World(new Vec2(0,9.8f),true);     
     }
     
     private static class TongueCallback implements RayCastCallback
@@ -110,7 +111,7 @@ public class sPhysics {
         FixtureDef circleFixture = new FixtureDef();
         wheelShape.m_radius = 0.45f;
         circleFixture.density = 4;
-        circleFixture.friction = 50;
+        circleFixture.friction = 500;
         circleFixture.filter.categoryBits = (1 << BodyCategories.ePlayer.ordinal());
         circleFixture.filter.maskBits = (1 << BodyCategories.eTiles.ordinal()) | (1 << BodyCategories.ePlayer.ordinal());
         circleFixture.shape = wheelShape;
