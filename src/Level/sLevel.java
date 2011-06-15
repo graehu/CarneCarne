@@ -16,12 +16,14 @@ import org.newdawn.slick.tiled.TiledMap;
 public class sLevel {
     private static TiledMap mTiledMap;
     private static int layerIndex;
+    private static int lowestSlope;
     private sLevel()
     {
         
     }
     public static void init() throws SlickException
     {
+        lowestSlope = 1000000000;
         mTiledMap = new TiledMap("data/Test_map.tmx");
         layerIndex = mTiledMap.getLayerIndex("Level");
         Stack<Integer> stack = new Stack<Integer>();
@@ -30,22 +32,27 @@ public class sLevel {
             for (int ii = 0; ii < mTiledMap.getHeight(); ii++)
             {
                 int id = mTiledMap.getTileId(i, ii, layerIndex);
-                if (id%16 != 1 && id != 0)
+                if (id%4 != 1 && id != 0)
                 {
                     throw new SlickException("gay");
                 }
                 String type = mTiledMap.getTileProperty(id, "Type", "None");
-                if (!type.equals("None"))
+                if (type.equals("Block"))
                 {
-                    float x = i;
-                    float y = ii;
                     sPhysics.createTile(type,new Vec2(i,ii));
-                    //Hashtable parameters = new Hashtable();
-                    //parameters.put("position", new Vec2(i,ii));
-                    //sEntityFactory.create("Player",parameters);
+                    if (i > 0 && ii > 0 && i < mTiledMap.getWidth()-1 && ii < mTiledMap.getHeight()-1 && id != 0)
+                        checkTileEdges(i,ii, id, stack);
                 }
-                if (i > 0 && ii > 0 && i < mTiledMap.getWidth()-1 && ii < mTiledMap.getHeight()-1 && id != 0)
-                    checkEdges(i,ii, id, stack);
+                else if (type.equals("Slope"))
+                {
+                    if (id < lowestSlope)
+                    {
+                        lowestSlope = id;
+                    }
+                    sPhysics.createTile(type, new Vec2(i,ii));
+                    if (i > 0 && ii > 0 && i < mTiledMap.getWidth()-1 && ii < mTiledMap.getHeight()-1 && id != 0)
+                        checkSlopeEdges(i,ii,id,stack);
+                }
             }
         }
         while (!stack.empty())
@@ -56,22 +63,120 @@ public class sLevel {
             mTiledMap.setTileId(xTile, yTile, layerIndex, id);
         }
     }
-    private static void checkEdges(int _xTile, int _yTile, int _id, Stack<Integer> _stack)
+    private static void checkSlopeEdges(int _xTile, int _yTile, int _id, Stack<Integer> _stack)
+    {
+        int id;
+        boolean LD[] = new boolean[2];
+        
+        int slopeType = getSlopeType(_xTile, _yTile);
+        
+        switch (slopeType)
+        {
+            case 0:
+            {
+                LD[0] = boundaryFrom(_xTile, _yTile+1, Direction.eFromUp);
+                LD[1] = boundaryFrom(_xTile-1, _yTile, Direction.eFromRight);
+                break;
+            }
+            case 1:
+            {
+                LD[0] = boundaryFrom(_xTile, _yTile+1, Direction.eFromUp);
+                LD[1] = boundaryFrom(_xTile+1, _yTile, Direction.eFromLeft);
+                break;
+            }
+            case 2:
+            {
+                LD[0] = boundaryFrom(_xTile, _yTile-1, Direction.eFromDown);
+                LD[1] = boundaryFrom(_xTile+1, _yTile, Direction.eFromLeft);
+                break;
+            }
+            case 3:
+            {
+                LD[0] = boundaryFrom(_xTile, _yTile-1, Direction.eFromDown);
+                LD[1] = boundaryFrom(_xTile-1, _yTile, Direction.eFromRight);
+                break;
+            }
+        }
+        
+        int textureUnit = 0;
+        for (int i = 0; i < 2; i++)
+        {
+            if (!LD[i])
+                textureUnit |= (1 << i);
+        }
+        _stack.push(_xTile);
+        _stack.push(_yTile);
+        _stack.push(_id+textureUnit);
+    }
+    enum Direction
+    {
+        eFromUp,
+        eFromLeft,
+        eFromRight,
+        eFromDown,
+        eDirectionsMax
+    }
+    private static boolean boundaryFrom(int _xTile, int _yTile, Direction _direction)
+    {
+        int id = mTiledMap.getTileId(_xTile, _yTile, layerIndex);
+        if (id == 0)
+        {
+            return false;
+        }
+        if (id < lowestSlope)
+        {
+            return true;
+        }
+        int slope = getSlopeType(_xTile, _yTile);
+        switch (slope)
+        {
+            case 0:
+            {
+                if (_direction == Direction.eFromDown || _direction == Direction.eFromLeft)
+                {
+                    return true;
+                }
+                return false;
+            }
+            case 1:
+            {
+                if (_direction == Direction.eFromDown || _direction == Direction.eFromRight)
+                {
+                    return true;
+                }
+                return false;
+            }
+            case 2:
+            {
+                if (_direction == Direction.eFromUp || _direction == Direction.eFromRight)
+                {
+                    return true;
+                }
+                return false;
+            }
+            case 3:
+            {
+                if (_direction == Direction.eFromUp || _direction == Direction.eFromLeft)
+                {
+                    return true;
+                }
+                return false;
+            }
+        }
+        return false;
+    }
+    private static void checkTileEdges(int _xTile, int _yTile, int _id, Stack<Integer> _stack)
     {
         int id;
         boolean ULDR[] = new boolean[4];
         
-        id = mTiledMap.getTileId(_xTile, _yTile-1, layerIndex);
-        ULDR[3] = (id != 0);
+        ULDR[3] = boundaryFrom(_xTile, _yTile-1, Direction.eFromDown);//(id != 0);
         
-        id = mTiledMap.getTileId(_xTile-1, _yTile, layerIndex);
-        ULDR[2] = (id != 0);
+        ULDR[2] = boundaryFrom(_xTile-1, _yTile, Direction.eFromRight);
         
-        id = mTiledMap.getTileId(_xTile, _yTile+1, layerIndex);
-        ULDR[1] = (id != 0);
+        ULDR[1] = boundaryFrom(_xTile, _yTile+1, Direction.eFromUp);
         
-        id = mTiledMap.getTileId(_xTile+1, _yTile, layerIndex);
-        ULDR[0] = (id != 0);
+        ULDR[0] = boundaryFrom(_xTile+1, _yTile, Direction.eFromLeft);
         
         int textureUnit = 0;
         for (int i = 0; i < 4; i++)
@@ -79,7 +184,6 @@ public class sLevel {
             if (!ULDR[i])
                 textureUnit |= (1 << i);
         }
-        String texture = mTiledMap.getTileProperty(_id, "Filename", "Error");
 
         _stack.push(_xTile);
         _stack.push(_yTile);
@@ -88,10 +192,56 @@ public class sLevel {
     private static int getRootTile(int _x, int _y)
     {
         int id = mTiledMap.getTileId(_x, _y, layerIndex);
+        if (id < lowestSlope)
+        {
+            id--;
+            id /= 16;
+            id *= 16;
+            id++;
+            return id;
+        }
+        else
+        {
+            id--;
+            id /= 4;
+            id *= 4;
+            id++;
+            return id;
+        }
+    }
+    private static int getRootSlope(int _x, int _y)
+    {
+        int id = mTiledMap.getTileId(_x, _y, layerIndex);
         id--;
         id /= 16;
+        id *= 16;
+        id /= 4;
+        id *= 4;
         id++;
         return id;
+    }
+    private static int getSlopeType(int _x, int _y)
+    {
+        int id = mTiledMap.getTileId(_x, _y, layerIndex);
+        id--;
+        id %= 16;
+        id /= 4;
+        return id;
+    }
+    private static void checkEdges(int _x, int _y, int _id, Stack<Integer> _stack)
+    {
+        int id = mTiledMap.getTileId(_x, _y, layerIndex);
+        if (id != 0)
+        {
+            if (id < lowestSlope)
+            {
+                checkTileEdges(_x,_y,_id, _stack);
+            }
+            else
+            {
+                checkSlopeEdges(_x,_y,_id,_stack);
+            }
+        }
     }
     public static void destroyTile(int _x, int _y)
     {
@@ -104,23 +254,19 @@ public class sLevel {
         x = _x-1;
         y = _y;
         rootId = getRootTile(x, y);
-        if (mTiledMap.getTileId(x, y, layerIndex) != 0)
-            checkEdges(x,y,rootId,stack);
+        checkEdges(x,y,rootId,stack);
         x = _x+1;
         y = _y;
         rootId = getRootTile(x, y);
-        if (mTiledMap.getTileId(x, y, layerIndex) != 0)
-            checkEdges(x,y,rootId,stack);
+        checkEdges(x,y,rootId,stack);
         x = _x;
         y = _y-1;
         rootId = getRootTile(x, y);
-        if (mTiledMap.getTileId(x, y, layerIndex) != 0)
-            checkEdges(x,y,rootId,stack);
+        checkEdges(x,y,rootId,stack);
         x = _x;
         y = _y+1;
         rootId = getRootTile(x, y);
-        if (mTiledMap.getTileId(x, y, layerIndex) != 0)
-            checkEdges(x,y,rootId,stack);
+        checkEdges(x,y,rootId,stack);
         while (!stack.empty())
         {
             int id = stack.pop();
