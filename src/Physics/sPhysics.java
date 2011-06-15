@@ -4,12 +4,14 @@
  */
 package Physics;
 
+import Entities.AIEntity;
 import Entities.Entity;
 import Graphics.BodyCamera;
 import Graphics.iCamera;
 import org.jbox2d.common.*;
 import org.jbox2d.dynamics.*;
 import org.jbox2d.collision.*;
+import org.jbox2d.dynamics.joints.RevoluteJoint;
 import org.jbox2d.dynamics.joints.RevoluteJointDef;
 /**
  *
@@ -18,6 +20,12 @@ import org.jbox2d.dynamics.joints.RevoluteJointDef;
 public class sPhysics {
     private static World mWorld;
     private static iCamera mCamera;
+    public enum BodyCategories
+    {
+        ePlayer,
+        eTiles,
+        eBodyCategoriesMax
+    }
     private sPhysics()
     {
 
@@ -64,31 +72,48 @@ public class sPhysics {
     {
         return mCamera.getPixelTranslation();
     }
-    public static Body createAIBody(Entity _entity, Vec2 _position)
+    public static Body createPlayerBody(AIEntity _entity, Vec2 _position)
     {
-        CircleDef shape = new CircleDef();
-        shape.localPosition = new Vec2(0,0);
-        shape.radius = 0.5f;
-        shape.density = 4;
-        shape.friction = 1;
+        CircleDef wheelShape = new CircleDef();
+        wheelShape.localPosition = new Vec2(0,0);
+        wheelShape.radius = 0.45f;
+        wheelShape.density = 4;
+        wheelShape.friction = 50;
+        wheelShape.filter.categoryBits = (1 << BodyCategories.ePlayer.ordinal());
+        wheelShape.filter.maskBits = (1 << BodyCategories.eTiles.ordinal()) | (1 << BodyCategories.ePlayer.ordinal());
+        PolygonDef axelShape = new PolygonDef();
+        axelShape.setAsBox(0.1f, 0.1f);
+        axelShape.density = 0.001f;
+        axelShape.filter.categoryBits = (1 << BodyCategories.ePlayer.ordinal());
+        axelShape.filter.maskBits = (1 << BodyCategories.eTiles.ordinal()) | (1 << BodyCategories.ePlayer.ordinal());
+        axelShape.filter.groupIndex = -100;
         BodyDef def = new BodyDef();
         def.userData = _entity;
         def.position = _position;
-        def.fixedRotation = true;
         def.massData = new MassData();
         def.massData.mass = 1;
         
         Body body = mWorld.createBody(def);
-        body.createShape(shape);
+        body.createShape(wheelShape);
         body.setMassFromShapes();
+        
+        def.fixedRotation = true;
+        def.userData = null;
+        Body axelBody = mWorld.createBody(def);
+        body.createShape(axelShape);
         
         RevoluteJointDef wheelJoint = new RevoluteJointDef();
         wheelJoint.collideConnected = false;
-        wheelJoint.maxMotorTorque = 50.0f;
+        wheelJoint.maxMotorTorque = 5000.0f;
         wheelJoint.enableMotor = true;
+        wheelJoint.body1 = body;
+        wheelJoint.body2 = axelBody;
+        wheelJoint.collideConnected = false;
+        RevoluteJoint joint = (RevoluteJoint)mWorld.createJoint(wheelJoint);
+        _entity.mJoint = joint;
         return body;
     }
-    public static Body create(Entity _entity, Vec2 _position)
+    /*public static Body create(Entity _entity, Vec2 _position)
     {
         PolygonDef shape = new PolygonDef();
         shape.setAsBox(2, 2);
@@ -104,12 +129,13 @@ public class sPhysics {
         body.setMassFromShapes();
         shape.setAsBox(30, 30);
         return body;
-    }
+    }*/
     
     public static Body createTile(/*Entity _entity, */String _name, Vec2 _position)
     { 
         PolygonDef shape = new PolygonDef();
         shape.setAsBox(0.5f, 0.5f);
+        shape.filter.maskBits = (1 << BodyCategories.eTiles.ordinal()) | (1 << BodyCategories.ePlayer.ordinal());
         BodyDef def = new BodyDef();
         //def.userData = _entity;
         def.position = new Vec2((_position.x),(_position.y));

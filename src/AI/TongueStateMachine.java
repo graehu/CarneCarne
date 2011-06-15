@@ -13,8 +13,12 @@ import org.jbox2d.common.Vec2;
 public class TongueStateMachine {
     
     static int tongueFiringTimeout = 100;
+    static int hammeringTimeout = 100;
     static int idleAnimationTrigger = 10000;
-    Vec2 position;
+    static int tongueRetractWithBlockTime = 100;
+    
+    Vec2 position; /// FIXME unneccessary
+    String mBlockMaterial;
     enum State
     {
         eStart,
@@ -43,6 +47,18 @@ public class TongueStateMachine {
     {
         return mAIController.grabBlock(position);
     }
+    private boolean hammerCollide()
+    {
+        return false;
+    }
+    private boolean hasFood()
+    {
+        return false;
+    }
+    private int setAnimation(String _name)
+    {
+        return 100;
+    }
     public void tick()
     {
         switch (mState)
@@ -66,14 +82,28 @@ public class TongueStateMachine {
             }
             case eRetractingTongue:
             {
+                currentStateTimer--;
+                if (currentStateTimer == 0)
+                {
+                    changeState(State.eStart);
+                }
                 break;
             }
             case eStuckToBlock:
             {
+                if (mBlockMaterial.equals("SomeSoftMaterial"))
+                {
+                    changeState(State.eRetractingWithBlock);
+                }
                 break;
             }
             case eRetractingWithBlock:
             {
+                currentStateTimer--;
+                if (currentStateTimer == 0)
+                {
+                    changeState(State.eFoodInMouth);
+                }
                 break;
             }
             case eFoodInMouth:
@@ -82,22 +112,58 @@ public class TongueStateMachine {
             }
             case eFiringHammer:
             {
+                currentStateTimer++;
+                if (hammerCollide())
+                {
+                    changeState(State.eRetractingHammer);
+                }
+                else if (currentStateTimer == hammeringTimeout)
+                {
+                    changeState(State.eRetractingHammer);
+                }
                 break;
             }
             case eRetractingHammer:
             {
+                currentStateTimer--;
+                if (currentStateTimer == 0)
+                {
+                    changeState(State.eFoodInMouth);
+                }
                 break;
             }
             case eSpittingBlock:
             {
+                currentStateTimer--;
+                if (currentStateTimer == 0)
+                {
+                    if (hasFood())
+                    {
+                        changeState(State.eFoodInMouth);
+                    }
+                    else
+                    {
+                        changeState(State.eStart);
+                    }
+                }
                 break;
             }
             case eSpitting:
             {
+                currentStateTimer--;
+                if (currentStateTimer == 0)
+                {
+                    changeState(State.eStart);
+                }
                 break;
             }
             case eIdleAnimation:
             {
+                currentStateTimer--;
+                if (currentStateTimer == 0)
+                {
+                    changeState(State.eStart);
+                }
                 break;
             }
         }
@@ -114,6 +180,7 @@ public class TongueStateMachine {
             }
             case eFiringTongue:
             {
+                /// assert(false);
                 break;
             }
             case eRetractingTongue:
@@ -122,6 +189,7 @@ public class TongueStateMachine {
             }
             case eStuckToBlock:
             {
+                /// assert(false);
                 break;
             }
             case eRetractingWithBlock:
@@ -130,6 +198,7 @@ public class TongueStateMachine {
             }
             case eFoodInMouth:
             {
+                changeState(State.eFiringHammer);
                 break;
             }
             case eFiringHammer:
@@ -161,10 +230,12 @@ public class TongueStateMachine {
         {
             case eStart:
             {
+                changeState(State.eSpitting);
                 break;
             }
             case eFiringTongue:
             {
+                /// Do something here? 
                 break;
             }
             case eRetractingTongue:
@@ -181,6 +252,7 @@ public class TongueStateMachine {
             }
             case eFoodInMouth:
             {
+                changeState(State.eSpittingBlock);
                 break;
             }
             case eFiringHammer:
@@ -211,10 +283,12 @@ public class TongueStateMachine {
         {
             case eStart:
             {
+                /// assert(false);
                 break;
             }
             case eFiringTongue:
             {
+                changeState(State.eRetractingTongue);
                 break;
             }
             case eRetractingTongue:
@@ -223,6 +297,7 @@ public class TongueStateMachine {
             }
             case eStuckToBlock:
             {
+                changeState(State.eRetractingTongue);
                 break;
             }
             case eRetractingWithBlock:
@@ -261,6 +336,7 @@ public class TongueStateMachine {
         {
             case eStart:
             {
+                /// assert(false);
                 break;
             }
             case eFiringTongue:
@@ -311,6 +387,7 @@ public class TongueStateMachine {
         {
             case eStart:
             {
+                currentStateTimer = 0;
                 break;
             }
             case eFiringTongue:
@@ -327,14 +404,17 @@ public class TongueStateMachine {
             }
             case eRetractingWithBlock:
             {
+                currentStateTimer = tongueRetractWithBlockTime;
                 break;
             }
             case eFoodInMouth:
             {
+                currentStateTimer = 0;
                 break;
             }
             case eFiringHammer:
             {
+                currentStateTimer = 0;
                 break;
             }
             case eRetractingHammer:
@@ -343,18 +423,20 @@ public class TongueStateMachine {
             }
             case eSpittingBlock:
             {
+                currentStateTimer = setAnimation("SpittingBlock");
                 break;
             }
             case eSpitting:
             {
+                currentStateTimer = setAnimation("Spitting");
                 break;
             }
             case eIdleAnimation:
             {
+                currentStateTimer = setAnimation("Idle");
                 break;
             }
         }
         mState = _state;
-        currentStateTimer = 0;
     }
 }

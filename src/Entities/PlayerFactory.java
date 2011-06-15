@@ -32,7 +32,7 @@ public class PlayerFactory implements iEntityFactory {
             HashMap animDef = new HashMap();
             animDef.put("ref", "ss_1");
             AIEntity entity = new AIEntity(sSkinFactory.create("animated", animDef));
-            entity.mBody = sPhysics.createAIBody(entity, position);
+            entity.mBody = sPhysics.createPlayerBody(entity, position);
             PlayerInputController controller = new PlayerInputController(entity);
             entity.mController = controller;
             sPhysics.createBodyCamera(entity.mBody);
