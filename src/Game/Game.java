@@ -56,11 +56,13 @@ public class Game {
         }
         if (input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON))
         {
-            sEvents.triggerEvent(new MapClickEvent(new Vec2(0,0),true));
+            Vec2 position = new Vec2(input.getAbsoluteMouseX(),input.getAbsoluteMouseY());
+            sEvents.triggerEvent(new MapClickEvent(sPhysics.translateToPhysics(position),true));
         }
         if (input.isMouseButtonDown(Input.MOUSE_RIGHT_BUTTON))
         {
-            sEvents.triggerEvent(new MapClickEvent(new Vec2(0,0),false));
+            Vec2 position = new Vec2(input.getAbsoluteMouseX(),input.getAbsoluteMouseY());
+            sEvents.triggerEvent(new MapClickEvent(sPhysics.translateToPhysics(position),false));
         }
         mGameMode.update(time);
     }

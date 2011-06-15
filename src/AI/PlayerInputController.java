@@ -40,7 +40,7 @@ public class PlayerInputController implements iAIController, iEventListener{
     
     public boolean grabBlock(Vec2 _position)
     {
-        return sPhysics.rayCast(mEntity.mBody.getPosition(),_position);
+        return sPhysics.rayCastTiles(mEntity.mBody.getPosition(),_position);
     }
 
     public void trigger(iEvent _event)

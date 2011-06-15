@@ -6,17 +6,20 @@ package Physics;
 
 import Entities.AIEntity;
 import Entities.Entity;
+import Events.TileDestroyedEvent;
+import Events.sEvents;
 import Graphics.BodyCamera;
 import Graphics.iCamera;
+import Level.sLevel;
+import org.jbox2d.callbacks.RayCastCallback;
 import org.jbox2d.collision.shapes.CircleShape;
-import org.jbox2d.collision.shapes.MassData;
 import org.jbox2d.collision.shapes.PolygonShape;
-import org.jbox2d.collision.shapes.Shape;
 import org.jbox2d.common.*;
 import org.jbox2d.dynamics.*;
-import org.jbox2d.collision.*;
 import org.jbox2d.dynamics.joints.RevoluteJoint;
 import org.jbox2d.dynamics.joints.RevoluteJointDef;
+import org.jbox2d.structs.collision.RayCastInput;
+import org.jbox2d.structs.collision.RayCastOutput;
 /**
  *
  * @author alasdair
@@ -39,38 +42,63 @@ public class sPhysics {
         mWorld = new World(new Vec2(0,9.8f),true);
     }
     
-    public static boolean rayCast(Vec2 start, Vec2 end)
+    private static class TongueCallback implements RayCastCallback
     {
-        if (start.x > end.x)
+        Fixture fixture;
+        Vec2 start, end;
+        public TongueCallback(Vec2 _start, Vec2 _end)
         {
-            float x = start.x;
-            start.x = end.x;
-            end.x = x;
+            start = _start;
+            end = _end;
         }
-        if (start.y > end.y)
+        public float reportFixture(Fixture _fixture, Vec2 _p1, Vec2 _p2, float _fraction)
         {
-            float y = start.y;
-            start.y = end.y;
-            end.y = y;
+            if (_fixture.m_filter.categoryBits == (1 << BodyCategories.eTiles.ordinal()))
+            {
+                RayCastInput input = new RayCastInput();
+                input.p1.x = start.x;
+                input.p1.y = start.y;
+                input.p2.x = end.x;
+                input.p2.y = end.y;
+                RayCastOutput output = new RayCastOutput();
+                //if (_fixture.raycast(output, input))
+                {
+                    fixture = _fixture;
+                    return _fraction;
+                }
+            }
+            return 1.0f;
         }
-        //AABB aabb = new AABB(start,end);
-        //Shape[] shapes = mWorld.query(aabb, 100000); /// FIXME try setting this to 0 or -1
-        //Shape[] shapes = mWorld.
-        Shape closestHit;
-        float distance;
-        /*for (int i = 0; i < shapes.length; i++)
+        
+        public Fixture getFixture()
         {
-            shapes[i].
-        }*/
-        return false;
+            return fixture;
+        }
+    }
+    public static boolean rayCastTiles(Vec2 start, Vec2 end)
+    {
+        TongueCallback callback = new TongueCallback(start, end);
+        mWorld.raycast(callback, start, end);
+        if (callback.getFixture() == null)
+        {
+            return false;
+        }
+        mWorld.destroyBody(callback.getFixture().m_body);
+        sLevel.destroyTile((int)callback.getFixture().m_body.getPosition().x, (int)callback.getFixture().m_body.getPosition().y);
+        sEvents.triggerEvent(new TileDestroyedEvent((int)callback.getFixture().m_body.getPosition().x, (int)callback.getFixture().m_body.getPosition().y));
+        return true;
     }
     public static void createBodyCamera(Body _body)
     {
         mCamera = new BodyCamera(_body);
     }
-    public static Vec2 translate(Vec2 _position)
+    public static Vec2 translateToWorld(Vec2 _position)
     {
-        return mCamera.translate(_position);
+        return mCamera.translateToWorld(_position);
+    }
+    public static Vec2 translateToPhysics(Vec2 _position)
+    {
+        return mCamera.translateToPhysics(_position);
     }
     public static Vec2 getPixelTranslation()
     {
@@ -125,6 +153,7 @@ public class sPhysics {
         shape.setAsBox(0.5f, 0.5f);
         FixtureDef fixture = new FixtureDef();
         fixture.shape = shape;
+        fixture.filter.categoryBits = (1 << BodyCategories.eTiles.ordinal());
         fixture.filter.maskBits = (1 << BodyCategories.eTiles.ordinal()) | (1 << BodyCategories.ePlayer.ordinal());
         BodyDef def = new BodyDef();
         //def.userData = _entity;
