@@ -7,9 +7,12 @@ package Physics;
 import Entities.Entity;
 import Graphics.BodyCamera;
 import Graphics.iCamera;
+import org.jbox2d.collision.shapes.CircleShape;
+import org.jbox2d.collision.shapes.MassData;
+import org.jbox2d.collision.shapes.PolygonShape;
+import org.jbox2d.collision.shapes.Shape;
 import org.jbox2d.common.*;
 import org.jbox2d.dynamics.*;
-import org.jbox2d.collision.*;
 import org.jbox2d.dynamics.joints.RevoluteJointDef;
 /**
  *
@@ -24,7 +27,8 @@ public class sPhysics {
     }
     public static void init()
     {
-        mWorld = new World(new AABB(new Vec2(-1000,-1000), new Vec2(1000, 1000)),new Vec2(0,9.8f),true);
+                mWorld = new World(new Vec2(0,9.8f),true);
+       // mWorld = new World(new AABB(new Vec2(-1000,-1000), new Vec2(1000, 1000)),new Vec2(0,9.8f),true);
         //mWorld.setDebugDraw(new DebugDraw());
     }
     
@@ -42,8 +46,9 @@ public class sPhysics {
             start.y = end.y;
             end.y = y;
         }
-        AABB aabb = new AABB(start,end);
-        Shape[] shapes = mWorld.query(aabb, 100000); /// FIXME try setting this to 0 or -1
+        //AABB aabb = new AABB(start,end);
+        //Shape[] shapes = mWorld.query(aabb, 100000); /// FIXME try setting this to 0 or -1
+        //Shape[] shapes = mWorld.
         Shape closestHit;
         float distance;
         /*for (int i = 0; i < shapes.length; i++)
@@ -66,21 +71,22 @@ public class sPhysics {
     }
     public static Body createAIBody(Entity _entity, Vec2 _position)
     {
-        CircleDef shape = new CircleDef();
-        shape.localPosition = new Vec2(0,0);
-        shape.radius = 0.5f;
-        shape.density = 4;
-        shape.friction = 1;
+        CircleShape shape = new CircleShape();
+        FixtureDef fixture = new FixtureDef();
+        shape.m_radius = 0.5f;
+        fixture.density = 4;
+        fixture.friction = 1;
+        fixture.shape = shape;
         BodyDef def = new BodyDef();
+        def.type = BodyType.DYNAMIC;
         def.userData = _entity;
         def.position = _position;
         def.fixedRotation = true;
-        def.massData = new MassData();
-        def.massData.mass = 1;
+        //def.massData = new MassData();
+        //def.massData.mass = 1;
         
         Body body = mWorld.createBody(def);
-        body.createShape(shape);
-        body.setMassFromShapes();
+        body.createFixture(fixture);
         
         RevoluteJointDef wheelJoint = new RevoluteJointDef();
         wheelJoint.collideConnected = false;
@@ -90,38 +96,42 @@ public class sPhysics {
     }
     public static Body create(Entity _entity, Vec2 _position)
     {
-        PolygonDef shape = new PolygonDef();
+        PolygonShape shape = new PolygonShape();
+        FixtureDef fixture = new FixtureDef();
         shape.setAsBox(2, 2);
-        shape.density = 1;
+        fixture.density = 1;
+        fixture.shape = shape;
         BodyDef def = new BodyDef();
         def.userData = _entity;
-        def.massData = new MassData();
-        def.massData.mass = 1;
+        //def.massData = new MassData();
+        //def.massData.mass = 1;
         def.position = _position;
         Body body = mWorld.createBody(def);
-        body.createShape(shape);
+        body.createFixture(fixture);
         
-        body.setMassFromShapes();
+        //body.setMassFromShapes();
         shape.setAsBox(30, 30);
         return body;
     }
     
     public static Body createTile(/*Entity _entity, */String _name, Vec2 _position)
     { 
-        PolygonDef shape = new PolygonDef();
+        PolygonShape shape = new PolygonShape();
         shape.setAsBox(0.5f, 0.5f);
+        FixtureDef fixture = new FixtureDef();
+        fixture.shape = shape;
         BodyDef def = new BodyDef();
         //def.userData = _entity;
         def.position = new Vec2((_position.x),(_position.y));
         
         Body body = mWorld.createBody(def);
-        body.createShape(shape);
+        body.createFixture(fixture);
         return body;
     }
     
     public static void update(float _time)
     {
-        mWorld.step(_time/1000.0f, 8);
+        mWorld.step(_time/1000.0f, 8, 8);
         Body body = mWorld.getBodyList();
         while (body != null)
         {

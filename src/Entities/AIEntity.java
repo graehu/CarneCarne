@@ -25,15 +25,15 @@ public class AIEntity extends Entity {
     }
     public void walkLeft()
     {
-        mBody.applyImpulse(new Vec2(-0.1f,0), new Vec2(0,0));
+        mBody.applyLinearImpulse(new Vec2(-0.1f,0), new Vec2(0,0));
     }
     public void walkRight()
     {
-        mBody.applyImpulse(new Vec2(0.1f,0), new Vec2(0,0));
+        mBody.applyLinearImpulse(new Vec2(0.1f,0), new Vec2(0,0));
     }
     public void jump()
     {
-        mBody.applyImpulse(new Vec2(0,-0.1f), new Vec2(0,0));
+        mBody.applyLinearImpulse(new Vec2(0,-0.1f), new Vec2(0,0));
     }
     public void crouch()
     {
