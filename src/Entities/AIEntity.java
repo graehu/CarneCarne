@@ -41,7 +41,7 @@ public class AIEntity extends Entity {
         while (edge != null)
         {
             Body body = edge.other;
-            if (body.m_shapeList.m_filter.categoryBits == sPhysics.BodyCategories.eTiles.ordinal())
+            if (body.m_fixtureList.m_filter.categoryBits == sPhysics.BodyCategories.eTiles.ordinal())
             {
                 if (body.getPosition().y > mBody.getPosition().y)
                 {
@@ -58,13 +58,13 @@ public class AIEntity extends Entity {
     }
     public void walkLeft()
     {
-        mBody.applyImpulse(new Vec2(-0.01f,0), new Vec2(0,0));
+        mBody.applyLinearImpulse(new Vec2(-0.01f,0), new Vec2(0,0));
         mJoint.m_motorSpeed = 10.0f;
         turnThisFrame = 1000;
     }
     public void walkRight()
     {
-        mBody.applyImpulse(new Vec2(0.01f,0), new Vec2(0,0));
+        mBody.applyLinearImpulse(new Vec2(0.01f,0), new Vec2(0,0));
         mJoint.m_motorSpeed = -10.0f;
         turnThisFrame = 1000;
     }
@@ -72,7 +72,7 @@ public class AIEntity extends Entity {
     {
         if (canJump && jumpTimer == 0)
         {
-            mBody.applyImpulse(new Vec2(0,-30.0f), new Vec2(0,0));
+            mBody.applyLinearImpulse(new Vec2(0,-30.0f), new Vec2(0,0));
             canJump = false;
             jumpTimer = jumpReload;
         }
@@ -82,8 +82,6 @@ public class AIEntity extends Entity {
     }
     public void render()
     {
-        //int xPixel = (int)(mBody.getPosition().x*64.0f);
-        //int yPixel = (int)(mBody.getPosition().y*64.0f);
         Vec2 pixelPosition = sPhysics.translate(mBody.getPosition());
         mSkin.render(pixelPosition.x,pixelPosition.y);
     }

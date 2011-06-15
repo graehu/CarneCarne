@@ -8,6 +8,10 @@ import Entities.AIEntity;
 import Entities.Entity;
 import Graphics.BodyCamera;
 import Graphics.iCamera;
+import org.jbox2d.collision.shapes.CircleShape;
+import org.jbox2d.collision.shapes.MassData;
+import org.jbox2d.collision.shapes.PolygonShape;
+import org.jbox2d.collision.shapes.Shape;
 import org.jbox2d.common.*;
 import org.jbox2d.dynamics.*;
 import org.jbox2d.collision.*;
@@ -32,8 +36,7 @@ public class sPhysics {
     }
     public static void init()
     {
-        mWorld = new World(new AABB(new Vec2(-1000,-1000), new Vec2(1000, 1000)),new Vec2(0,9.8f),true);
-        //mWorld.setDebugDraw(new DebugDraw());
+        mWorld = new World(new Vec2(0,9.8f),true);
     }
     
     public static boolean rayCast(Vec2 start, Vec2 end)
@@ -50,8 +53,9 @@ public class sPhysics {
             start.y = end.y;
             end.y = y;
         }
-        AABB aabb = new AABB(start,end);
-        Shape[] shapes = mWorld.query(aabb, 100000); /// FIXME try setting this to 0 or -1
+        //AABB aabb = new AABB(start,end);
+        //Shape[] shapes = mWorld.query(aabb, 100000); /// FIXME try setting this to 0 or -1
+        //Shape[] shapes = mWorld.
         Shape closestHit;
         float distance;
         /*for (int i = 0; i < shapes.length; i++)
@@ -74,80 +78,66 @@ public class sPhysics {
     }
     public static Body createPlayerBody(AIEntity _entity, Vec2 _position)
     {
-        CircleDef wheelShape = new CircleDef();
-        wheelShape.localPosition = new Vec2(0,0);
-        wheelShape.radius = 0.45f;
-        wheelShape.density = 4;
-        wheelShape.friction = 50;
-        wheelShape.filter.categoryBits = (1 << BodyCategories.ePlayer.ordinal());
-        wheelShape.filter.maskBits = (1 << BodyCategories.eTiles.ordinal()) | (1 << BodyCategories.ePlayer.ordinal());
-        PolygonDef axelShape = new PolygonDef();
+        CircleShape wheelShape = new CircleShape();
+        FixtureDef circleFixture = new FixtureDef();
+        wheelShape.m_radius = 0.45f;
+        circleFixture.density = 4;
+        circleFixture.friction = 50;
+        circleFixture.filter.categoryBits = (1 << BodyCategories.ePlayer.ordinal());
+        circleFixture.filter.maskBits = (1 << BodyCategories.eTiles.ordinal()) | (1 << BodyCategories.ePlayer.ordinal());
+        circleFixture.shape = wheelShape;
+        PolygonShape axelShape = new PolygonShape();
+        FixtureDef axelFixture = new FixtureDef();
         axelShape.setAsBox(0.1f, 0.1f);
-        axelShape.density = 0.001f;
-        axelShape.filter.categoryBits = (1 << BodyCategories.ePlayer.ordinal());
-        axelShape.filter.maskBits = (1 << BodyCategories.eTiles.ordinal()) | (1 << BodyCategories.ePlayer.ordinal());
-        axelShape.filter.groupIndex = -100;
+        axelFixture.density = 0.001f;
+        axelFixture.filter.categoryBits = (1 << BodyCategories.ePlayer.ordinal());
+        axelFixture.filter.maskBits = (1 << BodyCategories.eTiles.ordinal()) | (1 << BodyCategories.ePlayer.ordinal());
+        axelFixture.filter.groupIndex = -100;
+        axelFixture.shape = axelShape;
         BodyDef def = new BodyDef();
+        def.type = BodyType.DYNAMIC;
         def.userData = _entity;
         def.position = _position;
-        def.massData = new MassData();
-        def.massData.mass = 1;
         
         Body body = mWorld.createBody(def);
-        body.createShape(wheelShape);
-        body.setMassFromShapes();
+        body.createFixture(circleFixture);
         
         def.fixedRotation = true;
         def.userData = null;
         Body axelBody = mWorld.createBody(def);
-        body.createShape(axelShape);
+        body.createFixture(axelFixture);
         
         RevoluteJointDef wheelJoint = new RevoluteJointDef();
         wheelJoint.collideConnected = false;
         wheelJoint.maxMotorTorque = 5000.0f;
         wheelJoint.enableMotor = true;
-        wheelJoint.body1 = body;
-        wheelJoint.body2 = axelBody;
+        wheelJoint.bodyA = body;
+        wheelJoint.bodyB = axelBody;
         wheelJoint.collideConnected = false;
         RevoluteJoint joint = (RevoluteJoint)mWorld.createJoint(wheelJoint);
         _entity.mJoint = joint;
         return body;
     }
-    /*public static Body create(Entity _entity, Vec2 _position)
-    {
-        PolygonDef shape = new PolygonDef();
-        shape.setAsBox(2, 2);
-        shape.density = 1;
-        BodyDef def = new BodyDef();
-        def.userData = _entity;
-        def.massData = new MassData();
-        def.massData.mass = 1;
-        def.position = _position;
-        Body body = mWorld.createBody(def);
-        body.createShape(shape);
-        
-        body.setMassFromShapes();
-        shape.setAsBox(30, 30);
-        return body;
-    }*/
     
-    public static Body createTile(/*Entity _entity, */String _name, Vec2 _position)
+    public static Body createTile(String _name, Vec2 _position)
     { 
-        PolygonDef shape = new PolygonDef();
+        PolygonShape shape = new PolygonShape();
         shape.setAsBox(0.5f, 0.5f);
-        shape.filter.maskBits = (1 << BodyCategories.eTiles.ordinal()) | (1 << BodyCategories.ePlayer.ordinal());
+        FixtureDef fixture = new FixtureDef();
+        fixture.shape = shape;
+        fixture.filter.maskBits = (1 << BodyCategories.eTiles.ordinal()) | (1 << BodyCategories.ePlayer.ordinal());
         BodyDef def = new BodyDef();
         //def.userData = _entity;
         def.position = new Vec2((_position.x),(_position.y));
         
         Body body = mWorld.createBody(def);
-        body.createShape(shape);
+        body.createFixture(fixture);
         return body;
     }
     
     public static void update(float _time)
     {
-        mWorld.step(_time/1000.0f, 8);
+        mWorld.step(_time/1000.0f, 8, 8);
         Body body = mWorld.getBodyList();
         while (body != null)
         {
