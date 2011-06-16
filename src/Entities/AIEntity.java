@@ -22,14 +22,14 @@ public class AIEntity extends Entity {
     boolean canJump;
     int turnThisFrame;
     int jumpTimer;
-    static int jumpReload = 1000; /// NOTE frame rate change
+    static int jumpReload = 60; /// NOTE frame rate change
     public RevoluteJoint mJoint;
     public AIEntity(iSkin _skin)
     {
         super(_skin);
         canJump = false;
         jumpTimer = 0;
-        turnThisFrame = 1000;
+        turnThisFrame = jumpReload;
     }
     public void update()
     {
@@ -38,7 +38,7 @@ public class AIEntity extends Entity {
             jumpTimer--;
         }
         ContactEdge edge = mBody.m_contactList;
-        canJump = false;
+        canJump = true;
         while (edge != null)
         {
             Body body = edge.other;

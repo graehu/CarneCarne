@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="100" height="100" tilewidth="64" tileheight="64">
+ <tileset firstgid="1" name="Tile1A" tilewidth="64" tileheight="64">
+  <image source="Tile1A.png" width="256" height="256"/>
+  <tile id="0">
+   <properties>
+    <property name="Type" value="Block"/>
+   </properties>
+  </tile>
+ </tileset>
+ <tileset firstgid="17" name="Tile1B" tilewidth="64" tileheight="64">
+  <image source="Tile1B.png" width="256" height="256"/>
+  <tile id="0">
+   <properties>
+    <property name="Type" value="Block"/>
+   </properties>
+  </tile>
+ </tileset>
+ <tileset firstgid="33" name="Tile1C" tilewidth="64" tileheight="64">
+  <image source="Tile1C.png" width="256" height="256"/>
+  <tile id="0">
+   <properties>
+    <property name="Type" value="Block"/>
+   </properties>
+  </tile>
+ </tileset>
+ <tileset firstgid="49" name="Tile1D" tilewidth="64" tileheight="64">
+  <image source="Tile1D.png" width="256" height="256"/>
+  <tile id="0">
+   <properties>
+    <property name="Type" value="Block"/>
+   </properties>
+  </tile>
+ </tileset>
+ <tileset firstgid="65" name="Tile1F" tilewidth="64" tileheight="64">
+  <image source="Tile1F.png" width="256" height="256"/>
+  <tile id="0">
+   <properties>
+    <property name="Type" value="Block"/>
+   </properties>
+  </tile>
+ </tileset>
+ <tileset firstgid="81" name="Tile1G" tilewidth="64" tileheight="64">
+  <image source="Tile1G.png" width="256" height="256"/>
+  <tile id="0">
+   <properties>
+    <property name="Type" value="Block"/>
+   </properties>
+  </tile>
+ </tileset>
+ <tileset firstgid="97" name="Tile1S" tilewidth="64" tileheight="64">
+  <image source="Tile1S.png" width="256" height="256"/>
+  <tile id="0">
+   <properties>
+    <property name="Type" value="Slope"/>
+   </properties>
+  </tile>
+  <tile id="4">
+   <properties>
+    <property name="Type" value="Slope"/>
+   </properties>
+  </tile>
+  <tile id="8">
+   <properties>
+    <property name="Type" value="Slope"/>
+   </properties>
+  </tile>
+  <tile id="12">
+   <properties>
+    <property name="Type" value="Slope"/>
+   </properties>
+  </tile>
+ </tileset>
+ <tileset firstgid="113" name="Tile1SB" tilewidth="64" tileheight="64">
+  <image source="Tile1SB.png" width="256" height="256"/>
+  <tile id="0">
+   <properties>
+    <property name="Type" value="Slope"/>
+   </properties>
+  </tile>
+  <tile id="4">
+   <properties>
+    <property name="Type" value="Slope"/>
+   </properties>
+  </tile>
+  <tile id="8">
+   <properties>
+    <property name="Type" value="Slope"/>
+   </properties>
+  </tile>
+  <tile id="12">
+   <properties>
+    <property name="Type" value="Slope"/>
+   </properties>
+  </tile>
+ </tileset>
+ <tileset firstgid="129" name="Tile1SC" tilewidth="64" tileheight="64">
+  <image source="Tile1SC.png" width="256" height="256"/>
+  <tile id="0">
+   <properties>
+    <property name="Type" value="Slope"/>
+   </properties>
+  </tile>
+  <tile id="4">
+   <properties>
+    <property name="Type" value="Slope"/>
+   </properties>
+  </tile>
+  <tile id="8">
+   <properties>
+    <property name="Type" value="Slope"/>
+   </properties>
+  </tile>
+  <tile id="12">
+   <properties>
+    <property name="Type" value="Slope"/>
+   </properties>
+  </tile>
+ </tileset>
+ <tileset firstgid="145" name="Tile2" tilewidth="64" tileheight="64">
+  <image source="Tile2.png" width="192" height="576"/>
+  <tile id="0">
+   <properties>
+    <property name="Type" value="NonEdible"/>
+   </properties>
+  </tile>
+ </tileset>
+ <tileset firstgid="172" name="Tile1back" tilewidth="64" tileheight="64">
+  <image source="Tile1back.png" width="256" height="1408"/>
+ </tileset>
+ <tileset firstgid="260" name="Tile2back" tilewidth="64" tileheight="64">
+  <image source="Tile2back.png" width="192" height="768"/>
+ </tileset>
+ <layer name="Background2" width="100" height="100">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+3WoQ0AIAwEwDIMg7H/EqgKXAWQNLkzb6r+TSMAgO5W8W6OM3knN9E1AMBd/isAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADghw0Pe351QJwAAA==
+  </data>
+ </layer>
+ <layer name="Background1" width="100" height="100">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+3Xy2rCUBSGUd//WfoKgoM+gEMraqu9UO0F6w0762+RIiEOOghHzFrwwSGwYcMhgXQ6wH/cVKKs6n24k7Lcx+UZpLs0LL0Iv0ZpnCalF2mZc9+khzRNs5qZ+4Z3arPDPXRTv/L8KT2nl5qZx6aXarHvk/M67Y7n1zRPi5oZ70dz9ifnbdocz+/pI33WzLw1vRR/euk2LdNXWhXdhgP/HZfF/yAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADX5geFDeM/QJwAAA==
+  </data>
+ </layer>
+ <layer name="Level" width="100" height="100">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+3YTU7CQBgG4OEIHAESfxJ14RE8iiaYsOjShUuXLrmx/eI0HSYNgWoR0+dJvpSZlgTmnZlSdiml3cji943NQh7TGBrnZT4Xx1VVY/LYtPVctB/auiv6Nrkd9VJdc3/St/n/6ixizLs83lOfyWMal0eMddPWNvXjf10dy3OpOjdnMS5lHuEzt8fuV1epn/vrqm9dXLdN+2umu2Zu66OclzGXh8b6J/eP24HX3TEyiP3pNfWZNfncTZpnHrEeIpMyi3q8h/a01Xk/5mwsch2a/3Vf3FfkMY3Ioinax+5H8vgbsRa631YfRb88LsdbksdUntL3nrXMtch9Jc/n51M/f9fPH4f+Lxl676nFvkN5+P/qspnXAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAx/sCrlQ+yECcAAA=
+  </data>
+ </layer>
+ <layer name="Foreground1" width="100" height="100" visible="0">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+3XzQqCQBQG0Pv+u6CgP43IinrKRkwIs1oko9E58C10dbkfjOMsImZfhGF904U+hte34yJlkVJ2sgtd5Fa8eF+lHEMfuR2i2f35/ryP5x70kd86mk5W4dsxBe2++/qoz7RypLn+XbePecpy1In+2yWau1ab67jjwKScUjadVA8hn7qLbbhfTcGnLvSR17v/Dn0AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADwa25czJGVQJwAAA==
+  </data>
+ </layer>
+ <layer name="Foreground2" width="100" height="100" visible="0">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+3BMQEAAADCoPVP7WULoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgBt5RKnmQJwAAA==
+  </data>
+ </layer>
+</map>

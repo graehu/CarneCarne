@@ -5,6 +5,7 @@
 package Level;
 
 import Physics.sPhysics;
+import java.util.Hashtable;
 import java.util.Stack;
 import org.jbox2d.common.Vec2;
 import org.newdawn.slick.SlickException;
@@ -24,22 +25,24 @@ public class sLevel {
     public static void init() throws SlickException
     {
         lowestSlope = 1000000000;
-        mTiledMap = new TiledMap("data/Test_map.tmx");
+        mTiledMap = new TiledMap("data/Test_map3ready.tmx");
         layerIndex = mTiledMap.getLayerIndex("Level");
         Stack<Integer> stack = new Stack<Integer>();
+        Hashtable parameters = new Hashtable();
         for (int i = 0; i < mTiledMap.getWidth(); i++)
         {
             for (int ii = 0; ii < mTiledMap.getHeight(); ii++)
             {
                 int id = mTiledMap.getTileId(i, ii, layerIndex);
-                if (id%4 != 1 && id != 0)
+                /*if (id%4 != 1 && id != 0)
                 {
                     throw new SlickException("gay");
-                }
+                }*/
                 String type = mTiledMap.getTileProperty(id, "Type", "None");
                 if (type.equals("Block"))
                 {
-                    sPhysics.createTile(type,new Vec2(i,ii));
+                    parameters.put("position", new Vec2(i,ii));
+                    sPhysics.useFactory("TileFactory",parameters);
                     if (i > 0 && ii > 0 && i < mTiledMap.getWidth()-1 && ii < mTiledMap.getHeight()-1 && id != 0)
                         checkTileEdges(i,ii, id, stack);
                 }
@@ -49,7 +52,9 @@ public class sLevel {
                     {
                         lowestSlope = id;
                     }
-                    sPhysics.createTile(type, new Vec2(i,ii));
+                    parameters.put("position", new Vec2(i,ii));
+                    parameters.put("slopeType",getSlopeType(i, ii));
+                    sPhysics.useFactory("SlopeFactory",parameters);
                     if (i > 0 && ii > 0 && i < mTiledMap.getWidth()-1 && ii < mTiledMap.getHeight()-1 && id != 0)
                         checkSlopeEdges(i,ii,id,stack);
                 }

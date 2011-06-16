@@ -12,10 +12,10 @@ import org.jbox2d.common.Vec2;
  */
 public class TongueStateMachine {
     
-    static int tongueFiringTimeout = 100;
-    static int hammeringTimeout = 100;
-    static int idleAnimationTrigger = 10000;
-    static int tongueRetractWithBlockTime = 100;
+    static int tongueFiringTimeout = 60;
+    static int hammeringTimeout = 60;
+    static int idleAnimationTrigger = 60;
+    static int tongueRetractWithBlockTime = 60;
     
     Vec2 position; /// FIXME unneccessary
     String mBlockMaterial;
@@ -58,7 +58,7 @@ public class TongueStateMachine {
     }
     private int setAnimation(String _name)
     {
-        return 100;
+        return 60;
     }
     public void tick()
     {

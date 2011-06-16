@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="100" height="100" tilewidth="64" tileheight="64">
+ <tileset firstgid="1" name="Tile1A" tilewidth="64" tileheight="64">
+  <image source="Tile1A.png" width="256" height="256"/>
+  <tile id="0">
+   <properties>
+    <property name="Type" value="Block"/>
+   </properties>
+  </tile>
+ </tileset>
+ <tileset firstgid="17" name="Tile1B" tilewidth="64" tileheight="64">
+  <image source="Tile1B.png" width="256" height="256"/>
+  <tile id="0">
+   <properties>
+    <property name="Type" value="Block"/>
+   </properties>
+  </tile>
+ </tileset>
+ <tileset firstgid="33" name="Tile1C" tilewidth="64" tileheight="64">
+  <image source="Tile1C.png" width="256" height="256"/>
+  <tile id="0">
+   <properties>
+    <property name="Type" value="Block"/>
+   </properties>
+  </tile>
+ </tileset>
+ <tileset firstgid="49" name="Tile1S" tilewidth="64" tileheight="64">
+  <image source="Tile1S.png" width="256" height="256"/>
+  <tile id="0">
+   <properties>
+    <property name="Type" value="Slope"/>
+   </properties>
+  </tile>
+  <tile id="4">
+   <properties>
+    <property name="Type" value="Slope"/>
+   </properties>
+  </tile>
+  <tile id="8">
+   <properties>
+    <property name="Type" value="Slope"/>
+   </properties>
+  </tile>
+  <tile id="12">
+   <properties>
+    <property name="Type" value="Slope"/>
+   </properties>
+  </tile>
+ </tileset>
+ <tileset firstgid="65" name="Tile1SB" tilewidth="64" tileheight="64">
+  <image source="Tile1SB.png" width="256" height="256"/>
+  <tile id="0">
+   <properties>
+    <property name="Type" value="Slope"/>
+   </properties>
+  </tile>
+ </tileset>
+ <tileset firstgid="81" name="Tile1SC" tilewidth="64" tileheight="64">
+  <image source="Tile1SC.png" width="256" height="256"/>
+  <tile id="0">
+   <properties>
+    <property name="Type" value="Slope"/>
+   </properties>
+  </tile>
+ </tileset>
+ <layer name="Tile Layer 1" width="100" height="100">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+3RMQqAMBBFweRIFhYW3v9aKhiQsAGLxFjMwO+22pdSLN9jvqvDfm5LmsxWWhSazFO3KDQBgH/L1ZbG3Rrc0l/946hJ1EKPMaI/P5u0WugxRuvXb0dfWgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABfOwD2vsYpQJwAAA==
+  </data>
+ </layer>
+</map>

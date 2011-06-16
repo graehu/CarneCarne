@@ -13,6 +13,7 @@ import org.jbox2d.common.Vec2;
 import Graphics.sSkinFactory;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Hashtable;
 /**
  *
  * @author alasdair
@@ -37,7 +38,10 @@ public class PlayerFactory implements iEntityFactory {
             iSkin skin = sSkinFactory.create("character", animDef);
             skin.startAnim("body");
             AIEntity entity = new AIEntity(skin);
-            entity.mBody = sPhysics.createPlayerBody(entity, position);
+            Hashtable parameters = new Hashtable();
+            parameters.put("position", position);
+            parameters.put("aIEntity", entity);
+            entity.mBody = sPhysics.useFactory("CharacterFactory",parameters);
             PlayerInputController controller = new PlayerInputController(entity);
             entity.mController = controller;
             sPhysics.createBodyCamera(entity.mBody);

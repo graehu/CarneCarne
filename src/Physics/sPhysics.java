@@ -9,9 +9,10 @@ import Entities.Entity;
 import Events.TileDestroyedEvent;
 import Events.sEvents;
 import Graphics.BodyCamera;
-import Graphics.SlickDebugDraw;
 import Graphics.iCamera;
 import Level.sLevel;
+import java.util.HashMap;
+import java.util.Hashtable;
 import org.jbox2d.callbacks.RayCastCallback;
 import org.jbox2d.collision.shapes.CircleShape;
 import org.jbox2d.collision.shapes.PolygonShape;
@@ -28,6 +29,7 @@ import org.jbox2d.structs.collision.RayCastOutput;
 public class sPhysics {
     private static World mWorld;
     private static iCamera mCamera;
+    private static HashMap<String,iPhysicsFactory> factories;
     public enum BodyCategories
     {
         ePlayer,
@@ -40,9 +42,17 @@ public class sPhysics {
     }
     public static void init()
     {
-        mWorld = new World(new Vec2(0,9.8f),true);     
+        mWorld = new World(new Vec2(0,9.8f),true);   
+        factories = new HashMap<String, iPhysicsFactory>();
+        factories.put("TileFactory", new TileFactory());
+        factories.put("SlopeFactory", new SlopeFactory());
+        factories.put("CharacterFactory", new CharacterFactory());
     }
     
+    public static Body useFactory(String _factory, Hashtable _parameters)
+    {
+        return factories.get(_factory).useFactory(_parameters, mWorld);
+    }
     private static class TongueCallback implements RayCastCallback
     {
         Fixture fixture;
@@ -105,69 +115,21 @@ public class sPhysics {
     {
         return mCamera.getPixelTranslation();
     }
-    public static Body createPlayerBody(AIEntity _entity, Vec2 _position)
+    /*public static Body createPlayerBody(AIEntity _entity, Vec2 _position)
     {
-        CircleShape wheelShape = new CircleShape();
-        FixtureDef circleFixture = new FixtureDef();
-        wheelShape.m_radius = 0.45f;
-        circleFixture.density = 4;
-        circleFixture.friction = 500;
-        circleFixture.filter.categoryBits = (1 << BodyCategories.ePlayer.ordinal());
-        circleFixture.filter.maskBits = (1 << BodyCategories.eTiles.ordinal()) | (1 << BodyCategories.ePlayer.ordinal());
-        circleFixture.shape = wheelShape;
-        PolygonShape axelShape = new PolygonShape();
-        FixtureDef axelFixture = new FixtureDef();
-        axelShape.setAsBox(0.1f, 0.1f);
-        axelFixture.density = 0.001f;
-        axelFixture.filter.categoryBits = (1 << BodyCategories.ePlayer.ordinal());
-        axelFixture.filter.maskBits = (1 << BodyCategories.eTiles.ordinal()) | (1 << BodyCategories.ePlayer.ordinal());
-        axelFixture.filter.groupIndex = -100;
-        axelFixture.shape = axelShape;
-        BodyDef def = new BodyDef();
-        def.type = BodyType.DYNAMIC;
-        def.userData = _entity;
-        def.position = _position;
-        
-        Body body = mWorld.createBody(def);
-        body.createFixture(circleFixture);
-        
-        def.fixedRotation = true;
-        def.userData = null;
-        Body axelBody = mWorld.createBody(def);
-        body.createFixture(axelFixture);
-        
-        RevoluteJointDef wheelJoint = new RevoluteJointDef();
-        wheelJoint.collideConnected = false;
-        wheelJoint.maxMotorTorque = 5000.0f;
-        wheelJoint.enableMotor = true;
-        wheelJoint.bodyA = body;
-        wheelJoint.bodyB = axelBody;
-        wheelJoint.collideConnected = false;
-        RevoluteJoint joint = (RevoluteJoint)mWorld.createJoint(wheelJoint);
-        _entity.mJoint = joint;
-        return body;
-    }
-    
-    public static Body createTile(String _name, Vec2 _position)
-    { 
-        PolygonShape shape = new PolygonShape();
-        shape.setAsBox(0.5f, 0.5f);
-        FixtureDef fixture = new FixtureDef();
-        fixture.shape = shape;
-        fixture.filter.categoryBits = (1 << BodyCategories.eTiles.ordinal());
-        fixture.filter.maskBits = (1 << BodyCategories.eTiles.ordinal()) | (1 << BodyCategories.ePlayer.ordinal());
-        BodyDef def = new BodyDef();
-        //def.userData = _entity;
-        def.position = new Vec2((_position.x),(_position.y));
-        
-        Body body = mWorld.createBody(def);
-        body.createFixture(fixture);
-        return body;
-    }
-    
+        Hashtable parameters = new Hashtable();
+        parameters.put("position", _position);
+        parameters.put("aIEntity", _entity);
+        return useFactory("CharacterFactory",parameters);
+    }*/
     public static void update(float _time)
     {
-        mWorld.step(_time/1000.0f, 8, 8);
+        float secondsPerFrame = 16.666f;
+        /*time += _time;
+        if (time > secondsPerFrame)
+        {
+        time -= secondsPerFrame;*/
+        mWorld.step(secondsPerFrame/1000.0f, 8, 8);
         Body body = mWorld.getBodyList();
         while (body != null)
         {
@@ -176,6 +138,7 @@ public class sPhysics {
                 entity.update();
             body = body.getNext();
         }
+        //}
     }
     
     public static void render()
