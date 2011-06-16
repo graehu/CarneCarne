@@ -9,7 +9,7 @@
             </extension>
         </buildExtensions>
         <data xmlns="http://www.netbeans.org/ns/j2se-project/3">
-            <name>SlickTestbed</name>
+            <name>CarneCarne</name>
             <source-roots>
                 <root id="src.data.dir" name="Data Packages"/>
                 <root id="src.dir"/>

@@ -1,12 +1,11 @@
 
-package slicktestbed;
+package main;
 
 import GUI.BasicTWLGameState;
 import GUI.TWLStateBasedGame;
 import java.net.URL;
 import org.newdawn.slick.*;
-import Game.Game;
-import Game.GameState;
+import States.Game.StateGame;
 import org.newdawn.slick.util.ResourceLoader;
 
 
@@ -35,8 +34,6 @@ public class Main extends TWLStateBasedGame
             e.printStackTrace();
         }
     }
-    
-    Game mGame;
 
     @Override
     protected URL getThemeURL() {
@@ -54,7 +51,7 @@ public class Main extends TWLStateBasedGame
         //title
         //mTitleState = new BasicTWLGameState();
         //game
-        mGameState = new GameState();
+        mGameState = new StateGame();
         addState(mGameState);        
     }
 

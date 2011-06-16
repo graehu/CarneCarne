@@ -1,4 +1,4 @@
-package Game;
+package GUI;
 
 /*
  * Copyright (c) 2008-2011, Matthias Mann
