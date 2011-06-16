@@ -57,7 +57,7 @@ public class CharacterSkin implements iSkin
         //else use first in the list
         else
         {
-            startAnim(_spriteSheets.get(0));
+            startAnim(_spriteSheets.get(0), true, 1.0f);
         }
     }
     public void render(float _x, float _y)
@@ -78,8 +78,13 @@ public class CharacterSkin implements iSkin
         }
     }
 
-    public final void startAnim(String _animation) {
-        mCurrentSkins.add(mSkinNames.get(_animation));
+    public final float startAnim(String _animation, boolean _isLooping, float _speed) {
+        int ref = mSkinNames.get(_animation);
+        iSkin skin = mSkins.get(ref);
+        skin.setIsLooping(_isLooping);
+        skin.setSpeed(_speed); 
+        mCurrentSkins.add(ref);
+        return skin.getDuration();
     }
 
     public final void stopAnim(String _animation) {
@@ -99,5 +104,17 @@ public class CharacterSkin implements iSkin
         {
             skin.restart();
         }
+    }
+
+    public void setIsLooping(boolean _isLooping) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void setSpeed(float _speed) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public float getDuration() {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

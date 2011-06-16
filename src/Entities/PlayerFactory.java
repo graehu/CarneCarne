@@ -13,7 +13,6 @@ import org.jbox2d.common.Vec2;
 import Graphics.sSkinFactory;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Hashtable;
 /**
  *
  * @author alasdair
@@ -38,8 +37,8 @@ public class PlayerFactory implements iEntityFactory {
                     "n","nne","ne","nee","e","see","se","sse","s","ssw","sw","sww","w","nww","nw","nnw",
                     "mn","mnne","mne","mnee","me","msee","mse","msse","ms","mssw","msw","msww","mw","mnww","mnw","mnnw")); /// FML
             iSkin skin = sSkinFactory.create("character", animDef);
-            skin.startAnim("e");
-            skin.startAnim("me");
+            skin.startAnim("e", false, 0.0f);
+            skin.startAnim("me", false, 0.0f);
             AIEntity entity = new AIEntity(skin);
             HashMap parameters = new HashMap();
             parameters.put("position", position);

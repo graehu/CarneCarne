@@ -2,7 +2,7 @@
  * abstracted implementation of code supplied by a forum post somewhere lol
  */
 
-package slicktestbed;
+package main;
 
 import java.io.File;
 import java.io.IOException;

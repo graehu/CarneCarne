@@ -6,7 +6,7 @@ package Events;
 
 import java.lang.String;
 import java.util.Hashtable;
-import slicktestbed.sLog;
+import main.sLog;
 /**
  *
  * @author alasdair
