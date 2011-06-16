@@ -54,9 +54,13 @@ public class AnimatedSkin implements iSkin{
     {
         mAnim.restart();
     }
-
-    public void startAnim(String _animation) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public void setIsLooping(boolean _isLooping)
+    {
+        mAnim.setLooping(_isLooping);
+    }
+    public void setSpeed(float _speed)
+    {
+        mAnim.setSpeed(_speed);
     }
 
     public void stopAnim(String _animation) {
@@ -68,6 +72,14 @@ public class AnimatedSkin implements iSkin{
     }
 
     public void setRotation(String _animation, float _radians) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public float getDuration() {
+        return ((float)(mAnim.getDuration(0)*mAnim.getFrameCount()))/1000.0f;
+    }
+
+    public float startAnim(String _animation, boolean _isLooping, float _speed) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 

@@ -37,22 +37,34 @@ public class StaticSkin implements iSkin
     }
 
     public void restart() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    public void startAnim(String _animation) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        assert(false);
     }
 
     public void stopAnim(String _animation) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        assert(false);
     }
 
     public void restart(String _animation) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        assert(false);
     }
 
     public void setRotation(String _animation, float _radians) {
+        assert(false);
+    }
+
+    public void setIsLooping(boolean _isLooping) {
+        assert(false);
+    }
+
+    public void setSpeed(float _speed) {
+        assert(false);
+    }
+
+    public float getDuration() {
+        return 0.0f;
+    }
+
+    public float startAnim(String _animation, boolean _isLooping, float _speed) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 

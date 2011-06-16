@@ -35,7 +35,7 @@ public class PlayerFactory implements iEntityFactory {
             animDef.put("ref", "ss_1");
             animDef.put("anims", Arrays.asList("body", "spy"));
             iSkin skin = sSkinFactory.create("character", animDef);
-            skin.startAnim("spy");
+            skin.startAnim("spy",true,1.0f);
             AIEntity entity = new AIEntity(skin);
             entity.mBody = sPhysics.createPlayerBody(entity, position);
             PlayerInputController controller = new PlayerInputController(entity);
