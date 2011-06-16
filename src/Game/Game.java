@@ -31,7 +31,7 @@ public class Game {
         sPhysics.init();
         sLevel.init();
         HashMap parameters = new HashMap();
-        parameters.put("position",new Vec2(0,0));
+        parameters.put("position",new Vec2(1,5));
         sEntityFactory.create("Player",parameters);
     }
     public void update(GameContainer _container, int _delta)

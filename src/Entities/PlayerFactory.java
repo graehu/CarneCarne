@@ -34,11 +34,14 @@ public class PlayerFactory implements iEntityFactory {
             used = true;
             HashMap animDef = new HashMap();
             animDef.put("ref", "ss_1");
-            animDef.put("anims", Arrays.asList("body", "spy"));
+            animDef.put("anims", Arrays.asList("body", "spy",
+                    "n","nne","ne","nee","e","see","se","sse","s","ssw","sw","sww","w","nww","nw","nnw",
+                    "mn","mnne","mne","mnee","me","msee","mse","msse","ms","mssw","msw","msww","mw","mnww","mnw","mnnw")); /// FML
             iSkin skin = sSkinFactory.create("character", animDef);
-            skin.startAnim("spy");
+            skin.startAnim("e");
+            skin.startAnim("me");
             AIEntity entity = new AIEntity(skin);
-            Hashtable parameters = new Hashtable();
+            HashMap parameters = new HashMap();
             parameters.put("position", position);
             parameters.put("aIEntity", entity);
             entity.mBody = sPhysics.useFactory("CharacterFactory",parameters);

@@ -133,22 +133,22 @@
  </tileset>
  <layer name="Background2" width="100" height="100">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC+3WoQ0AIAwEwDIMg7H/EqgKXAWQNLkzb6r+TSMAgO5W8W6OM3knN9E1AMBd/isAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADghw0Pe351QJwAAA==
+   H4sIAAAAAAAAC+3WoQEAMAgEMRiG/VesrgcMiTn/6iMAgCsq/zLP1gAAvfwrAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAYMMDx+5P30CcAAA=
   </data>
  </layer>
  <layer name="Background1" width="100" height="100">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC+3Xy2rCUBSGUd//WfoKgoM+gEMraqu9UO0F6w0762+RIiEOOghHzFrwwSGwYcMhgXQ6wH/cVKKs6n24k7Lcx+UZpLs0LL0Iv0ZpnCalF2mZc9+khzRNs5qZ+4Z3arPDPXRTv/L8KT2nl5qZx6aXarHvk/M67Y7n1zRPi5oZ70dz9ifnbdocz+/pI33WzLw1vRR/euk2LdNXWhXdhgP/HZfF/yAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADX5geFDeM/QJwAAA==
+   H4sIAAAAAAAAC+3XMQqDMBSAYe+/degteogO3qNDoWCtYh2cfd1EMlgpUer3wQ9iIjwIDikK4BuXWWxrfh7OJJ/zJIA9O6345vbzKVjqkXh3zz7FcQ2T5yp6Jvb4P/J7RU3UJtbqzLMc2TUqoy56R/2m0/DhHrgv7ucAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD8mxFUCq7fQJwAAA==
   </data>
  </layer>
  <layer name="Level" width="100" height="100">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC+3YTU7CQBgG4OEIHAESfxJ14RE8iiaYsOjShUuXLrmx/eI0HSYNgWoR0+dJvpSZlgTmnZlSdiml3cji943NQh7TGBrnZT4Xx1VVY/LYtPVctB/auiv6Nrkd9VJdc3/St/n/6ixizLs83lOfyWMal0eMddPWNvXjf10dy3OpOjdnMS5lHuEzt8fuV1epn/vrqm9dXLdN+2umu2Zu66OclzGXh8b6J/eP24HX3TEyiP3pNfWZNfncTZpnHrEeIpMyi3q8h/a01Xk/5mwsch2a/3Vf3FfkMY3Ioinax+5H8vgbsRa631YfRb88LsdbksdUntL3nrXMtch9Jc/n51M/f9fPH4f+Lxl676nFvkN5+P/qspnXAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAx/sCrlQ+yECcAAA=
+   H4sIAAAAAAAAC+3YS2rCUBQG4NMldAkKfUDbQZfQJbiEFiw4cNhBh12CO24ORIyXkOjFVEq+Dw553Ah6/5xL4i4idpXF5dVmIY9p9M3zbTuW20VRNXmsm3rvHL809dQ5t26Psz6Ka57P+jX/X5lFznnmsOpUnnuNujxyrrdNbeIw//fFtjsWxdicrQaqdr26i8O9vyzOLTvXbeK4Z/bXzK0/VsX+pfN47NnfbzODXJ8+45DZth17iPnmcUqVa9riGl92Bm6KGssjfYc8ppIZ5Box1Bt95DGNsRyyF/bPVj+dz8ljGuf2RfoKeUzlLcbz8H7+d8b6Y+j/kvLdvaY4VpuF/rg+9zUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMDpfgGgohbvQJwAAA==
   </data>
  </layer>
- <layer name="Foreground1" width="100" height="100" visible="0">
+ <layer name="Foreground1" width="100" height="100">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC+3XzQqCQBQG0Pv+u6CgP43IinrKRkwIs1oko9E58C10dbkfjOMsImZfhGF904U+hte34yJlkVJ2sgtd5Fa8eF+lHEMfuR2i2f35/ryP5x70kd86mk5W4dsxBe2++/qoz7RypLn+XbePecpy1In+2yWau1ab67jjwKScUjadVA8hn7qLbbhfTcGnLvSR17v/Dn0AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADwa25czJGVQJwAAA==
+   H4sIAAAAAAAAC+3YsQqEMBRFwff/ncUWoquN+p0bC0FEsIjoY5mB20tOEUwTEU3FuFdNCz3ud3bG37JP2XDYGFpkMoce2eiRix65bPfL8PaHAJDaUtYdNu3Gc9YWffg3z+CqhR7PasPbFQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/jBwiuYtFAnAAA
   </data>
  </layer>
  <layer name="Foreground2" width="100" height="100" visible="0">

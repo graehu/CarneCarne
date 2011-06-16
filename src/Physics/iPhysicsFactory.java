@@ -4,7 +4,7 @@
  */
 package Physics;
 
-import java.util.Hashtable;
+import java.util.HashMap;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.World;
 
@@ -14,5 +14,5 @@ import org.jbox2d.dynamics.World;
  */
 public interface iPhysicsFactory {
     
-    Body useFactory(Hashtable _parameters, World _world);
+    Body useFactory(HashMap _parameters, World _world);
 }

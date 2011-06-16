@@ -5,7 +5,9 @@
 package Level;
 
 import Physics.sPhysics;
-import java.util.Hashtable;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.PriorityQueue;
 import java.util.Stack;
 import org.jbox2d.common.Vec2;
 import org.newdawn.slick.SlickException;
@@ -18,17 +20,56 @@ public class sLevel {
     private static TiledMap mTiledMap;
     private static int layerIndex;
     private static int lowestSlope;
+    private static int lowestNonEdible;
+    private static int frames;
+    private static PriorityQueue<RegrowingTile> regrowingTiles;
+    private static class RegrowingTile
+    {
+        public RegrowingTile(int _x, int _y, int _id, int _timer)
+        {
+            x = _x;
+            y = _y;
+            id = _id;
+            timer = _timer;
+        }
+        int x, y;
+        int id;
+        int timer;
+        
+    }
+    private static class TileComparer implements Comparator<RegrowingTile> 
+    {
+        public int compare(RegrowingTile x, RegrowingTile y)
+        {
+            if (x.timer < y.timer)
+            {
+                return -1;
+            }
+            if (x.timer > y.timer)
+            {
+                return 1;
+            }
+            return 0;
+
+        }
+
+        public int compareTo(RegrowingTile o) {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
+    }
     private sLevel()
     {
         
     }
     public static void init() throws SlickException
     {
-        lowestSlope = 1000000000;
+        frames = 0;
+        lowestSlope = lowestNonEdible = 1000000000;
         mTiledMap = new TiledMap("data/Test_map3ready.tmx");
         layerIndex = mTiledMap.getLayerIndex("Level");
+        regrowingTiles = new PriorityQueue<RegrowingTile>(10, new TileComparer());
         Stack<Integer> stack = new Stack<Integer>();
-        Hashtable parameters = new Hashtable();
+        HashMap parameters = new HashMap();
         for (int i = 0; i < mTiledMap.getWidth(); i++)
         {
             for (int ii = 0; ii < mTiledMap.getHeight(); ii++)
@@ -57,6 +98,15 @@ public class sLevel {
                     sPhysics.useFactory("SlopeFactory",parameters);
                     if (i > 0 && ii > 0 && i < mTiledMap.getWidth()-1 && ii < mTiledMap.getHeight()-1 && id != 0)
                         checkSlopeEdges(i,ii,id,stack);
+                }
+                else if (type.equals("NonEdible"))
+                {
+                    if (id < lowestNonEdible)
+                    {
+                        lowestNonEdible = id;
+                    }
+                    parameters.put("position", new Vec2(i,ii));
+                    sPhysics.useFactory("NonEdibleTileFactory",parameters);                    
                 }
             }
         }
@@ -129,6 +179,10 @@ public class sLevel {
             return false;
         }
         if (id < lowestSlope)
+        {
+            return true;
+        }
+        if (id >= lowestNonEdible)
         {
             return true;
         }
@@ -242,15 +296,21 @@ public class sLevel {
             {
                 checkTileEdges(_x,_y,_id, _stack);
             }
+            else if (id >= lowestNonEdible)
+            {
+                // do shit all
+            }
             else
             {
                 checkSlopeEdges(_x,_y,_id,_stack);
-            }
+            } 
         }
     }
     public static void destroyTile(int _x, int _y)
     {
         Stack<Integer> stack = new Stack<Integer>();
+        
+        regrowingTiles.add(new RegrowingTile(_x,_y, mTiledMap.getTileId(_x,_y, layerIndex),frames+180));
         mTiledMap.setTileId(_x, _y, layerIndex, 0);
         int x;
         int y;
@@ -278,6 +338,52 @@ public class sLevel {
             int yTile = stack.pop();
             int xTile = stack.pop();
             mTiledMap.setTileId(xTile, yTile, layerIndex, id);
+        }
+    }
+    public static void update()
+    {
+        frames++;
+        RegrowingTile tile = regrowingTiles.peek();
+        if (tile != null && tile.timer == frames)
+        {
+            regrowingTiles.remove(tile);
+            mTiledMap.setTileId(tile.x, tile.y, layerIndex, tile.id);
+            int id = getRootTile(tile.x, tile.y);
+            String type = mTiledMap.getTileProperty(id, "Type", "None");
+            HashMap parameters = new HashMap();
+            if (type.equals("Block"))
+            {
+                parameters.put("position", new Vec2(tile.x,tile.y));
+                sPhysics.useFactory("TileFactory",parameters);
+            }
+            else if (type.equals("Slope"))
+            {
+                if (id < lowestSlope)
+                {
+                    lowestSlope = id;
+                }
+                parameters.put("position", new Vec2(tile.x,tile.y));
+                parameters.put("slopeType",getSlopeType(tile.x,tile.y));
+                sPhysics.useFactory("SlopeFactory",parameters);
+            }
+            mTiledMap.setTileId(tile.x, tile.y, layerIndex, id);
+            Stack<Integer> stack = new Stack<Integer>();
+            checkEdges(tile.x,tile.y,id,stack);
+            id = getRootTile(tile.x-1, tile.y);
+            checkEdges(tile.x-1,tile.y,id,stack);
+            id = getRootTile(tile.x+1, tile.y);
+            checkEdges(tile.x+1,tile.y,id,stack);
+            id = getRootTile(tile.x, tile.y-1);
+            checkEdges(tile.x,tile.y-1,id,stack);
+            id = getRootTile(tile.x, tile.y+1);
+            checkEdges(tile.x,tile.y+1,id,stack);
+            while (!stack.empty())
+            {
+                int newId = stack.pop();
+                int yTile = stack.pop();
+                int xTile = stack.pop();
+                mTiledMap.setTileId(xTile, yTile, layerIndex, newId);
+            }
         }
     }
     public static void render()

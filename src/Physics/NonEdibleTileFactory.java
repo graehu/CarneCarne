@@ -17,8 +17,11 @@ import org.jbox2d.dynamics.World;
  *
  * @author A203946
  */
-public class TileFactory implements iPhysicsFactory {
-    
+class NonEdibleTileFactory implements iPhysicsFactory {
+
+    public NonEdibleTileFactory() {
+    }
+
     public Body useFactory(HashMap _parameters, World _world)
     {
         Vec2 position = (Vec2)_parameters.get("position");
@@ -26,7 +29,7 @@ public class TileFactory implements iPhysicsFactory {
         shape.setAsBox(0.5f, 0.5f);
         FixtureDef fixture = new FixtureDef();
         fixture.shape = shape;
-        fixture.filter.categoryBits = (1 << BodyCategories.eEdibleTiles.ordinal());
+        fixture.filter.categoryBits = (1 << BodyCategories.eNonEdibleTiles.ordinal());
         fixture.filter.maskBits = (1 << BodyCategories.eEdibleTiles.ordinal())|
                 (1 << BodyCategories.eNonEdibleTiles.ordinal())|
                 (1 << BodyCategories.ePlayer.ordinal());
@@ -36,6 +39,7 @@ public class TileFactory implements iPhysicsFactory {
         
         Body body = _world.createBody(def);
         body.createFixture(fixture);
-        return body;        
+        return body;   
     }
+    
 }

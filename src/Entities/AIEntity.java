@@ -38,11 +38,11 @@ public class AIEntity extends Entity {
             jumpTimer--;
         }
         ContactEdge edge = mBody.m_contactList;
-        canJump = true;
+        canJump = false;
         while (edge != null)
         {
             Body body = edge.other;
-            if (body.m_fixtureList.m_filter.categoryBits == (1 << sPhysics.BodyCategories.eTiles.ordinal()))
+            if (body.m_fixtureList.m_filter.categoryBits == (1 << sPhysics.BodyCategories.eEdibleTiles.ordinal()))
             {
                 if (body.getPosition().y > mBody.getPosition().y)
                 {

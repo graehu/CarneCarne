@@ -8,14 +8,14 @@ import org.jbox2d.common.Vec2;
 
 /**
  *
- * @author A203946
+ * @author alasdair
  */
 public class TongueStateMachine {
     
-    static int tongueFiringTimeout = 60;
-    static int hammeringTimeout = 60;
-    static int idleAnimationTrigger = 60;
-    static int tongueRetractWithBlockTime = 60;
+    static int tongueFiringTimeout = 1;
+    static int hammeringTimeout = 1;
+    static int idleAnimationTrigger = 1;
+    static int tongueRetractWithBlockTime = 1;
     
     Vec2 position; /// FIXME unneccessary
     String mBlockMaterial;
@@ -58,7 +58,7 @@ public class TongueStateMachine {
     }
     private int setAnimation(String _name)
     {
-        return 60;
+        return 1;
     }
     public void tick()
     {
@@ -425,6 +425,7 @@ public class TongueStateMachine {
             case eSpittingBlock:
             {
                 currentStateTimer = setAnimation("SpittingBlock");
+                spitBlock();
                 break;
             }
             case eSpitting:
@@ -439,5 +440,9 @@ public class TongueStateMachine {
             }
         }
         mState = _state;
+    }
+    private void spitBlock()
+    {
+        mAIController.spitBlock(position);
     }
 }

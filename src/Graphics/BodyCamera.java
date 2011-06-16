@@ -21,8 +21,12 @@ public class BodyCamera implements iCamera {
     //FIXME change constants (300,400) to half resolution hight and width respectively
     public Vec2 translateToWorld(Vec2 _physicsSpace)
     {
-        Vec2 worldSpace = new Vec2(_physicsSpace.x-mBody.getPosition().x,_physicsSpace.y-mBody.getPosition().y);
-        return new Vec2(400.0f+((worldSpace.x*64.0f)*64.0f), 300.0f+((worldSpace.y)*64.0f));
+        Vec2 worldSpace = new Vec2(_physicsSpace.x*64.0f,_physicsSpace.y*64.0f);
+        worldSpace.x -= mBody.getPosition().x*64.0f;
+        worldSpace.y -= mBody.getPosition().y*64.0f;
+        worldSpace.x += 400.0f;//64.0f;
+        worldSpace.y += 300.0f;//64.0f;        
+        return worldSpace;
     }
     public Vec2 translateToPhysics(Vec2 _worldSpace)
     {

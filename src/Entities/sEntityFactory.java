@@ -5,14 +5,13 @@
 package Entities;
 
 import java.util.HashMap;
-import Entities.Entity;
 /**
  *
  * @author alasdair
  */
 public class sEntityFactory {
     
-    private static HashMap mFactories;
+    private static HashMap<String, iEntityFactory> mFactories;
     private sEntityFactory()
     {
         
@@ -22,6 +21,7 @@ public class sEntityFactory {
     {
         mFactories = new HashMap();
         mFactories.put("Player", new PlayerFactory());
+        mFactories.put("SpatBlock", new SpatBlockFactory());
     }
     
     public static Entity create(String _factoryname, HashMap _parameters)

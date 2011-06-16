@@ -5,6 +5,7 @@
 package AI;
 
 import Entities.AIEntity;
+import Entities.sEntityFactory;
 import Events.KeyDownEvent;
 import Events.KeyUpEvent;
 import Events.MapClickEvent;
@@ -12,6 +13,7 @@ import Events.iEvent;
 import Events.iEventListener;
 import Events.sEvents;
 import Physics.sPhysics;
+import java.util.HashMap;
 import org.jbox2d.common.Vec2;
 
 /**
@@ -41,6 +43,14 @@ public class PlayerInputController implements iAIController, iEventListener{
     public boolean grabBlock(Vec2 _position)
     {
         return sPhysics.rayCastTiles(mEntity.mBody.getPosition(),_position);
+    }
+    public void spitBlock(Vec2 _position)
+    {
+        HashMap parameters = new HashMap();
+        Vec2 direction = _position = mEntity.mBody.getPosition();
+        parameters.put("velocity", direction);
+        parameters.put("position", mEntity.mBody.getPosition());
+        sEntityFactory.create("SpatBlock", parameters); 
     }
 
     public void trigger(iEvent _event)

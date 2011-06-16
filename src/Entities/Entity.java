@@ -6,6 +6,8 @@ package Entities;
 
 import org.jbox2d.dynamics.Body;
 import Graphics.iSkin;
+import Physics.sPhysics;
+import org.jbox2d.common.Vec2;
 /**
  *
  * @author alasdair
@@ -21,5 +23,10 @@ abstract public class Entity {
     }
     
     abstract public void update();
-    abstract public void render();
+    
+    public void render()
+    {
+        Vec2 pixelPosition = sPhysics.translateToWorld(mBody.getPosition());
+        mSkin.render(pixelPosition.x,pixelPosition.y);
+    }
 }

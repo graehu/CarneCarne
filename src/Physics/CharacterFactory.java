@@ -6,7 +6,7 @@ package Physics;
 
 import Entities.AIEntity;
 import Physics.sPhysics.BodyCategories;
-import java.util.Hashtable;
+import java.util.HashMap;
 import org.jbox2d.collision.shapes.CircleShape;
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Vec2;
@@ -20,14 +20,14 @@ import org.jbox2d.dynamics.joints.RevoluteJointDef;
 
 /**
  *
- * @author A203946
+ * @author alasdair
  */
 class CharacterFactory implements iPhysicsFactory {
 
     public CharacterFactory() {
     }
 
-    public Body useFactory(Hashtable _parameters, World _world)
+    public Body useFactory(HashMap _parameters, World _world)
     {
         Vec2 position = (Vec2)_parameters.get("position");
         AIEntity entity = (AIEntity)_parameters.get("aIEntity");
@@ -37,14 +37,18 @@ class CharacterFactory implements iPhysicsFactory {
         circleFixture.density = 4;
         circleFixture.friction = 500;
         circleFixture.filter.categoryBits = (1 << BodyCategories.ePlayer.ordinal());
-        circleFixture.filter.maskBits = (1 << BodyCategories.eTiles.ordinal()) | (1 << BodyCategories.ePlayer.ordinal());
+        circleFixture.filter.maskBits = (1 << BodyCategories.eEdibleTiles.ordinal())|
+                (1 << BodyCategories.eNonEdibleTiles.ordinal())|
+                (1 << BodyCategories.ePlayer.ordinal());
         circleFixture.shape = wheelShape;
         PolygonShape axelShape = new PolygonShape();
         FixtureDef axelFixture = new FixtureDef();
         axelShape.setAsBox(0.1f, 0.1f);
         axelFixture.density = 0.001f;
         axelFixture.filter.categoryBits = (1 << BodyCategories.ePlayer.ordinal());
-        axelFixture.filter.maskBits = (1 << BodyCategories.eTiles.ordinal()) | (1 << BodyCategories.ePlayer.ordinal());
+        axelFixture.filter.maskBits = (1 << BodyCategories.eEdibleTiles.ordinal())|
+                (1 << BodyCategories.eNonEdibleTiles.ordinal())|
+                (1 << BodyCategories.ePlayer.ordinal());
         axelFixture.filter.groupIndex = -100;
         axelFixture.shape = axelShape;
         BodyDef def = new BodyDef();

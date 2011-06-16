@@ -17,6 +17,6 @@ class StaticSkinFactory implements iSkinFactory
 {
     public iSkin useFactory(HashMap _params) throws SlickException
     {
-        return new StaticSkin("data" + (String)_params.get("ref"));
+        return new StaticSkin("data/" + (String)_params.get("ref") + ".png");
     }
 }

@@ -5,7 +5,7 @@
 package Physics;
 
 import Physics.sPhysics.BodyCategories;
-import java.util.Hashtable;
+import java.util.HashMap;
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
@@ -19,7 +19,7 @@ import org.jbox2d.dynamics.World;
  */
 public class SlopeFactory implements iPhysicsFactory {
     
-    public Body useFactory(Hashtable _parameters, World _world)
+    public Body useFactory(HashMap _parameters, World _world)
     {
         Vec2 position = (Vec2)_parameters.get("position");
         int slopeType = ((Integer)_parameters.get("slopeType")).intValue();
@@ -74,8 +74,10 @@ public class SlopeFactory implements iPhysicsFactory {
         shape.m_centroid.y = 0;
         FixtureDef fixture = new FixtureDef();
         fixture.shape = shape;
-        fixture.filter.categoryBits = (1 << BodyCategories.eTiles.ordinal());
-        fixture.filter.maskBits = (1 << BodyCategories.eTiles.ordinal()) | (1 << BodyCategories.ePlayer.ordinal());
+        fixture.filter.categoryBits = (1 << BodyCategories.eEdibleTiles.ordinal());
+        fixture.filter.maskBits = (1 << BodyCategories.eEdibleTiles.ordinal())|
+                (1 << BodyCategories.eNonEdibleTiles.ordinal())|
+                (1 << BodyCategories.ePlayer.ordinal());
         BodyDef def = new BodyDef();
         //def.userData = _entity;
         def.position = new Vec2((position.x),(position.y));

@@ -11,7 +11,6 @@ import Graphics.BodyCamera;
 import Graphics.iCamera;
 import Level.sLevel;
 import java.util.HashMap;
-import java.util.Hashtable;
 import org.jbox2d.callbacks.RayCastCallback;
 import org.jbox2d.common.*;
 import org.jbox2d.dynamics.*;
@@ -28,7 +27,8 @@ public class sPhysics {
     public enum BodyCategories
     {
         ePlayer,
-        eTiles,
+        eEdibleTiles,
+        eNonEdibleTiles,
         eBodyCategoriesMax
     }
     private sPhysics()
@@ -42,9 +42,11 @@ public class sPhysics {
         factories.put("TileFactory", new TileFactory());
         factories.put("SlopeFactory", new SlopeFactory());
         factories.put("CharacterFactory", new CharacterFactory());
+        factories.put("NonEdibleTileFactory", new NonEdibleTileFactory());
+        factories.put("SpatBlockFactory", new SpatBlockBodyFactory());
     }
     
-    public static Body useFactory(String _factory, Hashtable _parameters)
+    public static Body useFactory(String _factory, HashMap _parameters)
     {
         return factories.get(_factory).useFactory(_parameters, mWorld);
     }
@@ -59,7 +61,7 @@ public class sPhysics {
         }
         public float reportFixture(Fixture _fixture, Vec2 _p1, Vec2 _p2, float _fraction)
         {
-            if (_fixture.m_filter.categoryBits == (1 << BodyCategories.eTiles.ordinal()))
+            if (_fixture.m_filter.categoryBits == (1 << BodyCategories.eEdibleTiles.ordinal()))
             {
                 RayCastInput input = new RayCastInput();
                 input.p1.x = start.x;

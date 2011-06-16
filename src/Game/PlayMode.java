@@ -18,6 +18,7 @@ public class PlayMode implements iGameMode {
     }
     public void update(float _time)
     {
+        sLevel.update();
         sPhysics.update(_time);
     }
     public void render()
