@@ -17,7 +17,7 @@ public class MapClickEvent implements iEvent {
     boolean mLeftButton;
     public MapClickEvent(Vec2 _position, boolean _leftButton) /// Pass in the screen space position
     {
-        mPosition = _position;//sPhysics.translateToPhysics(_position);
+        mPosition = _position;
         mLeftButton = _leftButton;
     }
     public String getName()

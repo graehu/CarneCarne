@@ -29,6 +29,7 @@ public class sPhysics {
         ePlayer,
         eEdibleTiles,
         eNonEdibleTiles,
+        eSpatTiles,
         eBodyCategoriesMax
     }
     private sPhysics()

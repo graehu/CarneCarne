@@ -37,18 +37,14 @@ class CharacterFactory implements iPhysicsFactory {
         circleFixture.density = 4;
         circleFixture.friction = 500;
         circleFixture.filter.categoryBits = (1 << BodyCategories.ePlayer.ordinal());
-        circleFixture.filter.maskBits = (1 << BodyCategories.eEdibleTiles.ordinal())|
-                (1 << BodyCategories.eNonEdibleTiles.ordinal())|
-                (1 << BodyCategories.ePlayer.ordinal());
+        circleFixture.filter.maskBits = Integer.MAX_VALUE;
         circleFixture.shape = wheelShape;
         PolygonShape axelShape = new PolygonShape();
         FixtureDef axelFixture = new FixtureDef();
         axelShape.setAsBox(0.1f, 0.1f);
         axelFixture.density = 0.001f;
         axelFixture.filter.categoryBits = (1 << BodyCategories.ePlayer.ordinal());
-        axelFixture.filter.maskBits = (1 << BodyCategories.eEdibleTiles.ordinal())|
-                (1 << BodyCategories.eNonEdibleTiles.ordinal())|
-                (1 << BodyCategories.ePlayer.ordinal());
+        axelFixture.filter.maskBits = Integer.MAX_VALUE;
         axelFixture.filter.groupIndex = -100;
         axelFixture.shape = axelShape;
         BodyDef def = new BodyDef();

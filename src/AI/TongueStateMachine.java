@@ -225,8 +225,9 @@ public class TongueStateMachine {
         }
         
     }
-    public void rightClick()
+    public void rightClick(Vec2 _position)
     {
+        position = _position;
         switch (mState)
         {
             case eStart:

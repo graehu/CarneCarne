@@ -15,7 +15,7 @@ import org.jbox2d.common.Vec2;
 abstract public class Entity {
     
     public Body mBody;
-    protected iSkin mSkin;
+    public iSkin mSkin;
     
     public Entity(iSkin _skin)
     {

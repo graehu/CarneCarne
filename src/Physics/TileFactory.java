@@ -27,9 +27,7 @@ public class TileFactory implements iPhysicsFactory {
         FixtureDef fixture = new FixtureDef();
         fixture.shape = shape;
         fixture.filter.categoryBits = (1 << BodyCategories.eEdibleTiles.ordinal());
-        fixture.filter.maskBits = (1 << BodyCategories.eEdibleTiles.ordinal())|
-                (1 << BodyCategories.eNonEdibleTiles.ordinal())|
-                (1 << BodyCategories.ePlayer.ordinal());
+        fixture.filter.maskBits = Integer.MAX_VALUE;
         BodyDef def = new BodyDef();
         //def.userData = _entity;
         def.position = new Vec2((position.x),(position.y));

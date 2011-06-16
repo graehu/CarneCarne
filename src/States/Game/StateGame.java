@@ -7,6 +7,7 @@ package States.Game;
 import Entities.sEntityFactory;
 import Events.KeyDownEvent;
 import Events.MapClickEvent;
+import Events.MouseMoveEvent;
 import Events.sEvents;
 import GUI.BasicTWLGameState;
 import GUI.RootPane;
@@ -14,16 +15,13 @@ import Graphics.sSkinFactory;
 import Level.sLevel;
 import Physics.sPhysics;
 import de.matthiasmann.twl.Button;
-import de.matthiasmann.twl.GUI;
 import java.util.HashMap;
 import org.jbox2d.common.Vec2;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
-import org.newdawn.slick.InputListener;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
-import org.newdawn.slick.util.InputAdapter;
 
 /**
  *
@@ -54,6 +52,11 @@ public class StateGame extends BasicTWLGameState {
             sEvents.triggerEvent(new MapClickEvent(sPhysics.translateToPhysics(position),false));
         }
     }
+    public void mouseMoved(int oldx, int oldy, int newx, int newy)
+    {
+        sEvents.triggerEvent(new MouseMoveEvent(new Vec2(newx,newy)));
+    }
+    
     
     public void update(GameContainer _gc, StateBasedGame _sbg, int _i) throws SlickException 
     {       

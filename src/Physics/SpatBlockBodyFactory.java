@@ -33,10 +33,9 @@ class SpatBlockBodyFactory implements iPhysicsFactory {
         shape.m_radius = 0.5f;
         FixtureDef fixture = new FixtureDef();
         fixture.shape = shape;
-        fixture.filter.categoryBits = (1 << BodyCategories.ePlayer.ordinal());
-        fixture.filter.maskBits = (1 << BodyCategories.eEdibleTiles.ordinal())|
-                (1 << BodyCategories.eNonEdibleTiles.ordinal())|
-                (1 << BodyCategories.ePlayer.ordinal());
+        fixture.filter.categoryBits = (1 << BodyCategories.eSpatTiles.ordinal());
+        fixture.filter.maskBits = Integer.MAX_VALUE ^ 
+                ((1 << BodyCategories.ePlayer.ordinal()));
         BodyDef def = new BodyDef();
         def.type = BodyType.DYNAMIC;
         def.userData = entity;

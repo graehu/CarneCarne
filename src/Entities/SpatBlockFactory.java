@@ -13,11 +13,12 @@ import org.jbox2d.dynamics.Body;
 
 /**
  *
- * @author A203946
+ * @author alasdair
  */
 class SpatBlockFactory implements iEntityFactory{
 
-    public SpatBlockFactory() {
+    public SpatBlockFactory()
+    {
     }
 
     public Entity useFactory(HashMap _parameters)
