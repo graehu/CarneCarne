@@ -13,6 +13,6 @@ import org.jbox2d.common.Vec2;
 public interface iCamera {
     
     public Vec2 translateToWorld(Vec2 _physicsSpace);
-    public Vec2 translateToPhysics(Vec2 _physicsSpace);
+    public Vec2 translateToPhysics(Vec2 _worldSpace);
     public Vec2 getPixelTranslation();
 }

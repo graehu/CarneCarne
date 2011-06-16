@@ -9,7 +9,7 @@ import Entities.Entity;
 import Events.TileDestroyedEvent;
 import Events.sEvents;
 import Graphics.BodyCamera;
-import Graphics.SlickDebugDraw;
+import Graphics.FreeCamera;
 import Graphics.iCamera;
 import Level.sLevel;
 import org.jbox2d.callbacks.RayCastCallback;
@@ -92,6 +92,7 @@ public class sPhysics {
     public static void createBodyCamera(Body _body)
     {
         mCamera = new BodyCamera(_body);
+        //mCamera = new FreeCamera();
     }
     public static Vec2 translateToWorld(Vec2 _position)
     {
