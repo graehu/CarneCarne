@@ -4,7 +4,6 @@
  */
 package Physics;
 
-import Entities.AIEntity;
 import Entities.Entity;
 import Events.TileDestroyedEvent;
 import Events.sEvents;
@@ -14,12 +13,8 @@ import Level.sLevel;
 import java.util.HashMap;
 import java.util.Hashtable;
 import org.jbox2d.callbacks.RayCastCallback;
-import org.jbox2d.collision.shapes.CircleShape;
-import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.*;
 import org.jbox2d.dynamics.*;
-import org.jbox2d.dynamics.joints.RevoluteJoint;
-import org.jbox2d.dynamics.joints.RevoluteJointDef;
 import org.jbox2d.structs.collision.RayCastInput;
 import org.jbox2d.structs.collision.RayCastOutput;
 /**
@@ -102,6 +97,7 @@ public class sPhysics {
     public static void createBodyCamera(Body _body)
     {
         mCamera = new BodyCamera(_body);
+        //mCamera = new FreeCamera();
     }
     public static Vec2 translateToWorld(Vec2 _position)
     {

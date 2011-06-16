@@ -34,9 +34,9 @@ public class PlayerFactory implements iEntityFactory {
             used = true;
             HashMap animDef = new HashMap();
             animDef.put("ref", "ss_1");
-            animDef.put("anims", Arrays.asList("spy", "body"));
+            animDef.put("anims", Arrays.asList("body", "spy"));
             iSkin skin = sSkinFactory.create("character", animDef);
-            skin.startAnim("body");
+            skin.startAnim("spy");
             AIEntity entity = new AIEntity(skin);
             Hashtable parameters = new Hashtable();
             parameters.put("position", position);
