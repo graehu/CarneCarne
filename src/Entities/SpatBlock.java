@@ -5,10 +5,12 @@
 package Entities;
 
 import Graphics.iSkin;
+import Physics.sPhysics;
+import org.jbox2d.common.Vec2;
 
 /**
  *
- * @author A203946
+ * @author alasdair
  */
 class SpatBlock extends Entity {
     
@@ -19,5 +21,11 @@ class SpatBlock extends Entity {
     public void update()
     {
         
+    }
+    public void render()
+    {
+        Vec2 pixelPosition = sPhysics.translateToWorld(mBody.getPosition());
+        mSkin.render(pixelPosition.x,pixelPosition.y);
+        mSkin.setRotation("body", mBody.getAngle()*(180/3.14f));
     }
 }

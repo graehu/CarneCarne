@@ -24,7 +24,7 @@ class SpatBlockFactory implements iEntityFactory{
     public Entity useFactory(HashMap _parameters)
     {
         HashMap skinDef = new HashMap();
-        skinDef.put("ref", "pooMaterial");
+        skinDef.put("ref", "ChewedBlock");
         iSkin skin = sSkinFactory.create("static", skinDef);
         
         SpatBlock entity = new SpatBlock(skin);

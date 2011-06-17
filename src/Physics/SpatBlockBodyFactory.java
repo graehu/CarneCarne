@@ -39,6 +39,7 @@ class SpatBlockBodyFactory implements iPhysicsFactory {
         BodyDef def = new BodyDef();
         def.type = BodyType.DYNAMIC;
         def.userData = entity;
+        def.fixedRotation =false;
         def.position = new Vec2((position.x),(position.y));
         def.linearVelocity = velocity;
         
