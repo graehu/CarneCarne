@@ -72,8 +72,10 @@ public class TongueStateMachine {
                 angle = (float) ((2*Math.PI) - angle);
         mAIController.mEntity.mSkin.setRotation("tng", 180 + (angle*(180.0f/(float)Math.PI)));
     }
+    
     public void tick(AIEntity _entity)
     {
+        
         switch (mState)
         {
             case eStart:

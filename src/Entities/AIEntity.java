@@ -5,7 +5,6 @@
 package Entities;
 
 import AI.iAIController;
-import Graphics.CharacterSkin;
 import Graphics.iSkin;
 import Physics.sPhysics;
 import org.jbox2d.common.Vec2;
@@ -17,7 +16,6 @@ import org.jbox2d.dynamics.joints.RevoluteJoint;
  * @author alasdair
  */
 public class AIEntity extends Entity {
-    
     iAIController mController;
     boolean canJump;
     int turnThisFrame;
@@ -37,6 +35,7 @@ public class AIEntity extends Entity {
         {
             jumpTimer--;
         }
+        
         ContactEdge edge = mBody.m_contactList;
         canJump = false;
         while (edge != null)
