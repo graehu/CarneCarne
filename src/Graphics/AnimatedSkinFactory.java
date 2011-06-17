@@ -17,7 +17,7 @@ import org.newdawn.slick.SlickException;
 class AnimatedSkinFactory implements iSkinFactory {
     public iSkin useFactory(HashMap _params) throws SlickException
     {
-        return new AnimatedSkin(_params.containsKey("ref") ? "data/" + (String)_params.get("ref") + ".def" : null,
+        return new AnimatedSkin(_params.containsKey("ref") ? "assets/" + (String)_params.get("ref") + ".def" : null,
                                 _params.containsKey("duration") ? (Integer)_params.get("duration") : 41); //~24fps
     }
 }

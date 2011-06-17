@@ -3,6 +3,7 @@ package main;
 
 import GUI.BasicTWLGameState;
 import GUI.TWLStateBasedGame;
+import java.io.InputStream;
 import java.net.URL;
 import org.newdawn.slick.*;
 import States.Game.StateGame;
@@ -10,6 +11,7 @@ import States.Splash.StateSplash;
 import States.Title.StateTitle;
 import org.newdawn.slick.state.transition.BlobbyTransition;
 import org.newdawn.slick.util.ResourceLoader;
+import org.newdawn.slick.util.ResourceLocation;
 
 public class Main extends TWLStateBasedGame
 {
@@ -40,7 +42,7 @@ public class Main extends TWLStateBasedGame
     @Override
     protected URL getThemeURL() {
         //boolean does = ResourceLoader.resourceExists("data/ui/simple.xml");
-        URL magic = ResourceLoader.getResource("data/ui/simple.xml");
+        URL magic = ResourceLoader.getResource("ui/simple.xml");
         return magic;
     }
 

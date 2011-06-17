@@ -46,7 +46,7 @@ public class sLevel {
     }
     public static void init() throws SlickException
     {
-        mTiledMap = new TiledMap("data/Test_map3ready.tmx");
+        mTiledMap = new TiledMap("assets/Test_map3ready.tmx");
         mLevelEditor = new LevelEditor(mTiledMap);
     }
     public static void destroyTile(int _x, int _y)
