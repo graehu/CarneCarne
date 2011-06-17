@@ -8,7 +8,7 @@ import AI.PlayerInputController;
 import Events.PlayerCreatedEvent;
 import Events.sEvents;
 import Graphics.iSkin;
-import Physics.sPhysics;
+import World.sWorld;
 import org.jbox2d.common.Vec2;
 import Graphics.sSkinFactory;
 import java.util.Arrays;
@@ -45,10 +45,10 @@ public class PlayerFactory implements iEntityFactory {
             HashMap parameters = new HashMap();
             parameters.put("position", position);
             parameters.put("aIEntity", entity);
-            entity.mBody = sPhysics.useFactory("CharacterFactory",parameters);
+            entity.mBody = sWorld.useFactory("CharacterFactory",parameters);
             PlayerInputController controller = new PlayerInputController(entity);
             entity.mController = controller;
-            sPhysics.createBodyCamera(entity.mBody);
+            sWorld.createBodyCamera(entity.mBody);
             sEvents.triggerEvent(new PlayerCreatedEvent(entity));
             return entity;
         }

@@ -10,10 +10,11 @@ import Entities.sEntityFactory;
 import Events.KeyDownEvent;
 import Events.KeyUpEvent;
 import Events.MapClickEvent;
+import Events.MapClickReleaseEvent;
 import Events.iEvent;
 import Events.iEventListener;
 import Events.sEvents;
-import Physics.sPhysics;
+import World.sWorld;
 import java.util.HashMap;
 import org.jbox2d.common.Vec2;
 
@@ -38,6 +39,7 @@ public class PlayerInputController implements iAIController, iEventListener{
         sEvents.subscribeToEvent("KeyDownEvent"+'s', this);
         sEvents.subscribeToEvent("KeyDownEvent"+'d', this);
         sEvents.subscribeToEvent("MapClickEvent", this);
+        sEvents.subscribeToEvent("MapClickReleaseEvent", this);
         sEvents.subscribeToEvent("MouseMoveEvent", this);
         mTongueState = new TongueStateMachine(this);
     }
@@ -49,7 +51,11 @@ public class PlayerInputController implements iAIController, iEventListener{
     
     public boolean grabBlock(Vec2 _position)
     {
-        return sPhysics.rayCastTiles(mEntity.mBody.getPosition(),_position);
+        return sWorld.eatTiles(mEntity.mBody.getPosition(),_position);
+    }
+    public boolean hammer(Vec2 _position)
+    {
+        return sWorld.smashTiles(mEntity.mBody.getPosition(),_position);
     }
     public void spitBlock(Vec2 _position)
     {
@@ -169,6 +175,19 @@ public class PlayerInputController implements iAIController, iEventListener{
                     mFaceDirAnim = "n";
             }
             mEntity.mSkin.startAnim(mFaceDirAnim, false, 0.0f);
+        }
+        else if (_event.getType().equals("MapClickReleaseEvent"))
+        {
+            MapClickReleaseEvent event = (MapClickReleaseEvent)_event;
+            mCursorPos = event.getPosition();
+            if (event.leftbutton())
+            {
+                mTongueState.leftRelease(event.getPosition());
+            }
+            else
+            {
+                mTongueState.rightRelease(event.getPosition());
+            }            
         }
         else
         {

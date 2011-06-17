@@ -58,7 +58,8 @@ public class Main extends TWLStateBasedGame
         mGameState = new StateGame();
         addState(mGameState); 
         //FIXME: should start on splash
-        enterState(2, null, new BlobbyTransition(new Color(0,0,0)));
+        //enterState(2, null, new BlobbyTransition(new Color(0,0,0)));
+        enterState(2, null, null);
     }
 
 }

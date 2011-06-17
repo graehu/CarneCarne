@@ -4,7 +4,7 @@
  */
 package States.Game;
 
-import Physics.sPhysics;
+import World.sWorld;
 import Level.sLevel;
 /**
  *
@@ -19,11 +19,11 @@ public class PlayMode implements iGameMode {
     public void update(float _time)
     {
         sLevel.update();
-        sPhysics.update(_time);
+        sWorld.update(_time);
     }
     public void render()
     {
         sLevel.render();
-        sPhysics.render();
+        sWorld.render();
     }
 }

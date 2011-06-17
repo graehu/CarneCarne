@@ -4,7 +4,7 @@
  */
 package Events;
 
-import Physics.sPhysics;
+import World.sWorld;
 import org.jbox2d.common.Vec2;
 
 /**
@@ -35,6 +35,6 @@ public class MouseMoveEvent implements iEvent {
     
     public Vec2 getPhysicsPosition()
     {
-        return sPhysics.translateToPhysics(position);
+        return sWorld.translateToPhysics(position);
     }
 }

@@ -6,7 +6,7 @@ package Entities;
 
 import AI.iAIController;
 import Graphics.iSkin;
-import Physics.sPhysics;
+import World.sWorld;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.contacts.ContactEdge;
@@ -41,7 +41,7 @@ public class AIEntity extends Entity {
         while (edge != null)
         {
             Body body = edge.other;
-            if (body.m_fixtureList.m_filter.categoryBits == (1 << sPhysics.BodyCategories.eEdibleTiles.ordinal()))
+            if (body.m_fixtureList.m_filter.categoryBits == (1 << sWorld.BodyCategories.eEdibleTiles.ordinal()))
             {
                 if (body.getPosition().y > mBody.getPosition().y)
                 {
@@ -82,8 +82,8 @@ public class AIEntity extends Entity {
     }
     public void render()
     {
-        Vec2 pixelPosition = sPhysics.translateToWorld(mBody.getPosition());
+        Vec2 pixelPosition = sWorld.translateToWorld(mBody.getPosition());
         mSkin.render(pixelPosition.x,pixelPosition.y);
-        mSkin.setRotation("body", mBody.getAngle()*(180/3.14f));
+        mSkin.setRotation("body", mBody.getAngle()*(180/(float)Math.PI));
     }
 }
