@@ -113,106 +113,56 @@ public class PlayerInputController implements iAIController, iEventListener{
         else if (_event.getType().equals("MouseMoveEvent"))
         {
             MouseMoveEvent event = (MouseMoveEvent)_event;
-            Vec2 direction = event.getPhysicsPosition().sub(mEntity.mBody.getPosition());
+            Vec2 direction = event.getPhysicsPosition().sub(mEntity.mBody.getPosition().add(new Vec2(0.5f,0.5f)));
             direction.normalize();
             float angle = (float)Math.acos(Vec2.dot(new Vec2(0,-1), direction));
-            angle *= 8;
-            angle /= Math.PI;
-            angle -= 0.5f;
-            int sector = (int) (angle);
+            
+            float halfSeg = (float) (Math.PI/16.0f);
+            //if statement splits left from right for efficiency
+            //could further split into quadrents
+            //each segment is the sum of half segments either side of each compass direction
             mEntity.mSkin.stopAnim(mouthAnimation);
-            if (direction.x > 0.0f)
+            if(direction.x >= 0)
             {
-                switch (sector)
-                {
-                    case 0:
-                    {
-                        mouthAnimation = "nne";
-                        break;
-                    }
-                    case 1:
-                    {
-                        mouthAnimation = "ne";
-                        break;
-                    }
-                    case 2:
-                    {
-                        mouthAnimation = "nee";
-                        break;
-                    }
-                    case 3:
-                    {
-                        mouthAnimation = "e";
-                        break;
-                    }
-                    case 4:
-                    {
-                        mouthAnimation = "see";
-                        break;
-                    }
-                    case 5:
-                    {
-                        mouthAnimation = "se";
-                        break;
-                    }
-                    case 6:
-                    {
-                        mouthAnimation = "sse";
-                        break;
-                    }
-                    case 7:
-                    {
-                        mouthAnimation = "s";
-                        break;
-                    }
-                }
+                if(angle < halfSeg)
+                    mouthAnimation = "n";
+                else if(angle >= halfSeg && angle < 3*halfSeg)
+                    mouthAnimation = "nne";
+                else if(angle >= 3*halfSeg && angle < 5*halfSeg)
+                    mouthAnimation = "ne";
+                else if(angle >= 5*halfSeg && angle < 7*halfSeg)
+                    mouthAnimation = "nee";
+                else if(angle >= 7*halfSeg && angle < 9*halfSeg)
+                    mouthAnimation = "e";
+                else if(angle >= 9*halfSeg && angle < 11*halfSeg)
+                    mouthAnimation = "see";
+                else if(angle >= 11*halfSeg && angle < 13*halfSeg)
+                    mouthAnimation = "se";
+                else if(angle >= 13*halfSeg && angle < 15*halfSeg)
+                    mouthAnimation = "sse";
+                else if(angle >= 15*halfSeg && angle < 16*halfSeg)
+                    mouthAnimation = "s";
             }
-            else
+            else //angle < 0
             {
-                switch (sector)
-                {
-                    case 0:
-                    {
-                        mouthAnimation = "n";
-                        break;
-                    }
-                    case 1:
-                    {
-                        mouthAnimation = "nnw";
-                        break;
-                    }
-                    case 2:
-                    {
-                        mouthAnimation = "nw";
-                        break;
-                    }
-                    case 3:
-                    {
-                        mouthAnimation = "nww";
-                        break;
-                    }
-                    case 4:
-                    {
-                        mouthAnimation = "w";
-                        break;
-                    }
-                    case 5:
-                    {
-                        mouthAnimation = "sww";
-                        break;
-                    }
-                    case 6:
-                    {
-                        mouthAnimation = "sw";
-                        break;
-                    }
-                    case 7:
-                    {
-                        mouthAnimation = "ssw";
-                        break;
-                    }
-                }
-                
+                if(angle < halfSeg)
+                    mouthAnimation = "n";
+                else if(angle >= halfSeg && angle < 3*halfSeg)
+                    mouthAnimation = "nnw";
+                else if(angle >= 3*halfSeg && angle < 5*halfSeg)
+                    mouthAnimation = "nw";
+                else if(angle >= 5*halfSeg && angle < 7*halfSeg)
+                    mouthAnimation = "nww";
+                else if(angle >= 7*halfSeg && angle < 9*halfSeg)
+                    mouthAnimation = "w";
+                else if(angle >= 9*halfSeg && angle < 11*halfSeg)
+                    mouthAnimation = "sww";
+                else if(angle >= 11*halfSeg && angle < 13*halfSeg)
+                    mouthAnimation = "sw";
+                else if(angle >= 13*halfSeg && angle < 15*halfSeg)
+                    mouthAnimation = "ssw";
+                else if(angle >= 15*halfSeg && angle < 16*halfSeg)
+                    mouthAnimation = "s";
             }
             mEntity.mSkin.startAnim(mouthAnimation, false, 0.0f);
         }
