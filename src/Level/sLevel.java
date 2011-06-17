@@ -12,11 +12,13 @@ import java.util.Stack;
 import org.jbox2d.common.Vec2;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.tiled.TiledMap;
+import org.newdawn.slick.util.pathfinding.AStarPathFinder;
 /**
  *
  * @author alasdair
  */
 public class sLevel {
+    
     private static TiledMap mTiledMap;
     private static int layerIndex;
     private static int lowestSlope;
@@ -57,6 +59,32 @@ public class sLevel {
             throw new UnsupportedOperationException("Not supported yet.");
         }
     }
+    
+    enum Pathable
+    {
+        eNotPassable,
+        eAir,
+        eLeftSlope,
+        eRightSlope,
+        ePathable
+    };
+    
+    public int getTileSizeInMetres()
+    {
+        return 1; //just incase we want to make tiles smaller than a meter.
+    }
+    
+    public static Pathable getPathable(int _xTile, int _yTile)
+    {
+        int id = mTiledMap.getTileId(_xTile, _yTile, layerIndex);
+        if (id == 0)
+        {
+            return Pathable.eAir;
+        }
+        else return Pathable.eNotPassable;
+    }
+
+    
     private sLevel()
     {
         

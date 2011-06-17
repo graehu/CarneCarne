@@ -37,6 +37,7 @@ public class AIEntity extends Entity {
         {
             jumpTimer--;
         }
+        
         ContactEdge edge = mBody.m_contactList;
         canJump = false;
         while (edge != null)
