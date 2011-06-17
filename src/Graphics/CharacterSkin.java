@@ -5,13 +5,10 @@ package Graphics;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
-import java.util.Set;
-import java.util.SortedMap;
-import java.util.SortedSet;
+import org.jbox2d.common.Vec2;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.PackedSpriteSheet;
 import org.newdawn.slick.SlickException;
@@ -26,6 +23,7 @@ public class CharacterSkin implements iSkin
     List<iSkin> mSkins = new ArrayList<iSkin>();
     HashMap<String, Integer> mSkinNames = new HashMap<String, Integer>();
     Queue<Integer> mCurrentSkins = new PriorityQueue<Integer>();
+    List<Vec2> mOffsets = new ArrayList<Vec2>();
     CharacterSkin(String _packedSpriteSheet, List<String> _spriteSheets, int _frameDuration) throws SlickException
     {
         //load packed sprite sheet
@@ -47,6 +45,8 @@ public class CharacterSkin implements iSkin
                 mSkins.add(new AnimatedSkin(temp, _frameDuration));
                 mSkinNames.put(string,i);
             }
+            //initialise offset
+            mOffsets.add(new Vec2(0,0));
             i++;
         }
         //if no delcared animations, throw exception
@@ -63,13 +63,9 @@ public class CharacterSkin implements iSkin
     public void render(float _x, float _y)
     {
         for(Integer i : mCurrentSkins)
-            mSkins.get(i).render(_x, _y);
+            mSkins.get(i).render(_x + mOffsets.get(i).x, _y + mOffsets.get(i).y);
     }
-    public void render(float _x, float _y, float _w, float _h)
-    {
-        for(Integer i : mCurrentSkins)
-            mSkins.get(i).render(_x, _y, _w, _h);
-    }
+    
     public void setRotation(float _radians)
     {
         for(iSkin skin : mSkins)
@@ -78,8 +74,10 @@ public class CharacterSkin implements iSkin
         }
     }
 
-    public final float startAnim(String _animation, boolean _isLooping, float _speed) {
+    public final float startAnim(String _animation, boolean _isLooping, float _speed) {        
         int ref = mSkinNames.get(_animation);
+        if(mCurrentSkins.contains(ref))//return if already playing
+            return 0;
         iSkin skin = mSkins.get(ref);
         skin.setIsLooping(_isLooping);
         skin.setSpeed(_speed); 
@@ -105,6 +103,14 @@ public class CharacterSkin implements iSkin
             skin.restart();
         }
     }
+    
+    public void setDimentions(String _animation, float _w, float _h) {
+        mSkins.get(mSkinNames.get(_animation)).setDimentions(_w, _h);
+    }
+    
+    public void setOffset(String _animation, Vec2 _offset) {
+        mOffsets.set(mSkinNames.get(_animation), _offset);
+    }
 
     public void setIsLooping(boolean _isLooping) {
         throw new UnsupportedOperationException("Not supported yet.");
@@ -117,4 +123,11 @@ public class CharacterSkin implements iSkin
     public float getDuration() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
+
+    public void setDimentions(float _w, float _h) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    
+
 }

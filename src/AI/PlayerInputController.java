@@ -23,13 +23,16 @@ import org.jbox2d.common.Vec2;
  */
 public class PlayerInputController implements iAIController, iEventListener{
 
-    private AIEntity mEntity;
+    //protected to allow TongueStateMachine access
+    protected AIEntity mEntity; 
     private TongueStateMachine mTongueState;
-    private String mouthAnimation;
+    private String mFaceDirAnim;
+    private float mTongueAngle = 0;
+    private Vec2 mCursorPos = new Vec2(0,0);
     public PlayerInputController(AIEntity _entity)
     {
         mEntity = _entity;
-        mouthAnimation = "e";
+        mFaceDirAnim = "e";
         sEvents.subscribeToEvent("KeyDownEvent"+'w', this);
         sEvents.subscribeToEvent("KeyDownEvent"+'a', this);
         sEvents.subscribeToEvent("KeyDownEvent"+'s', this);
@@ -41,7 +44,7 @@ public class PlayerInputController implements iAIController, iEventListener{
     
     public void update()
     {
-        mTongueState.tick();
+        mTongueState.tick(mEntity);
     }
     
     public boolean grabBlock(Vec2 _position)
@@ -113,62 +116,64 @@ public class PlayerInputController implements iAIController, iEventListener{
         else if (_event.getType().equals("MouseMoveEvent"))
         {
             MouseMoveEvent event = (MouseMoveEvent)_event;
-            Vec2 direction = event.getPhysicsPosition().sub(mEntity.mBody.getPosition().add(new Vec2(0.5f,0.5f)));
+            Vec2 direction = event.getPhysicsPosition().sub(mEntity.mBody.getPosition().add(new Vec2(0.5f,0.5f))); //offset by half the width and height
             direction.normalize();
-            float angle = (float)Math.acos(Vec2.dot(new Vec2(0,-1), direction));
-            
+            mTongueAngle = (float)Math.acos(Vec2.dot(new Vec2(0,-1), direction));
+            if(direction.x < 0)
+                mTongueAngle = (float) ((2*Math.PI) - mTongueAngle);
             float halfSeg = (float) (Math.PI/16.0f);
             //if statement splits left from right for efficiency
             //could further split into quadrents
             //each segment is the sum of half segments either side of each compass direction
-            mEntity.mSkin.stopAnim(mouthAnimation);
-            if(direction.x >= 0)
+            mEntity.mSkin.stopAnim(mFaceDirAnim);
+            if(mTongueAngle < Math.PI)
             {
-                if(angle < halfSeg)
-                    mouthAnimation = "n";
-                else if(angle >= halfSeg && angle < 3*halfSeg)
-                    mouthAnimation = "nne";
-                else if(angle >= 3*halfSeg && angle < 5*halfSeg)
-                    mouthAnimation = "ne";
-                else if(angle >= 5*halfSeg && angle < 7*halfSeg)
-                    mouthAnimation = "nee";
-                else if(angle >= 7*halfSeg && angle < 9*halfSeg)
-                    mouthAnimation = "e";
-                else if(angle >= 9*halfSeg && angle < 11*halfSeg)
-                    mouthAnimation = "see";
-                else if(angle >= 11*halfSeg && angle < 13*halfSeg)
-                    mouthAnimation = "se";
-                else if(angle >= 13*halfSeg && angle < 15*halfSeg)
-                    mouthAnimation = "sse";
-                else if(angle >= 15*halfSeg && angle < 16*halfSeg)
-                    mouthAnimation = "s";
+                if(mTongueAngle < halfSeg)
+                    mFaceDirAnim = "n";
+                else if(mTongueAngle >= halfSeg && mTongueAngle < 3*halfSeg)
+                    mFaceDirAnim = "nne";
+                else if(mTongueAngle >= 3*halfSeg && mTongueAngle < 5*halfSeg)
+                    mFaceDirAnim = "ne";
+                else if(mTongueAngle >= 5*halfSeg && mTongueAngle < 7*halfSeg)
+                    mFaceDirAnim = "nee";
+                else if(mTongueAngle >= 7*halfSeg && mTongueAngle < 9*halfSeg)
+                    mFaceDirAnim = "e";
+                else if(mTongueAngle >= 9*halfSeg && mTongueAngle < 11*halfSeg)
+                    mFaceDirAnim = "see";
+                else if(mTongueAngle >= 11*halfSeg && mTongueAngle < 13*halfSeg)
+                    mFaceDirAnim = "se";
+                else if(mTongueAngle >= 13*halfSeg && mTongueAngle < 15*halfSeg)
+                    mFaceDirAnim = "sse";
+                else if(mTongueAngle >= 15*halfSeg && mTongueAngle < 16*halfSeg)
+                    mFaceDirAnim = "s";
             }
             else //angle < 0
             {
-                if(angle < halfSeg)
-                    mouthAnimation = "n";
-                else if(angle >= halfSeg && angle < 3*halfSeg)
-                    mouthAnimation = "nnw";
-                else if(angle >= 3*halfSeg && angle < 5*halfSeg)
-                    mouthAnimation = "nw";
-                else if(angle >= 5*halfSeg && angle < 7*halfSeg)
-                    mouthAnimation = "nww";
-                else if(angle >= 7*halfSeg && angle < 9*halfSeg)
-                    mouthAnimation = "w";
-                else if(angle >= 9*halfSeg && angle < 11*halfSeg)
-                    mouthAnimation = "sww";
-                else if(angle >= 11*halfSeg && angle < 13*halfSeg)
-                    mouthAnimation = "sw";
-                else if(angle >= 13*halfSeg && angle < 15*halfSeg)
-                    mouthAnimation = "ssw";
-                else if(angle >= 15*halfSeg && angle < 16*halfSeg)
-                    mouthAnimation = "s";
+                if(mTongueAngle < 17*halfSeg)
+                    mFaceDirAnim = "s";
+                else if(mTongueAngle >= 17*halfSeg && mTongueAngle < 19*halfSeg)
+                    mFaceDirAnim = "ssw";
+                else if(mTongueAngle >= 19*halfSeg && mTongueAngle < 21*halfSeg)
+                    mFaceDirAnim = "sw";
+                else if(mTongueAngle >= 21*halfSeg && mTongueAngle < 23*halfSeg)
+                    mFaceDirAnim = "sww";
+                else if(mTongueAngle >= 23*halfSeg && mTongueAngle < 25*halfSeg)
+                    mFaceDirAnim = "w";
+                else if(mTongueAngle >= 25*halfSeg && mTongueAngle < 27*halfSeg)
+                    mFaceDirAnim = "nww";
+                else if(mTongueAngle >= 27*halfSeg && mTongueAngle < 29*halfSeg)
+                    mFaceDirAnim = "nw";
+                else if(mTongueAngle >= 29*halfSeg && mTongueAngle < 31*halfSeg)
+                    mFaceDirAnim = "nnw";
+                else if(mTongueAngle >= 31*halfSeg && mTongueAngle < 32*halfSeg)
+                    mFaceDirAnim = "n";
             }
-            mEntity.mSkin.startAnim(mouthAnimation, false, 0.0f);
+            mEntity.mSkin.startAnim(mFaceDirAnim, false, 0.0f);
         }
         else
         {
             MapClickEvent event = (MapClickEvent)_event;
+            mCursorPos = event.getPosition();
             if (event.leftbutton())
             {
                 mTongueState.leftClick(event.getPosition());

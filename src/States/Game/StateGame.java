@@ -17,6 +17,7 @@ import Physics.sPhysics;
 import de.matthiasmann.twl.Button;
 import java.util.HashMap;
 import org.jbox2d.common.Vec2;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
@@ -32,6 +33,10 @@ public class StateGame extends BasicTWLGameState {
     private iGameMode mGameMode; 
     private int mTime = 0; //counter for calculating delta time
     private Button btn; //for testing
+    
+    public int getID() {
+        return 2;
+    }
     
     @Override
     public void keyPressed(int _key, char _c)
@@ -120,10 +125,6 @@ public class StateGame extends BasicTWLGameState {
         btn.adjustSize();   // size the button according to it's preferred size
         btn.setPosition(100, 100);
     } 
-    
-    public int getID() {
-        return 0;
-    }
     
     public void init(GameContainer _gc, StateBasedGame _sbg) throws SlickException {
         _gc.getInput().enableKeyRepeat();

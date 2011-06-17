@@ -18,19 +18,16 @@ public class StateTitle extends BasicTWLGameState{
 
     @Override
     public int getID() {
-        throw new UnsupportedOperationException("Not supported yet.");
+       return 1;
     }
 
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
-        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     public void render(GameContainer gc, StateBasedGame sbg, Graphics grphcs) throws SlickException {
-        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     public void update(GameContainer gc, StateBasedGame sbg, int i) throws SlickException {
-        throw new UnsupportedOperationException("Not supported yet.");
     }
     
 }

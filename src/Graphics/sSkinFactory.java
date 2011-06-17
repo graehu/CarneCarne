@@ -41,10 +41,15 @@ public class sSkinFactory {
     }
     public static iSkin create(String _factoryName, HashMap _params)
     {
+        return create(_factoryName, _params, false);
+    }
+    public static iSkin create(String _factoryName, HashMap _params, boolean _isAutoRendered)
+    {
         try
         {
             iSkinFactory factory = (iSkinFactory)mFactories.get(_factoryName);
-            return factory.useFactory(_params);
+            iSkin skin = factory.useFactory(_params);
+            return skin;
         }
         catch(SlickException e)
         {

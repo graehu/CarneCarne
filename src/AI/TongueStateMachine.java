@@ -4,6 +4,7 @@
  */
 package AI;
 
+import Entities.AIEntity;
 import org.jbox2d.common.Vec2;
 
 /**
@@ -17,7 +18,7 @@ public class TongueStateMachine {
     static int idleAnimationTrigger = 1;
     static int tongueRetractWithBlockTime = 1;
     
-    Vec2 position; /// FIXME unneccessary
+    Vec2 position = new Vec2(0,0); /// FIXME unneccessary
     String mBlockMaterial;
     enum State
     {
@@ -60,7 +61,18 @@ public class TongueStateMachine {
     {
         return 1;
     }
-    public void tick()
+    static Vec2 mUp = new Vec2(0,-1);
+    public void setTongue(Vec2 _endPos)
+    {
+        //calc. direction of tongue
+        Vec2 direction = _endPos.sub(mAIController.mEntity.mBody.getPosition());
+        mAIController.mEntity.mSkin.setDimentions("tng", 0, direction.normalize()*64);
+        float angle = (float)Math.acos(Vec2.dot(direction, mUp));
+        if(direction.x < 0)
+                angle = (float) ((2*Math.PI) - angle);
+        mAIController.mEntity.mSkin.setRotation("tng", 180 + (angle*(180.0f/(float)Math.PI)));
+    }
+    public void tick(AIEntity _entity)
     {
         switch (mState)
         {

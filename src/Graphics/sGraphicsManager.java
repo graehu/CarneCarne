@@ -5,6 +5,7 @@
 
 package Graphics;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -15,7 +16,7 @@ import org.newdawn.slick.SpriteSheet;
  *
  * @author aaron
  */
-class sGraphicsManager {
+public class sGraphicsManager {
     //this class should manage the rendering of all objects 
     //provide a function for skins to add themselves to the render lists which are sorted by spritesheet
     
@@ -27,7 +28,7 @@ class sGraphicsManager {
         
     }
     
-    void init() throws SlickException //should be called by sSkinFactory init
+    public void init() throws SlickException //should be called by sSkinFactory init
     {
         mRenderLists = new HashMap<String, Set<iSkin>>();
         mSpriteSheets = new HashMap<String, SpriteSheet>();
@@ -37,8 +38,11 @@ class sGraphicsManager {
         mSpriteSheets.put("AnimTest", new SpriteSheet("data/sprites.png", 32,32));
         mRenderLists.put("AnimTest", new LinkedHashSet<iSkin>());
     }
+    
     static void batchRender(iSkin _skin)
     {
         
     }
+
+    
 }
