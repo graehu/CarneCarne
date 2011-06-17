@@ -4,25 +4,25 @@
  */
 package Events;
 
-import World.sWorld;
+import Events.iEvent;
 import org.jbox2d.common.Vec2;
 
 /**
  *
- * @author A203946
+ * @author alasdair
  */
-public class MapClickEvent implements iEvent {
-    
+public class MapClickReleaseEvent implements iEvent {
+
     Vec2 mPosition; /// This is the world space position
     boolean mLeftButton;
-    public MapClickEvent(Vec2 _position, boolean _leftButton) /// Pass in the screen space position
+    public MapClickReleaseEvent(Vec2 _position, boolean _leftButton) /// Pass in the screen space position
     {
         mPosition = _position;
         mLeftButton = _leftButton;
     }
     public String getName()
     {
-        return "MapClickEvent";
+        return "MapClickReleaseEvent";
     }
     public String getType()
     {
@@ -36,4 +36,5 @@ public class MapClickEvent implements iEvent {
     {
         return mLeftButton;
     }
+    
 }

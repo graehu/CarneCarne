@@ -5,7 +5,7 @@
 package Level;
 
 import Level.Tile.Direction;
-import Physics.sPhysics;
+import World.sWorld;
 import java.util.HashMap;
 import java.util.Stack;
 import org.jbox2d.common.Vec2;
@@ -25,7 +25,7 @@ abstract public class SlopeTile extends RootTile{
         HashMap parameters = new HashMap();
         parameters.put("position", new Vec2(_xTile,_yTile));
         parameters.put("slopeType",mSlopeType);
-        sPhysics.useFactory("SlopeFactory",parameters);
+        sWorld.useFactory("SlopeFactory",parameters);
     }
     abstract public void getEdges(boolean _boundaries[], int _xTile, int _yTile, TileGrid _tileGrid);
     public void checkEdges(int _xTile, int _yTile, Stack<Integer> _stack, TileGrid _tileGrid)

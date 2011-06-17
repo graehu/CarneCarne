@@ -4,6 +4,7 @@
  */
 package States.Game;
 
+import Events.MapClickReleaseEvent;
 import Entities.sEntityFactory;
 import Events.KeyDownEvent;
 import Events.MapClickEvent;
@@ -13,7 +14,7 @@ import GUI.BasicTWLGameState;
 import GUI.RootPane;
 import Graphics.sSkinFactory;
 import Level.sLevel;
-import Physics.sPhysics;
+import World.sWorld;
 import de.matthiasmann.twl.Button;
 import java.util.HashMap;
 import org.jbox2d.common.Vec2;
@@ -33,6 +34,10 @@ public class StateGame extends BasicTWLGameState {
     private int mTime = 0; //counter for calculating delta time
     private Button btn; //for testing
     
+    public int getID() {
+        return 2;
+    }
+    
     @Override
     public void keyPressed(int _key, char _c)
     {
@@ -44,12 +49,25 @@ public class StateGame extends BasicTWLGameState {
         if (_button == Input.MOUSE_LEFT_BUTTON)
         {
             Vec2 position = new Vec2(_x,_y);
-            sEvents.triggerEvent(new MapClickEvent(sPhysics.translateToPhysics(position),true));
+            sEvents.triggerEvent(new MapClickEvent(sWorld.translateToPhysics(position),true));
         }
         if (_button == Input.MOUSE_RIGHT_BUTTON)
         {
             Vec2 position = new Vec2(_x,_y);
-            sEvents.triggerEvent(new MapClickEvent(sPhysics.translateToPhysics(position),false));
+            sEvents.triggerEvent(new MapClickEvent(sWorld.translateToPhysics(position),false));
+        }
+    }
+    public void mouseReleased(int _button, int _x, int _y)
+    {
+        if (_button == Input.MOUSE_LEFT_BUTTON)
+        {
+            Vec2 position = new Vec2(_x,_y);
+            sEvents.triggerEvent(new MapClickReleaseEvent(sWorld.translateToPhysics(position),true));
+        }
+        if (_button == Input.MOUSE_RIGHT_BUTTON)
+        {
+            Vec2 position = new Vec2(_x,_y);
+            sEvents.triggerEvent(new MapClickReleaseEvent(sWorld.translateToPhysics(position),false));
         }
     }
     public void mouseMoved(int oldx, int oldy, int newx, int newy)
@@ -121,10 +139,6 @@ public class StateGame extends BasicTWLGameState {
         btn.setPosition(100, 100);
     } 
     
-    public int getID() {
-        return 0;
-    }
-    
     public void init(GameContainer _gc, StateBasedGame _sbg) throws SlickException {
         _gc.getInput().enableKeyRepeat();
         boolean temp = _gc.getInput().isKeyRepeatEnabled();
@@ -134,7 +148,7 @@ public class StateGame extends BasicTWLGameState {
         sEvents.init();
         sEntityFactory.init();
         sSkinFactory.init();
-        sPhysics.init();
+        sWorld.init();
         sLevel.init();
         HashMap parameters = new HashMap();
         parameters.put("position",new Vec2(0,0));

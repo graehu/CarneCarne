@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package Physics;
+package World;
 
 import Entities.Entity;
 import Events.TileDestroyedEvent;
@@ -20,7 +20,7 @@ import org.jbox2d.structs.collision.RayCastOutput;
  *
  * @author alasdair
  */
-public class sPhysics {
+public class sWorld {
     private static World mWorld;
     private static iCamera mCamera;
     private static HashMap<String,iPhysicsFactory> factories;
@@ -32,7 +32,7 @@ public class sPhysics {
         eSpatTiles,
         eBodyCategoriesMax
     }
-    private sPhysics()
+    private sWorld()
     {
            
     }
@@ -84,7 +84,7 @@ public class sPhysics {
             return fixture;
         }
     }
-    public static boolean rayCastTiles(Vec2 start, Vec2 end)
+    public static boolean eatTiles(Vec2 start, Vec2 end)
     {
         TongueCallback callback = new TongueCallback(start, end);
         mWorld.raycast(callback, start, end);
@@ -96,6 +96,19 @@ public class sPhysics {
         sLevel.destroyTile((int)callback.getFixture().m_body.getPosition().x, (int)callback.getFixture().m_body.getPosition().y);
         sEvents.triggerEvent(new TileDestroyedEvent((int)callback.getFixture().m_body.getPosition().x, (int)callback.getFixture().m_body.getPosition().y));
         return true;
+    }
+    public static boolean smashTiles(Vec2 start, Vec2 end)
+    {
+        TongueCallback callback = new TongueCallback(start, end);
+        mWorld.raycast(callback, start, end);
+        if (callback.getFixture() == null)
+        {
+            return false;
+        }
+        mWorld.destroyBody(callback.getFixture().m_body);
+        sLevel.destroyTile((int)callback.getFixture().m_body.getPosition().x, (int)callback.getFixture().m_body.getPosition().y);
+        sEvents.triggerEvent(new TileDestroyedEvent((int)callback.getFixture().m_body.getPosition().x, (int)callback.getFixture().m_body.getPosition().y));
+        return true;        
     }
     public static void createBodyCamera(Body _body)
     {

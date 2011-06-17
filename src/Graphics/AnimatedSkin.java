@@ -6,6 +6,7 @@ package Graphics;
 
 import Graphics.iSkin;
 import java.util.HashMap;
+import org.jbox2d.common.Vec2;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.PackedSpriteSheet;
 import org.newdawn.slick.SlickException;
@@ -16,6 +17,7 @@ import org.newdawn.slick.SpriteSheet;
  * @author Aaron
  */
 public class AnimatedSkin implements iSkin{
+    float mWidth, mHeight;
     Animation mAnim;
     
     //constructor public to graphics package only
@@ -32,12 +34,10 @@ public class AnimatedSkin implements iSkin{
     }
     public void render(float _x, float _y)
     {
-        //add to render list under given sprite sheet (batch rending)
-        mAnim.draw(_x, _y); //quick fix for render
-    }
-    public void render(float _x, float _y, float _w, float _h)
-    {
-        mAnim.draw(_x, _y, _w, _h);
+        if(mWidth == 0 && mHeight == 0)
+            mAnim.draw(_x, _y);
+        else
+            mAnim.draw(_x, _y, mWidth, mHeight);
     }
     //internal graphics function for batch rendering
     void renderInUse(float _x, float _y)
@@ -62,6 +62,17 @@ public class AnimatedSkin implements iSkin{
     {
         mAnim.setSpeed(_speed);
     }
+    
+    public void setDimentions(float _w, float _h) {
+        if(_w != 0)
+            mWidth = _w;
+        else
+            mWidth = mAnim.getWidth();
+        if(_h != 0)
+            mHeight = _h;
+        else
+            mHeight = mAnim.getHeight();
+    }
 
     public void stopAnim(String _animation) {
         throw new UnsupportedOperationException("Not supported yet.");
@@ -80,6 +91,14 @@ public class AnimatedSkin implements iSkin{
     }
 
     public float startAnim(String _animation, boolean _isLooping, float _speed) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void setDimentions(String _animation, float _w, float _h) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void setOffset(String _animation, Vec2 _offset) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 

@@ -6,7 +6,7 @@ package Entities;
 
 import Graphics.iSkin;
 import Graphics.sSkinFactory;
-import Physics.sPhysics;
+import World.sWorld;
 import java.util.HashMap;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
@@ -30,7 +30,7 @@ class SpatBlockFactory implements iEntityFactory{
         SpatBlock entity = new SpatBlock(skin);
         
         _parameters.put("entity", entity);
-        Body body = sPhysics.useFactory("SpatBlockFactory", _parameters);
+        Body body = sWorld.useFactory("SpatBlockFactory", _parameters);
         
         entity.mBody = body;
         

@@ -4,7 +4,7 @@
  */
 package Level;
 
-import Physics.sPhysics;
+import World.sWorld;
 import java.util.HashMap;
 import java.util.Stack;
 import org.jbox2d.common.Vec2;
@@ -23,7 +23,7 @@ public class NonEdibleTile extends RootTile{
     {
         HashMap parameters = new HashMap();
         parameters.put("position", new Vec2(_xTile,_yTile));
-        sPhysics.useFactory("NonEdibleTileFactory",parameters);
+        sWorld.useFactory("NonEdibleTileFactory",parameters);
     }
     public void checkEdges(int _xTile, int _yTile, Stack<Integer> _stack, TileGrid _tileGrid)
     {

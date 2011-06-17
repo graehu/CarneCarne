@@ -5,6 +5,7 @@
 package Graphics;
 
 import Graphics.iSkin;
+import org.jbox2d.common.Vec2;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
@@ -14,6 +15,7 @@ import org.newdawn.slick.SlickException;
  */
 public class StaticSkin implements iSkin
 {
+    float mWidth, mHeight;
     Image mImage;
     //constructor public to graphics package only
     StaticSkin(String _image) throws SlickException
@@ -26,14 +28,24 @@ public class StaticSkin implements iSkin
     }
     public void render(float _x, float _y)
     {
-        mImage.draw(_x, _y);
-    }
-    public void render(float _x, float _y, float _w, float _h)
-    {
-        mImage.draw(_x, _y, _w, _h);
+        if(mWidth == 0 && mHeight == 0)
+            mImage.draw(_x, _y);
+        else
+            mImage.draw(_x, _y, mWidth, mHeight);
     }
     public void setRotation(float _radians) {
         mImage.setRotation(_radians);
+    }
+    
+    public void setDimentions(float _w, float _h) {
+        if(_w != 0)
+            mWidth = _w;
+        else
+            mWidth = mImage.getWidth();
+        if(_h != 0)
+            mHeight = _h;
+        else
+            mHeight = mImage.getHeight();
     }
 
     public void restart() {
@@ -65,6 +77,14 @@ public class StaticSkin implements iSkin
     }
 
     public float startAnim(String _animation, boolean _isLooping, float _speed) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void setDimentions(String _animation, float _w, float _h) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void setOffset(String _animation, Vec2 _offset) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 

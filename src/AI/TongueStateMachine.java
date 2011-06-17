@@ -4,6 +4,11 @@
  */
 package AI;
 
+import Entities.AIEntity;
+import Graphics.iSkin;
+import Graphics.sSkinFactory;
+import World.sWorld;
+import java.util.HashMap;
 import org.jbox2d.common.Vec2;
 
 /**
@@ -12,12 +17,11 @@ import org.jbox2d.common.Vec2;
  */
 public class TongueStateMachine {
     
-    static int tongueFiringTimeout = 1;
-    static int hammeringTimeout = 1;
+    static int tongueFiringTimeout = 10;
+    static float tongueLength = 2.0f;
     static int idleAnimationTrigger = 1;
-    static int tongueRetractWithBlockTime = 1;
     
-    Vec2 position; /// FIXME unneccessary
+    Vec2 position = new Vec2(0,0); /// FIXME unneccessary
     String mBlockMaterial;
     enum State
     {
@@ -44,13 +48,34 @@ public class TongueStateMachine {
         currentStateTimer = 0;
         mBlockMaterial = "SomeSoftMaterial";
     }
-    private boolean grabBlock()
+    private boolean extendTongue(boolean _grabBlock)
     {
-        return mAIController.grabBlock(position);
+        mAIController.mEntity.mSkin.startAnim("tng", false, 0.0f);
+        Vec2 direction = position.sub(mAIController.mEntity.mBody.getPosition());
+        direction.normalize();
+        setTongue(direction, ((float)currentStateTimer/(float)tongueFiringTimeout)*tongueLength);
+        direction = direction.mul(((float)currentStateTimer/(float)tongueFiringTimeout)*tongueLength);
+        if (_grabBlock)
+            return mAIController.grabBlock(mAIController.mEntity.mBody.getPosition().add(direction));
+        else
+            return false;
     }
     private boolean hammerCollide()
     {
-        return false;
+        mAIController.mEntity.mSkin.startAnim("tng", false, 0.0f);
+        Vec2 direction = position.sub(mAIController.mEntity.mBody.getPosition());
+        direction.normalize();
+        setTongue(direction, ((float)currentStateTimer/(float)tongueFiringTimeout)*tongueLength);
+        direction = direction.mul(((float)currentStateTimer/(float)tongueFiringTimeout)*tongueLength);
+        
+        HashMap parameters = new HashMap();
+        parameters.put("ref", "ChewedBlock");
+        iSkin skin = sSkinFactory.create("static", parameters);
+        Vec2 hammerPosition = mAIController.mEntity.mBody.getPosition();
+        hammerPosition = sWorld.translateToWorld(hammerPosition);
+        skin.render(hammerPosition.x, hammerPosition.y);
+                
+        return mAIController.hammer(mAIController.mEntity.mBody.getPosition().add(direction));
     }
     private boolean hasFood()
     {
@@ -60,7 +85,19 @@ public class TongueStateMachine {
     {
         return 1;
     }
-    public void tick()
+    static Vec2 mUp = new Vec2(0,-1);
+    public void setTongue(Vec2 _direction, float _distance)
+    {
+        //calc. direction of tongue
+        mAIController.mEntity.mSkin.setDimentions("tng", 0, _distance*64);
+        Vec2 direction = _direction.clone();
+        direction.normalize();
+        float angle = (float)Math.acos(Vec2.dot(direction, mUp));
+        if(direction.x < 0)
+                angle = (float) ((2*Math.PI) - angle);
+        mAIController.mEntity.mSkin.setRotation("tng", 180 + (angle*(180.0f/(float)Math.PI)));
+    }
+    public void tick(AIEntity _entity)
     {
         switch (mState)
         {
@@ -71,7 +108,7 @@ public class TongueStateMachine {
             case eFiringTongue:
             {
                 currentStateTimer++;
-                if (grabBlock())
+                if (extendTongue(true))
                 {
                     changeState(State.eStuckToBlock);
                 }
@@ -84,6 +121,7 @@ public class TongueStateMachine {
             case eRetractingTongue:
             {
                 currentStateTimer--;
+                extendTongue(false);
                 if (currentStateTimer == 0)
                 {
                     changeState(State.eStart);
@@ -101,6 +139,7 @@ public class TongueStateMachine {
             case eRetractingWithBlock:
             {
                 currentStateTimer--;
+                extendTongue(false);
                 if (currentStateTimer == 0)
                 {
                     changeState(State.eFoodInMouth);
@@ -118,7 +157,7 @@ public class TongueStateMachine {
                 {
                     changeState(State.eRetractingHammer);
                 }
-                else if (currentStateTimer == hammeringTimeout)
+                else if (currentStateTimer == tongueFiringTimeout)
                 {
                     changeState(State.eRetractingHammer);
                 }
@@ -127,6 +166,7 @@ public class TongueStateMachine {
             case eRetractingHammer:
             {
                 currentStateTimer--;
+                extendTongue(false);
                 if (currentStateTimer == 0)
                 {
                     changeState(State.eFoodInMouth);
@@ -171,11 +211,11 @@ public class TongueStateMachine {
     }
     public void leftClick(Vec2 _position)
     {
-        position = _position;
         switch (mState)
         {
             case eStart:
             {
+                position = _position;
                 changeState(State.eFiringTongue);
                 break;
             }
@@ -199,6 +239,7 @@ public class TongueStateMachine {
             }
             case eFoodInMouth:
             {
+                position = _position;
                 changeState(State.eFiringHammer);
                 break;
             }
@@ -227,17 +268,16 @@ public class TongueStateMachine {
     }
     public void rightClick(Vec2 _position)
     {
-        position = _position;
         switch (mState)
         {
             case eStart:
             {
+                position = _position;
                 changeState(State.eSpitting);
                 break;
             }
             case eFiringTongue:
             {
-                /// Do something here? 
                 break;
             }
             case eRetractingTongue:
@@ -254,6 +294,7 @@ public class TongueStateMachine {
             }
             case eFoodInMouth:
             {
+                position = _position;
                 changeState(State.eSpittingBlock);
                 break;
             }
@@ -279,7 +320,7 @@ public class TongueStateMachine {
             }
         }
     }
-    public void leftRelease()
+    public void leftRelease(Vec2 _position)
     {
         switch (mState)
         {
@@ -332,7 +373,7 @@ public class TongueStateMachine {
             }
         }
     }
-    public void rightRelease()
+    public void rightRelease(Vec2 _position)
     {
         switch (mState)
         {
@@ -406,7 +447,6 @@ public class TongueStateMachine {
             }
             case eRetractingWithBlock:
             {
-                currentStateTimer = tongueRetractWithBlockTime;
                 break;
             }
             case eFoodInMouth:

@@ -5,7 +5,7 @@
 package Entities;
 
 import Graphics.iSkin;
-import Physics.sPhysics;
+import World.sWorld;
 import org.jbox2d.common.Vec2;
 
 /**
@@ -24,7 +24,7 @@ class SpatBlock extends Entity {
     }
     public void render()
     {
-        Vec2 pixelPosition = sPhysics.translateToWorld(mBody.getPosition());
+        Vec2 pixelPosition = sWorld.translateToWorld(mBody.getPosition());
         mSkin.render(pixelPosition.x,pixelPosition.y);
         mSkin.setRotation("body", mBody.getAngle()*(180/3.14f));
     }

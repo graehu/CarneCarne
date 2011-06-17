@@ -4,7 +4,7 @@
  */
 package Graphics;
 
-import org.newdawn.slick.*;
+import org.jbox2d.common.Vec2;
 
 /**
  *
@@ -12,8 +12,9 @@ import org.newdawn.slick.*;
  */
 //class public to package only
 public interface iSkin {
+    
     abstract void render(float _x, float _y);
-    abstract void render(float _x, float _y, float _w, float _h);
+    abstract void setDimentions(float _w, float _h);
     
     //Animation methods
     abstract float getDuration();
@@ -27,4 +28,6 @@ public interface iSkin {
     abstract float startAnim(String _animation, boolean _isLooping, float _speed);
     abstract void stopAnim(String _animation);
     abstract void restart(String _animation);
+    abstract void setDimentions(String _animation, float _w, float _h);
+    abstract void setOffset(String _animation, Vec2 _offset);
 }

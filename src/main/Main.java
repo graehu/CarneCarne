@@ -6,9 +6,10 @@ import GUI.TWLStateBasedGame;
 import java.net.URL;
 import org.newdawn.slick.*;
 import States.Game.StateGame;
+import States.Splash.StateSplash;
+import States.Title.StateTitle;
+import org.newdawn.slick.state.transition.BlobbyTransition;
 import org.newdawn.slick.util.ResourceLoader;
-
-
 
 public class Main extends TWLStateBasedGame
 {
@@ -48,12 +49,17 @@ public class Main extends TWLStateBasedGame
     @Override
     public void initStatesList(GameContainer gc) throws SlickException {
         //Splash
-        //mSplashState = new BasicTWLGameState();
+        mSplashState = new StateSplash();
+        addState(mSplashState);
         //title
-        //mTitleState = new BasicTWLGameState();
+        mTitleState = new StateTitle();
+        addState(mTitleState);
         //game
         mGameState = new StateGame();
-        addState(mGameState);        
+        addState(mGameState); 
+        //FIXME: should start on splash
+        //enterState(2, null, new BlobbyTransition(new Color(0,0,0)));
+        enterState(2, null, null);
     }
 
 }
