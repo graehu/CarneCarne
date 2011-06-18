@@ -10,10 +10,16 @@ import Events.sEvents;
 import Graphics.BodyCamera;
 import Graphics.iCamera;
 import Level.sLevel;
+import Level.sLevel.TileType;
 import java.util.HashMap;
 import org.jbox2d.callbacks.RayCastCallback;
-import org.jbox2d.common.*;
-import org.jbox2d.dynamics.*;
+import org.jbox2d.common.Vec2;
+import org.jbox2d.dynamics.Body;
+import org.jbox2d.dynamics.Fixture;
+import org.jbox2d.dynamics.World;
+import org.jbox2d.dynamics.joints.DistanceJoint;
+import org.jbox2d.dynamics.joints.DistanceJointDef;
+import org.jbox2d.dynamics.joints.Joint;
 import org.jbox2d.structs.collision.RayCastInput;
 import org.jbox2d.structs.collision.RayCastOutput;
 /**
@@ -70,7 +76,7 @@ public class sWorld {
                 input.p2.x = end.x;
                 input.p2.y = end.y;
                 RayCastOutput output = new RayCastOutput();
-                //if (_fixture.raycast(output, input))
+                //if (_fixture.raycast(output, input)) Is this neccessary?
                 {
                     fixture = _fixture;
                     return _fraction;
@@ -84,18 +90,28 @@ public class sWorld {
             return fixture;
         }
     }
-    public static boolean eatTiles(Vec2 start, Vec2 end)
+    private static Body mLastHit;
+    public static sLevel.TileType eatTiles(Vec2 start, Vec2 end)
     {
         TongueCallback callback = new TongueCallback(start, end);
         mWorld.raycast(callback, start, end);
         if (callback.getFixture() == null)
         {
-            return false;
+            return sLevel.TileType.eTypeTypesMax;
         }
-        mWorld.destroyBody(callback.getFixture().m_body);
-        sLevel.destroyTile((int)callback.getFixture().m_body.getPosition().x, (int)callback.getFixture().m_body.getPosition().y);
-        sEvents.triggerEvent(new TileDestroyedEvent((int)callback.getFixture().m_body.getPosition().x, (int)callback.getFixture().m_body.getPosition().y));
-        return true;
+        mLastHit = callback.getFixture().getBody();
+        TileType tileType = sLevel.TileType.class.getEnumConstants()[callback.getFixture().m_filter.groupIndex];
+        switch (tileType)
+        {
+            case eEdible:
+            {
+                mWorld.destroyBody(callback.getFixture().m_body);
+                sLevel.destroyTile((int)callback.getFixture().m_body.getPosition().x, (int)callback.getFixture().m_body.getPosition().y);
+                sEvents.triggerEvent(new TileDestroyedEvent((int)callback.getFixture().m_body.getPosition().x, (int)callback.getFixture().m_body.getPosition().y));
+                break;
+            }
+        }
+        return tileType;
     }
     public static boolean smashTiles(Vec2 start, Vec2 end)
     {
@@ -109,6 +125,24 @@ public class sWorld {
         sLevel.destroyTile((int)callback.getFixture().m_body.getPosition().x, (int)callback.getFixture().m_body.getPosition().y);
         sEvents.triggerEvent(new TileDestroyedEvent((int)callback.getFixture().m_body.getPosition().x, (int)callback.getFixture().m_body.getPosition().y));
         return true;        
+    }
+    public static DistanceJoint createTongueJoint(Body _body)
+    {
+        DistanceJointDef def = new DistanceJointDef();
+        def.bodyA = _body;
+        def.bodyB = mLastHit;
+        def.collideConnected = true;
+        Vec2 direction = def.bodyA.getPosition().sub(def.bodyB.getPosition());
+        def.length = direction.normalize();
+        //def.frequencyHz = 1.0f;
+        //def.dampingRatio = 0.1f;
+        def.frequencyHz = 30.0f;
+        def.dampingRatio = 1.0f; /// Reduce these to make his tongue springy
+        return (DistanceJoint)mWorld.createJoint(def);
+    }
+    public static void destroyJoint(Joint _joint)
+    {
+        mWorld.destroyJoint(_joint);;
     }
     public static void createBodyCamera(Body _body)
     {

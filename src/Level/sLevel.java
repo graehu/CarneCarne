@@ -8,13 +8,23 @@ import World.sWorld;
 import org.jbox2d.common.Vec2;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.tiled.TiledMap;
-import org.newdawn.slick.util.pathfinding.AStarPathFinder;
 /**
  *
  * @author alasdair
  */
 public class sLevel {
     
+    public static enum TileType
+    {
+        eEdible,
+        eSwingable,
+        eIndestructible,
+        eTypeTypesMax
+    }
+    public TileType getTileType(int _id)
+    {
+        return mLevelEditor.getTileType(_id);
+    }
     private static TiledMap mTiledMap;
     private static LevelEditor mLevelEditor;
     private static int layerIndex;   

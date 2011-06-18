@@ -14,7 +14,7 @@ public class EmptyTile extends RootTile{
     
     public EmptyTile()
     {
-        super(TileShape.eEmpty,0);
+        super(TileShape.eEmpty,0, sLevel.TileType.eTypeTypesMax);
     }
     public void createPhysicsBody(int _xTile, int _yTile)
     {

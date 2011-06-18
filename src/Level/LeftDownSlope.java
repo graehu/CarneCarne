@@ -12,9 +12,9 @@ import Level.Tile.Direction;
  */
 public class LeftDownSlope extends SlopeTile
 {
-    public LeftDownSlope(int _id)
+    public LeftDownSlope(int _id, sLevel.TileType _tileType)
     {
-        super(_id, 1);
+        super(_id, 1, _tileType);
     }
     
     public void getEdges(boolean _boundaries[], int _xTile, int _yTile, TileGrid _tileGrid)

@@ -4,6 +4,7 @@
  */
 package World;
 
+import Level.sLevel;
 import World.sWorld.BodyCategories;
 import java.util.HashMap;
 import org.jbox2d.collision.shapes.PolygonShape;
@@ -25,10 +26,12 @@ class NonEdibleTileFactory implements iPhysicsFactory {
     public Body useFactory(HashMap _parameters, World _world)
     {
         Vec2 position = (Vec2)_parameters.get("position");
+        sLevel.TileType tileType = (sLevel.TileType)_parameters.get("TileType");
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(0.5f, 0.5f);
         FixtureDef fixture = new FixtureDef();
         fixture.shape = shape;
+        fixture.filter.groupIndex = tileType.ordinal();
         fixture.filter.categoryBits = (1 << BodyCategories.eNonEdibleTiles.ordinal());
         fixture.filter.maskBits = Integer.MAX_VALUE;
         BodyDef def = new BodyDef();

@@ -4,6 +4,7 @@
  */
 package World;
 
+import Level.sLevel;
 import World.sWorld.BodyCategories;
 import java.util.HashMap;
 import org.jbox2d.collision.shapes.PolygonShape;
@@ -15,13 +16,14 @@ import org.jbox2d.dynamics.World;
 
 /**
  *
- * @author A203946
+ * @author alasdair
  */
 public class SlopeFactory implements iPhysicsFactory {
     
     public Body useFactory(HashMap _parameters, World _world)
     {
         Vec2 position = (Vec2)_parameters.get("position");
+        sLevel.TileType tileType = (sLevel.TileType)_parameters.get("TileType");
         int slopeType = ((Integer)_parameters.get("slopeType")).intValue();
         PolygonShape shape = new PolygonShape();
         shape.m_vertexCount = 3;
@@ -74,6 +76,7 @@ public class SlopeFactory implements iPhysicsFactory {
         shape.m_centroid.y = 0;
         FixtureDef fixture = new FixtureDef();
         fixture.shape = shape;
+        fixture.filter.groupIndex = tileType.ordinal();
         fixture.filter.categoryBits = (1 << BodyCategories.eEdibleTiles.ordinal());
         fixture.filter.maskBits = Integer.MAX_VALUE;
         BodyDef def = new BodyDef();

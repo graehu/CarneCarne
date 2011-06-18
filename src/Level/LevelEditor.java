@@ -4,9 +4,6 @@
  */
 package Level;
 
-import Level.RootTile.TileShape;
-import java.util.Stack;
-import java.util.Vector;
 import org.newdawn.slick.tiled.TiledMap;
 
 /**
@@ -36,5 +33,9 @@ public class LevelEditor {
     public void update()
     {
         tileGrid.update();
+    }
+    public sLevel.TileType getTileType(int _id)
+    {
+        return rootTiles.getTileType(_id);
     }
 }

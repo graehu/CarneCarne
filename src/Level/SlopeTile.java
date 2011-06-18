@@ -4,7 +4,6 @@
  */
 package Level;
 
-import Level.Tile.Direction;
 import World.sWorld;
 import java.util.HashMap;
 import java.util.Stack;
@@ -16,14 +15,15 @@ import org.jbox2d.common.Vec2;
  */
 abstract public class SlopeTile extends RootTile{
     
-    public SlopeTile(int _id, int _slopeType)
+    public SlopeTile(int _id, int _slopeType, sLevel.TileType _tileType)
     {
-        super (TileShape.eSlope, _id, _slopeType);
+        super (TileShape.eSlope, _id, _tileType, _slopeType);
     }
     public void createPhysicsBody(int _xTile, int _yTile)
     {
         HashMap parameters = new HashMap();
         parameters.put("position", new Vec2(_xTile,_yTile));
+        parameters.put("TileType", mTileType);
         parameters.put("slopeType",mSlopeType);
         sWorld.useFactory("SlopeFactory",parameters);
     }

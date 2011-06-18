@@ -7,9 +7,11 @@ package AI;
 import Entities.AIEntity;
 import Graphics.iSkin;
 import Graphics.sSkinFactory;
+import Level.sLevel;
 import World.sWorld;
 import java.util.HashMap;
 import org.jbox2d.common.Vec2;
+import org.jbox2d.dynamics.joints.DistanceJoint;
 
 /**
  *
@@ -18,10 +20,10 @@ import org.jbox2d.common.Vec2;
 public class TongueStateMachine {
     
     static int tongueFiringTimeout = 10;
-    static float tongueLength = 2.0f;
-    static int idleAnimationTrigger = 1;
+    static float tongueLength = 6.0f;
+    static int idleAnimationTrigger = 1000;
     
-    Vec2 position = new Vec2(0,0); /// FIXME unneccessary
+    Vec2 position = new Vec2(0,0);
     String mBlockMaterial;
     enum State
     {
@@ -36,6 +38,7 @@ public class TongueStateMachine {
         eSpittingBlock,
         eSpitting,
         eIdleAnimation,
+        eSwinging,
         eStatesMax
     }
     State mState;
@@ -48,7 +51,7 @@ public class TongueStateMachine {
         currentStateTimer = 0;
         mBlockMaterial = "SomeSoftMaterial";
     }
-    private boolean extendTongue(boolean _grabBlock)
+    private sLevel.TileType extendTongue(boolean _grabBlock)
     {
         mAIController.mEntity.mSkin.startAnim("tng", false, 0.0f);
         Vec2 direction = position.sub(mAIController.mEntity.mBody.getPosition());
@@ -58,7 +61,7 @@ public class TongueStateMachine {
         if (_grabBlock)
             return mAIController.grabBlock(mAIController.mEntity.mBody.getPosition().add(direction));
         else
-            return false;
+            return sLevel.TileType.eTypeTypesMax;
     }
     private boolean hammerCollide()
     {
@@ -110,13 +113,28 @@ public class TongueStateMachine {
             case eFiringTongue:
             {
                 currentStateTimer++;
-                if (extendTongue(true))
+                sLevel.TileType tileType = extendTongue(true);
+                switch (tileType)
                 {
-                    changeState(State.eStuckToBlock);
-                }
-                else if (currentStateTimer > tongueFiringTimeout)
-                {
-                    changeState(State.eRetractingTongue);
+                    case eEdible:
+                    {
+                        changeState(State.eStuckToBlock);
+                        break;
+                    }
+                    case eSwingable:
+                    {
+                        changeState(State.eSwinging);
+                        break;
+                    }
+                    default:
+                    case eTypeTypesMax:
+                    {
+                        if (currentStateTimer > tongueFiringTimeout)
+                        {
+                            changeState(State.eRetractingTongue);
+                        }
+                        break;
+                    }
                 }
                 break;
             }
@@ -207,6 +225,17 @@ public class TongueStateMachine {
                 {
                     changeState(State.eStart);
                 }
+                break;
+            }
+            case eSwinging:
+            {
+                Vec2 direction = mJoint.m_bodyB.getPosition().sub(mJoint.m_bodyA.getPosition());
+                float actualLength = direction.normalize();
+                setTongue(direction, actualLength);
+                mJoint.m_length = actualLength * 0.99f;
+                
+                //mJoint.m_length -= 0.01f;
+                // mJoint.m_length *= 0.99f; Try either of these
                 break;
             }
         }
@@ -320,6 +349,10 @@ public class TongueStateMachine {
             {
                 break;
             }
+            case eSwinging:
+            {
+                break;
+            }
         }
     }
     public void leftRelease(Vec2 _position)
@@ -372,6 +405,12 @@ public class TongueStateMachine {
             case eIdleAnimation:
             {
                 break;
+            }
+            case eSwinging:
+            {
+                sWorld.destroyJoint(mJoint);
+                mJoint = null;
+                changeState(State.eRetractingTongue);
             }
         }
     }
@@ -547,9 +586,19 @@ public class TongueStateMachine {
                 currentStateTimer = setAnimation("Idle");
                 break;
             }
+            case eSwinging:
+            {
+                Vec2 direction = position.sub(mAIController.mEntity.mBody.getPosition());
+                direction.normalize();
+                setTongue(direction, ((float)currentStateTimer/(float)tongueFiringTimeout)*tongueLength);
+                direction = direction.mul(((float)currentStateTimer/(float)tongueFiringTimeout)*tongueLength);
+                Vec2 position = mAIController.mEntity.mBody.getPosition().add(direction);
+                mJoint = sWorld.createTongueJoint(mAIController.mEntity.mBody);
+            }
         }
         mState = _state;
     }
+    private DistanceJoint mJoint;
     private void spitBlock()
     {
         mAIController.spitBlock(position);

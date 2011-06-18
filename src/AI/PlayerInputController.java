@@ -14,6 +14,7 @@ import Events.MapClickReleaseEvent;
 import Events.iEvent;
 import Events.iEventListener;
 import Events.sEvents;
+import Level.sLevel;
 import World.sWorld;
 import java.util.HashMap;
 import org.jbox2d.common.Vec2;
@@ -49,7 +50,7 @@ public class PlayerInputController implements iAIController, iEventListener{
         mTongueState.tick(mEntity);
     }
     
-    public boolean grabBlock(Vec2 _position)
+    public sLevel.TileType grabBlock(Vec2 _position)
     {
         return sWorld.eatTiles(mEntity.mBody.getPosition(),_position);
     }

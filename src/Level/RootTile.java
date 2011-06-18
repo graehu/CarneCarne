@@ -10,20 +10,23 @@ import java.util.Stack;
  *
  * @author alasdair
  */
-abstract public class RootTile
+abstract class RootTile
 {
     TileShape mShape;
     int mId;
     int mSlopeType;
-    public RootTile(TileShape _shape, int _id)
+    sLevel.TileType mTileType;
+    public RootTile(TileShape _shape, int _id, sLevel.TileType _tileType)
     {
         mShape = _shape;
         mId = _id;
+        mTileType = _tileType;
     }
-    public RootTile(TileShape _shape, int _id, int _slopeType)
+    public RootTile(TileShape _shape, int _id, sLevel.TileType _tileType, int _slopeType)
     {
         mShape = _shape;
         mId = _id;
+        mTileType = _tileType;
         mSlopeType = _slopeType;
     }
     public enum TileShape
@@ -34,6 +37,6 @@ abstract public class RootTile
         eUndefined,
         eTileIdMax
     }
-    abstract public void createPhysicsBody(int _xTile, int _yTile);
-    abstract public void checkEdges(int _xTile, int _yTile, Stack<Integer> _stack, TileGrid _tileGrid);
+    abstract void createPhysicsBody(int _xTile, int _yTile);
+    abstract void checkEdges(int _xTile, int _yTile, Stack<Integer> _stack, TileGrid _tileGrid);
 }
