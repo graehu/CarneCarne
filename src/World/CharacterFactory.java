@@ -31,19 +31,20 @@ class CharacterFactory implements iPhysicsFactory {
     {
         Vec2 position = (Vec2)_parameters.get("position");
         AIEntity entity = (AIEntity)_parameters.get("aIEntity");
+        BodyCategories category = (BodyCategories)_parameters.get("category");
         CircleShape wheelShape = new CircleShape();
         FixtureDef circleFixture = new FixtureDef();
         wheelShape.m_radius = 0.45f;
-        circleFixture.density = 4;
+        circleFixture.density = 1;
         circleFixture.friction = 500;
-        circleFixture.filter.categoryBits = (1 << BodyCategories.ePlayer.ordinal());
+        circleFixture.filter.categoryBits = (1 << category.ordinal());
         circleFixture.filter.maskBits = Integer.MAX_VALUE;
         circleFixture.shape = wheelShape;
         PolygonShape axelShape = new PolygonShape();
         FixtureDef axelFixture = new FixtureDef();
         axelShape.setAsBox(0.1f, 0.1f);
         axelFixture.density = 0.001f;
-        axelFixture.filter.categoryBits = (1 << BodyCategories.ePlayer.ordinal());
+        axelFixture.filter.categoryBits = (1 << category.ordinal());
         axelFixture.filter.maskBits = Integer.MAX_VALUE;
         axelFixture.filter.groupIndex = -100;
         axelFixture.shape = axelShape;

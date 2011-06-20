@@ -19,6 +19,7 @@ public class sLevel {
         eEdible,
         eSwingable,
         eIndestructible,
+        eWater,
         eTypeTypesMax
     }
     public TileType getTileType(int _id)
@@ -28,7 +29,7 @@ public class sLevel {
     private static TiledMap mTiledMap;
     private static LevelEditor mLevelEditor;
     private static int layerIndex;   
-    private enum Pathable
+    private enum PathInfo
     {
         eNotPassable,
         eAir,
@@ -42,14 +43,14 @@ public class sLevel {
         return 1; //just incase we want to make tiles smaller than a meter.
     }
     
-    public static Pathable getPathable(int _xTile, int _yTile)
+    public static PathInfo getPathInfo(int _xTile, int _yTile)
     {
         int id = mTiledMap.getTileId(_xTile, _yTile, layerIndex);
         if (id == 0)
         {
-            return Pathable.eAir;
+            return PathInfo.eAir;
         }
-        else return Pathable.eNotPassable;
+        else return PathInfo.eNotPassable;
     }
     private sLevel()
     {

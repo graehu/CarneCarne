@@ -34,6 +34,7 @@ abstract class RootTile
         eEmpty,
         eBlock,
         eSlope,
+        eWater,
         eUndefined,
         eTileIdMax
     }

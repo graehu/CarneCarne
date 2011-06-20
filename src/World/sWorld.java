@@ -30,9 +30,16 @@ public class sWorld {
     private static World mWorld;
     private static iCamera mCamera;
     private static HashMap<String,iPhysicsFactory> factories;
+
+    public static void setWaterHeight(int _highestSurface)
+    {
+        WaterTileFactory factory = (WaterTileFactory)factories.get("WaterTileFactory");
+        factory.setWaterHeight(_highestSurface);
+    }
     public enum BodyCategories
     {
         ePlayer,
+        eEnemy,
         eEdibleTiles,
         eNonEdibleTiles,
         eSpatTiles,
@@ -45,12 +52,14 @@ public class sWorld {
     public static void init()
     {
         mWorld = new World(new Vec2(0,9.8f),true);   
+        mWorld.setContactListener(new WorldContactListener());
         factories = new HashMap<String, iPhysicsFactory>();
         factories.put("TileFactory", new TileFactory());
         factories.put("SlopeFactory", new SlopeFactory());
         factories.put("CharacterFactory", new CharacterFactory());
         factories.put("NonEdibleTileFactory", new NonEdibleTileFactory());
         factories.put("SpatBlockFactory", new SpatBlockBodyFactory());
+        factories.put("WaterTileFactory", new WaterTileFactory());
     }
     
     public static Body useFactory(String _factory, HashMap _parameters)
@@ -68,7 +77,8 @@ public class sWorld {
         }
         public float reportFixture(Fixture _fixture, Vec2 _p1, Vec2 _p2, float _fraction)
         {
-            if (_fixture.m_filter.categoryBits == (1 << BodyCategories.eEdibleTiles.ordinal()))
+            if (_fixture.m_filter.categoryBits == (1 << BodyCategories.eEdibleTiles.ordinal())||
+                    _fixture.m_filter.categoryBits == (1 << BodyCategories.eNonEdibleTiles.ordinal()))
             {
                 RayCastInput input = new RayCastInput();
                 input.p1.x = start.x;
@@ -110,6 +120,11 @@ public class sWorld {
                 sEvents.triggerEvent(new TileDestroyedEvent((int)callback.getFixture().m_body.getPosition().x, (int)callback.getFixture().m_body.getPosition().y));
                 break;
             }
+            case eSwingable:
+            case eIndestructible:
+            {
+                break;
+            }
         }
         return tileType;
     }
@@ -121,9 +136,22 @@ public class sWorld {
         {
             return false;
         }
-        mWorld.destroyBody(callback.getFixture().m_body);
-        sLevel.destroyTile((int)callback.getFixture().m_body.getPosition().x, (int)callback.getFixture().m_body.getPosition().y);
-        sEvents.triggerEvent(new TileDestroyedEvent((int)callback.getFixture().m_body.getPosition().x, (int)callback.getFixture().m_body.getPosition().y));
+        TileType tileType = sLevel.TileType.class.getEnumConstants()[callback.getFixture().m_filter.groupIndex];
+        switch (tileType)
+        {
+            case eSwingable:
+            case eEdible:
+            {
+                mWorld.destroyBody(callback.getFixture().m_body);
+                sLevel.destroyTile((int)callback.getFixture().m_body.getPosition().x, (int)callback.getFixture().m_body.getPosition().y);
+                sEvents.triggerEvent(new TileDestroyedEvent((int)callback.getFixture().m_body.getPosition().x, (int)callback.getFixture().m_body.getPosition().y));
+                break;
+            }
+            case eIndestructible:
+            {
+                break;
+            }
+        }
         return true;        
     }
     public static DistanceJoint createTongueJoint(Body _body)

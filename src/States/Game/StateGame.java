@@ -16,7 +16,6 @@ import Graphics.sSkinFactory;
 import Level.sLevel;
 import World.sWorld;
 import de.matthiasmann.twl.Button;
-import java.util.HashMap;
 import org.jbox2d.common.Vec2;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -102,6 +101,7 @@ public class StateGame extends BasicTWLGameState {
     public void enter(GameContainer container, StateBasedGame game) throws SlickException 
     {         
         super.enter(container, game);
+        //container.getGraphics().setDrawMode(Graphics.MODE_ALPHA_BLEND);
     }
     
     @Override
@@ -150,8 +150,5 @@ public class StateGame extends BasicTWLGameState {
         sSkinFactory.init();
         sWorld.init();
         sLevel.init();
-        HashMap parameters = new HashMap();
-        parameters.put("position",new Vec2(0,0));
-        sEntityFactory.create("Player",parameters);
     }    
 }

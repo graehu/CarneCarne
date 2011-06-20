@@ -26,6 +26,6 @@ class SpatBlock extends Entity {
     {
         Vec2 pixelPosition = sWorld.translateToWorld(mBody.getPosition());
         mSkin.render(pixelPosition.x,pixelPosition.y);
-        mSkin.setRotation("body", mBody.getAngle()*(180/3.14f));
+        mSkin.setRotation(mBody.getAngle()*(180/(float)Math.PI));
     }
 }

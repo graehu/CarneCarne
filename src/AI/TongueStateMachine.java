@@ -126,6 +126,11 @@ public class TongueStateMachine {
                         changeState(State.eSwinging);
                         break;
                     }
+                    case eIndestructible:
+                    {
+                        changeState(State.eRetractingTongue);
+                        break;
+                    }
                     default:
                     case eTypeTypesMax:
                     {

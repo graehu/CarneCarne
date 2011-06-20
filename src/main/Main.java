@@ -3,15 +3,12 @@ package main;
 
 import GUI.BasicTWLGameState;
 import GUI.TWLStateBasedGame;
-import java.io.InputStream;
 import java.net.URL;
 import org.newdawn.slick.*;
 import States.Game.StateGame;
 import States.Splash.StateSplash;
 import States.Title.StateTitle;
-import org.newdawn.slick.state.transition.BlobbyTransition;
 import org.newdawn.slick.util.ResourceLoader;
-import org.newdawn.slick.util.ResourceLocation;
 
 public class Main extends TWLStateBasedGame
 {
@@ -30,7 +27,11 @@ public class Main extends TWLStateBasedGame
         {
             AppGameContainer app = new AppGameContainer(new Main());
             app.setDisplayMode(800, 600, false);
+            //app.setMaximumLogicUpdateInterval(16);
+            //app.setMinimumLogicUpdateInterval(16);
             app.setVSync(true);
+            //app.setSmoothDeltas(true);
+            //app.setTargetFrameRate(60);
             app.start();
         }
         catch(SlickException e)

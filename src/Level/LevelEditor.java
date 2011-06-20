@@ -25,6 +25,9 @@ public class LevelEditor {
         rootTiles = new RootTileList(mTiledMap);
         
         tileGrid = new TileGrid(mTiledMap, rootTiles, layerIndex);
+        
+        FlagProcessor flagProcessor = new FlagProcessor(_tiledMap);
+        flagProcessor = null;
     }
     public void destroyTile(int _xTile, int _yTile)
     {

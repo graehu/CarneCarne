@@ -6,6 +6,7 @@ package Level;
 
 import Level.RootTile.TileShape;
 import Level.Tile.Direction;
+import Level.sLevel.TileType;
 import java.util.Comparator;
 import java.util.PriorityQueue;
 import java.util.Stack;
@@ -27,6 +28,7 @@ public class TileGrid {
         tiledMap = _tiledMap;
         rootTiles = _rootTiles;
         layerIndex = _layerIndex;
+        WaterSearcher waterSearcher = new WaterSearcher(_tiledMap.getWidth(),_tiledMap.getHeight());
         mFrames = 0;
         mTiles = new Tile[_tiledMap.getWidth()][_tiledMap.getHeight()];
         for (int i = 0; i < _tiledMap.getWidth(); i++)
@@ -34,10 +36,20 @@ public class TileGrid {
             for (int ii = 0; ii < _tiledMap.getHeight(); ii++)
             {
                 int id = _tiledMap.getTileId(i, ii, _layerIndex);
-                mTiles[i][ii] = new Tile(id,_rootTiles.get(id));
-                mTiles[i][ii].createPhysicsBody(i, ii);
+                if (_rootTiles.get(id).mTileType.equals(TileType.eWater))
+                {
+                    waterSearcher.addTile(i,ii,_rootTiles.get(id));
+                    //mTiles[i][ii] = new Tile(id,_rootTiles.get(id));
+                    //mTiles[i][ii].createPhysicsBody(i, ii);
+                }
+                else
+                {
+                    mTiles[i][ii] = new Tile(id,_rootTiles.get(id));
+                    mTiles[i][ii].createPhysicsBody(i, ii);
+                }
             }
         }
+        waterSearcher.finish(mTiles);
         Stack<Integer> stack = new Stack<Integer>();
         for (int i = 0; i < mTiles.length; i ++)
         {

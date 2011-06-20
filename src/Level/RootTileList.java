@@ -20,6 +20,7 @@ public class RootTileList {
     public RootTileList(TiledMap _tiledMap)
     {
         typeMap = new HashMap<String, sLevel.TileType>();
+        typeMap.put("Swim", sLevel.TileType.eWater);
         typeMap.put("Edible", sLevel.TileType.eEdible);
         typeMap.put("Swingable", sLevel.TileType.eSwingable);
         typeMap.put("NonEdible", sLevel.TileType.eIndestructible);
@@ -60,6 +61,13 @@ public class RootTileList {
                 mRootTiles.add(new NonEdibleTile(i, type));
                 i++;
             }
+            else if (shape.equals("Water"))
+            {
+                for (int rootId = i; i < rootId + 16; i++)
+                {
+                    mRootTiles.add(new WaterTile(rootId, type));
+                }                
+            }
             else
             {
                 mRootTiles.add(new EmptyTile());
@@ -67,7 +75,7 @@ public class RootTileList {
             }
         }
     }
-    
+
     public sLevel.TileType getTileType(int _id)
     {
         return sLevel.TileType.eEdible;

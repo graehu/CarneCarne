@@ -23,17 +23,16 @@ import org.jbox2d.common.Vec2;
  *
  * @author alasdair
  */
-public class PlayerInputController implements iAIController, iEventListener{
+public class PlayerInputController extends iAIController implements iEventListener{
 
     //protected to allow TongueStateMachine access
-    protected AIEntity mEntity; 
     private TongueStateMachine mTongueState;
     private String mFaceDirAnim;
     private float mTongueAngle = 0;
     private Vec2 mCursorPos = new Vec2(0,0);
     public PlayerInputController(AIEntity _entity)
     {
-        mEntity = _entity;
+        super(_entity);
         mFaceDirAnim = "e";
         sEvents.subscribeToEvent("KeyDownEvent"+'w', this);
         sEvents.subscribeToEvent("KeyDownEvent"+'a', this);

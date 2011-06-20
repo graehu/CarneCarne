@@ -45,6 +45,7 @@ public class PlayerFactory implements iEntityFactory {
             HashMap parameters = new HashMap();
             parameters.put("position", position);
             parameters.put("aIEntity", entity);
+            parameters.put("category", sWorld.BodyCategories.ePlayer);
             entity.mBody = sWorld.useFactory("CharacterFactory",parameters);
             PlayerInputController controller = new PlayerInputController(entity);
             entity.mController = controller;

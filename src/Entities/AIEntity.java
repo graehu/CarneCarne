@@ -31,6 +31,16 @@ public class AIEntity extends Entity {
     }
     public void update()
     {
+        mBody.applyLinearImpulse(new Vec2(0,1.0f*mBody.getMass()), new Vec2(0,0));
+        if (mWaterTiles != 0)
+        {
+            float height = 1.0f-(mWaterHeight - mBody.getPosition().y);
+            if (height > 1.0f)
+            {
+                height = 1.0f;
+            }
+            mBody.applyLinearImpulse(new Vec2(0,-1.0f*height), new Vec2(0,0));
+        }
         if (jumpTimer != 0)
         {
             jumpTimer--;
@@ -41,7 +51,8 @@ public class AIEntity extends Entity {
         while (edge != null)
         {
             Body body = edge.other;
-            if (body.m_fixtureList.m_filter.categoryBits == (1 << sWorld.BodyCategories.eEdibleTiles.ordinal()))
+            if (body.m_fixtureList.m_filter.categoryBits == (1 << sWorld.BodyCategories.eEdibleTiles.ordinal())||
+                    body.m_fixtureList.m_filter.categoryBits == (1 << sWorld.BodyCategories.eNonEdibleTiles.ordinal()))
             {
                 if (body.getPosition().y > mBody.getPosition().y)
                 {
@@ -58,13 +69,13 @@ public class AIEntity extends Entity {
     }
     public void walkLeft()
     {
-        mBody.applyLinearImpulse(new Vec2(-0.01f,0), new Vec2(0,0));
+        mBody.applyLinearImpulse(new Vec2(-0.1f,0), new Vec2(0,0));
         mJoint.m_motorSpeed = 10.0f;
         turnThisFrame = 1000;
     }
     public void walkRight()
     {
-        mBody.applyLinearImpulse(new Vec2(0.01f,0), new Vec2(0,0));
+        mBody.applyLinearImpulse(new Vec2(0.1f,0), new Vec2(0,0));
         mJoint.m_motorSpeed = -10.0f;
         turnThisFrame = 1000;
     }

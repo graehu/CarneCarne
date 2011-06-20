@@ -4,11 +4,18 @@
  */
 package AI;
 
+import Entities.AIEntity;
+
 /**
  *
- * @author A203946
+ * @author alasdair
  */
-public interface iAIController {
+abstract public class iAIController {
     
-    public void update();
+    protected AIEntity mEntity;
+    public iAIController(AIEntity _entity)
+    {
+        mEntity = _entity;
+    }
+    abstract public void update();
 }

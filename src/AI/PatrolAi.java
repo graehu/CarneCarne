@@ -9,11 +9,11 @@ import Entities.AIEntity;
  *
  * @author Graham
  */
-public class PatrolAi implements iAIController{
+public class PatrolAi extends iAIController{
     
     public PatrolAi(AIEntity _entity)
     {
-        mEntity = _entity;
+        super(_entity);
     }
     
     public void update()

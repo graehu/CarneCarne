@@ -13,19 +13,12 @@
   <image source="Tile1B.png" width="256" height="256"/>
   <tile id="0">
    <properties>
+    <property name="Material" value="Edible"/>
     <property name="Type" value="Block"/>
    </properties>
   </tile>
  </tileset>
- <tileset firstgid="33" name="Tile1C" tilewidth="64" tileheight="64">
-  <image source="Tile1C.png" width="256" height="256"/>
-  <tile id="0">
-   <properties>
-    <property name="Type" value="Block"/>
-   </properties>
-  </tile>
- </tileset>
- <tileset firstgid="49" name="Tile1D" tilewidth="64" tileheight="64">
+ <tileset firstgid="33" name="Tile1D" tilewidth="64" tileheight="64">
   <image source="Tile1D.png" width="256" height="256"/>
   <tile id="0">
    <properties>
@@ -34,15 +27,16 @@
    </properties>
   </tile>
  </tileset>
- <tileset firstgid="65" name="Tile1F" tilewidth="64" tileheight="64">
+ <tileset firstgid="49" name="Tile1F" tilewidth="64" tileheight="64">
   <image source="Tile1F.png" width="256" height="256"/>
   <tile id="0">
    <properties>
-    <property name="Type" value="Block"/>
+    <property name="Material" value="Swim"/>
+    <property name="Type" value="Water"/>
    </properties>
   </tile>
  </tileset>
- <tileset firstgid="81" name="Tile1G" tilewidth="64" tileheight="64">
+ <tileset firstgid="65" name="Tile1G" tilewidth="64" tileheight="64">
   <image source="Tile1G.png" width="256" height="256"/>
   <tile id="0">
    <properties>
@@ -50,7 +44,7 @@
    </properties>
   </tile>
  </tileset>
- <tileset firstgid="97" name="Tile1S" tilewidth="64" tileheight="64">
+ <tileset firstgid="81" name="Tile1S" tilewidth="64" tileheight="64">
   <image source="Tile1S.png" width="256" height="256"/>
   <tile id="0">
    <properties>
@@ -74,7 +68,7 @@
    </properties>
   </tile>
  </tileset>
- <tileset firstgid="113" name="Tile1SB" tilewidth="64" tileheight="64">
+ <tileset firstgid="97" name="Tile1SB" tilewidth="64" tileheight="64">
   <image source="Tile1SB.png" width="256" height="256"/>
   <tile id="0">
    <properties>
@@ -97,7 +91,7 @@
    </properties>
   </tile>
  </tileset>
- <tileset firstgid="129" name="Tile1SC" tilewidth="64" tileheight="64">
+ <tileset firstgid="113" name="Tile1SC" tilewidth="64" tileheight="64">
   <image source="Tile1SC.png" width="256" height="256"/>
   <tile id="0">
    <properties>
@@ -120,12 +114,26 @@
    </properties>
   </tile>
  </tileset>
+ <tileset firstgid="129" name="Tile3" tilewidth="64" tileheight="64">
+  <image source="Tile3.png" width="256" height="256"/>
+  <tile id="0">
+   <properties>
+    <property name="Material" value="Swingable"/>
+    <property name="Type" value="Block"/>
+   </properties>
+  </tile>
+ </tileset>
  <tileset firstgid="145" name="Tile2" tilewidth="64" tileheight="64">
   <image source="Tile2.png" width="192" height="576"/>
   <tile id="0">
    <properties>
     <property name="Material" value="NonEdible"/>
     <property name="Type" value="NonEdible"/>
+   </properties>
+  </tile>
+  <tile id="23">
+   <properties>
+    <property name="Spawn" value="Player"/>
    </properties>
   </tile>
  </tileset>
@@ -141,34 +149,48 @@
  <tileset firstgid="588" name="Sign" tilewidth="64" tileheight="64">
   <image source="Sign.png" width="256" height="256"/>
  </tileset>
- <layer name="Tile Layer 6" width="100" height="100" visible="0">
+ <tileset firstgid="604" name="TileIce" tilewidth="64" tileheight="64">
+  <image source="TileIce.png" width="256" height="512"/>
+  <tile id="0">
+   <properties>
+    <property name="Material" value="Edible"/>
+    <property name="Type" value="Block"/>
+   </properties>
+  </tile>
+ </tileset>
+ <layer name="Tile Layer 6" width="100" height="100">
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAC+3QZayWdRyH8ed+qCmNKEiHoEgrSCjnHDiHOAcnBi0OKUVARoeAjO4YKamMEFTKYQCCNaVDZSAt4VBC6QEKcvnyfn0/r86ua/u8/P63/y8WS0z1glgsCclIQX00QCrS0BCN0BhNkI4MNMXzQfS9hXuBmzTDi3gJL+MVNEcLtEQrtEYbtMWraIfXguh7C9eem7yODuiITuiMLngDb6Ir3kI3dEcPvI2eQfS9hevFTXqjD/qiH/pjAAZiEAbjHQzBUAzDuxgeRN9buBHcZCRGYTTGYCzGYTwmYCImYTKmYCqmYXoQfW/hZnCTmZiF2ZiDuXgP8zAfC7AQi7AY7+MDLAmi7y3cUm6yDMuxAh9iJVbhI3yMT7Aaa7AW67AenwbR9xZuAzf5DJ/jC3yJjdiEzfgKW7AVX+MbfIvv8H0QfW/hfuAmP2IbtmMHdmIXdmMP9mIf9uMn/IxfcCCIvrdwB7nJIfyKwziCoziG4ziBk/gNp3AaZ3AWvwfR9xbuHDf5A3/iPC7gIi7hL/yNy7iCq7iG67iBm0H0vYW7xU1u4w7+wb+4i3v47/97xWOxAHFkQVZkQ3bkiEffW7gHuMmDyIlcyI08yIt8yI8CeAgF8TAeQSEUjkffZ5Ye5S9FUBTFUBwlUBKlUBplUBaPoRzK43E8gQrxxLwRdZ9ZepK/VEQlVEYVVEU1VMdTeBo1UBPPoBZqow7qxhPzRtR9ZulZ/vIc6iEJyUhBfTRAKtLQEI3QGE2Qjgw0jSfmjah7MzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzOLxe4D0A8DnECcAAA=
   </data>
  </layer>
- <layer name="Background2" width="100" height="100" visible="0">
+ <layer name="Background2" width="100" height="100">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC+3X2QqCUBQF0AKbX5qooJGC/v8TO4GCSINZisRasFG43pezr4hJt9NJasg4wufq6EIf1emjXfTRLmVmO43MItf0WsxcHz9TpovJm9n2Y32U2zOI7PVRSfGMTwtn/10XmV08N0yji+/dz/i2xPyPsX4y70YcXsx5GWvryDlySe/v6emmUVkPmyffl5VOGrN80UM+C338zLr7PGW6yN6RR/v5XF3/g4k+KtFHu+ijXfQBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/4wbmXjyVQJwAAA==
+   H4sIAAAAAAAAC+3dy0rDQAAF0CnE96ZqsYJPFPzP/pDgP0gRceEnObUJxpC2adokszgHLglMA8PcGUpWyUYhZB3kNIbtddGFPtrTR1r0kZYmazuOOY95ya/VXOhjb5p0cbZhbQ/j+EnpmaOYO320Ut3j48re39RF4Tb+7jiPLna32OM3Ddb/IY4/Wu9e3K9Z50kcm8Y8xTzn94sc6KZXRQ/XK/5frnTSm8maHsq51MfeTEer06SL4ozUPc/2unofzPTRij7Soo+06CNNsx0C/Kk7F87KcGY199Ur/SmfBX0Mz/kAoA3vhwAAAAAAAAAhvA09Af7RRxrm+bXo43OoifDrK+Y9LPv4iPkedjqEZSevQRcAAAAAAAAAAAAAAAAAAAAwBN+6TIcu0uGbsOnRQXp0AgAA7fwAlImp6UCcAAA=
   </data>
  </layer>
- <layer name="Background1" width="100" height="100" visible="0">
+ <layer name="Background1" width="100" height="100">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC+3Yy0rDQBQG4LEPqKCvWS+Lil15X7h06f1+R0VF3OoJXRiqbYxNm0W+D34IAwOHOZ3OJO2UUrtkFoaE0ZRd+8V6ymyMYb2Yr7GupiraH0zWoD7sRg5rrKupsjMh34et1OtF5rSuohpuL7IfOYh85MYvC+btRJbHVVSDHUWOIyd948P60ZpKaSP19lQnsjKm2proLHIeuegbvy2Yt5S+/+e2qy+rsa4i15Gb3Nh0K6WZ1vB5q8ndeBzuIveRh9zYbPRirqAf+f1hj1TnMfIUeS4zKc6PzfTznqwno3uJvEbeSs7r3x9ZsjP+s9LqmiW7G5X9fXcja2nwu6Q98n+/rWf/O8V77rk7YI7vLNUYtJ6dXNZzz3/9Jg8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEzeF4xvX79AnAAA
+   H4sIAAAAAAAAC+3YyUrDUBQG4FvxxX2fOiwqunJeuHTpPM+oqIhbPaGIIdrU2CFivg9+mt5w4HBvbzO0U0rtipkpCYOpOvez9bTZGGVrMV1jX03Vb38wXr3WYSuyV2NfTZVdE/LrsJ66a5E5qquphtuO7ER2I6+58bM+dZuR+VE11WD7kYPIYWG8bD0mWimtpu6e6kQWRtRbEx1HTiKnhfGrPnVz6fN/bmP4bTXWeeQiclmxbim5Nx6F68hN5LZiXX5/2CPDcxe5jzxUKYrrx1r6ep9sTQb3GHmKPFesK+6PLNk1/m2o3TVLdm9U9fe9GFlOvZ8l7ZHf+24+i88UL7njxR413rMMR6/57OSykjv+6Tt54P+aqrsBAADgX5tslY99d57RKc73x/fiJ+NhPf6WbL4/kh8rOw8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADj8A4e2K59QJwAAA==
   </data>
  </layer>
  <layer name="Level" width="100" height="100">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC+3RuwlAIRAEQC3JDmzG/lt4iYGCn+AJgszAZhcstyEAwH/5dgE66XYBgIlYs1Oa21E4Y/fP1QZ2AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABe9gEj1QKtQJwAAA==
+   H4sIAAAAAAAAC+3Zz06DQBDHcaQXX8eH8Vb/xGhi4lNw8Wzf2BIlIt1dyjLDzg7fTzLx0NbK/NgdwFPTNCfBqkUn9B5p1/bUWx5W5fSTPP4LraPctRXq5VekYp+zmMdn4e+X2uv64+h7/942zWug3trLz1jKobQu8nPN7+vzeD73/Rioh0QeH+1f7Vk3KgmpPI6BNcL6uCR9bfZy7vljpJ4S57/m2kjNhBLXphpufmvO/ei9oRrWztjcTC09cy2K5dFOXo/VIJQHZByan14fFnxmPF8g7zbxWuheYzrzPdriuqVfB3eRGv4G6/d+KZIzaovjTuXh+XliLu3jlHy2u4c8BlrHu+c81t6z1HjM3pGHLeRhyxZ7lpdnQVtghthCHraUyIP9K471YQt55NG6f7WQRzdTFmn1jOvdPDXnMeUhH808sJz2+qj1mWoJmn2i/8uRhz015+Fhfk/VnIdH5GGL9P+lS15Pedy/APjA/gQAkMA8AQBcg3kBoFbsXwAA1If5DaBW7F8ArGJ/AlAz9jAAwFrMkrqQF5CHtaOPHgN55tYOawsAsBazBAAAH5jpAAAJzBMsFTpnOI/gHef4H41e0N96kJUfe5znS45Zqxfee1wSvQUAAFq+AZBx8xVAnAAA
   </data>
  </layer>
- <layer name="Foreground1" width="100" height="100" visible="0">
+ <layer name="Foreground1" width="100" height="100">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC+3Xy0rEMBQG4PRRXbhwMS/jBd2o9TILfUpbaDGTSTsTDFMw3weHhDYtIT+n0BDqeqz8PkJ4HuolqteCZ+VR15jFU3LtLpyfzVIeV9G8m2rtWrewriW5LFJjNmuZ5PLYDXUTDs86HnPW7v1nD1F9n/lMrl/uF97RJRWSebpWf/zN+zQufae6zHwe5565Dr9nv4vWyKPcqTy4rK9Q9q0DuJS3oT6nut14L62Jz36ufXS/32BPrRqz2J9Y8xGO8yrtmfT/ZKlakZ5nrg9K9HW2RSX91hvgQL/1BgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAoGE/VwI2b0CcAAA=
+   H4sIAAAAAAAAC+3U3QqCQBAG0MUHLKg364e6qYzqpqdMMcnEUmlDwXNgYFF3GfZjDCGuXeTzCOGQ1bFSpx575RFXnsW+9mwdumcjj3iasqjLs/mWiTx+s63UveOepnnZ9DyD/zIX4yKP8fCfAsZiloQwT4r1Oavrs1YD9jRF5d0vsiyWSbG+Vd6ng3Q1TXkWt5ZvLuE1K2Ymjvp9ltWWxSdpnLaIJB26Ad6kQzcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAT9gBYIOr0QJwAAA==
   </data>
  </layer>
- <layer name="Foreground2" width="100" height="100" visible="0">
+ <layer name="Foreground2" width="100" height="100">
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAC+3BMQEAAADCoPVP7WULoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgBt5RKnmQJwAAA==
+  </data>
+ </layer>
+ <layer name="Flags" width="100" height="100">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+3OAQ0AAAgDoPdPYkxjfDpIQAIAAL9NOwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJyyRUEbNUCcAAA=
   </data>
  </layer>
 </map>

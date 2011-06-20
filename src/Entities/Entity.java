@@ -16,10 +16,14 @@ abstract public class Entity {
     
     public Body mBody;
     public iSkin mSkin;
+    protected int mWaterHeight;
+    protected int mWaterTiles;
     
     public Entity(iSkin _skin)
     {
         mSkin = _skin;
+        mWaterHeight = 0;
+        mWaterTiles = 0;
     }
     
     abstract public void update();
@@ -28,5 +32,15 @@ abstract public class Entity {
     {
         Vec2 pixelPosition = sWorld.translateToWorld(mBody.getPosition());
         mSkin.render(pixelPosition.x,pixelPosition.y);
+    }
+    
+    public void submerge(int _height)
+    {
+        mWaterHeight = _height;
+        mWaterTiles++;
+    }
+    public void unsubmerge()
+    {
+        mWaterTiles--;
     }
 }
