@@ -23,7 +23,8 @@ public class PlayMode implements iGameMode {
     }
     public void render()
     {
-        sLevel.render();
+        sLevel.renderBackground();
         sWorld.render();
+        sLevel.renderForeground();
     }
 }

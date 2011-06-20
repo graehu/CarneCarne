@@ -126,6 +126,7 @@ public class TongueStateMachine {
                         changeState(State.eSwinging);
                         break;
                     }
+                    case eIce:
                     case eIndestructible:
                     {
                         changeState(State.eRetractingTongue);

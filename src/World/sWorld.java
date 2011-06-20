@@ -43,6 +43,8 @@ public class sWorld {
         eEdibleTiles,
         eNonEdibleTiles,
         eSpatTiles,
+        eWater,
+        eIce,
         eBodyCategoriesMax
     }
     private sWorld()
@@ -70,15 +72,18 @@ public class sWorld {
     {
         Fixture fixture;
         Vec2 start, end;
+        private int collisionMask;
         public TongueCallback(Vec2 _start, Vec2 _end)
         {
             start = _start;
             end = _end;
+            collisionMask = (1 << BodyCategories.eEdibleTiles.ordinal())|
+                    (1 << BodyCategories.eNonEdibleTiles.ordinal())|
+                    (1 << BodyCategories.eIce.ordinal());
         }
         public float reportFixture(Fixture _fixture, Vec2 _p1, Vec2 _p2, float _fraction)
         {
-            if (_fixture.m_filter.categoryBits == (1 << BodyCategories.eEdibleTiles.ordinal())||
-                    _fixture.m_filter.categoryBits == (1 << BodyCategories.eNonEdibleTiles.ordinal()))
+            if ((_fixture.m_filter.categoryBits & collisionMask) != 0)
             {
                 RayCastInput input = new RayCastInput();
                 input.p1.x = start.x;
@@ -141,6 +146,7 @@ public class sWorld {
         {
             case eSwingable:
             case eEdible:
+            case eIce:
             {
                 mWorld.destroyBody(callback.getFixture().m_body);
                 sLevel.destroyTile((int)callback.getFixture().m_body.getPosition().x, (int)callback.getFixture().m_body.getPosition().y);

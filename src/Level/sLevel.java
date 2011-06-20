@@ -20,15 +20,19 @@ public class sLevel {
         eSwingable,
         eIndestructible,
         eWater,
-        eTypeTypesMax
+        eIce,
+        eTypeTypesMax,
     }
     public TileType getTileType(int _id)
     {
         return mLevelEditor.getTileType(_id);
     }
+    private static float mParralaxXScale[];
+    private static float mParralaxYScale[];
     private static TiledMap mTiledMap;
     private static LevelEditor mLevelEditor;
-    private static int layerIndex;   
+    private static int layerIndex;  
+    private static int midLayer; 
     private enum PathInfo
     {
         eNotPassable,
@@ -59,6 +63,14 @@ public class sLevel {
     {
         mTiledMap = new TiledMap("assets/Test_map3ready.tmx");
         mLevelEditor = new LevelEditor(mTiledMap);
+        midLayer = mTiledMap.getLayerIndex("Level");
+        mParralaxXScale = new float[mTiledMap.getLayerCount()];
+        mParralaxYScale = new float[mTiledMap.getLayerCount()];
+        for (int i = 0; i < mParralaxXScale.length; i++)
+        {
+            mParralaxXScale[i] = new Float(mTiledMap.getLayerProperty(i, "ScaleX", "1.0"));
+            mParralaxYScale[i] = new Float(mTiledMap.getLayerProperty(i, "ScaleY", "1.0"));
+        }
     }
     public static void destroyTile(int _x, int _y)
     {
@@ -68,9 +80,26 @@ public class sLevel {
     {
         mLevelEditor.update();
     }
-    public static void render()
+    public static void renderBackground()
     {
         Vec2 translation = sWorld.getPixelTranslation();
-        mTiledMap.render((int)translation.x,(int)translation.y);
+        for (int i = 0; i < midLayer; i++)
+        {
+            Vec2 myTranslation = translation;
+            myTranslation.x = myTranslation.x *(mParralaxXScale[i]);
+            myTranslation.y = myTranslation.y *(mParralaxYScale[i]);
+            mTiledMap.render((int)myTranslation.x,(int)myTranslation.y, 0,0, 20,20, i, false);
+        }
+    }
+    public static void renderForeground()
+    {
+        Vec2 translation = sWorld.getPixelTranslation();
+        for (int i = midLayer; i < mTiledMap.getLayerCount(); i++)
+        {
+            Vec2 myTranslation = translation;
+            myTranslation.x = myTranslation.x *(mParralaxXScale[i]);
+            myTranslation.y = myTranslation.y *(mParralaxYScale[i]);
+            mTiledMap.render((int)myTranslation.x,(int)myTranslation.y, 0,0, 20,20, i, false);
+        }
     }
 }

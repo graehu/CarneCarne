@@ -17,10 +17,15 @@ import Level.sLevel;
 import World.sWorld;
 import de.matthiasmann.twl.Button;
 import org.jbox2d.common.Vec2;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
+import org.newdawn.slick.ShapeFill;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.fills.GradientFill;
+import org.newdawn.slick.geom.Rectangle;
+import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
 
 /**
@@ -92,7 +97,11 @@ public class StateGame extends BasicTWLGameState {
         mGameMode.update(delta);
     }
     
-    public void render(GameContainer _gc, StateBasedGame _sbg, Graphics _grphcs) throws SlickException {
+    public void render(GameContainer _gc, StateBasedGame _sbg, Graphics _grphcs) throws SlickException
+    {
+        ShapeFill fill = new GradientFill(new Vector2f(0,0), new Color(159,111,89), new Vector2f(800,600), new Color(186, 160, 149), false);
+        Rectangle shape = new Rectangle(0,0, 800, 600);
+        _gc.getGraphics().fill(shape, fill);
         mGameMode.render();
     }
 
