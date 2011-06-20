@@ -26,7 +26,7 @@ public class sLevel {
     {
         return mLevelEditor.getTileType(_id);
     }
-    private static TiledMap mTiledMap;
+    private static AnimatedTiledMap mTiledMap;
     private static LevelEditor mLevelEditor;
     private static int layerIndex;   
     private enum PathInfo
@@ -57,7 +57,8 @@ public class sLevel {
     }
     public static void init() throws SlickException
     {
-        mTiledMap = new TiledMap("assets/Test_map3ready.tmx");
+        mTiledMap = new AnimatedTiledMap("assets/Test_map3ready.tmx");
+        mTiledMap.initAnimationlayer("assets/splashbig.def");
         mLevelEditor = new LevelEditor(mTiledMap);
     }
     public static void destroyTile(int _x, int _y)
@@ -71,6 +72,7 @@ public class sLevel {
     public static void render()
     {
         Vec2 translation = sWorld.getPixelTranslation();
-        mTiledMap.render((int)translation.x,(int)translation.y);
+        mTiledMap.render((int)translation.x,(int)translation.y,0,0,20,20);
+        mTiledMap.renderAnimatedLayer(translation.x,translation.y,800.0f,600.0f);
     }
 }

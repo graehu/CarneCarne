@@ -54,7 +54,8 @@ public class TongueStateMachine {
     private sLevel.TileType extendTongue(boolean _grabBlock)
     {
         mAIController.mEntity.mSkin.startAnim("tng", false, 0.0f);
-        Vec2 direction = position.sub(mAIController.mEntity.mBody.getPosition());
+         //constant offset required due to offset applied during player creation
+        Vec2 direction = position.sub(new Vec2(0.5f,0.5f)).sub(mAIController.mEntity.mBody.getPosition());
         direction.normalize();
         setTongue(direction, ((float)currentStateTimer/(float)tongueFiringTimeout)*tongueLength);
         direction = direction.mul(((float)currentStateTimer/(float)tongueFiringTimeout)*tongueLength);
@@ -100,7 +101,6 @@ public class TongueStateMachine {
                 angle = (float) ((2*Math.PI) - angle);
         mAIController.mEntity.mSkin.setRotation("tng", 180 + (angle*(180.0f/(float)Math.PI)));
     }
-    boolean mIsTongueActive = false;
     public void tick(AIEntity _entity)
     {
         
@@ -470,6 +470,7 @@ public class TongueStateMachine {
             }
         }
     }
+    boolean mIsTongueActive = false;
     private void changeState(State _state)
     {
         switch (_state)
@@ -593,6 +594,12 @@ public class TongueStateMachine {
             }
             case eSwinging:
             {
+                if(mIsTongueActive == false)
+                {
+                    //render tongue
+                    mAIController.mEntity.mSkin.startAnim("tng", false, 0.0f);
+                    mIsTongueActive = true;
+                }
                 Vec2 direction = position.sub(mAIController.mEntity.mBody.getPosition());
                 direction.normalize();
                 setTongue(direction, ((float)currentStateTimer/(float)tongueFiringTimeout)*tongueLength);

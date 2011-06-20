@@ -4,9 +4,7 @@
 
 package main;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Set;
@@ -50,6 +48,8 @@ public class NativeLibLoader {
                 //supported OS, set lib path
                 String libDir = curDir + "/lib/" + libPaths.get(i);
                 String oldDir = System.setProperty(sysProp, libDir);
+                //URL temp = Thread.currentThread().getContextClassLoader().getResource(libPaths.get(i));
+                //String oldDir = System.setProperty(sysProp, temp.toString());
                 return;
             }
         }
