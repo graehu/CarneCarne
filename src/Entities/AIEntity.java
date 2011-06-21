@@ -32,7 +32,7 @@ public class AIEntity extends Entity {
     public void update()
     {
         //apply gravity
-        mBody.applyLinearImpulse(new Vec2(0,2.0f*mBody.getMass()), new Vec2(0,0));
+        //mBody.applyLinearImpulse(new Vec2(0,2.0f*mBody.getMass()), new Vec2(0,0));
         if (mWaterTiles != 0)
         {
             float height = 1.0f-(mWaterHeight - mBody.getPosition().y);

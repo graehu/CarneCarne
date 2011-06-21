@@ -5,6 +5,7 @@
 package World;
 
 import Level.sLevel;
+import Level.sLevel.TileType;
 import World.sWorld.BodyCategories;
 import java.util.HashMap;
 import org.jbox2d.collision.shapes.PolygonShape;
@@ -27,10 +28,16 @@ public class TileFactory implements iPhysicsFactory {
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(0.5f, 0.5f);
         FixtureDef fixture = new FixtureDef();
-        fixture.shape = shape;
         fixture.filter.groupIndex = tileType.ordinal();
         fixture.filter.categoryBits = (1 << BodyCategories.eEdibleTiles.ordinal());
         fixture.filter.maskBits = Integer.MAX_VALUE;
+        if (tileType.equals(TileType.eIce))
+        {
+            fixture.friction = 0.001f;
+            fixture.filter.categoryBits = (1 << BodyCategories.eIce.ordinal());
+            fixture.filter.maskBits = Integer.MAX_VALUE;
+        }
+        fixture.shape = shape;
         BodyDef def = new BodyDef();
         //def.userData = _entity;
         def.position = new Vec2((position.x),(position.y));

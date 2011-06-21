@@ -34,8 +34,7 @@ class WaterTileFactory implements iPhysicsFactory
         FixtureDef fixture = new FixtureDef();
         fixture.shape = shape;
         fixture.isSensor = true;
-        fixture.filter.groupIndex = tileType.ordinal();
-        fixture.filter.categoryBits = (1 << BodyCategories.eEdibleTiles.ordinal());
+        fixture.filter.categoryBits = (1 << BodyCategories.eWater.ordinal());
         fixture.filter.maskBits = Integer.MAX_VALUE;
         fixture.userData = highestSurface;
         BodyDef def = new BodyDef();

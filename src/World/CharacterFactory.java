@@ -35,8 +35,8 @@ class CharacterFactory implements iPhysicsFactory {
         CircleShape wheelShape = new CircleShape();
         FixtureDef circleFixture = new FixtureDef();
         wheelShape.m_radius = 0.45f;
-        circleFixture.density = 1;
-        circleFixture.friction = 500;
+        circleFixture.density = 4;
+        circleFixture.friction = 50;
         circleFixture.filter.categoryBits = (1 << category.ordinal());
         circleFixture.filter.maskBits = Integer.MAX_VALUE;
         circleFixture.shape = wheelShape;
