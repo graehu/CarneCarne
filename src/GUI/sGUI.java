@@ -4,7 +4,7 @@
  */
 package GUI;
 
-import TWL.RootPane;
+import GUI.TWL.RootPane;
 import de.matthiasmann.twl.Button;
 import de.matthiasmann.twl.ScrollPane;
 import de.matthiasmann.twl.SimpleDialog;

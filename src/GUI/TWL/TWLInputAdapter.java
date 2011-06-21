@@ -1,4 +1,4 @@
-package TWL;
+package GUI.TWL;
 
 /*
  * Copyright (c) 2008-2011, Matthias Mann
