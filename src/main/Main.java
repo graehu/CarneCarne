@@ -43,7 +43,7 @@ public class Main extends TWLStateBasedGame
     @Override
     protected URL getThemeURL() {
         //boolean does = ResourceLoader.resourceExists("data/ui/simple.xml");
-        URL magic = ResourceLoader.getResource("ui/simple.xml");
+        URL magic = Thread.currentThread().getContextClassLoader().getResource("ui/simple.xml");
         return magic;
     }
 

@@ -39,8 +39,26 @@ public class PlayerFactory implements iEntityFactory {
                     "tng", "tngend") /*Tongue*/);
             iSkin skin = sSkinFactory.create("character", animDef);
             skin.startAnim("e", false, 0.0f);
-            skin.startAnim("me", false, 0.0f);
             skin.setOffset("tng", new Vec2(32,32));
+            
+            //face offsets - UGLY!!!
+            skin.setOffset("n", new Vec2(-9,0));
+            skin.setOffset("nne", new Vec2(-9,0));
+            skin.setOffset("ne", new Vec2(-9,0));
+            skin.setOffset("nee", new Vec2(-9,0));
+            skin.setOffset("e", new Vec2(-9,0));
+            skin.setOffset("see", new Vec2(-9,0));
+            skin.setOffset("se", new Vec2(-9,0));
+            skin.setOffset("sse", new Vec2(-9,0));
+            skin.setOffset("s", new Vec2(-9,0));
+            skin.setOffset("ssw", new Vec2(-9,0));
+            skin.setOffset("sw", new Vec2(-9,0));
+            skin.setOffset("sww", new Vec2(-9,0));
+            skin.setOffset("w", new Vec2(-9,0));
+            skin.setOffset("nww", new Vec2(-9,0));
+            skin.setOffset("nw", new Vec2(-9,0));
+            skin.setOffset("nnw", new Vec2(-9,0));
+
             AIEntity entity = new AIEntity(skin);
             HashMap parameters = new HashMap();
             parameters.put("position", position);

@@ -136,7 +136,7 @@ public class StateGame extends BasicTWLGameState {
             }
         });
         myRootPane.add(btn);
-
+               
         // return the root pane so that it is available for getRootPane()
         return myRootPane;
     }

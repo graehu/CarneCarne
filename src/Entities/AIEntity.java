@@ -17,21 +17,22 @@ import org.jbox2d.dynamics.joints.RevoluteJoint;
  */
 public class AIEntity extends Entity {
     iAIController mController;
-    boolean canJump;
-    int turnThisFrame;
-    int jumpTimer;
-    static int jumpReload = 60; /// NOTE frame rate change
+    boolean mCanJump;
+    int mTurnThisFrame;
+    int mJumpTimer;
+    static int mJumpReload = 60; /// NOTE frame rate change
     public RevoluteJoint mJoint;
     public AIEntity(iSkin _skin)
     {
         super(_skin);
-        canJump = false;
-        jumpTimer = 0;
-        turnThisFrame = jumpReload;
+        mCanJump = false;
+        mJumpTimer = 0;
+        mTurnThisFrame = mJumpReload;
     }
     public void update()
     {
-        //dmBody.applyLinearImpulse(new Vec2(0,1.0f*mBody.getMass()), new Vec2(0,0));
+        //apply gravity
+        //mBody.applyLinearImpulse(new Vec2(0,2.0f*mBody.getMass()), new Vec2(0,0));
         if (mWaterTiles != 0)
         {
             float height = 1.0f-(mWaterHeight - mBody.getPosition().y);
@@ -39,15 +40,18 @@ public class AIEntity extends Entity {
             {
                 height = 1.0f;
             }
-            mBody.applyLinearImpulse(new Vec2(0,-1.0f*height), new Vec2(0,0));
+            //while traveling downwards
+            Vec2 velocity = mBody.getLinearVelocity();
+            //velocity.normalize();
+            mBody.applyLinearImpulse(new Vec2(0,-3.0f*height), new Vec2(0,0));
         }
-        if (jumpTimer != 0)
+        if (mJumpTimer != 0)
         {
-            jumpTimer--;
+            mJumpTimer--;
         }
         
         ContactEdge edge = mBody.m_contactList;
-        canJump = false;
+        mCanJump = false;
         while (edge != null)
         {
             Body body = edge.other;
@@ -56,36 +60,36 @@ public class AIEntity extends Entity {
             {
                 if (body.getPosition().y > mBody.getPosition().y)
                 {
-                    canJump = true;
+                    mCanJump = true;
                     break;
                 }
             }
             edge = edge.next;
         }
-        if (turnThisFrame == 0)
+        if (mTurnThisFrame == 0)
             mJoint.m_motorSpeed = 0.0f;
-        else turnThisFrame = 0;
+        else mTurnThisFrame = 0;
         mController.update();
     }
     public void walkLeft()
     {
         mBody.applyLinearImpulse(new Vec2(-0.1f,0), new Vec2(0,0));
         mJoint.m_motorSpeed = 10.0f;
-        turnThisFrame = 1000;
+        mTurnThisFrame = 1000;
     }
     public void walkRight()
     {
         mBody.applyLinearImpulse(new Vec2(0.1f,0), new Vec2(0,0));
         mJoint.m_motorSpeed = -10.0f;
-        turnThisFrame = 1000;
+        mTurnThisFrame = 1000;
     }
     public void jump()
     {
-        if (canJump && jumpTimer == 0)
+        if (mCanJump && mJumpTimer == 0)
         {
             mBody.applyLinearImpulse(new Vec2(0,-30.0f), new Vec2(0,0));
-            canJump = false;
-            jumpTimer = jumpReload;
+            mCanJump = false;
+            mJumpTimer = mJumpReload;
         }
     }
     public void crouch()

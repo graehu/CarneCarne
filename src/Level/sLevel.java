@@ -29,7 +29,7 @@ public class sLevel {
     }
     private static float mParralaxXScale[];
     private static float mParralaxYScale[];
-    private static TiledMap mTiledMap;
+    private static AnimatedTiledMap mTiledMap;
     private static LevelEditor mLevelEditor;
     private static int layerIndex;  
     private static int midLayer; 
@@ -61,7 +61,8 @@ public class sLevel {
     }
     public static void init() throws SlickException
     {
-        mTiledMap = new TiledMap("assets/Test_map3ready.tmx");
+        mTiledMap = new AnimatedTiledMap("assets/Test_map3ready.tmx");
+        mTiledMap.initAnimationlayer("assets/splashbig.def");
         mLevelEditor = new LevelEditor(mTiledMap);
         midLayer = mTiledMap.getLayerIndex("Level");
         mParralaxXScale = new float[mTiledMap.getLayerCount()];
@@ -101,5 +102,6 @@ public class sLevel {
             myTranslation.y = myTranslation.y *(mParralaxYScale[i]);
             mTiledMap.render((int)myTranslation.x,(int)myTranslation.y, 0,0, 20,20, i, false);
         }
+        mTiledMap.renderAnimatedLayer(translation.x,translation.y,800.0f,600.0f);
     }
 }
