@@ -21,7 +21,11 @@ public class sLevel {
         eIndestructible,
         eWater,
         eIce,
-        eTypeTypesMax,
+        eBouncy,
+        eGum,
+        eTar,
+        eWaterMelon,
+        eTileTypesMax,
     }
     public TileType getTileType(int _id)
     {
@@ -33,6 +37,7 @@ public class sLevel {
     private static LevelEditor mLevelEditor;
     private static int layerIndex;  
     private static int midLayer; 
+    private static int xTiles, yTiles;
     private enum PathInfo
     {
         eNotPassable,
@@ -47,7 +52,7 @@ public class sLevel {
         return 1; //just incase we want to make tiles smaller than a meter.
     }
     
-    public static PathInfo getPathInfo(int _xTile, int _yTile)
+    static PathInfo getPathInfo(int _xTile, int _yTile)
     {
         int id = mTiledMap.getTileId(_xTile, _yTile, layerIndex);
         if (id == 0)
@@ -63,6 +68,8 @@ public class sLevel {
     {
         mTiledMap = new AnimatedTiledMap("assets/Test_map3ready.tmx");
         mTiledMap.initAnimationlayer("assets/splashbig.def");
+        xTiles = (int)(800.0f/64.0f)+2;
+        yTiles = (int)(800.0f/64.0f)+2;
         mLevelEditor = new LevelEditor(mTiledMap);
         midLayer = mTiledMap.getLayerIndex("Level");
         mParralaxXScale = new float[mTiledMap.getLayerCount()];
@@ -72,6 +79,10 @@ public class sLevel {
             mParralaxXScale[i] = new Float(mTiledMap.getLayerProperty(i, "ScaleX", "1.0"));
             mParralaxYScale[i] = new Float(mTiledMap.getLayerProperty(i, "ScaleY", "1.0"));
         }
+    }
+    public static void placeTile(int _x, int _y, TileType _tileType)
+    {
+        mLevelEditor.placeTile(_x, _y, _tileType);
     }
     public static void destroyTile(int _x, int _y)
     {
@@ -89,7 +100,13 @@ public class sLevel {
             Vec2 myTranslation = translation;
             myTranslation.x = myTranslation.x *(mParralaxXScale[i]);
             myTranslation.y = myTranslation.y *(mParralaxYScale[i]);
-            mTiledMap.render((int)myTranslation.x,(int)myTranslation.y, 0,0, 20,20, i, false);
+            int xStart = -(int)(myTranslation.x/64.0f);
+            int yStart = -(int)(myTranslation.y/64.0f);
+            int transX = (int)myTranslation.x;
+            int transY = (int)myTranslation.y;
+            transX = transX % 64;
+            transY = transY % 64;
+            mTiledMap.render(transX,transY, xStart,yStart, xStart+xTiles,yStart+yTiles, i, false);
         }
     }
     public static void renderForeground()
@@ -100,7 +117,13 @@ public class sLevel {
             Vec2 myTranslation = translation;
             myTranslation.x = myTranslation.x *(mParralaxXScale[i]);
             myTranslation.y = myTranslation.y *(mParralaxYScale[i]);
-            mTiledMap.render((int)myTranslation.x,(int)myTranslation.y, 0,0, 20,20, i, false);
+            int xStart = -(int)(myTranslation.x/64.0f);
+            int yStart = -(int)(myTranslation.y/64.0f);
+            int transX = (int)myTranslation.x;
+            int transY = (int)myTranslation.y;
+            transX = transX % 64;
+            transY = transY % 64;
+            mTiledMap.render(transX,transY, xStart,yStart, xStart+xTiles,yStart+yTiles, i, false);
         }
         mTiledMap.renderAnimatedLayer(translation.x,translation.y,800.0f,600.0f);
     }

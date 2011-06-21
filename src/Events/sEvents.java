@@ -6,6 +6,7 @@ package Events;
 
 import java.lang.String;
 import java.util.Hashtable;
+import java.util.Stack;
 import main.sLog;
 /**
  *
@@ -14,6 +15,7 @@ import main.sLog;
 public class sEvents {
     
     private static Hashtable mTable;
+    private static Stack<iEvent> delayedEvents;
     private sEvents()
     {
         
@@ -21,6 +23,7 @@ public class sEvents {
     public static void init()
     {
         mTable = new Hashtable();
+        delayedEvents = new Stack<iEvent>();
     }
     
     public static void subscribeToEvent(String _eventName, iEventListener _listener)
@@ -39,6 +42,17 @@ public class sEvents {
             sLog.error("Listener was not registered");
         }
     }
+    public static void triggerDelayedEvent(iEvent _event)
+    {
+        delayedEvents.add(_event);
+    }
+    public static void processEvents()
+    {
+        while (!delayedEvents.isEmpty())
+        {
+            triggerEvent(delayedEvents.pop());
+        }
+    }
     public static void triggerEvent(iEvent _event)
     {
         iEventListener listener = (iEventListener)mTable.get(_event.getName());
@@ -46,5 +60,6 @@ public class sEvents {
         {
             listener.trigger(_event);
         }
+        _event.process();
     }
 }

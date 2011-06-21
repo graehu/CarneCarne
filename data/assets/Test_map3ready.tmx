@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" width="100" height="100" tilewidth="64" tileheight="64">
- <tileset firstgid="1" name="WaterTile" tilewidth="64" tileheight="64">
-  <image source="WaterTile.png" width="64" height="256"/>
+ <tileset firstgid="1" name="Gum" tilewidth="64" tileheight="64">
+  <image source="Gum.png" width="256" height="256"/>
   <tile id="0">
    <properties>
-    <property name="Material" value="Swim"/>
-    <property name="Type" value="Water"/>
+    <property name="Material" value="Gum"/>
+    <property name="Type" value="Block"/>
    </properties>
   </tile>
  </tileset>
- <tileset firstgid="5" name="AcidTile" tilewidth="64" tileheight="64">
-  <image source="AcidTile.png" width="64" height="256"/>
+ <tileset firstgid="17" name="Tar" tilewidth="64" tileheight="64">
+  <image source="Tar.png" width="256" height="256"/>
   <tile id="0">
    <properties>
-    <property name="Material" value="Acid"/>
-    <property name="Type" value="Water"/>
+    <property name="Material" value="Tar"/>
+    <property name="Type" value="Block"/>
    </properties>
   </tile>
  </tileset>
- <tileset firstgid="9" name="Tile1A" tilewidth="64" tileheight="64">
+ <tileset firstgid="33" name="Tile1A" tilewidth="64" tileheight="64">
   <image source="Tile1A.png" width="256" height="256"/>
   <tile id="0">
    <properties>
@@ -27,16 +27,34 @@
    </properties>
   </tile>
  </tileset>
- <tileset firstgid="25" name="Tile1B" tilewidth="64" tileheight="64">
+ <tileset firstgid="49" name="WaterTile" tilewidth="64" tileheight="64">
+  <image source="WaterTile.png" width="64" height="256"/>
+  <tile id="0">
+   <properties>
+    <property name="Material" value="Swim"/>
+    <property name="Type" value="Water"/>
+   </properties>
+  </tile>
+ </tileset>
+ <tileset firstgid="53" name="AcidTile" tilewidth="64" tileheight="64">
+  <image source="AcidTile.png" width="64" height="256"/>
+  <tile id="0">
+   <properties>
+    <property name="Material" value="Acid"/>
+    <property name="Type" value="Water"/>
+   </properties>
+  </tile>
+ </tileset>
+ <tileset firstgid="57" name="Tile1B" tilewidth="64" tileheight="64">
   <image source="Tile1B.png" width="256" height="256"/>
   <tile id="0">
    <properties>
-    <property name="Material" value="Edible"/>
+    <property name="Material" value="WaterMelon"/>
     <property name="Type" value="Block"/>
    </properties>
   </tile>
  </tileset>
- <tileset firstgid="41" name="Tile1C" tilewidth="64" tileheight="64">
+ <tileset firstgid="73" name="Tile1C" tilewidth="64" tileheight="64">
   <image source="Tile1C.png" width="256" height="256"/>
   <tile id="0">
    <properties>
@@ -45,16 +63,16 @@
    </properties>
   </tile>
  </tileset>
- <tileset firstgid="57" name="Tile1D" tilewidth="64" tileheight="64">
+ <tileset firstgid="89" name="Tile1D" tilewidth="64" tileheight="64">
   <image source="Tile1D.png" width="256" height="256"/>
   <tile id="0">
    <properties>
-    <property name="Material" value="Swingable"/>
+    <property name="Material" value="Bouncy"/>
     <property name="Type" value="Block"/>
    </properties>
   </tile>
  </tileset>
- <tileset firstgid="73" name="TileIce" tilewidth="64" tileheight="64">
+ <tileset firstgid="105" name="TileIce" tilewidth="64" tileheight="64">
   <image source="TileIce.png" width="256" height="512"/>
   <tile id="0">
    <properties>
@@ -63,23 +81,25 @@
    </properties>
   </tile>
  </tileset>
- <tileset firstgid="105" name="Tile1F" tilewidth="64" tileheight="64">
+ <tileset firstgid="137" name="Tile1F" tilewidth="64" tileheight="64">
   <image source="Tile1F.png" width="256" height="256"/>
   <tile id="0">
    <properties>
+    <property name="Material" value="Gum"/>
     <property name="Type" value="Block"/>
    </properties>
   </tile>
  </tileset>
- <tileset firstgid="121" name="Tile1G" tilewidth="64" tileheight="64">
+ <tileset firstgid="153" name="Tile1G" tilewidth="64" tileheight="64">
   <image source="Tile1G.png" width="256" height="256"/>
   <tile id="0">
    <properties>
+    <property name="Material" value="Edible"/>
     <property name="Type" value="Block"/>
    </properties>
   </tile>
  </tileset>
- <tileset firstgid="137" name="Tile1S" tilewidth="64" tileheight="64">
+ <tileset firstgid="169" name="Tile1S" tilewidth="64" tileheight="64">
   <image source="Tile1S.png" width="256" height="256"/>
   <tile id="0">
    <properties>
@@ -103,7 +123,7 @@
    </properties>
   </tile>
  </tileset>
- <tileset firstgid="153" name="Tile1SB" tilewidth="64" tileheight="64">
+ <tileset firstgid="185" name="Tile1SB" tilewidth="64" tileheight="64">
   <image source="Tile1SB.png" width="256" height="256"/>
   <tile id="0">
    <properties>
@@ -126,7 +146,7 @@
    </properties>
   </tile>
  </tileset>
- <tileset firstgid="169" name="Tile1SC" tilewidth="64" tileheight="64">
+ <tileset firstgid="201" name="Tile1SC" tilewidth="64" tileheight="64">
   <image source="Tile1SC.png" width="256" height="256"/>
   <tile id="0">
    <properties>
@@ -149,7 +169,7 @@
    </properties>
   </tile>
  </tileset>
- <tileset firstgid="185" name="Tile3" tilewidth="64" tileheight="64">
+ <tileset firstgid="217" name="Tile3" tilewidth="64" tileheight="64">
   <image source="Tile3.png" width="256" height="256"/>
   <tile id="0">
    <properties>
@@ -158,7 +178,7 @@
    </properties>
   </tile>
  </tileset>
- <tileset firstgid="201" name="Tile2" tilewidth="64" tileheight="64">
+ <tileset firstgid="233" name="Tile2" tilewidth="64" tileheight="64">
   <image source="Tile2.png" width="192" height="576"/>
   <tile id="0">
    <properties>
@@ -172,23 +192,13 @@
    </properties>
   </tile>
  </tileset>
- <tileset firstgid="228" name="Tile1back" tilewidth="64" tileheight="64">
+ <tileset firstgid="260" name="Tile1back" tilewidth="64" tileheight="64">
   <image source="Tile1back.png" width="256" height="1408"/>
  </tileset>
- <tileset firstgid="316" name="Tile2back" tilewidth="64" tileheight="64">
+ <tileset firstgid="348" name="Tile2back" tilewidth="64" tileheight="64">
   <image source="Tile2back.png" width="192" height="832"/>
  </tileset>
- <tileset firstgid="299" name="back" tilewidth="64" tileheight="64">
-  <image source="back.png" width="1088" height="1088"/>
-  <tile id="0">
-   <properties>
-    <property name="animRef" value="splash"/>
-    <property name="duration" value="100"/>
-    <property name="maxTimeOffset" value="2000"/>
-   </properties>
-  </tile>
- </tileset>
- <tileset firstgid="355" name="Sign" tilewidth="64" tileheight="64">
+ <tileset firstgid="387" name="Sign" tilewidth="64" tileheight="64">
   <image source="Sign.png" width="256" height="256"/>
  </tileset>
  <layer name="Background2" width="100" height="100">
@@ -196,7 +206,7 @@
    <property name="ScaleX" value="0.2"/>
   </properties>
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC+3dW0rDQBiA0VR8cFHx/lK1WMErCu6zGxLcg4gTSDCGpE1jkxnxHPhJIC2U+TK0hULzWZblI8xZGLY3Rgs9htMjLXqkpc/azsNchHktj8251GNn+rQ437C2R+H6ae05x2Hu9RikeY/PG/f+phaVu/C4k3K0+L3iHr/tsf6P4fqT9Z7Ew5p1XoRryzDPYV7K82IOtZlU1eGm4/3lWpPJLNZ0qM+VHjuznHVPnxbVHml7Ptsb6/tgrscgeqRFj7To8XetOgb41rYv7JV4Vi3nzSPTqe8FPeKzPwAYout7oc+8AAAAAAAAwH/yHvsF8IMeafgsj1WPPb/vj2o/rP9HVvYI5wd6RFc0ecu0AAAAAAAAAAAAAAAAAAAAgBj812U6tEiH/4RNjwbp0QQAAIb5AqDyOjNAnAAA
+   H4sIAAAAAAAAC+3d3UrCYBjAcXcSdA8RER10Uev7xEoy6EsKuk/vpkfaSMamc+n2Rr8fPDiYnrz/vehAWJ6NRvkO5jqGze2ihR7d6ZEWPdLSZm3HMbcxn8Vrde702Jo2LW7WrO15nL9a+sxFzIsenVSv8XHl2l/XovQc77ssRovfW1zjTy3W/y3Oz6x3L15XrPMkzk1j3mM+iuPFnGnTq7LDY8P3y4MmvZms6LA893pszTRrnjYtyj1S93k2t6v7wVyPTvRIix5p0ePvmjcM8KNuX9grw5nXHFdf6c/yXtBjePYHAF003Rf6zQsAAAAAAAD8J/v+t5wUPdJwWHQoexzrMqiTWP+D7LvHUcypHoNbNNnTAgAAAAAAAAAAAAAAAAAAAAbhWZfp0CIdngmbHg3SowkAAHTzBaQxYRtAnAAA
   </data>
  </layer>
  <layer name="Background1" width="100" height="100">
@@ -205,22 +215,22 @@
    <property name="ScaleY" value="0.9"/>
   </properties>
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC+3YyUrDUBQG4NudS+d5RkVF3Crii/s+TgtFV84LT5BiiB2MbRppvg9+2ua2cDknt7nJZUrpsmSue4TBlK39TT3TbIxevbiqcV5N1W99MFrd+jDRSmmmVefMmim7JuT78J6+epFZ0I9aTEbdpyLTkeNcD1b69SPG7yudWTPNRl3nIvOF+vfqx1mMvaavNXUXeahwfk2zGLVdiiwX6r/RZ33cpu//uY+K5tZEq1H3tch6yevFU7I3rsJm9GErsl2yH/n1YY0Mz070YTeyV6Ifp/Hdt/Rzn6wng9uP2h5EDgdcH1mya/yJffKfZXujsuf3Y+Q5db+XtEb+rlM9i/cUR7nz/bHLbzxnGY5u9bzL5SX3/rfP5IHxdVH3BAAAgLF23uE5aP5Yp3GqU6x3+3PxldHQj/8lq3c7+WO9xgEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGAUPgHLGqA3QJwAAA==
+   H4sIAAAAAAAAC+3YyUrDYBQG0Aq1uqjYlfPCpUvneUZFRdwq4ov7Nt5CCyGkiWnSVMo5cGkzLMr39W+TtOdarXbJ6eQM1ZTNfkHmE5XXxbzsG1e0PmjWqB52Yg700bhOqofNQRd9J/qYit3IfS9mP+Y90cFFQR/bcXxJZ7U7jEyPYo5T2eb18RXH1gdrqhuzrJfanEaWZzHnqUxvCjJeTPzObemjNpeR5VXMdclMV1wbT8RtZHkXc18y0+T6sEbq8xA5PsY8lcjzM87dyLhO1kl1z5HhS8xrxfXRHvzHf+hkbN0xvt+9OGc1557eGhlfVp7pe4q3xHav4PmK5yzVjMqzm5i1xPu/PpMHZtfPtD8AAAAw074znisk92UdZ3LSeQ+30680Qx//Sz/v4ST35R0HAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAJvwCuBR3q0CcAAA=
   </data>
  </layer>
  <layer name="Level" width="100" height="100">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC+3ZTW6DMBCGYfor9Ug9Qo7MpuvmVhVSURxkG9vMwHj8PtKomwbEfNgDyX2aprtg9WIW+h9ppT31lodVLf0kj2exddS6tmK9/E1U6nMW8/i5+PxH8gitvb9lau8YI5sTf0ttezn/Vy6Pba3HyGU2kjmoWrF7uzUPPEjtV6HSPLaf0ZKbCVc8m2pY8vhq/Gy4JmPZ7M3Uq2euRUfyCDE3ZEjt/cxyGev6COslqNT8XuojqL1nYg/OeG5ZzvGaqdy7+GekrGUhOaPOeOddjv+WqdLvray9n2vRvs5YT9+DIo84resdOY+j7yxnXPN3osLz956DpJGv3SLysOWM/cHLd0FnGH2/toY8bLkiD/avNNaHLeTRRuu9yUIe805ZpNUznnfb9JzHlod8NPNAPe31wXd55TT7RP/rkYc9PefhYX5v9ZyHR+RhS+3vzpZ/o/a4fwHwgf0JACCBeQIAKMG8ANAr9i8AAPrD/AbQK/YvAFaxPwHoGXsYAOAoZklfyAtow9rRR4+BNntrh7UFADiKWQIAgA/MdACABOYJasXuGe4jeMc9/qDRC/rbD7LyY8R5XnPNWr3w3uMr0VsAAKDlD0WLwbxAnAAA
+   H4sIAAAAAAAAC+3Zb26DMAyHYXqEHWFH2P+z7Ag7Ml/2edxiQhpqFjkQQgyO8z6SNanqqPCPxNBOwzBMFasVY6X31JbbU295WFXST/L4T1pHpWtL6uVPolL/ZzGP74s//0geoaX3Xyu1dYyejYm/ueJejhnHiPOZhNd7Ng55fZRI13Z8nJvwHikP3NXar0I3oRaptaC5NtZmwhX3phrmPB7/KkVaH7NwTUrZbM3Uq2euRUfyCDE36jiy978FxSyvY87jIaqnoKT73eVZ4z2orXtiD864b5k/43ml1p7FP4SylkXNGXXGM+98/JeV8vp9Yint85R6+hoUeci0zrfnPI4+s5xxzp+JCj+/9Rxq6vncLSIPW87YH7x8F3SG3vdra8jDlivyYP9KY33YQh5ltJ6bLOQxbpRFWj3jfrdMy3nEPOSjmQf2014ffJeXT7NP9H8/8rCn5Tw8zO9Yy3l4RB627P3d2fJv1B73LwA+sD8BAGpgngAAcjAvALSK/QsAgPYwvwG0iv0LgFXsTwBaxh4GADiKWdIW8gLKsHb00WOgzNbaYW0BAI5ilgAA4AMzHQBQA/MEe0nXDNcRvOMav9PoBf1tB1n50eM833POWr3w3uMr0VsAAKDlF0kRHzZAnAAA
   </data>
  </layer>
  <layer name="Foreground1" width="100" height="100">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC+3YywqCQBSA4Xn/R+tCbbrXpidJIUFM08FTDPh9cDaVIvM7LSalWLvg+5HSoZpja04Z1+oRq26x73y2TtPb6BGnr0VX3eZbEz3m21SzreY58fd9+yX3HgyLeKftizh6lGXuWvqfiuXdLoseZcnpcanm/p7Vbx5n8YZ6tNe+mUfr+/OPn2uphnpcR667pc9e9sw89Rp217VZ07EefeyZeM2a6lEGPcqUc67bnNGPnUcSo92mb3QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP7lBRLtkGJAnAAA
+   H4sIAAAAAAAAC+3Y2wqCQBRA0an//9Iu1Ev3ghQSxDQVjzHgWnBeKkVmOz1MSrEOwfcjpVMx59pcRlyrR6yyxbHx2TYNb6NHnLYWTWWbX030mG5XzL6Y9WrY79v2y9h70C3inbYv4uiRl6lr6X8qlnc7L3rkZUyPWzHPz2zmeZzF6+pRX/tqXrXvrzM/11J19bj3XPdI373smWnKNWyua7WmfT3a2DPxqjXVIw965GnMuW51Rt93HkmMepu20QEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA+Jc3ajOFGkCcAAA=
   </data>
  </layer>
  <layer name="Flags" width="100" height="100">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC+3OAQ0AAAgDoPdPaRRjfDpIQAIAAL9NOwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJyy8i8hDECcAAA=
+   H4sIAAAAAAAAC+3OAQ0AAAgDoNu/tDE+HSQgAQCA56YdAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAALlmmX+OrQJwAAA==
   </data>
  </layer>
 </map>

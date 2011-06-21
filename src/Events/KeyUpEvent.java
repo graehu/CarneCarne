@@ -8,7 +8,7 @@ package Events;
  *
  * @author A203946
  */
-public class KeyUpEvent implements iEvent {
+public class KeyUpEvent extends iEvent {
     
     private char mKey;
     public KeyUpEvent(char _key)

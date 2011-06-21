@@ -4,6 +4,7 @@
  */
 package Level;
 
+import Level.sLevel.TileType;
 import org.newdawn.slick.tiled.TiledMap;
 
 /**
@@ -28,6 +29,10 @@ public class LevelEditor {
         
         FlagProcessor flagProcessor = new FlagProcessor(_tiledMap);
         flagProcessor = null;
+    }
+    public void placeTile(int _x, int _y, TileType _tileType)
+    {
+        tileGrid.placeTile(_x, _y, 1);        
     }
     public void destroyTile(int _xTile, int _yTile)
     {

@@ -10,7 +10,7 @@ import Entities.Entity;
  *
  * @author A203946
  */
-public class PlayerCreatedEvent implements iEvent {
+public class PlayerCreatedEvent extends iEvent {
     
     Entity mEntity;
     public PlayerCreatedEvent(Entity _entity)

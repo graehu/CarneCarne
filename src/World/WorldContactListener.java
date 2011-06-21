@@ -4,8 +4,6 @@
  */
 package World;
 
-import Entities.Entity;
-import Level.sLevel.TileType;
 import World.sWorld.BodyCategories;
 import org.jbox2d.callbacks.ContactImpulse;
 import org.jbox2d.callbacks.ContactListener;
@@ -33,6 +31,8 @@ public class WorldContactListener implements ContactListener{
         for (int i = 0; i < BodyCategories.eBodyCategoriesMax.ordinal(); i++)
         {
             set(BodyCategories.eWater.ordinal(),i,new WaterListener());
+            set(BodyCategories.eGum.ordinal(),i,new GumListener());
+            set(BodyCategories.eTar.ordinal(),i,new TarListener());
         }
     }
     private void set(int _x, int _y, iListener _reaction)

@@ -11,7 +11,7 @@ import org.jbox2d.common.Vec2;
  *
  * @author A203946
  */
-public class MouseMoveEvent implements iEvent {
+public class MouseMoveEvent extends iEvent {
     
     Vec2 position;
     public MouseMoveEvent(Vec2 _position)

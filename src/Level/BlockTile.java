@@ -31,13 +31,13 @@ public class BlockTile extends RootTile
     {
         boolean ULDR[] = new boolean[4];
 
-        ULDR[3] = _tileGrid.boundaryFrom(_xTile, _yTile-1, Direction.eFromDown);//(id != 0);
+        ULDR[3] = _tileGrid.boundaryFrom(_xTile, _yTile-1, Direction.eFromDown, mTileType);//(id != 0);
 
-        ULDR[2] = _tileGrid.boundaryFrom(_xTile-1, _yTile, Direction.eFromRight);
+        ULDR[2] = _tileGrid.boundaryFrom(_xTile-1, _yTile, Direction.eFromRight, mTileType);
 
-        ULDR[1] = _tileGrid.boundaryFrom(_xTile, _yTile+1, Direction.eFromUp);
+        ULDR[1] = _tileGrid.boundaryFrom(_xTile, _yTile+1, Direction.eFromUp, mTileType);
 
-        ULDR[0] = _tileGrid.boundaryFrom(_xTile+1, _yTile, Direction.eFromLeft);
+        ULDR[0] = _tileGrid.boundaryFrom(_xTile+1, _yTile, Direction.eFromLeft, mTileType);
 
         int textureUnit = 0;
         for (int i = 0; i < 4; i++)

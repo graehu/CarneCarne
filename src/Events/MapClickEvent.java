@@ -9,9 +9,9 @@ import org.jbox2d.common.Vec2;
 
 /**
  *
- * @author A203946
+ * @author alasair
  */
-public class MapClickEvent implements iEvent {
+public class MapClickEvent extends iEvent {
     
     Vec2 mPosition; /// This is the world space position
     boolean mLeftButton;

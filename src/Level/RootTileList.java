@@ -26,6 +26,10 @@ public class RootTileList {
         typeMap.put("Edible", sLevel.TileType.eEdible);
         typeMap.put("Swingable", sLevel.TileType.eSwingable);
         typeMap.put("NonEdible", sLevel.TileType.eIndestructible);
+        typeMap.put("Bouncy", sLevel.TileType.eBouncy);
+        typeMap.put("Gum", sLevel.TileType.eGum);
+        typeMap.put("Tar", sLevel.TileType.eTar);
+        typeMap.put("WaterMelon", sLevel.TileType.eWaterMelon);
         int idsSize = 0;
         for (int i = 0; i < _tiledMap.getTileSetCount(); i++)
         {

@@ -5,6 +5,7 @@
 package World;
 
 import Entities.Entity;
+import Level.sLevel;
 import World.sWorld.BodyCategories;
 import java.util.HashMap;
 import org.jbox2d.collision.shapes.CircleShape;
@@ -29,13 +30,21 @@ class SpatBlockBodyFactory implements iPhysicsFactory {
         Vec2 position = (Vec2)_parameters.get("position");
         Vec2 velocity = (Vec2)_parameters.get("velocity");
         Entity entity = (Entity)_parameters.get("entity");
+        sLevel.TileType tileType = (sLevel.TileType)_parameters.get("tileType");
         CircleShape shape = new CircleShape();
-        shape.m_radius = 0.5f;
+        shape.m_radius = 0.2f;
         FixtureDef fixture = new FixtureDef();
         fixture.shape = shape;
+        fixture.filter.groupIndex = tileType.ordinal();
         fixture.filter.categoryBits = (1 << BodyCategories.eSpatTiles.ordinal());
         fixture.filter.maskBits = Integer.MAX_VALUE ^ 
                 ((1 << BodyCategories.ePlayer.ordinal()));
+        if (tileType.equals(sLevel.TileType.eGum))
+        {
+            fixture.filter.categoryBits = (1 << BodyCategories.eGum.ordinal());
+            fixture.filter.maskBits = Integer.MAX_VALUE ^ 
+                ((1 << BodyCategories.ePlayer.ordinal()));
+        }
         fixture.density = 1;
         BodyDef def = new BodyDef();
         def.type = BodyType.DYNAMIC;
@@ -48,5 +57,4 @@ class SpatBlockBodyFactory implements iPhysicsFactory {
         body.createFixture(fixture);
         return body;  
     }
-    
 }

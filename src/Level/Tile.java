@@ -4,6 +4,7 @@
  */
 package Level;
 
+import Level.sLevel.TileType;
 import java.util.Stack;
 
 /**

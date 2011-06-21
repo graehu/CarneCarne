@@ -4,6 +4,7 @@
  */
 package States.Game;
 
+import Events.sEvents;
 import World.sWorld;
 import Level.sLevel;
 /**
@@ -20,6 +21,7 @@ public class PlayMode implements iGameMode {
     {
         sLevel.update();
         sWorld.update(_time);
+        sEvents.processEvents();
     }
     public void render()
     {

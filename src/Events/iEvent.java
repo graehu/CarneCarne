@@ -9,8 +9,13 @@ import java.lang.String;
  *
  * @author alasdair
  */
-public interface iEvent {
+public abstract class iEvent {
     
-    public String getName();
-    public String getType(); /// This is the name of the event type, not used for hashing just to know.
+    abstract public String getName();
+    abstract public String getType(); /// This is the name of the event type, not used for hashing just to know.
+    
+    public void process()
+    {
+        
+    }
 }

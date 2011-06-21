@@ -8,6 +8,7 @@ import Entities.AIEntity;
 import Graphics.iSkin;
 import Graphics.sSkinFactory;
 import Level.sLevel;
+import Level.sLevel.TileType;
 import World.sWorld;
 import java.util.HashMap;
 import org.jbox2d.common.Vec2;
@@ -22,9 +23,11 @@ public class TongueStateMachine {
     static int tongueFiringTimeout = 10;
     static float tongueLength = 6.0f;
     static int idleAnimationTrigger = 1000;
+    int ammoLeft;
     
     Vec2 position = new Vec2(0,0);
     String mBlockMaterial;
+    sLevel.TileType mTileType;
     enum State
     {
         eStart,
@@ -50,6 +53,8 @@ public class TongueStateMachine {
         mState = State.eStart;
         currentStateTimer = 0;
         mBlockMaterial = "SomeSoftMaterial";
+        mTileType = sLevel.TileType.eTileTypesMax;
+        ammoLeft = 0;
     }
     private sLevel.TileType extendTongue(boolean _grabBlock)
     {
@@ -62,7 +67,7 @@ public class TongueStateMachine {
         if (_grabBlock)
             return mAIController.grabBlock(mAIController.mEntity.mBody.getPosition().add(direction));
         else
-            return sLevel.TileType.eTypeTypesMax;
+            return sLevel.TileType.eTileTypesMax;
     }
     private boolean hammerCollide()
     {
@@ -113,10 +118,12 @@ public class TongueStateMachine {
             case eFiringTongue:
             {
                 currentStateTimer++;
-                sLevel.TileType tileType = extendTongue(true);
-                switch (tileType)
+                mTileType = extendTongue(true);
+                switch (mTileType)
                 {
+                    case eGum:
                     case eEdible:
+                    case eWaterMelon:
                     {
                         changeState(State.eStuckToBlock);
                         break;
@@ -133,7 +140,7 @@ public class TongueStateMachine {
                         break;
                     }
                     default:
-                    case eTypeTypesMax:
+                    case eTileTypesMax:
                     {
                         if (currentStateTimer > tongueFiringTimeout)
                         {
@@ -168,6 +175,14 @@ public class TongueStateMachine {
                 extendTongue(false);
                 if (currentStateTimer == 0)
                 {
+                    if (mTileType == TileType.eWaterMelon)
+                    {
+                        ammoLeft = 10;
+                    }
+                    else
+                    {
+                        ammoLeft = 1;
+                    }
                     changeState(State.eFoodInMouth);
                 }
                 break;
@@ -220,7 +235,10 @@ public class TongueStateMachine {
                 currentStateTimer--;
                 if (currentStateTimer == 0)
                 {
-                    changeState(State.eStart);
+                    if (ammoLeft == 0)
+                        changeState(State.eStart);
+                    else
+                        changeState(State.eFoodInMouth);
                 }
                 break;
             }
@@ -614,6 +632,7 @@ public class TongueStateMachine {
     private DistanceJoint mJoint;
     private void spitBlock()
     {
-        mAIController.spitBlock(position);
+        ammoLeft--;
+        mAIController.spitBlock(position, mTileType);
     }
 }

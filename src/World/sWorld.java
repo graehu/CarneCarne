@@ -45,6 +45,8 @@ public class sWorld {
         eSpatTiles,
         eWater,
         eIce,
+        eGum,
+        eTar,
         eBodyCategoriesMax
     }
     private sWorld()
@@ -79,6 +81,8 @@ public class sWorld {
             end = _end;
             collisionMask = (1 << BodyCategories.eEdibleTiles.ordinal())|
                     (1 << BodyCategories.eNonEdibleTiles.ordinal())|
+                    (1 << BodyCategories.eGum.ordinal())|
+                    (1 << BodyCategories.eSpatTiles.ordinal())|
                     (1 << BodyCategories.eIce.ordinal());
         }
         public float reportFixture(Fixture _fixture, Vec2 _p1, Vec2 _p2, float _fraction)
@@ -112,13 +116,15 @@ public class sWorld {
         mWorld.raycast(callback, start, end);
         if (callback.getFixture() == null)
         {
-            return sLevel.TileType.eTypeTypesMax;
+            return sLevel.TileType.eTileTypesMax;
         }
         mLastHit = callback.getFixture().getBody();
         TileType tileType = sLevel.TileType.class.getEnumConstants()[callback.getFixture().m_filter.groupIndex];
         switch (tileType)
         {
             case eEdible:
+            case eGum:
+            case eWaterMelon:
             {
                 mWorld.destroyBody(callback.getFixture().m_body);
                 sLevel.destroyTile((int)callback.getFixture().m_body.getPosition().x, (int)callback.getFixture().m_body.getPosition().y);
@@ -126,6 +132,7 @@ public class sWorld {
                 break;
             }
             case eSwingable:
+            case eIce:
             case eIndestructible:
             {
                 break;
@@ -173,6 +180,10 @@ public class sWorld {
         def.frequencyHz = 30.0f;
         def.dampingRatio = 1.0f; /// Reduce these to make his tongue springy
         return (DistanceJoint)mWorld.createJoint(def);
+    }
+    public static void destroyBody(Body _body)
+    {
+        mWorld.destroyBody(_body);
     }
     public static void destroyJoint(Joint _joint)
     {

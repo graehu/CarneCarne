@@ -8,9 +8,9 @@ import org.jbox2d.common.Vec2;
 
 /**
  *
- * @author A203946
+ * @author alasdair
  */
-public class TileDestroyedEvent implements iEvent {
+public class TileDestroyedEvent extends iEvent {
     
     int xTile, yTile;
     public TileDestroyedEvent(int _xTile, int _yTile)

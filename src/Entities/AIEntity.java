@@ -74,13 +74,27 @@ public class AIEntity extends Entity {
     public void walkLeft()
     {
         mBody.applyLinearImpulse(new Vec2(-0.1f,0), new Vec2(0,0));
-        mJoint.m_motorSpeed = 10.0f;
+        if (mTar == 0)
+        {
+            mJoint.m_motorSpeed = 10.0f;
+        }
+        else
+        {
+            mJoint.m_motorSpeed = 1.0f;
+        }
         mTurnThisFrame = 1000;
     }
     public void walkRight()
     {
         mBody.applyLinearImpulse(new Vec2(0.1f,0), new Vec2(0,0));
-        mJoint.m_motorSpeed = -10.0f;
+        if (mTar == 0)
+        {
+            mJoint.m_motorSpeed = -10.0f;
+        }
+        else
+        {
+            mJoint.m_motorSpeed = -1.0f;
+        }
         mTurnThisFrame = 1000;
     }
     public void jump()

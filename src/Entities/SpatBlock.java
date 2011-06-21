@@ -12,7 +12,7 @@ import org.jbox2d.common.Vec2;
  *
  * @author alasdair
  */
-class SpatBlock extends Entity {
+public class SpatBlock extends Entity {
     
     SpatBlock(iSkin _skin)
     {

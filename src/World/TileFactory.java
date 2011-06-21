@@ -17,7 +17,7 @@ import org.jbox2d.dynamics.World;
 
 /**
  *
- * @author A203946
+ * @author alasdair
  */
 public class TileFactory implements iPhysicsFactory {
     
@@ -36,6 +36,15 @@ public class TileFactory implements iPhysicsFactory {
             fixture.friction = 0.001f;
             fixture.filter.categoryBits = (1 << BodyCategories.eIce.ordinal());
             fixture.filter.maskBits = Integer.MAX_VALUE;
+        }
+        else if (tileType.equals(TileType.eBouncy))
+        {
+            fixture.restitution = 2.0f;
+        }
+        else if (tileType.equals(TileType.eTar))
+        {
+            fixture.restitution = 0.0f;
+            fixture.friction = 1000.0f;
         }
         fixture.shape = shape;
         BodyDef def = new BodyDef();

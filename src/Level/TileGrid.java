@@ -98,7 +98,6 @@ public class TileGrid {
     }
     public void placeTile(int _x, int _y, int _rootId)
     {
-        mTiles[_x][_y].createPhysicsBody(_x, _y);
         mTiles[_x][_y].mId = _rootId;
         mTiles[_x][_y].mRootId = rootTiles.get(_rootId);
         mTiles[_x][_y].createPhysicsBody(_x, _y);
@@ -171,7 +170,8 @@ public class TileGrid {
     {
         return mTiles[_x][_y];
     }
-    public boolean boundaryFrom(int _xTile, int _yTile, Direction _direction)
+    private static MaterialEdges materialEdges = new MaterialEdges();
+    public boolean boundaryFrom(int _xTile, int _yTile, Direction _direction, TileType _tileType)
     {
         Tile tile = get(_xTile, _yTile);
         TileShape shape = tile.mRootId.mShape;
@@ -183,11 +183,11 @@ public class TileGrid {
             }
             case eBlock:
             {
-                return true;
+                return materialEdges.check(_tileType, tile.mRootId.mTileType);
             }
             case eSlope:
             {
-                return true;
+                return materialEdges.check(_tileType, tile.mRootId.mTileType);
             }
             case eUndefined:
             {
@@ -201,7 +201,7 @@ public class TileGrid {
             {
                 if (_direction == Direction.eFromDown || _direction == Direction.eFromLeft)
                 {
-                    return true;
+                    return materialEdges.check(_tileType, tile.mRootId.mTileType);
                 }
                 return false;
             }
@@ -209,7 +209,7 @@ public class TileGrid {
             {
                 if (_direction == Direction.eFromDown || _direction == Direction.eFromRight)
                 {
-                    return true;
+                    return materialEdges.check(_tileType, tile.mRootId.mTileType);
                 }
                 return false;
             }
@@ -217,7 +217,7 @@ public class TileGrid {
             {
                 if (_direction == Direction.eFromUp || _direction == Direction.eFromRight)
                 {
-                    return true;
+                    return materialEdges.check(_tileType, tile.mRootId.mTileType);
                 }
                 return false;
             }
@@ -225,7 +225,7 @@ public class TileGrid {
             {
                 if (_direction == Direction.eFromUp || _direction == Direction.eFromLeft)
                 {
-                    return true;
+                    return materialEdges.check(_tileType, tile.mRootId.mTileType);
                 }
                 return false;
             }
