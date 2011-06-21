@@ -5,6 +5,7 @@
 package Level;
 
 import Level.Tile.Direction;
+import Level.sLevel.TileType;
 import World.sWorld;
 import java.util.HashMap;
 import java.util.Stack;
@@ -16,9 +17,10 @@ import org.jbox2d.common.Vec2;
  */
 public class BlockTile extends RootTile
 {
-    public BlockTile(int _id, sLevel.TileType _tileType)
+    public BlockTile(int _id, sLevel.TileType _tileType, boolean _regrows)
     {
         super(TileShape.eBlock, _id, _tileType);
+        mRegrows = _regrows;
     }
     public void createPhysicsBody(int _xTile, int _yTile)
     {
@@ -49,5 +51,9 @@ public class BlockTile extends RootTile
         _stack.push(_xTile);
         _stack.push(_yTile);
         _stack.push(mId+textureUnit);
+    }
+    boolean boundaryFrom(Direction _direction, TileType _tileType, MaterialEdges _materialEdges)
+    {
+        return _materialEdges.check(_tileType, mTileType);
     }
 }

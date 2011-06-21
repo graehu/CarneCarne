@@ -4,6 +4,8 @@
  */
 package Level;
 
+import Level.Tile.Direction;
+import Level.sLevel.TileType;
 import World.sWorld;
 import java.util.HashMap;
 import java.util.Stack;
@@ -29,5 +31,10 @@ class NonEdibleTile extends RootTile
     public void checkEdges(int _xTile, int _yTile, Stack<Integer> _stack, TileGrid _tileGrid)
     {
         
+    }
+
+    boolean boundaryFrom(Direction _direction, TileType _tileType, MaterialEdges _materialEdges)
+    {
+        return false;
     }
 }

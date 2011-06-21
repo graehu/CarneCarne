@@ -139,7 +139,8 @@ public class TileGrid {
     {
         Stack<Integer> stack = new Stack<Integer>();
         
-        regrowingTiles.add(new RegrowingTile(_x,_y, mTiles[_x][_y].mRootId.mId,mFrames+180));
+        if (mTiles[_x][_y].mRootId.mRegrows)
+            regrowingTiles.add(new RegrowingTile(_x,_y, mTiles[_x][_y].mRootId.mId,mFrames+180));
         
         set(_x,_y,0);
         int x;
@@ -170,11 +171,12 @@ public class TileGrid {
     {
         return mTiles[_x][_y];
     }
-    private static MaterialEdges materialEdges = new MaterialEdges();
-    public boolean boundaryFrom(int _xTile, int _yTile, Direction _direction, TileType _tileType)
+    private static MaterialEdges mMaterialEdges = new MaterialEdges();
+    boolean boundaryFrom(int _xTile, int _yTile, Direction _direction, TileType _tileType)
     {
         Tile tile = get(_xTile, _yTile);
-        TileShape shape = tile.mRootId.mShape;
+        return tile.mRootId.boundaryFrom(_direction, _tileType, mMaterialEdges);
+        /*TileShape shape = tile.mRootId.mShape;
         switch (shape)
         {
             case eEmpty:
@@ -183,25 +185,27 @@ public class TileGrid {
             }
             case eBlock:
             {
-                return materialEdges.check(_tileType, tile.mRootId.mTileType);
+                //return mMaterialEdges.check(_tileType, tile.mRootId.mTileType);
+                return tile.mRootId.boundaryFrom(_direction, _tileType, mMaterialEdges);
             }
             case eSlope:
             {
-                return materialEdges.check(_tileType, tile.mRootId.mTileType);
+                return tile.mRootId.boundaryFrom(_direction, _tileType, mMaterialEdges);
+                //return mMaterialEdges.check(_tileType, tile.mRootId.mTileType);
             }
             case eUndefined:
             {
-                break;
+                return false;
             }
-        }
-        int slope = tile.mRootId.mSlopeType;
+        }*/
+        /*int slope = tile.mRootId.mSlopeType;
         switch (slope)
         {
             case 0:
             {
                 if (_direction == Direction.eFromDown || _direction == Direction.eFromLeft)
                 {
-                    return materialEdges.check(_tileType, tile.mRootId.mTileType);
+                    return mMaterialEdges.check(_tileType, tile.mRootId.mTileType);
                 }
                 return false;
             }
@@ -209,7 +213,7 @@ public class TileGrid {
             {
                 if (_direction == Direction.eFromDown || _direction == Direction.eFromRight)
                 {
-                    return materialEdges.check(_tileType, tile.mRootId.mTileType);
+                    return mMaterialEdges.check(_tileType, tile.mRootId.mTileType);
                 }
                 return false;
             }
@@ -217,7 +221,7 @@ public class TileGrid {
             {
                 if (_direction == Direction.eFromUp || _direction == Direction.eFromRight)
                 {
-                    return materialEdges.check(_tileType, tile.mRootId.mTileType);
+                    return mMaterialEdges.check(_tileType, tile.mRootId.mTileType);
                 }
                 return false;
             }
@@ -225,11 +229,11 @@ public class TileGrid {
             {
                 if (_direction == Direction.eFromUp || _direction == Direction.eFromLeft)
                 {
-                    return materialEdges.check(_tileType, tile.mRootId.mTileType);
+                    return mMaterialEdges.check(_tileType, tile.mRootId.mTileType);
                 }
                 return false;
             }
-        }
-        return false;
+        }*/
+        //return false;
     }
 }

@@ -26,7 +26,8 @@ import org.jbox2d.structs.collision.RayCastOutput;
  *
  * @author alasdair
  */
-public class sWorld {
+public class sWorld
+{
     private static World mWorld;
     private static iCamera mCamera;
     private static HashMap<String,iPhysicsFactory> factories;
@@ -124,7 +125,7 @@ public class sWorld {
         {
             case eEdible:
             case eGum:
-            case eWaterMelon:
+            case eMelonFlesh:
             {
                 mWorld.destroyBody(callback.getFixture().m_body);
                 sLevel.destroyTile((int)callback.getFixture().m_body.getPosition().x, (int)callback.getFixture().m_body.getPosition().y);
@@ -154,6 +155,7 @@ public class sWorld {
             case eSwingable:
             case eEdible:
             case eIce:
+            case eMelonSkin:
             {
                 mWorld.destroyBody(callback.getFixture().m_body);
                 sLevel.destroyTile((int)callback.getFixture().m_body.getPosition().x, (int)callback.getFixture().m_body.getPosition().y);

@@ -4,6 +4,8 @@
  */
 package Level;
 
+import Level.Tile.Direction;
+import Level.sLevel.TileType;
 import java.util.Stack;
 
 /**
@@ -15,12 +17,14 @@ abstract class RootTile
     TileShape mShape;
     int mId;
     int mSlopeType;
+    boolean mRegrows;
     sLevel.TileType mTileType;
     public RootTile(TileShape _shape, int _id, sLevel.TileType _tileType)
     {
         mShape = _shape;
         mId = _id;
         mTileType = _tileType;
+        mRegrows = true;
     }
     public RootTile(TileShape _shape, int _id, sLevel.TileType _tileType, int _slopeType)
     {
@@ -28,7 +32,10 @@ abstract class RootTile
         mId = _id;
         mTileType = _tileType;
         mSlopeType = _slopeType;
+        mRegrows = true;
     }
+
+    abstract boolean boundaryFrom(Direction _direction, TileType _tileType, MaterialEdges _materialEdges);
     public enum TileShape
     {
         eEmpty,

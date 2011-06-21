@@ -5,6 +5,7 @@
 package Level;
 
 import Level.Tile.Direction;
+import Level.sLevel.TileType;
 
 /**
  *
@@ -21,5 +22,14 @@ public class LeftDownSlope extends SlopeTile
     {
         _boundaries[0] = _tileGrid.boundaryFrom(_xTile, _yTile+1, Direction.eFromUp, mTileType);
         _boundaries[1] = _tileGrid.boundaryFrom(_xTile+1, _yTile, Direction.eFromLeft, mTileType);
+    }
+
+    boolean boundaryFrom(Direction _direction, TileType _tileType, MaterialEdges _materialEdges)
+    {
+        if (_direction == Direction.eFromDown || _direction == Direction.eFromRight)
+        {
+            return _materialEdges.check(_tileType, mTileType);
+        }
+        return false;
     }
 }

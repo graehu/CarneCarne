@@ -4,6 +4,8 @@
  */
 package States.Game;
 
+import Events.ShoulderButtonEvent;
+import Events.AnalogueStickEvent;
 import Events.MapClickReleaseEvent;
 import Entities.sEntityFactory;
 import Events.KeyDownEvent;
@@ -19,9 +21,6 @@ import Level.sLevel;
 import World.sWorld;
 import de.matthiasmann.twl.Button;
 import de.matthiasmann.twl.ScrollPane;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.jbox2d.common.Vec2;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
@@ -85,10 +84,22 @@ public class StateGame extends BasicTWLGameState {
         sEvents.triggerEvent(new MouseMoveEvent(new Vec2(newx,newy)));
     }
     
-    
+    /* XBox Controls
+     * 0 - A
+     * 5 - R1
+     * 6 - Select
+     * 8 - L3
+     * 9 - R3
+     */
+    static private float stickEpsilon = 0.1f;
+    static private float shoulderButtonEpsilon = 0.1f;
+    static private boolean xAxisHit = false;
+    static private boolean yAxisHit = false;
+    static private boolean zAxisHit = false;
     public void update(GameContainer _gc, StateBasedGame _sbg, int _i) throws SlickException 
     {       
         //movement input is handled here as we need to detect 'isDown' every frame rather than 'pressed' as an event
+        
         if(_gc.getInput().isKeyDown(Input.KEY_W))
             sEvents.triggerEvent(new KeyDownEvent('w'));
         if(_gc.getInput().isKeyDown(Input.KEY_A))
@@ -97,6 +108,44 @@ public class StateGame extends BasicTWLGameState {
             sEvents.triggerEvent(new KeyDownEvent('s'));
         if(_gc.getInput().isKeyDown(Input.KEY_D))
             sEvents.triggerEvent(new KeyDownEvent('d'));
+        
+        if(_gc.getInput().isButtonPressed(5, 0))
+            sEvents.triggerEvent(new KeyDownEvent('w'));
+        float xAxis = _gc.getInput().getAxisValue(0, 1);
+        if (xAxisHit)
+        {
+            if (xAxis > stickEpsilon || xAxis < -stickEpsilon)
+            {
+                sEvents.triggerEvent(new AnalogueStickEvent(xAxis));
+            }
+        }
+        else if (xAxis != -1.0f)
+        {
+            xAxisHit = true;
+        }
+        Vec2 rightStick = new Vec2(_gc.getInput().getAxisValue(0, 3),_gc.getInput().getAxisValue(0, 2));
+        
+        float shoulderButtons = _gc.getInput().getAxisValue(0,4);
+        if (zAxisHit)
+        {
+            if (shoulderButtons > shoulderButtonEpsilon)
+            {
+                sEvents.triggerEvent(new ShoulderButtonEvent(rightStick,true));
+            }
+            else if (shoulderButtons < -shoulderButtonEpsilon)
+            {
+                sEvents.triggerEvent(new ShoulderButtonEvent(rightStick,false));
+            }
+        }
+        else if (shoulderButtons != -1.0f)
+        {
+            zAxisHit = true;
+        }
+        
+        if (rightStick.length() > 0.2f)
+        {
+            sEvents.triggerEvent(new RightStickEvent(rightStick));
+        }
         
         int delta = (int) (_gc.getTime() - mTime);
         mTime = (int) _gc.getTime();
@@ -125,8 +174,6 @@ public class StateGame extends BasicTWLGameState {
         
         //TEST: PARTICLE SYSTEM
         sParticles.createSystem("particleSystems/testSystem.xml", 500, 500);
-        
-        //container.getGraphics().setDrawMode(Graphics.MODE_ALPHA_BLEND);
     }
     
     @Override

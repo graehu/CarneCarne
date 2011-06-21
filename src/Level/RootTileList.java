@@ -4,6 +4,8 @@
  */
 package Level;
 
+import Level.MelonSkinTile.SkinDirection;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import java.util.HashMap;
 import java.util.Vector;
 import org.newdawn.slick.tiled.TiledMap;
@@ -15,11 +17,10 @@ import org.newdawn.slick.tiled.TiledMap;
 public class RootTileList {
     
     private static Vector<RootTile> mRootTiles;
-    private static HashMap<String, sLevel.TileType> typeMap;
     
     public RootTileList(TiledMap _tiledMap)
     {
-        typeMap = new HashMap<String, sLevel.TileType>();
+        HashMap<String, sLevel.TileType> typeMap = new HashMap<String, sLevel.TileType>();
         typeMap.put("Ice", sLevel.TileType.eIce);
         typeMap.put("Acid", sLevel.TileType.eWater);
         typeMap.put("Swim", sLevel.TileType.eWater);
@@ -29,7 +30,13 @@ public class RootTileList {
         typeMap.put("Bouncy", sLevel.TileType.eBouncy);
         typeMap.put("Gum", sLevel.TileType.eGum);
         typeMap.put("Tar", sLevel.TileType.eTar);
-        typeMap.put("WaterMelon", sLevel.TileType.eWaterMelon);
+        typeMap.put("MelonFlesh", sLevel.TileType.eMelonFlesh);
+        typeMap.put("MelonSkin", sLevel.TileType.eMelonSkin);
+        HashMap<String, SkinDirection> directionMap = new HashMap<String, SkinDirection>();
+        directionMap.put("Right", SkinDirection.eRight);
+        directionMap.put("Down", SkinDirection.eDown);
+        directionMap.put("Left", SkinDirection.eLeft);
+        directionMap.put("Up", SkinDirection.eUp);
         int idsSize = 0;
         for (int i = 0; i < _tiledMap.getTileSetCount(); i++)
         {
@@ -46,9 +53,10 @@ public class RootTileList {
             int assertion = type.ordinal();
             if (shape.equals("Block"))
             {
+                boolean regrows = _tiledMap.getTileProperty(i,"Regrows","Yes").equals("Yes");
                 for (int rootId = i; i < rootId + 16; i++)
                 {
-                    mRootTiles.add(new BlockTile(rootId, type));
+                    mRootTiles.add(new BlockTile(rootId, type, regrows));
                 }
             }
             else if (shape.equals("Slope"))
@@ -73,6 +81,15 @@ public class RootTileList {
                 {
                     mRootTiles.add(new WaterTile(rootId, type));
                 }                
+            }
+            else if (shape.equals("MelonSkin"))
+            {
+                for (int rootId = i; i < rootId + 16; i++)
+                {
+                    String directionString = _tiledMap.getTileProperty(i, "Direction", "Right");
+                    SkinDirection direction = directionMap.get(directionString);
+                    mRootTiles.add(new MelonSkinTile(i, type, direction));
+                }
             }
             else
             {

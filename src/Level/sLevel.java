@@ -24,7 +24,8 @@ public class sLevel {
         eBouncy,
         eGum,
         eTar,
-        eWaterMelon,
+        eMelonFlesh,
+        eMelonSkin,
         eTileTypesMax,
     }
     public TileType getTileType(int _id)
@@ -66,7 +67,7 @@ public class sLevel {
     }
     public static void init() throws SlickException
     {
-        mTiledMap = new AnimatedTiledMap("assets/Test_map3ready.tmx");
+        mTiledMap = new AnimatedTiledMap("assets/TestMap.tmx");
         mTiledMap.initAnimationlayer("assets/splashbig.def");
         xTiles = (int)(800.0f/64.0f)+2;
         yTiles = (int)(800.0f/64.0f)+2;

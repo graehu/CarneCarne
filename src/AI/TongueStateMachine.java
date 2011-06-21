@@ -123,7 +123,7 @@ public class TongueStateMachine {
                 {
                     case eGum:
                     case eEdible:
-                    case eWaterMelon:
+                    case eMelonFlesh:
                     {
                         changeState(State.eStuckToBlock);
                         break;
@@ -175,7 +175,7 @@ public class TongueStateMachine {
                 extendTongue(false);
                 if (currentStateTimer == 0)
                 {
-                    if (mTileType == TileType.eWaterMelon)
+                    if (mTileType == TileType.eMelonFlesh)
                     {
                         ammoLeft = 10;
                     }

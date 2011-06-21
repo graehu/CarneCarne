@@ -4,6 +4,7 @@
  */
 package Level;
 
+import Level.Tile.Direction;
 import Level.sLevel.TileType;
 import World.sWorld;
 import java.util.HashMap;
@@ -32,6 +33,11 @@ class WaterTile extends RootTile {
     void checkEdges(int _xTile, int _yTile, Stack<Integer> _stack, TileGrid _tileGrid)
     {
         
+    }
+
+    boolean boundaryFrom(Direction _direction, TileType _tileType, MaterialEdges _materialEdges)
+    {
+        return _materialEdges.check(_tileType, mTileType);
     }
     
 }

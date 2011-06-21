@@ -8,7 +8,6 @@ import org.newdawn.slick.*;
 import States.Game.StateGame;
 import States.Splash.StateSplash;
 import States.Title.StateTitle;
-import org.newdawn.slick.util.ResourceLoader;
 
 public class Main extends TWLStateBasedGame
 {
@@ -22,7 +21,10 @@ public class Main extends TWLStateBasedGame
         
         NativeLibLoader nativeLibLoader = new NativeLibLoader("org.lwjgl.librarypath");
         nativeLibLoader.init();
-        nativeLibLoader.setupPath();
+        //nativeLibLoader.setupPath();
+        NativeLibLoader nativeLibLoaderJinput = new NativeLibLoader("java.library.path");
+        nativeLibLoaderJinput.init();
+       // nativeLibLoaderJinput.setupPath();
         try
         {
             AppGameContainer app = new AppGameContainer(new Main());
