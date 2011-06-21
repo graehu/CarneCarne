@@ -74,16 +74,20 @@ public class CharacterSkin implements iSkin
         }
     }
 
-    public final float startAnim(String _animation, boolean _isLooping, float _speed) {        
-        int ref = mSkinNames.get(_animation);
-        if(mCurrentSkins.contains(ref))//return if already playing
-            return 0;
-        iSkin skin = mSkins.get(ref);
-        skin.setIsLooping(_isLooping);
-        skin.setSpeed(_speed); 
-        skin.restart();
-        mCurrentSkins.add(ref);
-        return skin.getDuration();
+    public final float startAnim(String _animation, boolean _isLooping, float _speed) {    
+        if(mSkinNames.containsKey(_animation))
+        {
+            int ref = mSkinNames.get(_animation);
+            if(mCurrentSkins.contains(ref))//return if already playing
+                return 0;
+            iSkin skin = mSkins.get(ref);
+            skin.setIsLooping(_isLooping);
+            skin.setSpeed(_speed); 
+            skin.restart();
+            mCurrentSkins.add(ref);
+            return skin.getDuration();
+        }
+        else return 0;
     }
 
     public final void stopAnim(String _animation) {
@@ -110,7 +114,9 @@ public class CharacterSkin implements iSkin
     }
     
     public void setOffset(String _animation, Vec2 _offset) {
-        mOffsets.set(mSkinNames.get(_animation), _offset);
+        Integer ref = mSkinNames.get(_animation);
+        if(ref != null)
+            mOffsets.set(ref, _offset);
     }
 
     public void setIsLooping(boolean _isLooping) {

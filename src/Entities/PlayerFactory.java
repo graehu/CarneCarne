@@ -11,8 +11,10 @@ import Graphics.iSkin;
 import World.sWorld;
 import org.jbox2d.common.Vec2;
 import Graphics.sSkinFactory;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 /**
  *
  * @author alasdair
@@ -33,31 +35,52 @@ public class PlayerFactory implements iEntityFactory {
             used = true;
             HashMap animDef = new HashMap();
             animDef.put("ref", "ss_1");
-            animDef.put("anims", Arrays.asList("body", "spy",
-                    "n","nne","ne","nee","e","see","se","sse","s","ssw","sw","sww","w","nww","nw","nnw", /*Face*/
-                    "mn","mnne","mne","mnee","me","msee","mse","msse","ms","mssw","msw","msww","mw","mnww","mnw","mnnw", /*Mouth*/
-                    "tng", "tngend") /*Tongue*/);
+            ArrayList<String> face = 
+                    new ArrayList(Arrays.asList("n","nbe","nne","nebn","ne","nebe","ene","ebn",
+                                                "e","ebs","ese","sebe","se","sebs","sse","sbe", 
+                                                "s","sbw","ssw","swbs","sw","swbw","wsw","wbs", 
+                                                "w","wbn","wnw","nwbw","nw","nwbn","nnw","nbw"));
+            ArrayList<String> hat = (ArrayList<String>)face.clone();
+            for(int i = 0; i < hat.size(); i++)
+            {
+                hat.set(i, "h" + hat.get(i));
+            }
+            ArrayList<String> charAnims = new ArrayList(Arrays.asList("body"));
+            charAnims.addAll(face);
+            charAnims.addAll(hat);
+            charAnims.add("tng");
+            charAnims.add("tngend");
+            
+            animDef.put("anims",charAnims);
             iSkin skin = sSkinFactory.create("character", animDef);
             skin.startAnim("e", false, 0.0f);
+            skin.startAnim("body", false, 0.0f);
             skin.setOffset("tng", new Vec2(32,32));
             
-            //face offsets - UGLY!!!
-            skin.setOffset("n", new Vec2(-9,0));
-            skin.setOffset("nne", new Vec2(-9,0));
-            skin.setOffset("ne", new Vec2(-9,0));
-            skin.setOffset("nee", new Vec2(-9,0));
-            skin.setOffset("e", new Vec2(-9,0));
-            skin.setOffset("see", new Vec2(-9,0));
-            skin.setOffset("se", new Vec2(-9,0));
-            skin.setOffset("sse", new Vec2(-9,0));
-            skin.setOffset("s", new Vec2(-9,0));
-            skin.setOffset("ssw", new Vec2(-9,0));
-            skin.setOffset("sw", new Vec2(-9,0));
-            skin.setOffset("sww", new Vec2(-9,0));
-            skin.setOffset("w", new Vec2(-9,0));
-            skin.setOffset("nww", new Vec2(-9,0));
-            skin.setOffset("nw", new Vec2(-9,0));
-            skin.setOffset("nnw", new Vec2(-9,0));
+            //offsets
+            String[] t = {"","h"};                          //prefixes (""for face, "h" for hat)
+            Vec2[] v = {new Vec2(-9,0), new Vec2(-24,-28)}; //offsets relative to above
+            String[] p = {"n","s"};     //north and south
+            String[] q = {"e","w"};     //east and west
+            for(int k = 0; k < 2; k++)
+            {
+                for(int j = 0; j < 2; j++) //for north and south
+                {
+                    for(int i = 0; i < 2; i++) //for east and west
+                    {
+                        //in the format: (prefix + compass direction, offset)
+                        skin.setOffset(t[k] + p[j],                     v[k]);
+                        skin.setOffset(t[k] + p[j] + "b"  +q[i],        v[k]);
+                        skin.setOffset(t[k] + p[j] + p[j] +q[i],        v[k]);
+                        skin.setOffset(t[k] + p[j] + q[i] +"b" +p[j],   v[k]);
+                        skin.setOffset(t[k] + p[j] + q[i],              v[k]);
+                        skin.setOffset(t[k] + p[j] + q[i] +"b" +q[i],   v[k]);
+                        skin.setOffset(t[k] + q[i] + p[j] +q[i],        v[k]);
+                        skin.setOffset(t[k] + q[i] + "b"  +p[j],        v[k]);
+                        skin.setOffset(t[k] + q[i],                     v[k]);
+                    }
+                }
+            }
 
             AIEntity entity = new AIEntity(skin);
             HashMap parameters = new HashMap();
