@@ -27,8 +27,6 @@ public class Main extends TWLStateBasedGame
         {
             AppGameContainer app = new AppGameContainer(new Main());
             app.setDisplayMode(800, 600, false);
-            //app.setMaximumLogicUpdateInterval(16);
-            //app.setMinimumLogicUpdateInterval(16);
             app.setVSync(true);
             //app.setSmoothDeltas(true);
             //app.setTargetFrameRate(60);

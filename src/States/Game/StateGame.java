@@ -11,7 +11,7 @@ import Events.MapClickEvent;
 import Events.MouseMoveEvent;
 import Events.sEvents;
 import GUI.sGUI;
-import Graphics.Particles.sParticles;
+import Graphics.Particles.sParticleManager;
 import TWL.BasicTWLGameState;
 import TWL.RootPane;
 import Graphics.sSkinFactory;
@@ -41,7 +41,6 @@ import org.newdawn.slick.state.StateBasedGame;
 public class StateGame extends BasicTWLGameState {
 
     private iGameMode mGameMode; 
-    private int mTime = 0; //counter for calculating delta time
     private Button btn; //for testing
     
     public int getID() {
@@ -98,11 +97,9 @@ public class StateGame extends BasicTWLGameState {
         if(_gc.getInput().isKeyDown(Input.KEY_D))
             sEvents.triggerEvent(new KeyDownEvent('d'));
         
-        int delta = (int) (_gc.getTime() - mTime);
-        mTime = (int) _gc.getTime();
-        mGameMode.update(delta);
+        mGameMode.update(_i);
         //update particles
-        sParticles.update(delta);
+        sParticleManager.update(_i);
     }
     
     public void render(GameContainer _gc, StateBasedGame _sbg, Graphics _grphcs) throws SlickException
@@ -114,7 +111,7 @@ public class StateGame extends BasicTWLGameState {
         
         //render particles
         Vec2 worldTrans = sWorld.translateToWorld(new Vec2(0,0));
-        sParticles.render((int)worldTrans.x, (int)worldTrans.y, 800, 600, 0);
+        sParticleManager.render((int)worldTrans.x, (int)worldTrans.y, 800, 600, 0);
     }
 
     @Override
@@ -122,9 +119,8 @@ public class StateGame extends BasicTWLGameState {
     public void enter(GameContainer container, StateBasedGame game) throws SlickException 
     {         
         super.enter(container, game);
-        
         //TEST: PARTICLE SYSTEM
-        sParticles.createSystem("particleSystems/testSystem.xml", 500, 500);
+        sParticleManager.createSystem("particleSystems/testSystem.xml", 500, 500, 3.0f);
         
         //container.getGraphics().setDrawMode(Graphics.MODE_ALPHA_BLEND);
     }
