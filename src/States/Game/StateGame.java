@@ -10,12 +10,18 @@ import Events.KeyDownEvent;
 import Events.MapClickEvent;
 import Events.MouseMoveEvent;
 import Events.sEvents;
-import GUI.BasicTWLGameState;
-import GUI.RootPane;
+import GUI.sGUI;
+import Graphics.Particles.sParticles;
+import TWL.BasicTWLGameState;
+import TWL.RootPane;
 import Graphics.sSkinFactory;
 import Level.sLevel;
 import World.sWorld;
 import de.matthiasmann.twl.Button;
+import de.matthiasmann.twl.ScrollPane;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.jbox2d.common.Vec2;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -90,10 +96,16 @@ public class StateGame extends BasicTWLGameState {
         int delta = (int) (_gc.getTime() - mTime);
         mTime = (int) _gc.getTime();
         mGameMode.update(delta);
+        //update particles
+        sParticles.update(delta);
     }
     
     public void render(GameContainer _gc, StateBasedGame _sbg, Graphics _grphcs) throws SlickException {
         mGameMode.render();
+        
+        //render particles
+        Vec2 worldTrans = sWorld.translateToWorld(new Vec2(0,0));
+        sParticles.render((int)worldTrans.x, (int)worldTrans.y, 800, 600, 0);
     }
 
     @Override
@@ -118,7 +130,7 @@ public class StateGame extends BasicTWLGameState {
         
         // specify a theme name instead of the default "state"+getID()
         myRootPane.setTheme("mainMenu");
-
+        
         // create and add our button, the position and size is done in layoutRootPane()
         btn = new Button("Hello World");
         btn.addCallback(new Runnable() {
@@ -126,17 +138,25 @@ public class StateGame extends BasicTWLGameState {
                 System.out.println("It works!");
             }
         });
-        myRootPane.add(btn);
+        
+        scrollPane = sGUI.createDialogueBox(myRootPane, 20, 20, "RAWR!");
+        scrollPane.setContent(btn);
                
         // return the root pane so that it is available for getRootPane()
         return myRootPane;
     }
-
+ScrollPane scrollPane;
     @Override
     //this is where we can layout the elements of the UI
     protected void layoutRootPane() {
         btn.adjustSize();   // size the button according to it's preferred size
         btn.setPosition(100, 100);
+       
+        scrollPane.setPosition(0, 0);
+            scrollPane.setSize(50, 50);
+            scrollPane.setEnabled(true);
+            scrollPane.setVisible(true);
+        
     } 
     
     public void init(GameContainer _gc, StateBasedGame _sbg) throws SlickException {

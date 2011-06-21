@@ -86,10 +86,15 @@ public class AnimatedTiledMap extends TiledMap{
 
                     //no fail - create animation
                     SpriteSheet sheet = mTileMapAnimations.getSpriteSheet(animRef);
-                    
                     Animation anim = new Animation(sheet,duration);
                     
+                    //ofset start of animation
                     anim.update(rand.nextInt(maxTimeOffset));
+                    
+                    //randomise speed slightly
+                    float randSpeed = rand.nextFloat()%1.25f;
+                    anim.setSpeed(Math.max(0.75f, randSpeed));
+                    
                     mAnimationOffsets.add(new Vec2( x * anim.getWidth(),
                                                     y * anim.getHeight()));
                     mAnimatedObjects.add(anim);

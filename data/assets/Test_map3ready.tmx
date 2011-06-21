@@ -149,7 +149,7 @@
    <properties>
     <property name="animRef" value="splash"/>
     <property name="duration" value="100"/>
-    <property name="maxTimeOffset" value="500"/>
+    <property name="maxTimeOffset" value="2000"/>
    </properties>
   </tile>
  </tileset>

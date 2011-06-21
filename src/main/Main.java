@@ -1,8 +1,8 @@
 
 package main;
 
-import GUI.BasicTWLGameState;
-import GUI.TWLStateBasedGame;
+import TWL.BasicTWLGameState;
+import TWL.TWLStateBasedGame;
 import java.net.URL;
 import org.newdawn.slick.*;
 import States.Game.StateGame;
@@ -29,7 +29,7 @@ public class Main extends TWLStateBasedGame
             app.setDisplayMode(800, 600, false);
             //app.setMaximumLogicUpdateInterval(16);
             //app.setMinimumLogicUpdateInterval(16);
-            app.setVSync(true);
+            //app.setVSync(true);
             //app.setSmoothDeltas(true);
             //app.setTargetFrameRate(60);
             app.start();
