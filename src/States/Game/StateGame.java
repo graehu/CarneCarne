@@ -145,7 +145,6 @@ public class StateGame extends BasicTWLGameState {
         {
             sEvents.triggerEvent(new RightStickEvent(rightStick));
         }
-        
         mGameMode.update(_i);
         //update particles
         sParticleManager.update(_i);
