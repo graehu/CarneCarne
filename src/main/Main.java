@@ -18,13 +18,13 @@ public class Main extends TWLStateBasedGame
     public static void main(String[] arguments)
     {
         //setup native libs
-        
+        //-Djava.library.path=lib/natives-win32
         NativeLibLoader nativeLibLoader = new NativeLibLoader("org.lwjgl.librarypath");
         nativeLibLoader.init();
-        //nativeLibLoader.setupPath();
-        NativeLibLoader nativeLibLoaderJinput = new NativeLibLoader("java.library.path");
+        nativeLibLoader.setupPath();
+        NativeLibLoader nativeLibLoaderJinput = new NativeLibLoader("net.java.games.input.librarypath");
         nativeLibLoaderJinput.init();
-       // nativeLibLoaderJinput.setupPath();
+        nativeLibLoaderJinput.setupPath();
         try
         {
             AppGameContainer app = new AppGameContainer(new Main());
