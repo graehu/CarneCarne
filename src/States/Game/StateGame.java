@@ -16,6 +16,7 @@ import GUI.sGUI;
 import Graphics.Particles.sParticleManager;
 import GUI.TWL.BasicTWLGameState;
 import GUI.TWL.RootPane;
+import Graphics.sGraphicsManager;
 import Graphics.sSkinFactory;
 import Level.sLevel;
 import Sound.sSound;
@@ -33,6 +34,7 @@ import org.newdawn.slick.fills.GradientFill;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
+import org.newdawn.slick.state.transition.BlobbyTransition;
 
 /**
  *
@@ -153,14 +155,15 @@ public class StateGame extends BasicTWLGameState {
     
     public void render(GameContainer _gc, StateBasedGame _sbg, Graphics _grphcs) throws SlickException
     {
-        ShapeFill fill = new GradientFill(new Vector2f(0,0), new Color(159,111,89), new Vector2f(800,600), new Color(186, 160, 149), false);
-        Rectangle shape = new Rectangle(0,0, 800, 600);
+        Vec2 s = sGraphicsManager.getScreenDimentions();
+        ShapeFill fill = new GradientFill(new Vector2f(0,0), new Color(159,111,89), new Vector2f(s.x,s.y), new Color(186, 160, 149), false);
+        Rectangle shape = new Rectangle(0,0, s.x, s.y);
         _gc.getGraphics().fill(shape, fill);
         mGameMode.render();
         
         //render particles
         Vec2 worldTrans = sWorld.translateToWorld(new Vec2(0,0));
-        sParticleManager.render((int)worldTrans.x, (int)worldTrans.y, 800, 600, 0);
+        sParticleManager.render((int)worldTrans.x, (int)worldTrans.y, (int)s.x, (int)s.y, 0);
     }
 
     @Override
@@ -171,6 +174,16 @@ public class StateGame extends BasicTWLGameState {
         //TEST: PARTICLE SYSTEM
         sParticleManager.createSystem("particleSystems/testSystem.xml", 500, 500, 3.0f);
         sSound.play("ambiance");
+        // create and add our button, the position and size is done in layoutRootPane()
+        btn = new Button("Hello World");
+        btn.addCallback(new Runnable() {
+            public void run() {
+                //StateGame.mgame.enterState(3,new BlobbyTransition(Color.green),null);
+            }
+        });
+        
+        scrollPane = sGUI.createDialogueBox(getRootPane(), 20, 20, "RAWR!");
+        scrollPane.setContent(btn);
         
         //container.getGraphics().setDrawMode(Graphics.MODE_ALPHA_BLEND);
     }
@@ -190,16 +203,7 @@ public class StateGame extends BasicTWLGameState {
         // specify a theme name instead of the default "state"+getID()
         myRootPane.setTheme("mainMenu");
         
-        // create and add our button, the position and size is done in layoutRootPane()
-        btn = new Button("Hello World");
-        btn.addCallback(new Runnable() {
-            public void run() {
-                System.out.println("It works!");
-            }
-        });
         
-        scrollPane = sGUI.createDialogueBox(myRootPane, 20, 20, "RAWR!");
-        scrollPane.setContent(btn);
                
         // return the root pane so that it is available for getRootPane()
         return myRootPane;

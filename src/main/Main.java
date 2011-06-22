@@ -3,9 +3,11 @@ package main;
 
 import GUI.TWL.BasicTWLGameState;
 import GUI.TWL.TWLStateBasedGame;
+import Graphics.sGraphicsManager;
 import java.net.URL;
 import org.newdawn.slick.*;
 import States.Game.StateGame;
+import States.Menu.StateMenu;
 import States.Splash.StateSplash;
 import States.Title.StateTitle;
 
@@ -29,6 +31,8 @@ public class Main extends TWLStateBasedGame
         {
             AppGameContainer app = new AppGameContainer(new Main());
             app.setDisplayMode(800, 600, false);
+            //initialise graphics manager
+            sGraphicsManager.init(800, 600);
             //app.setDisplayMode(app.getScreenWidth(), app.getScreenHeight(), true);
             app.setVSync(true);
             app.setTargetFrameRate(60);
@@ -47,19 +51,23 @@ public class Main extends TWLStateBasedGame
         return magic;
     }
 
-    BasicTWLGameState mSplashState, mTitleState, mGameState;
+    BasicTWLGameState mSplashState, mTitleState, mGameState, mMenuState;
     
     @Override
     public void initStatesList(GameContainer gc) throws SlickException {
-        //Splash
+        //Splash: state0
         mSplashState = new StateSplash();
         addState(mSplashState);
-        //title
+        //title: state1
         mTitleState = new StateTitle();
         addState(mTitleState);
-        //game
+        //game: state2
         mGameState = new StateGame();
         addState(mGameState); 
+        //menu: state3
+        mMenuState = new StateMenu();
+        addState(mMenuState); 
+        
         //FIXME: should start on splash
         //enterState(2, null, new BlobbyTransition(new Color(0,0,0)));
         enterState(2, null, null);

@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package States.Title;
+package States.Menu;
 
 import GUI.TWL.BasicTWLGameState;
 import org.newdawn.slick.GameContainer;
@@ -14,21 +14,23 @@ import org.newdawn.slick.state.StateBasedGame;
  *
  * @author a203945
  */
-public class StateTitle extends BasicTWLGameState{
+public class StateMenu extends BasicTWLGameState{
 
     @Override
     public int getID() {
-       return 1;
+        return 3;
     }
 
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
+        //do crap
     }
 
     public void render(GameContainer gc, StateBasedGame sbg, Graphics grphcs) throws SlickException {
+        //render crap
     }
 
     public void update(GameContainer gc, StateBasedGame sbg, int i) throws SlickException {
-        //this is the only place that the resolution should change so only change it in sGraphicsManager here
+        //update crap
     }
     
 }
