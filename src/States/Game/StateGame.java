@@ -20,6 +20,7 @@ import GUI.TWL.RootPane;
 import Graphics.sGraphicsManager;
 import Graphics.sSkinFactory;
 import Level.sLevel;
+import Sound.sSound;
 import World.sWorld;
 import de.matthiasmann.twl.Button;
 import de.matthiasmann.twl.ScrollPane;
@@ -192,6 +193,7 @@ public class StateGame extends BasicTWLGameState {
         super.enter(container, game);
         //TEST: PARTICLE SYSTEM
         sParticleManager.createSystem("particleSystems/testSystem.xml", 500, 500, 3.0f);
+        sSound.play("ambiance");
         // create and add our button, the position and size is done in layoutRootPane()
         btn = new Button("Hello World");
         btn.addCallback(new Runnable() {
@@ -251,5 +253,8 @@ ScrollPane scrollPane;
         sSkinFactory.init();
         sWorld.init();
         sLevel.init();
+        sSound.init();
+        sSound.loadSound("ambiance", "data/assets/sound/sfx/level_ambiance.ogg");
+        sSound.setLooping("ambiance", true);
     }    
 }
