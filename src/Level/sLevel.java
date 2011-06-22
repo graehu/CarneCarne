@@ -4,6 +4,7 @@
  */
 package Level;
 
+import Graphics.sGraphicsManager;
 import World.sWorld;
 import org.jbox2d.common.Vec2;
 import org.newdawn.slick.SlickException;
@@ -69,8 +70,9 @@ public class sLevel {
     {
         mTiledMap = new AnimatedTiledMap("assets/TestMap.tmx");
         mTiledMap.initAnimationlayer("assets/splashbig.def");
-        xTiles = (int)(800.0f/64.0f)+2;
-        yTiles = (int)(800.0f/64.0f)+2;
+        Vec2 s = sGraphicsManager.getScreenDimentions();
+        xTiles = (int)(s.x/64.0f)+2;
+        yTiles = (int)(s.y/64.0f)+2;
         mLevelEditor = new LevelEditor(mTiledMap);
         midLayer = mTiledMap.getLayerIndex("Level");
         mParralaxXScale = new float[mTiledMap.getLayerCount()];
@@ -126,6 +128,7 @@ public class sLevel {
             transY = transY % 64;
             mTiledMap.render(transX,transY, xStart,yStart, xStart+xTiles,yStart+yTiles, i, false);
         }
-        mTiledMap.renderAnimatedLayer(translation.x,translation.y,800.0f,600.0f);
+        Vec2 s = sGraphicsManager.getScreenDimentions();
+        mTiledMap.renderAnimatedLayer(translation.x,translation.y,s.x,s.y);
     }
 }
