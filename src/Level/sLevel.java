@@ -94,6 +94,9 @@ public class sLevel {
     }
     public static void renderBackground()
     {
+        Vec2 s = sGraphicsManager.getScreenDimensions();
+        xTiles = (int)(s.x/64.0f)+2;
+        yTiles = (int)(s.y/64.0f)+2;
         Vec2 translation = sWorld.getPixelTranslation();
         for (int i = 0; i < midLayer; i++)
         {

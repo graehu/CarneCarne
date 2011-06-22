@@ -4,7 +4,6 @@
  */
 package Events;
 
-import World.sWorld;
 import org.jbox2d.common.Vec2;
 
 /**
@@ -15,14 +14,16 @@ public class MapClickEvent extends iEvent {
     
     Vec2 mPosition; /// This is the world space position
     boolean mLeftButton;
-    public MapClickEvent(Vec2 _position, boolean _leftButton) /// Pass in the screen space position
+    protected int mPlayer;
+    public MapClickEvent(Vec2 _position, boolean _leftButton, int _player) /// Pass in the screen space position
     {
         mPosition = _position;
         mLeftButton = _leftButton;
+        mPlayer = _player;
     }
     public String getName()
     {
-        return "MapClickEvent";
+        return "MapClickEvent" + mPlayer;
     }
     public String getType()
     {

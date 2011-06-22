@@ -4,6 +4,7 @@
  */
 package States.Game;
 
+import org.newdawn.slick.Graphics;
 import Events.sEvents;
 import World.sWorld;
 import Level.sLevel;
@@ -23,10 +24,8 @@ public class PlayMode implements iGameMode {
         sWorld.update(_time);
         sEvents.processEvents();
     }
-    public void render()
+    public void render(Graphics _graphics)
     {
-        sLevel.renderBackground();
-        sWorld.render();
-        sLevel.renderForeground();
+        sWorld.getCamera().render(_graphics);
     }
 }

@@ -22,18 +22,22 @@ import org.newdawn.slick.SpriteSheet;
 public class sGraphicsManager {
     //this class should manage the rendering of all objects 
     //provide a function for skins to add themselves to the render lists which are sorted by spritesheet
+
+    protected static Vec2 mTrueScreenDimensions = new Vec2(0,0);
+    protected static Vec2 mScreenDimensions = mTrueScreenDimensions;
     private static boolean mIsInit = false;
-    private static Vec2 mScreenDimensions = new Vec2(0,0);
+    
     public static Vec2 getScreenDimensions()
     {
         return mScreenDimensions.clone();
     }
-    //returns old dimensions
-    public static Vec2 setScreenDimensions(Vec2 _s)
+    public static Vec2 getTrueScreenDimensions()
     {
-        Vec2 temp = mScreenDimensions;
-        mScreenDimensions = _s;
-        return temp;
+        return mTrueScreenDimensions.clone();
+    }
+    public static void setScreenDimensions(Vec2 _screenDimensions)
+    {
+        mScreenDimensions = _screenDimensions;
     }
     
 
@@ -52,9 +56,12 @@ public class sGraphicsManager {
         {
             mIsInit = true;
             //initialise for all spritesheets (could do this from file perhaps)
-            mScreenDimensions.x = _sx;
-            mScreenDimensions.y = _sy;
+            mTrueScreenDimensions.x = _sx;
+            mTrueScreenDimensions.y = _sy;
         }
+        //initialise for all spritesheets (could do this from file perhaps)
+        mTrueScreenDimensions.x = _sx;
+        mTrueScreenDimensions.y = _sy;
     }
     
     public static void addSprite(iSprite _sprite)

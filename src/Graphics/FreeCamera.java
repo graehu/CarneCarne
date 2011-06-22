@@ -8,25 +8,31 @@ import Events.KeyDownEvent;
 import Events.iEvent;
 import Events.iEventListener;
 import Events.sEvents;
+import Level.sLevel;
+import World.sWorld;
 import org.jbox2d.common.Vec2;
+import org.jbox2d.dynamics.Body;
+import org.newdawn.slick.Graphics;
+import org.newdawn.slick.geom.Rectangle;
 
 /**
  *
  * @author a203945
  */
-public class FreeCamera implements iCamera, iEventListener {
-    
+public class FreeCamera extends iCamera implements iEventListener
+{
     int xPixel, yPixel;
     
-    public FreeCamera()
+    public FreeCamera(Rectangle _viewPort)
     {
+        super(_viewPort);
         Vec2 s = sGraphicsManager.getScreenDimensions();
         xPixel = (int) (s.x/2);
         yPixel = (int) (s.y/2);
-        sEvents.subscribeToEvent("KeyDownEvent" + "w", this);
-        sEvents.subscribeToEvent("KeyDownEvent" + "a", this);
-        sEvents.subscribeToEvent("KeyDownEvent" + "s", this);
-        sEvents.subscribeToEvent("KeyDownEvent" + "d", this);
+        sEvents.subscribeToEvent("KeyDownEvent" + "w" + 0, this);
+        sEvents.subscribeToEvent("KeyDownEvent" + "a" + 0, this);
+        sEvents.subscribeToEvent("KeyDownEvent" + "s" + 0, this);
+        sEvents.subscribeToEvent("KeyDownEvent" + "d" + 0, this);
     }
     public Vec2 translateToWorld(Vec2 _physicsSpace)
     {
@@ -48,6 +54,12 @@ public class FreeCamera implements iCamera, iEventListener {
     {
         Vec2 s = sGraphicsManager.getScreenDimensions();
         return new Vec2((s.x/2)+(-xPixel),(s.y/2)+(-yPixel));        
+    }
+    public void render(Graphics _graphics)
+    {
+        sLevel.renderBackground();
+        sWorld.render();
+        sLevel.renderForeground();
     }
 
     public void trigger(iEvent _event) {
@@ -75,5 +87,13 @@ public class FreeCamera implements iCamera, iEventListener {
                 break;
             }
         }
+    }
+    
+    public iCamera addPlayer(Body _body)
+    {
+        return new BodyCamera(_body, new Rectangle(0,0,800,600), true);
+    }
+
+    public void update() {
     }
 }

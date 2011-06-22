@@ -15,14 +15,16 @@ public class MapClickReleaseEvent extends iEvent {
 
     Vec2 mPosition; /// This is the world space position
     boolean mLeftButton;
-    public MapClickReleaseEvent(Vec2 _position, boolean _leftButton) /// Pass in the screen space position
+    private int mPlayer;
+    public MapClickReleaseEvent(Vec2 _position, boolean _leftButton, int _player) /// Pass in the screen space position
     {
         mPosition = _position;
         mLeftButton = _leftButton;
+        mPlayer = _player;
     }
     public String getName()
     {
-        return "MapClickReleaseEvent";
+        return "MapClickReleaseEvent" + mPlayer;
     }
     public String getType()
     {

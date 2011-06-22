@@ -2,9 +2,8 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package States.Game;
+package Events;
 
-import Events.iEvent;
 import org.jbox2d.common.Vec2;
 
 /**
@@ -14,9 +13,11 @@ import org.jbox2d.common.Vec2;
 public class RightStickEvent extends iEvent {
 
     Vec2 mDirection;
-    public RightStickEvent(Vec2 _direction)
+    private int mPlayer;
+    public RightStickEvent(Vec2 _direction, int _player)
     {
         mDirection = _direction;
+        mPlayer = _player;
     }
     
     public Vec2 getDirection()
@@ -27,13 +28,13 @@ public class RightStickEvent extends iEvent {
     @Override
     public String getName()
     {
-        return "RightStickEvent";
+        return getType() + mPlayer;
     }
 
     @Override
     public String getType()
     {
-        return getName();
+        return "RightStickEvent";
     }
     
 }

@@ -40,7 +40,6 @@ public class Main extends TWLStateBasedGame
             //initialise graphics manager
             sGraphicsManager.init(800, 600);
 
-            
             app.start();
         }
         catch(SlickException e)

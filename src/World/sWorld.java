@@ -7,7 +7,7 @@ package World;
 import Entities.Entity;
 import Events.TileDestroyedEvent;
 import Events.sEvents;
-import Graphics.BodyCamera;
+import Graphics.FreeCamera;
 import Graphics.iCamera;
 import Level.sLevel;
 import Level.sLevel.TileType;
@@ -22,6 +22,7 @@ import org.jbox2d.dynamics.joints.DistanceJointDef;
 import org.jbox2d.dynamics.joints.Joint;
 import org.jbox2d.structs.collision.RayCastInput;
 import org.jbox2d.structs.collision.RayCastOutput;
+import org.newdawn.slick.geom.Rectangle;
 /**
  *
  * @author alasdair
@@ -65,6 +66,7 @@ public class sWorld
         factories.put("NonEdibleTileFactory", new NonEdibleTileFactory());
         factories.put("SpatBlockFactory", new SpatBlockBodyFactory());
         factories.put("WaterTileFactory", new WaterTileFactory());
+        mCamera = new FreeCamera( new Rectangle(0,0,800,600));
     }
     
     public static Body useFactory(String _factory, HashMap _parameters)
@@ -189,12 +191,11 @@ public class sWorld
     }
     public static void destroyJoint(Joint _joint)
     {
-        mWorld.destroyJoint(_joint);;
+        mWorld.destroyJoint(_joint);
     }
-    public static void createBodyCamera(Body _body)
+    public static void addPlayer(Body _body)
     {
-        mCamera = new BodyCamera(_body);
-        //mCamera = new FreeCamera();
+        mCamera = mCamera.addPlayer(_body);
     }
     public static Vec2 translateToWorld(Vec2 _position)
     {
@@ -218,10 +219,6 @@ public class sWorld
     public static void update(float _time)
     {
         float secondsPerFrame = 16.666f;
-        /*time += _time;
-        if (time > secondsPerFrame)
-        {
-        time -= secondsPerFrame;*/
         mWorld.step(secondsPerFrame/1000.0f, 8, 8);
         Body body = mWorld.getBodyList();
         while (body != null)
@@ -231,9 +228,13 @@ public class sWorld
                 entity.update();
             body = body.getNext();
         }
-        //}
+        mCamera.update();
     }
     
+    public static iCamera getCamera()
+    {
+        return mCamera;
+    }
     public static void render()
     {
         Body body = mWorld.getBodyList();
