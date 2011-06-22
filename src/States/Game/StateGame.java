@@ -4,6 +4,7 @@
  */
 package States.Game;
 
+import Events.RightStickEvent;
 import Events.ShoulderButtonEvent;
 import Events.AnalogueStickEvent;
 import Events.MapClickReleaseEvent;
@@ -59,12 +60,14 @@ public class StateGame extends BasicTWLGameState {
         if (_button == Input.MOUSE_LEFT_BUTTON)
         {
             Vec2 position = new Vec2(_x,_y);
-            sEvents.triggerEvent(new MapClickEvent(sWorld.translateToPhysics(position),true));
+            for (int i = 0; i < mPlayers; i++)
+                sEvents.triggerEvent(new MapClickEvent(sWorld.translateToPhysics(position),true,i));
         }
         if (_button == Input.MOUSE_RIGHT_BUTTON)
         {
             Vec2 position = new Vec2(_x,_y);
-            sEvents.triggerEvent(new MapClickEvent(sWorld.translateToPhysics(position),false));
+            for (int i = 0; i < mPlayers; i++)
+                sEvents.triggerEvent(new MapClickEvent(sWorld.translateToPhysics(position),false,i));
         }
     }
     public void mouseReleased(int _button, int _x, int _y)
@@ -72,12 +75,14 @@ public class StateGame extends BasicTWLGameState {
         if (_button == Input.MOUSE_LEFT_BUTTON)
         {
             Vec2 position = new Vec2(_x,_y);
-            sEvents.triggerEvent(new MapClickReleaseEvent(sWorld.translateToPhysics(position),true));
+            for (int i = 0; i < mPlayers; i++)
+                sEvents.triggerEvent(new MapClickReleaseEvent(sWorld.translateToPhysics(position),true, i));
         }
         if (_button == Input.MOUSE_RIGHT_BUTTON)
         {
             Vec2 position = new Vec2(_x,_y);
-            sEvents.triggerEvent(new MapClickReleaseEvent(sWorld.translateToPhysics(position),false));
+            for (int i = 0; i < mPlayers; i++)
+                sEvents.triggerEvent(new MapClickReleaseEvent(sWorld.translateToPhysics(position),false, i));
         }
     }
     public void mouseMoved(int oldx, int oldy, int newx, int newy)
@@ -97,45 +102,63 @@ public class StateGame extends BasicTWLGameState {
     static private boolean xAxisHit = false;
     static private boolean yAxisHit = false;
     static private boolean zAxisHit = false;
+    static private int mPlayers;
     public void update(GameContainer _gc, StateBasedGame _sbg, int _i) throws SlickException 
-    {       
-        //movement input is handled here as we need to detect 'isDown' every frame rather than 'pressed' as an event
+    {
+        mPlayers = _gc.getInput().getControllerCount();
+        int i = 0;
+        try
+        {
+            for (i = 0; i < mPlayers; i++)
+            {
+                updateControls(_gc.getInput(), i);
+            }
+        }
+        catch (ArrayIndexOutOfBoundsException e)
+        {
+            mPlayers = i;
+        }
+        mGameMode.update(_i);
+        //update particles
+        sParticleManager.update(_i);
+    }
+    private void updateControls(Input _input, int player)
+    {
+        if(_input.isKeyDown(Input.KEY_W))
+            sEvents.triggerEvent(new KeyDownEvent('w', player));
+        if(_input.isKeyDown(Input.KEY_A))
+            sEvents.triggerEvent(new KeyDownEvent('a', player));
+        if(_input.isKeyDown(Input.KEY_S))
+            sEvents.triggerEvent(new KeyDownEvent('s', player));
+        if(_input.isKeyDown(Input.KEY_D))
+            sEvents.triggerEvent(new KeyDownEvent('d', player));
         
-        if(_gc.getInput().isKeyDown(Input.KEY_W))
-            sEvents.triggerEvent(new KeyDownEvent('w'));
-        if(_gc.getInput().isKeyDown(Input.KEY_A))
-            sEvents.triggerEvent(new KeyDownEvent('a'));
-        if(_gc.getInput().isKeyDown(Input.KEY_S))
-            sEvents.triggerEvent(new KeyDownEvent('s'));
-        if(_gc.getInput().isKeyDown(Input.KEY_D))
-            sEvents.triggerEvent(new KeyDownEvent('d'));
-        
-        if(_gc.getInput().isButtonPressed(5, 0))
-            sEvents.triggerEvent(new KeyDownEvent('w'));
-        float xAxis = _gc.getInput().getAxisValue(0, 1);
+        if(_input.isButtonPressed(5, player))
+            sEvents.triggerEvent(new KeyDownEvent('w', player));
+        float xAxis = _input.getAxisValue(player, 1);
         if (xAxisHit)
         {
             if (xAxis > stickEpsilon || xAxis < -stickEpsilon)
             {
-                sEvents.triggerEvent(new AnalogueStickEvent(xAxis));
+                sEvents.triggerEvent(new AnalogueStickEvent(xAxis, player));
             }
         }
         else if (xAxis != -1.0f)
         {
             xAxisHit = true;
         }
-        Vec2 rightStick = new Vec2(_gc.getInput().getAxisValue(0, 3),_gc.getInput().getAxisValue(0, 2));
+        Vec2 rightStick = new Vec2(_input.getAxisValue(player, 3),_input.getAxisValue(player, 2));
         
-        float shoulderButtons = _gc.getInput().getAxisValue(0,4);
+        float shoulderButtons =_input.getAxisValue(player,4);
         if (zAxisHit)
         {
             if (shoulderButtons > shoulderButtonEpsilon)
             {
-                sEvents.triggerEvent(new ShoulderButtonEvent(rightStick,true));
+                sEvents.triggerEvent(new ShoulderButtonEvent(rightStick,true, player));
             }
             else if (shoulderButtons < -shoulderButtonEpsilon)
             {
-                sEvents.triggerEvent(new ShoulderButtonEvent(rightStick,false));
+                sEvents.triggerEvent(new ShoulderButtonEvent(rightStick,false, player));
             }
         }
         else if (shoulderButtons != -1.0f)
@@ -145,20 +168,17 @@ public class StateGame extends BasicTWLGameState {
         
         if (rightStick.length() > 0.2f)
         {
-            sEvents.triggerEvent(new RightStickEvent(rightStick));
+            sEvents.triggerEvent(new RightStickEvent(rightStick, player));
         }
-        mGameMode.update(_i);
-        //update particles
-        sParticleManager.update(_i);
     }
     
     public void render(GameContainer _gc, StateBasedGame _sbg, Graphics _grphcs) throws SlickException
     {
-        Vec2 s = sGraphicsManager.getScreenDimentions();
+        Vec2 s = sGraphicsManager.getScreenDimensions();
         ShapeFill fill = new GradientFill(new Vector2f(0,0), new Color(159,111,89), new Vector2f(s.x,s.y), new Color(186, 160, 149), false);
         Rectangle shape = new Rectangle(0,0, s.x, s.y);
         _gc.getGraphics().fill(shape, fill);
-        mGameMode.render();
+        mGameMode.render(_gc.getGraphics());
         
         //render particles
         Vec2 worldTrans = sWorld.translateToWorld(new Vec2(0,0));

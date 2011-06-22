@@ -70,9 +70,6 @@ public class sLevel {
     {
         mTiledMap = new AnimatedTiledMap("assets/TestMap.tmx");
         mTiledMap.initAnimationlayer("assets/splashbig.def");
-        Vec2 s = sGraphicsManager.getScreenDimentions();
-        xTiles = (int)(s.x/64.0f)+2;
-        yTiles = (int)(s.y/64.0f)+2;
         mLevelEditor = new LevelEditor(mTiledMap);
         midLayer = mTiledMap.getLayerIndex("Level");
         mParralaxXScale = new float[mTiledMap.getLayerCount()];
@@ -97,6 +94,9 @@ public class sLevel {
     }
     public static void renderBackground()
     {
+        Vec2 s = sGraphicsManager.getScreenDimensions();
+        xTiles = (int)(s.x/64.0f)+2;
+        yTiles = (int)(s.y/64.0f)+2;
         Vec2 translation = sWorld.getPixelTranslation();
         for (int i = 0; i < midLayer; i++)
         {
@@ -128,7 +128,7 @@ public class sLevel {
             transY = transY % 64;
             mTiledMap.render(transX,transY, xStart,yStart, xStart+xTiles,yStart+yTiles, i, false);
         }
-        Vec2 s = sGraphicsManager.getScreenDimentions();
+        Vec2 s = sGraphicsManager.getScreenDimensions();
         mTiledMap.renderAnimatedLayer(translation.x,translation.y,s.x,s.y);
     }
 }

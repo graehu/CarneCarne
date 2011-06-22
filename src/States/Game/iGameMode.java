@@ -4,6 +4,8 @@
  */
 package States.Game;
 
+import org.newdawn.slick.Graphics;
+
 /**
  *
  * @author alasdair
@@ -11,5 +13,5 @@ package States.Game;
 public interface iGameMode {
     
     public void update(float _time);
-    public void render();
+    public void render(Graphics _graphics);
 }

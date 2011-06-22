@@ -6,6 +6,7 @@ package Level;
 
 import Entities.sEntityFactory;
 import java.util.HashMap;
+import java.util.Stack;
 import org.jbox2d.common.Vec2;
 import org.newdawn.slick.tiled.TiledMap;
 
@@ -15,11 +16,13 @@ import org.newdawn.slick.tiled.TiledMap;
  */
 public class FlagProcessor
 {
+    private Stack<Vec2> playerPositions;
     FlagProcessor(TiledMap _tiledMap)
     {
         int width = _tiledMap.getWidth();
         int height = _tiledMap.getHeight();
         int layerIndex = _tiledMap.getLayerIndex("Flags");
+        playerPositions = new Stack<Vec2>();
         HashMap parameters = new HashMap();
         for (int i = 0; i < width; i++)
         {
@@ -34,10 +37,14 @@ public class FlagProcessor
                 }
                 else if (spawn.equals("Player"))
                 {
-                    parameters.put("position",new Vec2(i,ii));
-                    sEntityFactory.create("Player",parameters);
+                    playerPositions.push(new Vec2(i,ii));
                 }
             }
+        }
+        while (!playerPositions.isEmpty())
+        {
+            parameters.put("position", playerPositions.pop());
+            sEntityFactory.create("Player",parameters);
         }
     }
 }

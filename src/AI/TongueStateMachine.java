@@ -92,6 +92,7 @@ public class TongueStateMachine {
     }
     private int setAnimation(String _name)
     {
+        mAIController.mEntity.mSkin.startAnim(_name, mIsTongueActive, tongueLength);
         return 1;
     }
     static Vec2 mUp = new Vec2(0,-1);

@@ -11,9 +11,11 @@ package Events;
 public class AnalogueStickEvent extends iEvent {
     
     private float mValue;
-    public AnalogueStickEvent(float _value)
+    private int mPlayer;
+    public AnalogueStickEvent(float _value, int _player)
     {
         mValue = _value;
+        mPlayer = _player;
     }
     
     public float getValue()
@@ -22,13 +24,15 @@ public class AnalogueStickEvent extends iEvent {
     }
 
     @Override
-    public String getName() {
-        return "AnalogueStickEvent";
+    public String getName()
+    {
+        return getType() + mPlayer;
     }
 
     @Override
-    public String getType() {
-        return getName();
+    public String getType()
+    {
+        return "AnalogueStickEvent";
     }
     
 }

@@ -22,9 +22,11 @@ import java.util.List;
 public class PlayerFactory implements iEntityFactory {
     
     boolean used;
+    private int players;
     public PlayerFactory()
     {
         used = false;
+        players = 0;
     }
     public Entity useFactory(HashMap _parameters)
     {
@@ -88,15 +90,12 @@ public class PlayerFactory implements iEntityFactory {
             parameters.put("aIEntity", entity);
             parameters.put("category", sWorld.BodyCategories.ePlayer);
             entity.mBody = sWorld.useFactory("CharacterFactory",parameters);
-            PlayerInputController controller = new PlayerInputController(entity);
+            PlayerInputController controller = new PlayerInputController(entity, players);
             entity.mController = controller;
-            sWorld.createBodyCamera(entity.mBody);
+            sWorld.addPlayer(entity.mBody);
             sEvents.triggerEvent(new PlayerCreatedEvent(entity));
+            players++;
             return entity;
         }
-        /*Entity entity = new Player(sSkinFactory.create("static"));
-        entity.mBody = sPhysics.createTile(entity, "GregIsGay", position);
-        //entity.mBody = sPhysics.create(entity, position);
-        return entity;*/
     }
 }

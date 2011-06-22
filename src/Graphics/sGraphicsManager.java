@@ -19,11 +19,19 @@ import org.newdawn.slick.SpriteSheet;
 public class sGraphicsManager {
     //this class should manage the rendering of all objects 
     //provide a function for skins to add themselves to the render lists which are sorted by spritesheet
-    private static boolean mIsInit = false;
-    protected static Vec2 mScreenDimentions = new Vec2(0,0);
-    public static Vec2 getScreenDimentions()
+    protected static Vec2 mTrueScreenDimensions = new Vec2(0,0);
+    protected static Vec2 mScreenDimensions = mTrueScreenDimensions;
+    public static Vec2 getScreenDimensions()
     {
-        return mScreenDimentions.clone();
+        return mScreenDimensions.clone();
+    }
+    static Vec2 getTrueScreenDimensions()
+    {
+        return mTrueScreenDimensions.clone();
+    }
+    static void setScreenDimensions(Vec2 _screenDimensions)
+    {
+        mScreenDimensions = _screenDimensions;
     }
 
     private static HashMap<String, SpriteSheet> mSpriteSheets = new HashMap<String, SpriteSheet>();
@@ -34,16 +42,19 @@ public class sGraphicsManager {
     {
         
     }
-    
+    private static boolean mIsInit = false;
     static public void init(int _sx, int _sy) throws SlickException //should be called by sSkinFactory init
     {
-        if(mIsInit == false) //only allow initialisation once
-        {
-            mIsInit = true;
-            //initialise for all spritesheets (could do this from file perhaps)
-            mScreenDimentions.x = _sx;
-            mScreenDimentions.y = _sy;
-        }
+    if(mIsInit == false) //only allow initialisation once
+    {
+        mIsInit = true;
+        //initialise for all spritesheets (could do this from file perhaps)
+        mTrueScreenDimensions.x = _sx;
+        mTrueScreenDimensions.y = _sy;
+    }
+    //initialise for all spritesheets (could do this from file perhaps)
+    mTrueScreenDimensions.x = _sx;
+    mTrueScreenDimensions.y = _sy;
     }
     
     public void addSprite(iSprite _sprite)

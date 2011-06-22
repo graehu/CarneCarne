@@ -34,8 +34,8 @@ public class Main extends TWLStateBasedGame
             //initialise graphics manager
             sGraphicsManager.init(800, 600);
             //app.setDisplayMode(app.getScreenWidth(), app.getScreenHeight(), true);
-            app.setVSync(true);
-            app.setTargetFrameRate(60);
+            //app.setVSync(true);
+            //app.setTargetFrameRate(60);
             app.start();
         }
         catch(SlickException e)

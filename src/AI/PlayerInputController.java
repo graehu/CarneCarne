@@ -16,7 +16,7 @@ import Events.iEvent;
 import Events.iEventListener;
 import Events.sEvents;
 import Level.sLevel;
-import States.Game.RightStickEvent;
+import Events.RightStickEvent;
 import World.sWorld;
 import java.util.HashMap;
 import org.jbox2d.common.Vec2;
@@ -32,19 +32,21 @@ public class PlayerInputController extends iAIController implements iEventListen
     protected String mFaceDirAnim;
     private float mTongueAngle = 0;
     private Vec2 mCursorPos = new Vec2(0,0);
-    public PlayerInputController(AIEntity _entity)
+    private int mPlayer;
+    public PlayerInputController(AIEntity _entity, int _player)
     {
         super(_entity);
+        mPlayer = _player;
         mFaceDirAnim = "e";
-        sEvents.subscribeToEvent("KeyDownEvent"+'w', this);
-        sEvents.subscribeToEvent("KeyDownEvent"+'a', this);
-        sEvents.subscribeToEvent("KeyDownEvent"+'s', this);
-        sEvents.subscribeToEvent("KeyDownEvent"+'d', this);
-        sEvents.subscribeToEvent("MapClickEvent", this);
-        sEvents.subscribeToEvent("MapClickReleaseEvent", this);
-        sEvents.subscribeToEvent("MouseMoveEvent", this);
-        sEvents.subscribeToEvent("AnalogueStickEvent", this);
-        sEvents.subscribeToEvent("RightStickEvent", this);
+        sEvents.subscribeToEvent("KeyDownEvent"+'w'+_player, this);
+        sEvents.subscribeToEvent("KeyDownEvent"+'a'+_player, this);
+        sEvents.subscribeToEvent("KeyDownEvent"+'s'+_player, this);
+        sEvents.subscribeToEvent("KeyDownEvent"+'d'+_player, this);
+        sEvents.subscribeToEvent("MapClickEvent"+_player, this);
+        sEvents.subscribeToEvent("MapClickReleaseEvent"+_player, this);
+        sEvents.subscribeToEvent("MouseMoveEvent"+_player, this);
+        sEvents.subscribeToEvent("AnalogueStickEvent"+_player, this);
+        sEvents.subscribeToEvent("RightStickEvent"+_player, this);
         mTongueState = new TongueStateMachine(this);
     }
     
@@ -161,12 +163,11 @@ public class PlayerInputController extends iAIController implements iEventListen
                 MouseMoveEvent event = (MouseMoveEvent)_event;
                 Vec2 direction = event.getPhysicsPosition().sub(mEntity.mBody.getPosition().add(new Vec2(0.5f,0.5f))); //offset by half the width and height
                 direction.normalize();
-                //faceMove(direction);
                 look(direction);
             }
                 
         }
-        else if (_event.getType().equals("MapClickReleaseEvent"))
+        else if (_event.getType().equals("MapClickReleaseEvent"+mPlayer))
         {
             MapClickReleaseEvent event = (MapClickReleaseEvent)_event;
             mCursorPos = event.getPosition();
@@ -192,8 +193,7 @@ public class PlayerInputController extends iAIController implements iEventListen
                 mTongueState.rightClick(event.getPosition());
             }
         }
-    }
-    
+    }    
     private void look(Vec2 _direction)
     {
         mTongueAngle = (float)Math.acos(Vec2.dot(new Vec2(0,-1), _direction));
