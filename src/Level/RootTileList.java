@@ -5,9 +5,8 @@
 package Level;
 
 import Level.MelonSkinTile.SkinDirection;
-import com.sun.org.apache.xpath.internal.operations.Bool;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Vector;
 import org.newdawn.slick.tiled.TiledMap;
 
 /**
@@ -16,7 +15,7 @@ import org.newdawn.slick.tiled.TiledMap;
  */
 public class RootTileList {
     
-    private static Vector<RootTile> mRootTiles;
+    private static ArrayList<RootTile> mRootTiles;
     
     public RootTileList(TiledMap _tiledMap)
     {
@@ -42,7 +41,7 @@ public class RootTileList {
         {
             idsSize += _tiledMap.getTileSet(i).lastGID - _tiledMap.getTileSet(i).firstGID;
         }
-        mRootTiles = new Vector<RootTile>();
+        mRootTiles = new ArrayList<RootTile>();
         mRootTiles.add(new EmptyTile());
         int slopeCounter = 0;
         for (int i = 1; i < idsSize;)

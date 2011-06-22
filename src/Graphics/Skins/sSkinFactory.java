@@ -3,6 +3,7 @@
  * deals in interfaces, internally handles entities.
  * Factory params:
  * static:      "ref" (data path e.g "character/1.tmx") - prefixes with "data"
+ *              "img" (an image for the sprite to use) //ignores "ref" if present
  *              --
  * animated:    "ref" (data path e.g "character/1") - prefixes with "data", appends with .png 
  *              "x1" - starting xPos (Integer)
@@ -16,9 +17,10 @@
  *              "duration"  - frame duration in ms (Integer)
  */
 
-package Graphics;
+package Graphics.Skins;
 
 import java.util.HashMap;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
 /**
@@ -44,11 +46,16 @@ public class sSkinFactory {
         return create(_factoryName, _params, false);
     }
     public static iSkin create(String _factoryName, HashMap _params, boolean _isAutoRendered)
-    {
+    {         
         try
         {
             iSkinFactory factory = (iSkinFactory)mFactories.get(_factoryName);
             iSkin skin = factory.useFactory(_params);
+            if(_isAutoRendered)
+            {
+                //do crap
+            }
+                
             return skin;
         }
         catch(SlickException e)

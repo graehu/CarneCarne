@@ -12,20 +12,26 @@ import Events.KeyDownEvent;
 import Events.MapClickEvent;
 import Events.MouseMoveEvent;
 import Events.sEvents;
+import GUI.OptionsGUI;
 import GUI.sGUI;
 import Graphics.Particles.sParticleManager;
 import GUI.TWL.BasicTWLGameState;
 import GUI.TWL.RootPane;
 import Graphics.sGraphicsManager;
-import Graphics.sSkinFactory;
+import Graphics.Skins.sSkinFactory;
+import Graphics.Sprites.sSpriteFactory;
 import Level.sLevel;
+import States.FullScreenChanger;
+import States.StateChanger;
 import World.sWorld;
 import de.matthiasmann.twl.Button;
 import de.matthiasmann.twl.ScrollPane;
+import java.util.HashMap;
 import org.jbox2d.common.Vec2;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.ShapeFill;
 import org.newdawn.slick.SlickException;
@@ -42,7 +48,7 @@ import org.newdawn.slick.state.transition.BlobbyTransition;
 public class StateGame extends BasicTWLGameState {
 
     private iGameMode mGameMode; 
-    private Button btn; //for testing
+    private Button btn,btn2; //for testing
     
     public int getID() {
         return 2;
@@ -154,7 +160,7 @@ public class StateGame extends BasicTWLGameState {
     
     public void render(GameContainer _gc, StateBasedGame _sbg, Graphics _grphcs) throws SlickException
     {
-        Vec2 s = sGraphicsManager.getScreenDimentions();
+        Vec2 s = sGraphicsManager.getScreenDimensions();
         ShapeFill fill = new GradientFill(new Vector2f(0,0), new Color(159,111,89), new Vector2f(s.x,s.y), new Color(186, 160, 149), false);
         Rectangle shape = new Rectangle(0,0, s.x, s.y);
         _gc.getGraphics().fill(shape, fill);
@@ -163,6 +169,9 @@ public class StateGame extends BasicTWLGameState {
         //render particles
         Vec2 worldTrans = sWorld.translateToWorld(new Vec2(0,0));
         sParticleManager.render((int)worldTrans.x, (int)worldTrans.y, (int)s.x, (int)s.y, 0);
+        
+        //render managed sprites
+        sGraphicsManager.renderManagedSprites();
     }
 
     @Override
@@ -172,16 +181,12 @@ public class StateGame extends BasicTWLGameState {
         super.enter(container, game);
         //TEST: PARTICLE SYSTEM
         sParticleManager.createSystem("particleSystems/testSystem.xml", 500, 500, 3.0f);
-        // create and add our button, the position and size is done in layoutRootPane()
-        btn = new Button("Hello World");
-        btn.addCallback(new Runnable() {
-            public void run() {
-                //StateGame.mgame.enterState(3,new BlobbyTransition(Color.green),null);
-            }
-        });
+        //TEST: MANAGED SPRITE
+//        HashMap params = new HashMap();
+//        params.put("img", new Image("data/assets/splashbig.png"));
+//        params.put("pos", new Vec2(500,500));
+//        sSpriteFactory.create("simple", params);
         
-        scrollPane = sGUI.createDialogueBox(getRootPane(), 20, 20, "RAWR!");
-        scrollPane.setContent(btn);
         
         //container.getGraphics().setDrawMode(Graphics.MODE_ALPHA_BLEND);
     }
@@ -200,9 +205,7 @@ public class StateGame extends BasicTWLGameState {
         
         // specify a theme name instead of the default "state"+getID()
         myRootPane.setTheme("mainMenu");
-        
-        
-               
+    
         // return the root pane so that it is available for getRootPane()
         return myRootPane;
     }
@@ -212,6 +215,9 @@ ScrollPane scrollPane;
     protected void layoutRootPane() {
         btn.adjustSize();   // size the button according to it's preferred size
         btn.setPosition(100, 100);
+        
+        btn2.adjustSize();
+        btn2.setPosition(400, 0);
        
         scrollPane.setPosition(0, 0);
             scrollPane.setSize(50, 50);
@@ -221,15 +227,28 @@ ScrollPane scrollPane;
     } 
     
     public void init(GameContainer _gc, StateBasedGame _sbg) throws SlickException {
-        _gc.getInput().enableKeyRepeat();
-        boolean temp = _gc.getInput().isKeyRepeatEnabled();
         
         createRootPane();
         mGameMode = new PlayMode();
         sEvents.init();
         sEntityFactory.init();
         sSkinFactory.init();
+        sSpriteFactory.init();
         sWorld.init();
         sLevel.init();
+        
+        // create and add our button, the position and size is done in layoutRootPane()
+        btn = new Button("Hello World");
+        btn.addCallback(new StateChanger(3, new BlobbyTransition(Color.green), null, _sbg));
+        btn2 = new Button("FullScreen");
+        btn2.addCallback(new FullScreenChanger(_sbg));
+        
+        getRootPane().add(btn2);
+        
+        scrollPane = sGUI.createDialogueBox(getRootPane(), 20, 20, "RAWR!");
+        scrollPane.setContent(btn);
+        
+        OptionsGUI wid = new OptionsGUI(_sbg);
+        getRootPane().add(wid.getWidget());
     }    
 }

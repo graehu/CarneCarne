@@ -4,7 +4,7 @@
  */
 package Entities;
 
-import Graphics.iSkin;
+import Graphics.Skins.iSkin;
 import World.sWorld;
 import org.jbox2d.common.Vec2;
 

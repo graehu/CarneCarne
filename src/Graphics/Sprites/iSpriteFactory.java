@@ -2,16 +2,16 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package Graphics;
+package Graphics.Sprites;
 
-import Graphics.iSkin;
 import java.util.HashMap;
 import org.newdawn.slick.SlickException;
 
 /**
  *
- * @author Almax
+ * @author a203945
  */
-public interface iSkinFactory {
-    public iSkin useFactory(HashMap _params) throws SlickException;
+public interface iSpriteFactory {
+    public iSprite useFactory(HashMap _params) throws SlickException;
+    
 }

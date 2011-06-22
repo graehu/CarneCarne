@@ -57,15 +57,16 @@ public class PlayerInputController extends iAIController implements iEventListen
             direction.normalize();
             look(direction);
             mEntity.mSkin.stopAnim(mFaceDirAnim);
-            mEntity.mSkin.startAnim(mFaceDirAnim, false, 0.0f);
-            mEntity.mSkin.startAnim("h"+mFaceDirAnim, false, 0.0f); //hat animation;
-            //mEntity.mSkin.startAnim("m"+mFaceDirAnim, false, 0.0f); //mouth animation;
+            mEntity.mSkin.stopAnim("h"+mFaceDirAnim); //hat animation
+            mEntity.mSkin.startAnim("m"+mFaceDirAnim, false, 0.0f); //mouth animation
+            mEntity.mSkin.startAnim("mh"+mFaceDirAnim, false, 0.0f); //mouthHat animation
         }
         else
         {
             mEntity.mSkin.startAnim(mFaceDirAnim, false, 0.0f);
-            mEntity.mSkin.startAnim("h"+mFaceDirAnim, false, 0.0f); //hat animation;
+            mEntity.mSkin.startAnim("h"+mFaceDirAnim, false, 0.0f); //hat animation
             mEntity.mSkin.stopAnim("m"+mFaceDirAnim); //mouth animation
+            mEntity.mSkin.stopAnim("mh"+mFaceDirAnim); //mouthHat animation
         }
     }
     
@@ -196,6 +197,8 @@ public class PlayerInputController extends iAIController implements iEventListen
     
     private void look(Vec2 _direction)
     {
+        //assumes 64x64 sprite
+        mEntity.mSkin.setOffset("tng", new Vec2(32,32).add(_direction.mul(0.4f*64)));
         mTongueAngle = (float)Math.acos(Vec2.dot(new Vec2(0,-1), _direction));
         if(_direction.x < 0)
             mTongueAngle = (float) ((2*Math.PI) - mTongueAngle);
@@ -206,6 +209,7 @@ public class PlayerInputController extends iAIController implements iEventListen
         mEntity.mSkin.stopAnim(mFaceDirAnim);
         mEntity.mSkin.stopAnim("h"+mFaceDirAnim); //hat animation
         mEntity.mSkin.stopAnim("m"+mFaceDirAnim); //mouth animation
+        mEntity.mSkin.stopAnim("mh"+mFaceDirAnim);
         if(mTongueAngle < Math.PI)
         {
             if(mTongueAngle < halfSeg)

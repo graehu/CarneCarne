@@ -5,8 +5,11 @@
 
 package Graphics;
 
+import Graphics.Skins.iSkin;
+import Graphics.Sprites.iSprite;
+import World.sWorld;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Set;
 import org.jbox2d.common.Vec2;
 import org.newdawn.slick.SlickException;
@@ -20,16 +23,24 @@ public class sGraphicsManager {
     //this class should manage the rendering of all objects 
     //provide a function for skins to add themselves to the render lists which are sorted by spritesheet
     private static boolean mIsInit = false;
-    protected static Vec2 mScreenDimentions = new Vec2(0,0);
-    public static Vec2 getScreenDimentions()
+    private static Vec2 mScreenDimensions = new Vec2(0,0);
+    public static Vec2 getScreenDimensions()
     {
-        return mScreenDimentions.clone();
+        return mScreenDimensions.clone();
     }
+    //returns old dimensions
+    public static Vec2 setScreenDimensions(Vec2 _s)
+    {
+        Vec2 temp = mScreenDimensions;
+        mScreenDimensions = _s;
+        return temp;
+    }
+    
 
     private static HashMap<String, SpriteSheet> mSpriteSheets = new HashMap<String, SpriteSheet>();
     private static HashMap<String, Set<iSkin>> mRenderLists = new HashMap<String, Set<iSkin>>();
-    private static LinkedList<iSprite> mSprites = new LinkedList<iSprite>();
-    
+    private static ArrayList<iSprite> mManagedSprites = new ArrayList<iSprite>();
+          
     private sGraphicsManager()
     {
         
@@ -41,19 +52,26 @@ public class sGraphicsManager {
         {
             mIsInit = true;
             //initialise for all spritesheets (could do this from file perhaps)
-            mScreenDimentions.x = _sx;
-            mScreenDimentions.y = _sy;
+            mScreenDimensions.x = _sx;
+            mScreenDimensions.y = _sy;
         }
     }
     
-    public void addSprite(iSprite _sprite)
+    public static void addSprite(iSprite _sprite)
     {
-        mSprites.add(_sprite);
+        mManagedSprites.add(_sprite);
     }
     
-    static void batchRender(iSkin _skin)
+    public static void renderManagedSprites()
     {
-        
+        Vec2 worldTrans = sWorld.translateToWorld(new Vec2(0,0));
+        iSprite sprite;
+        for(int i = 0; i < mManagedSprites.size(); i++)
+        {
+            sprite = mManagedSprites.get(i);
+            sprite.render(worldTrans.x, worldTrans.y);
+            //skin.getIsDead
+        }
     }
 
     

@@ -10,9 +10,11 @@ import States.Game.StateGame;
 import States.Menu.StateMenu;
 import States.Splash.StateSplash;
 import States.Title.StateTitle;
+import States.StateChanger;
 
 public class Main extends TWLStateBasedGame
 {
+    private static TWLStateBasedGame mSelf;
     public Main()
     {
         super("SlickTestbed");
@@ -31,11 +33,14 @@ public class Main extends TWLStateBasedGame
         {
             AppGameContainer app = new AppGameContainer(new Main());
             app.setDisplayMode(800, 600, false);
-            //initialise graphics manager
-            sGraphicsManager.init(800, 600);
             //app.setDisplayMode(app.getScreenWidth(), app.getScreenHeight(), true);
             app.setVSync(true);
             app.setTargetFrameRate(60);
+            
+            //initialise graphics manager
+            sGraphicsManager.init(800, 600);
+
+            
             app.start();
         }
         catch(SlickException e)

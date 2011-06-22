@@ -5,8 +5,8 @@
 package AI;
 
 import Entities.AIEntity;
-import Graphics.iSkin;
-import Graphics.sSkinFactory;
+import Graphics.Skins.iSkin;
+import Graphics.Skins.sSkinFactory;
 import Level.sLevel;
 import Level.sLevel.TileType;
 import World.sWorld;

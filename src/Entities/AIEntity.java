@@ -5,7 +5,7 @@
 package Entities;
 
 import AI.iAIController;
-import Graphics.iSkin;
+import Graphics.Skins.iSkin;
 import World.sWorld;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;

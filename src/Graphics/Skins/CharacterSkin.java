@@ -1,7 +1,7 @@
 /*
  * 
  */
-package Graphics;
+package Graphics.Skins;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -118,6 +118,12 @@ public class CharacterSkin implements iSkin
         if(ref != null)
             mOffsets.set(ref, _offset);
     }
+    public Vec2 getOffset(String _animation) {
+        Integer ref = mSkinNames.get(_animation);
+        if(ref != null)
+            return mOffsets.get(ref);
+        else return null;
+    }
 
     public void setIsLooping(boolean _isLooping) {
         throw new UnsupportedOperationException("Not supported yet.");
@@ -134,7 +140,6 @@ public class CharacterSkin implements iSkin
     public void setDimentions(float _w, float _h) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
-
     
 
 }

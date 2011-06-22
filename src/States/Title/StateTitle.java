@@ -4,7 +4,16 @@
  */
 package States.Title;
 
+import GUI.OptionsGUI;
 import GUI.TWL.BasicTWLGameState;
+import de.matthiasmann.twl.ComboBox;
+import de.matthiasmann.twl.ToggleButton;
+import de.matthiasmann.twl.model.BooleanModel;
+import de.matthiasmann.twl.model.ListModel;
+import de.matthiasmann.twl.model.SimpleBooleanModel;
+import de.matthiasmann.twl.model.SimpleChangableListModel;
+import java.util.ArrayList;
+import java.util.Arrays;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
@@ -20,14 +29,27 @@ public class StateTitle extends BasicTWLGameState{
     public int getID() {
        return 1;
     }
-
-    public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
+    BooleanModel mFullScreen = new SimpleBooleanModel();
+    public void init(final GameContainer _gc, final StateBasedGame _sbg) throws SlickException {
+        createRootPane();
+        // create and add our button, the position and size is done in layoutRootPane()
+        ToggleButton fullScreenToggle = new ToggleButton(mFullScreen);
+        fullScreenToggle.setPosition(500,500);
+        fullScreenToggle.adjustSize();
+        getRootPane().add(fullScreenToggle);
+        
+        OptionsGUI wid = new OptionsGUI(_sbg);
+        getRootPane().add(wid.getWidget());
+        
+        
+        
+        
+    }
+    
+    public void render(GameContainer _gc, StateBasedGame _sbg, Graphics _grphcs) throws SlickException {
     }
 
-    public void render(GameContainer gc, StateBasedGame sbg, Graphics grphcs) throws SlickException {
-    }
-
-    public void update(GameContainer gc, StateBasedGame sbg, int i) throws SlickException {
+    public void update(GameContainer _gc, StateBasedGame _sbg, int _i) throws SlickException {
         //this is the only place that the resolution should change so only change it in sGraphicsManager here
     }
     

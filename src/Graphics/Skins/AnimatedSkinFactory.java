@@ -2,10 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package Graphics;
+package Graphics.Skins;
 
-import Graphics.AnimatedSkin;
-import Graphics.iSkin;
+import Graphics.Skins.AnimatedSkin;
 import java.util.HashMap;
 import org.newdawn.slick.SlickException;
 

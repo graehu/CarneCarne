@@ -2,9 +2,8 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package Graphics;
+package Graphics.Skins;
 
-import Graphics.iSkin;
 import java.util.HashMap;
 import org.jbox2d.common.Vec2;
 import org.newdawn.slick.Animation;
@@ -99,6 +98,10 @@ public class AnimatedSkin implements iSkin{
     }
 
     public void setOffset(String _animation, Vec2 _offset) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public Vec2 getOffset(String _animation) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 

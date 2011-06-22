@@ -4,8 +4,8 @@
  */
 package Entities;
 
-import Graphics.iSkin;
-import Graphics.sSkinFactory;
+import Graphics.Skins.iSkin;
+import Graphics.Skins.sSkinFactory;
 import World.sWorld;
 import java.util.HashMap;
 import org.jbox2d.common.Vec2;

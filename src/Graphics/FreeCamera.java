@@ -20,7 +20,7 @@ public class FreeCamera implements iCamera, iEventListener {
     
     public FreeCamera()
     {
-        Vec2 s = sGraphicsManager.getScreenDimentions();
+        Vec2 s = sGraphicsManager.getScreenDimensions();
         xPixel = (int) (s.x/2);
         yPixel = (int) (s.y/2);
         sEvents.subscribeToEvent("KeyDownEvent" + "w", this);
@@ -30,13 +30,13 @@ public class FreeCamera implements iCamera, iEventListener {
     }
     public Vec2 translateToWorld(Vec2 _physicsSpace)
     {
-        Vec2 s = sGraphicsManager.getScreenDimentions();
+        Vec2 s = sGraphicsManager.getScreenDimensions();
         Vec2 worldSpace = new Vec2(_physicsSpace.x-(xPixel/64.0f),_physicsSpace.y-(yPixel/64.0f));
         return new Vec2((s.x/2)+((worldSpace.x*64.0f)*64.0f), (s.y/2)+((worldSpace.y)*64.0f));
     }
     public Vec2 translateToPhysics(Vec2 _worldSpace)
     {
-        Vec2 s = sGraphicsManager.getScreenDimentions();
+        Vec2 s = sGraphicsManager.getScreenDimensions();
         Vec2 physicsSpace = new Vec2(_worldSpace.x/64.0f,_worldSpace.y/64.0f);
         physicsSpace.x += xPixel/64.0f;
         physicsSpace.y += yPixel/64.0f;
@@ -46,7 +46,7 @@ public class FreeCamera implements iCamera, iEventListener {
     }
     public Vec2 getPixelTranslation()
     {
-        Vec2 s = sGraphicsManager.getScreenDimentions();
+        Vec2 s = sGraphicsManager.getScreenDimensions();
         return new Vec2((s.x/2)+(-xPixel),(s.y/2)+(-yPixel));        
     }
 
