@@ -25,6 +25,10 @@ public abstract class iCamera {
     abstract public Vec2 getPixelTranslation();
     abstract public void render(Graphics _graphics);
     abstract public void update();
+    public void resize(Rectangle _viewPort)
+    {
+        mViewPort = _viewPort;
+    }
     public iCamera addPlayer(Body _body)
     {
         return this;

@@ -9,6 +9,7 @@ import Events.TileDestroyedEvent;
 import Events.sEvents;
 import Graphics.FreeCamera;
 import Graphics.iCamera;
+import Graphics.sGraphicsManager;
 import Level.sLevel;
 import Level.sLevel.TileType;
 import java.util.HashMap;
@@ -66,7 +67,7 @@ public class sWorld
         factories.put("NonEdibleTileFactory", new NonEdibleTileFactory());
         factories.put("SpatBlockFactory", new SpatBlockBodyFactory());
         factories.put("WaterTileFactory", new WaterTileFactory());
-        mCamera = new FreeCamera( new Rectangle(0,0,800,600));
+        mCamera = new FreeCamera( new Rectangle(0,0,sGraphicsManager.getTrueScreenDimensions().x, sGraphicsManager.getTrueScreenDimensions().y));
     }
     
     public static Body useFactory(String _factory, HashMap _parameters)
@@ -196,6 +197,10 @@ public class sWorld
     public static void addPlayer(Body _body)
     {
         mCamera = mCamera.addPlayer(_body);
+    }
+    public static void resizeViewport(Rectangle _viewPort)
+    {
+        mCamera.resize(_viewPort);
     }
     public static Vec2 translateToWorld(Vec2 _position)
     {

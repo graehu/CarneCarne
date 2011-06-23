@@ -4,8 +4,8 @@
  */
 package GUI;
 
-import Events.sEvents;
 import Graphics.sGraphicsManager;
+import World.sWorld;
 import de.matthiasmann.twl.ComboBox;
 import de.matthiasmann.twl.Widget;
 import de.matthiasmann.twl.model.ListModel;
@@ -16,6 +16,7 @@ import java.util.logging.Logger;
 import org.jbox2d.common.Vec2;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.state.StateBasedGame;
 
 /**
@@ -72,6 +73,7 @@ public class OptionsGUI{
             catch (SlickException ex) {Logger.getLogger(OptionsGUI.class.getName()).log(Level.SEVERE, null, ex);}
             sGraphicsManager.setScreenDimensions(new Vec2(mode.mWidth, mode.mHeight));
             //FIXME: NEED TO ADJUST GUI RESOLUTION SOMEHOW
+            sWorld.resizeViewport(new Rectangle(0,0,mode.mWidth, mode.mHeight));
             
             
         }
