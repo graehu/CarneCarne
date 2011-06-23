@@ -47,50 +47,69 @@ class CaveInSearcher {
     public void destroy(int _x, int _y)
     {
         Stack<Stack<TileIndex>> workingSetSets = new Stack<Stack<TileIndex>>();
-        Stack<TileIndex> thisBlock = new Stack<TileIndex>();
+        Stack<Stack<TileIndex>> gridSets = new Stack<Stack<TileIndex>>();
+        /*TileIndex edges[] = new TileIndex[4];
+        edges[0] = new TileIndex(_x-1,_y);
+        edges[1] = new TileIndex(_x+1,_y);
+        edges[2] = new TileIndex(_x,_y-1);
+        edges[3] = new TileIndex(_x,_y+1);*/
         workingSetSets.add(new Stack<TileIndex>());
-        check(_x-1,_y,workingSetSets.peek(),thisBlock);
-        check(_x+1,_y,workingSetSets.peek(),thisBlock);
-        check(_x,_y-1,workingSetSets.peek(),thisBlock);
-        check(_x,_y+1,workingSetSets.peek(),thisBlock);
-        //workingSetSets.peek().add(new TileIndex(_x, _y));
+        gridSets.add(new Stack<TileIndex>());
+        check(_x-1,_y,workingSetSets.peek(),gridSets.peek());
+        calculate(workingSetSets, gridSets);
+        workingSetSets.add(new Stack<TileIndex>());
+        gridSets.add(new Stack<TileIndex>());
+        check(_x+1,_y,workingSetSets.peek(),gridSets.peek());
+        calculate(workingSetSets, gridSets);
+        workingSetSets.add(new Stack<TileIndex>());
+        gridSets.add(new Stack<TileIndex>());
+        check(_x,_y-1,workingSetSets.peek(),gridSets.peek());
+        calculate(workingSetSets, gridSets);
+        workingSetSets.add(new Stack<TileIndex>());
+        gridSets.add(new Stack<TileIndex>());
+        check(_x,_y+1,workingSetSets.peek(),gridSets.peek());
+        calculate(workingSetSets, gridSets);
+    }
+    private void calculate(Stack<Stack<TileIndex>> workingSetSets, Stack<Stack<TileIndex>> gridSets)
+    {
         while (!workingSetSets.isEmpty())
         {
             if (workingSetSets.peek().isEmpty())
             {
                 workingSetSets.pop();
-                while (!thisBlock.isEmpty())
+                while (!gridSets.peek().isEmpty())
                 {
-                    TileIndex tile = thisBlock.pop();
+                    TileIndex tile = gridSets.peek().pop();
                     add(tile.x,tile.y);
                 }
+                finish();
+                gridSets.pop();
                 continue;
             }
             TileIndex tile = workingSetSets.peek().pop();
-            boolean anchor = check(tile.x-1,tile.y,workingSetSets.peek(),thisBlock);
-            anchor = anchor || check(tile.x+1,tile.y,workingSetSets.peek(),thisBlock);
-            anchor = anchor || check(tile.x,tile.y-1,workingSetSets.peek(),thisBlock);
-            anchor = anchor || check(tile.x,tile.y+1,workingSetSets.peek(),thisBlock);
+            boolean anchor = check(tile.x-1,tile.y,workingSetSets.peek(),gridSets.peek());
+            anchor = anchor || check(tile.x+1,tile.y,workingSetSets.peek(),gridSets.peek());
+            anchor = anchor || check(tile.x,tile.y-1,workingSetSets.peek(),gridSets.peek());
+            anchor = anchor || check(tile.x,tile.y+1,workingSetSets.peek(),gridSets.peek());
             if (anchor)
             {
-                thisBlock.clear();
+                gridSets.pop();
                 workingSetSets.pop();
             }
         }
-        finish();
+        
     }
     
     public boolean check(int _x, int _y, Stack<TileIndex> _workingSet, Stack<TileIndex> _thisBlock) /// Returns true if this is an anchor
     {
-        
+        Tile tile = mTileGrid.get(_x, _y);
+        if (tile.mRootId.mAnchor)
+        {
+            return true;
+        }
         if (!mChecked[_x][_y])
         {
             mChecked[_x][_y] = true;
-            Tile tile = mTileGrid.get(_x, _y);
-            if (tile.mRootId.mAnchor)
-            {
-                return true;
-            }
             if (tile.mId != 0)
             {
                 _workingSet.add(new TileIndex(_x, _y));
@@ -116,7 +135,8 @@ class CaveInSearcher {
         {
             HashMap<String, Object> parameters = new HashMap<String, Object>();
             parameters.put("tiles", tiles);
-            sEntityFactory.create("CaveIn", parameters);        
+            sEntityFactory.create("CaveIn", parameters);
+            tiles = new ArrayList<CaveIn.Tile>();
         }
     }
 }

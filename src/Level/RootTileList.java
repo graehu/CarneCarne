@@ -56,8 +56,8 @@ public class RootTileList {
             int assertion = type.ordinal();
             if (shape.equals("Block"))
             {
-                boolean regrows = _tiledMap.getTileProperty(i,"Regrows","Yes").equals("Yes");
-                boolean anchor = new Boolean(_tiledMap.getTileProperty(i, "Anchor", "false")).booleanValue();
+                boolean regrows = Boolean.valueOf(_tiledMap.getTileProperty(i,"Regrows","true")).booleanValue();
+                boolean anchor = Boolean.valueOf(_tiledMap.getTileProperty(i, "Anchor", "false")).booleanValue();
                 for (int rootId = i; i < rootId + 16; i++)
                 {
                     mRootTiles.add(new BlockTile(rootId, type, regrows, anchor));
