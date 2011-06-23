@@ -222,6 +222,11 @@
     <property name="Spawn" value="Player"/>
    </properties>
   </tile>
+  <tile id="26">
+   <properties>
+    <property name="Spawn" value="AI"/>
+   </properties>
+  </tile>
  </tileset>
  <tileset firstgid="276" name="TileMelonSkin" tilewidth="64" tileheight="64">
   <image source="TileMelonSkin.png" width="256" height="512"/>
@@ -352,7 +357,7 @@
  </layer>
  <layer name="Level" width="100" height="100">
   <data encoding="base64" compression="gzip">
-   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
+   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
   </data>
  </layer>
  <layer name="Foreground" width="100" height="100">

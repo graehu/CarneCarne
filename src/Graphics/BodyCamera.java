@@ -58,6 +58,7 @@ public class BodyCamera extends iCamera {
         _graphics.resetTransform();
         _graphics.translate(mViewPort.getX(),mViewPort.getY());
         _graphics.setClip(mViewPort);
+        calculatePosition();
         sLevel.renderBackground();
         
         sWorld.render();

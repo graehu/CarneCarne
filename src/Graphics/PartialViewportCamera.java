@@ -18,6 +18,10 @@ class PartialViewportCamera extends BodyCamera {
     {
         super(_body, _viewPort, _topSplit);
     }
+    public void resize(Rectangle _viewPort)
+    {
+        mViewPort = _viewPort;
+    }
     protected void calculatePosition()
     {
         mPosition = mBody.getPosition();

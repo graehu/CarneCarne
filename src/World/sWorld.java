@@ -133,7 +133,8 @@ public class sWorld
             case eMelonFlesh:
             {
                 mWorld.destroyBody(callback.getFixture().m_body);
-                sLevel.destroyTile((int)callback.getFixture().m_body.getPosition().x, (int)callback.getFixture().m_body.getPosition().y);
+                if (callback.getFixture().m_filter.categoryBits != (1 << BodyCategories.eSpatTiles.ordinal()))
+                    sLevel.destroyTile((int)callback.getFixture().m_body.getPosition().x, (int)callback.getFixture().m_body.getPosition().y);
                 sEvents.triggerEvent(new TileDestroyedEvent((int)callback.getFixture().m_body.getPosition().x, (int)callback.getFixture().m_body.getPosition().y));
                 break;
             }
@@ -237,7 +238,7 @@ public class sWorld
         }
         mCamera.update();
     }
-    
+
     public static iCamera getCamera()
     {
         return mCamera;

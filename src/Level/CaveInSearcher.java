@@ -46,58 +46,43 @@ class CaveInSearcher {
     }
     public void destroy(int _x, int _y)
     {
-        Stack<Stack<TileIndex>> workingSetSets = new Stack<Stack<TileIndex>>();
-        Stack<Stack<TileIndex>> gridSets = new Stack<Stack<TileIndex>>();
-        /*TileIndex edges[] = new TileIndex[4];
-        edges[0] = new TileIndex(_x-1,_y);
-        edges[1] = new TileIndex(_x+1,_y);
-        edges[2] = new TileIndex(_x,_y-1);
-        edges[3] = new TileIndex(_x,_y+1);*/
-        workingSetSets.add(new Stack<TileIndex>());
-        gridSets.add(new Stack<TileIndex>());
-        check(_x-1,_y,workingSetSets.peek(),gridSets.peek());
+        Stack<TileIndex> workingSetSets = new Stack<TileIndex>();
+        Stack<TileIndex> gridSets = new Stack<TileIndex>();
+        
+        check(_x-1,_y,workingSetSets,gridSets);
         calculate(workingSetSets, gridSets);
-        workingSetSets.add(new Stack<TileIndex>());
-        gridSets.add(new Stack<TileIndex>());
-        check(_x+1,_y,workingSetSets.peek(),gridSets.peek());
+        
+        check(_x+1,_y,workingSetSets,gridSets);
         calculate(workingSetSets, gridSets);
-        workingSetSets.add(new Stack<TileIndex>());
-        gridSets.add(new Stack<TileIndex>());
-        check(_x,_y-1,workingSetSets.peek(),gridSets.peek());
+        
+        check(_x,_y-1,workingSetSets,gridSets);
         calculate(workingSetSets, gridSets);
-        workingSetSets.add(new Stack<TileIndex>());
-        gridSets.add(new Stack<TileIndex>());
-        check(_x,_y+1,workingSetSets.peek(),gridSets.peek());
+        
+        check(_x,_y+1,workingSetSets,gridSets);
         calculate(workingSetSets, gridSets);
     }
-    private void calculate(Stack<Stack<TileIndex>> workingSetSets, Stack<Stack<TileIndex>> gridSets)
+    private void calculate(Stack<TileIndex> workingSet, Stack<TileIndex> grid)
     {
-        while (!workingSetSets.isEmpty())
+        while (!workingSet.isEmpty())
         {
-            if (workingSetSets.peek().isEmpty())
+            TileIndex tile = workingSet.pop();
+            if (check(tile.x-1,tile.y,workingSet,grid)
+                    || check(tile.x+1,tile.y,workingSet,grid)
+                    || check(tile.x,tile.y-1,workingSet,grid)
+                    || check(tile.x,tile.y+1,workingSet,grid))
             {
-                workingSetSets.pop();
-                while (!gridSets.peek().isEmpty())
-                {
-                    TileIndex tile = gridSets.peek().pop();
-                    add(tile.x,tile.y);
-                }
-                finish();
-                gridSets.pop();
-                continue;
-            }
-            TileIndex tile = workingSetSets.peek().pop();
-            boolean anchor = check(tile.x-1,tile.y,workingSetSets.peek(),gridSets.peek());
-            anchor = anchor || check(tile.x+1,tile.y,workingSetSets.peek(),gridSets.peek());
-            anchor = anchor || check(tile.x,tile.y-1,workingSetSets.peek(),gridSets.peek());
-            anchor = anchor || check(tile.x,tile.y+1,workingSetSets.peek(),gridSets.peek());
-            if (anchor)
-            {
-                gridSets.pop();
-                workingSetSets.pop();
+                grid.clear();
+                workingSet.clear();
+                break;
             }
         }
-        
+        while (!grid.isEmpty())
+        {
+            TileIndex tile = grid.pop();
+            add(tile.x,tile.y);
+        }
+        finish();
+        grid.clear();
     }
     
     public boolean check(int _x, int _y, Stack<TileIndex> _workingSet, Stack<TileIndex> _thisBlock) /// Returns true if this is an anchor

@@ -36,6 +36,11 @@ public class sGraphicsManager {
     {
         return mTrueScreenDimensions.clone();
     }
+    public static void setTrueScreenDimensions(Vec2 _screenDimensions)
+    {
+        mTrueScreenDimensions = _screenDimensions;
+    }
+        
     public static void setScreenDimensions(Vec2 _screenDimensions)
     {
         mScreenDimensions = _screenDimensions;
@@ -46,7 +51,7 @@ public class sGraphicsManager {
     private static HashMap<String, Set<iSkin>> mRenderLists = new HashMap<String, Set<iSkin>>();
     private static ArrayList<iSprite> mManagedSprites = new ArrayList<iSprite>();
     private static Graphics mGraphics;
-          
+  
     private sGraphicsManager()
     {
     }

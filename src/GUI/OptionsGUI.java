@@ -71,7 +71,7 @@ public class OptionsGUI{
             AppGameContainer app = (AppGameContainer)mSbg.getContainer();
             try {app.setDisplayMode(mode.mWidth, mode.mHeight, false);}
             catch (SlickException ex) {Logger.getLogger(OptionsGUI.class.getName()).log(Level.SEVERE, null, ex);}
-            sGraphicsManager.setScreenDimensions(new Vec2(mode.mWidth, mode.mHeight));
+            sGraphicsManager.setTrueScreenDimensions(new Vec2(mode.mWidth, mode.mHeight));
             //FIXME: NEED TO ADJUST GUI RESOLUTION SOMEHOW
             sWorld.resizeViewport(new Rectangle(0,0,mode.mWidth, mode.mHeight));
             

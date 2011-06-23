@@ -4,9 +4,6 @@
  */
 package States.Game;
 
-import Events.RightStickEvent;
-import Events.ShoulderButtonEvent;
-import Events.AnalogueStickEvent;
 import Events.MapClickReleaseEvent;
 import Entities.sEntityFactory;
 import Events.KeyDownEvent;
@@ -28,6 +25,7 @@ import Sound.sSound;
 import World.sWorld;
 import de.matthiasmann.twl.Button;
 import de.matthiasmann.twl.ScrollPane;
+import java.util.ArrayList;
 import org.jbox2d.common.Vec2;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
@@ -48,7 +46,8 @@ import org.newdawn.slick.state.transition.BlobbyTransition;
 public class StateGame extends BasicTWLGameState {
 
     private iGameMode mGameMode; 
-    private Button btn,btn2; //for testing
+    private Button btn,btn2; // FIXME for testing
+    static private int mPlayers;
     
     public int getID() {
         return 2;
@@ -94,29 +93,31 @@ public class StateGame extends BasicTWLGameState {
     {
         sEvents.triggerEvent(new MouseMoveEvent(new Vec2(newx,newy)));
     }
-    
-    /* XBox Controls
-     * 0 - A
-     * 5 - R1
-     * 6 - Select
-     * 8 - L3
-     * 9 - R3
-     */
-    static private float stickEpsilon = 0.1f;
-    static private float shoulderButtonEpsilon = 0.1f;
-    static private boolean xAxisHit = false;
-    static private boolean yAxisHit = false;
-    static private boolean zAxisHit = false;
-    static private int mPlayers;
-    public void update(GameContainer _gc, StateBasedGame _sbg, int _i) throws SlickException 
+    private ArrayList<XBoxController> xBoxControllers = new ArrayList<XBoxController>();
+    public void update(GameContainer _gc, StateBasedGame _sbg, int _i) throws SlickException /// FIXME wtf is '_i'?
     {
         mPlayers = _gc.getInput().getControllerCount();
         int i = 0;
+        if(_gc.getInput().isKeyDown(Input.KEY_W))
+            sEvents.triggerEvent(new KeyDownEvent('w', 0));
+        if(_gc.getInput().isKeyDown(Input.KEY_A))
+            sEvents.triggerEvent(new KeyDownEvent('a', 0));
+        if(_gc.getInput().isKeyDown(Input.KEY_S))
+            sEvents.triggerEvent(new KeyDownEvent('s', 0));
+        if(_gc.getInput().isKeyDown(Input.KEY_D))
+            sEvents.triggerEvent(new KeyDownEvent('d', 0));
         try
         {
-            for (i = 0; i < mPlayers; i++)
+            for (i = 0; i < xBoxControllers.size(); i++)
             {
-                updateControls(_gc.getInput(), i);
+                xBoxControllers.get(i).update(_gc.getInput());
+                //updateControls(_gc.getInput(), i);
+            }
+            while (true)
+            {
+                xBoxControllers.add(new XBoxController(i));
+                xBoxControllers.get(i).update(_gc.getInput());
+                i++;
             }
         }
         catch (ArrayIndexOutOfBoundsException e)
@@ -126,55 +127,6 @@ public class StateGame extends BasicTWLGameState {
         mGameMode.update(_i);
         //update particles
         sParticleManager.update(_i);
-    }
-    private void updateControls(Input _input, int player)
-    {
-        if(_input.isKeyDown(Input.KEY_W))
-            sEvents.triggerEvent(new KeyDownEvent('w', player));
-        if(_input.isKeyDown(Input.KEY_A))
-            sEvents.triggerEvent(new KeyDownEvent('a', player));
-        if(_input.isKeyDown(Input.KEY_S))
-            sEvents.triggerEvent(new KeyDownEvent('s', player));
-        if(_input.isKeyDown(Input.KEY_D))
-            sEvents.triggerEvent(new KeyDownEvent('d', player));
-        
-        if(_input.isButtonPressed(5, player))
-            sEvents.triggerEvent(new KeyDownEvent('w', player));
-        float xAxis = _input.getAxisValue(player, 1);
-        if (xAxisHit)
-        {
-            if (xAxis > stickEpsilon || xAxis < -stickEpsilon)
-            {
-                sEvents.triggerEvent(new AnalogueStickEvent(xAxis, player));
-            }
-        }
-        else if (xAxis != -1.0f)
-        {
-            xAxisHit = true;
-        }
-        Vec2 rightStick = new Vec2(_input.getAxisValue(player, 3),_input.getAxisValue(player, 2));
-        
-        float shoulderButtons =_input.getAxisValue(player,4);
-        if (zAxisHit)
-        {
-            if (shoulderButtons > shoulderButtonEpsilon)
-            {
-                sEvents.triggerEvent(new ShoulderButtonEvent(rightStick,true, player));
-            }
-            else if (shoulderButtons < -shoulderButtonEpsilon)
-            {
-                sEvents.triggerEvent(new ShoulderButtonEvent(rightStick,false, player));
-            }
-        }
-        else if (shoulderButtons != -1.0f)
-        {
-            zAxisHit = true;
-        }
-        
-        if (rightStick.length() > 0.2f)
-        {
-            sEvents.triggerEvent(new RightStickEvent(rightStick, player));
-        }
     }
     
     public void render(GameContainer _gc, StateBasedGame _sbg, Graphics _grphcs) throws SlickException

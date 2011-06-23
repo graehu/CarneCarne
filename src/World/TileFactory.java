@@ -53,6 +53,7 @@ public class TileFactory implements iPhysicsFactory {
         }
         else if (tileType.equals(TileType.eTar))
         {
+            fixture.filter.categoryBits = (1 << BodyCategories.eTar.ordinal());
             fixture.restitution = 0.0f;
             fixture.friction = 1000.0f;
         }

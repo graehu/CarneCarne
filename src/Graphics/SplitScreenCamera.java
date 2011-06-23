@@ -27,27 +27,9 @@ class SplitScreenCamera extends iCamera
         super(_viewPort);
         lastSplit = false;
         mTopSplit = _topSplit;
-        int x = (int)_viewPort.getX();
-        int y = (int)_viewPort.getY();
-        int width = (int)_viewPort.getWidth();
-        int height = (int)_viewPort.getHeight();
-        int x2 = x;
-        int y2 = y;
-        if (mTopSplit)
-        {
-            height /= 2;
-            y2 += height;
-        }
-        else
-        {
-            width /= 2;
-            x2 += width;
-        }
-        viewPortA = new Rectangle(x,y,width, height);
-        mCameraA = new PartialViewportCamera(_bodyA, viewPortA, !_topSplit);
-        
-        viewPortB = new Rectangle(x2,y2,width, height);
-        mCameraB = new PartialViewportCamera(_bodyB, viewPortB, !_topSplit);
+        split();
+        mCameraA = new PartialViewportCamera(_bodyA, viewPortA, !mTopSplit);
+        mCameraB = new PartialViewportCamera(_bodyB, viewPortB, !mTopSplit);
         mActiveCamera = mCameraA;
     }
 
@@ -88,5 +70,34 @@ class SplitScreenCamera extends iCamera
     {
         mCameraA.update();
         mCameraB.update();
+    }
+    public void resize(Rectangle _viewPort)
+    {
+        mViewPort = _viewPort;
+        split();
+        
+        mCameraA.resize(viewPortA);
+        mCameraB.resize(viewPortB);
+    }
+    public void split()
+    {
+        int x = (int)mViewPort.getX();
+        int y = (int)mViewPort.getY();
+        int width = (int)mViewPort.getWidth();
+        int height = (int)mViewPort.getHeight();
+        int x2 = x;
+        int y2 = y;
+        if (mTopSplit)
+        {
+            height /= 2;
+            y2 += height;
+        }
+        else
+        {
+            width /= 2;
+            x2 += width;
+        }
+        viewPortA = new Rectangle(x,y,width, height);
+        viewPortB = new Rectangle(x2,y2,width, height);        
     }
 }

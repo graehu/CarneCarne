@@ -1,0 +1,139 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package States.Game;
+
+import Events.AnalogueStickEvent;
+import Events.KeyDownEvent;
+import Events.MapClickReleaseEvent;
+import Events.RightStickEvent;
+import Events.ShoulderButtonEvent;
+import Events.sEvents;
+import World.sWorld;
+import org.jbox2d.common.Vec2;
+import org.newdawn.slick.Input;
+
+/**
+ *
+ * @author alasdair
+ */
+/* XBox Controls
+ * 0 - A
+ * 5 - R1
+ * 6 - Select
+ * 8 - L3
+ * 9 - R3
+ * Thinking about sitting and mapping the rest of these? Get a job!
+ */
+public class XBoxController
+{
+    static private float stickEpsilon = 0.1f; /// TWEAK
+    static private float shoulderButtonEpsilon = 0.3f;
+    private boolean xAxisHit = false;
+    //private boolean yAxisHit = false;
+    private enum TriggerState
+    {
+        eStart, // This is the value for the controller sending out -1 continously because its gay in the butt for gay men
+        eNotPressed,
+        eRightPressed,
+        eLeftPressed,
+        eTriggerStateMax,
+    }
+    private TriggerState mTriggerState = TriggerState.eStart;
+    int mPlayer;
+    public XBoxController(int _player)
+    {
+        mPlayer = _player;
+    }
+    
+    public void update(Input _input)
+    {
+        if(_input.isButtonPressed(5, mPlayer))
+            sEvents.triggerEvent(new KeyDownEvent('w', mPlayer));
+        float xAxis = _input.getAxisValue(mPlayer, 1);
+        if (xAxisHit)
+        {
+            if (xAxis > stickEpsilon || xAxis < -stickEpsilon)
+            {
+                sEvents.triggerEvent(new AnalogueStickEvent(xAxis, mPlayer));
+            }
+        }
+        else if (xAxis != -1.0f)
+        {
+            xAxisHit = true;
+        }
+        Vec2 rightStick = new Vec2(_input.getAxisValue(mPlayer, 3),_input.getAxisValue(mPlayer, 2));
+        
+        float shoulderButtons =_input.getAxisValue(mPlayer,4);
+        if (mTriggerState != TriggerState.eStart || shoulderButtons != -1.0f)
+        {
+            if (shoulderButtons > shoulderButtonEpsilon)
+            {
+                changeState(TriggerState.eRightPressed, rightStick);
+                sEvents.triggerEvent(new ShoulderButtonEvent(rightStick,true, mPlayer));
+            }
+            else if (shoulderButtons < -shoulderButtonEpsilon)
+            {
+                changeState(TriggerState.eLeftPressed, rightStick);
+                sEvents.triggerEvent(new ShoulderButtonEvent(rightStick,false, mPlayer));
+            }
+            else
+            {
+                changeState(TriggerState.eNotPressed, rightStick);
+            }
+        }
+        
+        if (rightStick.length() > 0.2f)
+        {
+            sEvents.triggerEvent(new RightStickEvent(rightStick, mPlayer));
+        }        
+    }
+    private void changeState(TriggerState _newState, Vec2 _rightStick)
+    {
+        switch (mTriggerState) /// Old
+        {
+            case eStart:
+            case eNotPressed:
+            {
+                break;
+            }
+            case eRightPressed:
+            {
+                if (_newState != TriggerState.eRightPressed)
+                {
+                    sEvents.triggerEvent(new MapClickReleaseEvent(_rightStick,true, mPlayer));
+                }
+                break;
+            }
+            case eLeftPressed:
+            {
+                if (_newState != TriggerState.eLeftPressed)
+                {
+                    sEvents.triggerEvent(new MapClickReleaseEvent(_rightStick,false, mPlayer));
+                }
+                break;
+            }
+            
+        }
+        switch (_newState) /// New
+        {
+            case eNotPressed:
+            {
+                break;
+            }
+            case eRightPressed:
+            {
+                sEvents.triggerEvent(new ShoulderButtonEvent(_rightStick,true, mPlayer));
+                break;
+            }
+            case eLeftPressed:
+            {
+                sEvents.triggerEvent(new ShoulderButtonEvent(_rightStick,false, mPlayer));
+                break;
+            }
+            
+        }
+        mTriggerState = _newState;
+    }
+}
