@@ -4,8 +4,9 @@
  */
 package Level;
 
-import Level.sLevel.TileType;
 import java.util.Stack;
+import org.jbox2d.dynamics.Body;
+import org.jbox2d.dynamics.Fixture;
 
 /**
  *
@@ -13,6 +14,9 @@ import java.util.Stack;
  */
 public class Tile {
 
+    RootTile mRootId;
+    int mId;
+    Body mBody;
     public Tile(int _id, RootTile _rootId)
     {
         mId = _id;
@@ -28,12 +32,14 @@ public class Tile {
     }
     public void createPhysicsBody(int _xTile, int _yTile)
     {
-        mRootId.createPhysicsBody(_xTile, _yTile);
+        mBody = mRootId.createPhysicsBody(_xTile, _yTile);
+    }
+    public Fixture createFixture(int _xTile, int _yTile)
+    {
+        return mRootId.createFixture(_xTile, _yTile);
     }
     public void checkEdges(int _xTile, int _yTile, Stack<Integer> _stack, TileGrid _tileGrid)
     {
         mRootId.checkEdges(_xTile, _yTile, _stack, _tileGrid);
     }
-    RootTile mRootId;
-    int mId;
 }

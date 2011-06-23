@@ -7,6 +7,8 @@ package Level;
 import Level.Tile.Direction;
 import Level.sLevel.TileType;
 import java.util.Stack;
+import org.jbox2d.dynamics.Body;
+import org.jbox2d.dynamics.Fixture;
 
 /**
  *
@@ -18,13 +20,15 @@ abstract class RootTile
     int mId;
     int mSlopeType;
     boolean mRegrows;
+    boolean mAnchor;
     sLevel.TileType mTileType;
-    public RootTile(TileShape _shape, int _id, sLevel.TileType _tileType)
+    public RootTile(TileShape _shape, int _id, sLevel.TileType _tileType, boolean _anchor)
     {
         mShape = _shape;
         mId = _id;
         mTileType = _tileType;
         mRegrows = true;
+        mAnchor = _anchor;
     }
     public RootTile(TileShape _shape, int _id, sLevel.TileType _tileType, int _slopeType)
     {
@@ -45,6 +49,7 @@ abstract class RootTile
         eUndefined,
         eTileIdMax
     }
-    abstract void createPhysicsBody(int _xTile, int _yTile);
+    abstract Body createPhysicsBody(int _xTile, int _yTile);
+    abstract Fixture createFixture(int _xTile, int _yTile);
     abstract void checkEdges(int _xTile, int _yTile, Stack<Integer> _stack, TileGrid _tileGrid);
 }

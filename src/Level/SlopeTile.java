@@ -8,6 +8,8 @@ import World.sWorld;
 import java.util.HashMap;
 import java.util.Stack;
 import org.jbox2d.common.Vec2;
+import org.jbox2d.dynamics.Body;
+import org.jbox2d.dynamics.Fixture;
 
 /**
  *
@@ -19,13 +21,17 @@ abstract public class SlopeTile extends RootTile{
     {
         super (TileShape.eSlope, _id, _tileType, _slopeType);
     }
-    public void createPhysicsBody(int _xTile, int _yTile)
+    public Body createPhysicsBody(int _xTile, int _yTile)
     {
         HashMap parameters = new HashMap();
         parameters.put("position", new Vec2(_xTile,_yTile));
         parameters.put("TileType", mTileType);
         parameters.put("slopeType",mSlopeType);
-        sWorld.useFactory("SlopeFactory",parameters);
+        return sWorld.useFactory("SlopeFactory",parameters);
+    }
+    public Fixture createFixture(int _xTile, int _yTile)
+    {
+        return null;
     }
     abstract public void getEdges(boolean _boundaries[], int _xTile, int _yTile, TileGrid _tileGrid);
     public void checkEdges(int _xTile, int _yTile, Stack<Integer> _stack, TileGrid _tileGrid)

@@ -20,46 +20,94 @@ class MelonSkinTile extends BlockTile {
         eRight,
         eDown,
         eLeft,
+        eDiagonal,
+        eDownRight,
+        eDownLeft,
+        eUpLeft,
+        eUpRight,
         eSkinDirectionsSize,
     }
     SkinDirection mDirection;
     public MelonSkinTile(int _id, TileType type, SkinDirection _direction)
     {
-        super(_id, type, false);
+        super(_id, type, false, false);
         mDirection = _direction;
     }
     
     public void checkEdges(int _xTile, int _yTile, Stack<Integer> _stack, TileGrid _tileGrid)
     {
-        boolean next = false;
+        boolean flags[] = new boolean[3];
+        flags[0] = true;
+        flags[1] = true;
+        flags[2] = true;
         switch (mDirection)
         {
             case eUp:
             {
-                next = _tileGrid.boundaryFrom(_xTile, _yTile-1, Direction.eFromDown, mTileType);
+                flags[0] = _tileGrid.boundaryFrom(_xTile, _yTile-1, Direction.eFromDown, mTileType);
+                flags[1] = _tileGrid.boundaryFrom(_xTile+1, _yTile, Direction.eFromLeft, mTileType);
+                flags[2] = _tileGrid.boundaryFrom(_xTile-1, _yTile, Direction.eFromRight, mTileType);
                 break;
             }
             case eRight:
             {
-                next = _tileGrid.boundaryFrom(_xTile+1, _yTile, Direction.eFromLeft, mTileType);
+                flags[0] = _tileGrid.boundaryFrom(_xTile+1, _yTile, Direction.eFromLeft, mTileType);
+                flags[1] = _tileGrid.boundaryFrom(_xTile, _yTile+1, Direction.eFromUp, mTileType);
+                flags[2] = _tileGrid.boundaryFrom(_xTile, _yTile-1, Direction.eFromDown, mTileType);
                 break;
             }
             case eDown:
             {
-                next = _tileGrid.boundaryFrom(_xTile, _yTile+1, Direction.eFromUp, mTileType);
+                flags[0] = _tileGrid.boundaryFrom(_xTile, _yTile+1, Direction.eFromUp, mTileType);
+                flags[1] = _tileGrid.boundaryFrom(_xTile-1, _yTile, Direction.eFromRight, mTileType);
+                flags[2] = _tileGrid.boundaryFrom(_xTile+1, _yTile, Direction.eFromLeft, mTileType);
                 break;
             }
             case eLeft:
             {
-                next = _tileGrid.boundaryFrom(_xTile-1, _yTile, Direction.eFromRight, mTileType);
+                flags[0] = _tileGrid.boundaryFrom(_xTile-1, _yTile, Direction.eFromRight, mTileType);
+                flags[1] = _tileGrid.boundaryFrom(_xTile, _yTile-1, Direction.eFromDown, mTileType);
+                flags[2] = _tileGrid.boundaryFrom(_xTile, _yTile+1, Direction.eFromUp, mTileType);
+                break;
+            }
+            case eUpRight:
+            {
+                flags[1] = _tileGrid.boundaryFrom(_xTile+1, _yTile, Direction.eFromLeft, mTileType);
+                flags[2] = _tileGrid.boundaryFrom(_xTile, _yTile-1, Direction.eFromDown, mTileType);
+                break;
+            }
+            case eUpLeft:
+            {
+                flags[1] = _tileGrid.boundaryFrom(_xTile, _yTile-1, Direction.eFromDown, mTileType);
+                flags[2] = _tileGrid.boundaryFrom(_xTile-1, _yTile, Direction.eFromRight, mTileType);
+                break;
+            }
+            case eDownRight:
+            {
+                flags[1] = _tileGrid.boundaryFrom(_xTile, _yTile+1, Direction.eFromUp, mTileType);
+                flags[2] = _tileGrid.boundaryFrom(_xTile+1, _yTile, Direction.eFromLeft, mTileType);
+                break;
+            }
+            case eDownLeft:
+            {
+                flags[1] = _tileGrid.boundaryFrom(_xTile-1, _yTile, Direction.eFromRight, mTileType);
+                flags[2] = _tileGrid.boundaryFrom(_xTile, _yTile+1, Direction.eFromUp, mTileType);
                 break;
             }
         }
-        if (!next)
+        int value = 0;
+        for (int i = 0; i < 3; i++)
+        {
+            if (!flags[i])
+            {
+                value += (1 << i);
+            }
+        }
+        if (value != 0)
         {
             _stack.push(_xTile);
             _stack.push(_yTile);
-            _stack.push(mId+16);
+            _stack.push(mId+(value*16));
         }
     }
     boolean boundaryFrom(Direction _direction, TileType _tileType, MaterialEdges _materialEdges)
@@ -81,6 +129,26 @@ class MelonSkinTile extends BlockTile {
             case eLeft:
             {
                 return !_direction.equals(Direction.eFromRight);
+            }
+            case eUpRight:
+            {
+                return !(_direction.equals(Direction.eFromDown)||_direction.equals(Direction.eFromLeft));
+            }
+            case eUpLeft:
+            {
+                return !(_direction.equals(Direction.eFromDown)||_direction.equals(Direction.eFromRight));
+            }
+            case eDownRight:
+            {
+                return !(_direction.equals(Direction.eFromUp)||_direction.equals(Direction.eFromLeft));
+            }
+            case eDownLeft:
+            {
+                return !(_direction.equals(Direction.eFromUp)||_direction.equals(Direction.eFromRight));
+            }
+            case eDiagonal:
+            {
+                return true;
             }
         }
         return false;

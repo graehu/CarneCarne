@@ -39,6 +39,7 @@ public class sWorld
         WaterTileFactory factory = (WaterTileFactory)factories.get("WaterTileFactory");
         factory.setWaterHeight(_highestSurface);
     }
+
     public enum BodyCategories
     {
         ePlayer,
@@ -67,6 +68,7 @@ public class sWorld
         factories.put("NonEdibleTileFactory", new NonEdibleTileFactory());
         factories.put("SpatBlockFactory", new SpatBlockBodyFactory());
         factories.put("WaterTileFactory", new WaterTileFactory());
+        factories.put("TileArrayFactory", new TileArrayFactory());
         mCamera = new FreeCamera( new Rectangle(0,0,sGraphicsManager.getTrueScreenDimensions().x, sGraphicsManager.getTrueScreenDimensions().y));
     }
     

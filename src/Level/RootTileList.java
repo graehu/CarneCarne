@@ -36,6 +36,10 @@ public class RootTileList {
         directionMap.put("Down", SkinDirection.eDown);
         directionMap.put("Left", SkinDirection.eLeft);
         directionMap.put("Up", SkinDirection.eUp);
+        directionMap.put("DownLeft", SkinDirection.eDownLeft);
+        directionMap.put("DownRight", SkinDirection.eDownRight);
+        directionMap.put("UpLeft", SkinDirection.eUpLeft);
+        directionMap.put("UpRight", SkinDirection.eUpRight);
         int idsSize = 0;
         for (int i = 0; i < _tiledMap.getTileSetCount(); i++)
         {
@@ -53,9 +57,10 @@ public class RootTileList {
             if (shape.equals("Block"))
             {
                 boolean regrows = _tiledMap.getTileProperty(i,"Regrows","Yes").equals("Yes");
+                boolean anchor = new Boolean(_tiledMap.getTileProperty(i, "Anchor", "false")).booleanValue();
                 for (int rootId = i; i < rootId + 16; i++)
                 {
-                    mRootTiles.add(new BlockTile(rootId, type, regrows));
+                    mRootTiles.add(new BlockTile(rootId, type, regrows, anchor));
                 }
             }
             else if (shape.equals("Slope"))

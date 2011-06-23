@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 import org.jbox2d.common.Vec2;
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
 
@@ -44,10 +45,10 @@ public class sGraphicsManager {
     private static HashMap<String, SpriteSheet> mSpriteSheets = new HashMap<String, SpriteSheet>();
     private static HashMap<String, Set<iSkin>> mRenderLists = new HashMap<String, Set<iSkin>>();
     private static ArrayList<iSprite> mManagedSprites = new ArrayList<iSprite>();
+    private static Graphics mGraphics;
           
     private sGraphicsManager()
     {
-        
     }
     
     static public void init(int _sx, int _sy) throws SlickException //should be called by sSkinFactory init
@@ -63,7 +64,22 @@ public class sGraphicsManager {
         mTrueScreenDimensions.x = _sx;
         mTrueScreenDimensions.y = _sy;
     }
-    
+    public static void setGraphics(Graphics _graphics)
+    {
+        mGraphics = _graphics;
+    }
+    public static void resetTransform()
+    {
+        mGraphics.resetTransform();
+    }
+    public static void translate(float _x, float _y)
+    {
+        mGraphics.translate(_x, _y);
+    }
+    public static void rotate(float _x, float _y, float _angle)
+    {
+        mGraphics.rotate(_x, _y, _angle);
+    }
     public static void addSprite(iSprite _sprite)
     {
         mManagedSprites.add(_sprite);

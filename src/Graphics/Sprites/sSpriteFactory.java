@@ -16,7 +16,7 @@ import org.newdawn.slick.SlickException;
  * @author a203945
  */
 public class sSpriteFactory {
-    private static HashMap mFactories = new HashMap();
+    private static HashMap<String, iSpriteFactory> mFactories = new HashMap();
     private sSpriteFactory()
     {
         

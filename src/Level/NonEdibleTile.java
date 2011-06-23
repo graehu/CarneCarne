@@ -10,6 +10,8 @@ import World.sWorld;
 import java.util.HashMap;
 import java.util.Stack;
 import org.jbox2d.common.Vec2;
+import org.jbox2d.dynamics.Body;
+import org.jbox2d.dynamics.Fixture;
 
 /**
  *
@@ -19,14 +21,18 @@ class NonEdibleTile extends RootTile
 {
     public NonEdibleTile(int _id, sLevel.TileType _tileType)
     {
-        super(TileShape.eBlock, _id, _tileType);
+        super(TileShape.eBlock, _id, _tileType, true);
     }
-    public void createPhysicsBody(int _xTile, int _yTile)
+    public Body createPhysicsBody(int _xTile, int _yTile)
     {
         HashMap parameters = new HashMap();
         parameters.put("position", new Vec2(_xTile,_yTile));
         parameters.put("TileType", mTileType);
-        sWorld.useFactory("NonEdibleTileFactory",parameters);
+        return sWorld.useFactory("NonEdibleTileFactory",parameters);
+    }
+    public Fixture createFixture(int _xTile, int _yTile)
+    {
+        return null;
     }
     public void checkEdges(int _xTile, int _yTile, Stack<Integer> _stack, TileGrid _tileGrid)
     {

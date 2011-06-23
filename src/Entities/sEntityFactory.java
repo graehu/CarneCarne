@@ -23,6 +23,7 @@ public class sEntityFactory {
         mFactories.put("Player", new PlayerFactory());
         mFactories.put("SpatBlock", new SpatBlockFactory());
         mFactories.put("Zombie", new ZombieFactory());
+        mFactories.put("CaveIn", new CaveInFactory());
     }
     
     public static Entity create(String _factoryname, HashMap _parameters)

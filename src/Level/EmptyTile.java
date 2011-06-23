@@ -7,6 +7,8 @@ package Level;
 import Level.Tile.Direction;
 import Level.sLevel.TileType;
 import java.util.Stack;
+import org.jbox2d.dynamics.Body;
+import org.jbox2d.dynamics.Fixture;
 
 /**
  *
@@ -16,11 +18,11 @@ public class EmptyTile extends RootTile{
     
     public EmptyTile()
     {
-        super(TileShape.eEmpty,0, sLevel.TileType.eTileTypesMax);
+        super(TileShape.eEmpty,0, sLevel.TileType.eTileTypesMax, false);
     }
-    public void createPhysicsBody(int _xTile, int _yTile)
+    public Body createPhysicsBody(int _xTile, int _yTile)
     {
-        
+        return null;
     }
     public void checkEdges(int _xTile, int _yTile, Stack<Integer> _stack, TileGrid _tileGrid)
     {
@@ -30,5 +32,9 @@ public class EmptyTile extends RootTile{
     boolean boundaryFrom(Direction _direction, TileType _tileType, MaterialEdges _materialEdges)
     {
         return false;
+    }
+    public Fixture createFixture(int _xTile, int _yTile)
+    {
+        return null;
     }
 }

@@ -257,6 +257,7 @@ ScrollPane scrollPane;
     public void init(GameContainer _gc, StateBasedGame _sbg) throws SlickException {
         
         createRootPane();
+        sGraphicsManager.setGraphics(_gc.getGraphics());
         mGameMode = new PlayMode();
         sEvents.init();
         sEntityFactory.init();
@@ -265,7 +266,7 @@ ScrollPane scrollPane;
         sWorld.init();
         sLevel.init();
         
-        //TEST: GUI!!!
+        //FIXME TEST: GUI!!!
         btn = new Button("Hello World");
         btn.addCallback(new StateChanger(3, new BlobbyTransition(Color.green), null, _sbg));
         btn2 = new Button("FullScreen");

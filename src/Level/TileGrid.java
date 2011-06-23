@@ -4,12 +4,12 @@
  */
 package Level;
 
-import Level.RootTile.TileShape;
 import Level.Tile.Direction;
 import Level.sLevel.TileType;
 import java.util.Comparator;
 import java.util.PriorityQueue;
 import java.util.Stack;
+import org.jbox2d.dynamics.joints.WeldJoint;
 import org.newdawn.slick.tiled.TiledMap;
 
 /**
@@ -128,7 +128,7 @@ public class TileGrid {
             tiledMap.setTileId(xTile, yTile, layerIndex, id);
         }
     }
-    private void set(int _x, int _y, int _gid)
+    void set(int _x, int _y, int _gid)
     {
         tiledMap.setTileId(_x, _y, layerIndex, _gid);
         mTiles[_x][_y].mId = _gid;
@@ -143,6 +143,7 @@ public class TileGrid {
             regrowingTiles.add(new RegrowingTile(_x,_y, mTiles[_x][_y].mRootId.mId,mFrames+180));
         
         set(_x,_y,0);
+        
         int x;
         int y;        
         
@@ -165,6 +166,8 @@ public class TileGrid {
             int xTile = stack.pop();
             tiledMap.setTileId(xTile, yTile, layerIndex, id);
         }
+        CaveInSearcher search = new CaveInSearcher(this, tiledMap, layerIndex);
+        search.destroy(_x, _y);
     }
     
     public Tile get(int _x, int _y)

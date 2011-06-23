@@ -10,6 +10,8 @@ import World.sWorld;
 import java.util.HashMap;
 import java.util.Stack;
 import org.jbox2d.common.Vec2;
+import org.jbox2d.dynamics.Body;
+import org.jbox2d.dynamics.Fixture;
 
 /**
  *
@@ -17,17 +19,26 @@ import org.jbox2d.common.Vec2;
  */
 public class BlockTile extends RootTile
 {
-    public BlockTile(int _id, sLevel.TileType _tileType, boolean _regrows)
+    public BlockTile(int _id, sLevel.TileType _tileType, boolean _regrows, boolean _anchor)
     {
-        super(TileShape.eBlock, _id, _tileType);
+        super(TileShape.eBlock, _id, _tileType, _anchor);
         mRegrows = _regrows;
     }
-    public void createPhysicsBody(int _xTile, int _yTile)
+    public Body createPhysicsBody(int _xTile, int _yTile)
     {
         HashMap parameters = new HashMap();
         parameters.put("position", new Vec2(_xTile,_yTile));
         parameters.put("TileType", mTileType);
+        return sWorld.useFactory("TileFactory",parameters);
+    }
+    public Fixture createFixture(int _xTile, int _yTile)
+    {
+        HashMap parameters = new HashMap();
+        parameters.put("position", new Vec2(_xTile,_yTile));
+        parameters.put("TileType", mTileType);
+        parameters.put("isDynamic", true);
         sWorld.useFactory("TileFactory",parameters);
+        return null;
     }
     public void checkEdges(int _xTile, int _yTile, Stack<Integer> _stack, TileGrid _tileGrid)
     {
@@ -47,7 +58,6 @@ public class BlockTile extends RootTile
             if (!ULDR[i])
                 textureUnit |= (1 << i);
         }
-
         _stack.push(_xTile);
         _stack.push(_yTile);
         _stack.push(mId+textureUnit);

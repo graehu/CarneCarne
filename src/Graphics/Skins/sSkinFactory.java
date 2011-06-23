@@ -30,7 +30,7 @@ import org.newdawn.slick.SlickException;
 
 public class sSkinFactory {
     
-    private static HashMap mFactories;
+    private static HashMap<String,iSkinFactory> mFactories;
     private sSkinFactory()
     {
     }
@@ -40,6 +40,7 @@ public class sSkinFactory {
         mFactories.put("static", new StaticSkinFactory());
         mFactories.put("animated", new AnimatedSkinFactory());
         mFactories.put("character", new CharacterSkinFactory());
+        mFactories.put("tiled", new TiledSkinFactory());
     }
     public static iSkin create(String _factoryName, HashMap _params)
     {
@@ -49,7 +50,7 @@ public class sSkinFactory {
     {         
         try
         {
-            iSkinFactory factory = (iSkinFactory)mFactories.get(_factoryName);
+            iSkinFactory factory = mFactories.get(_factoryName);
             iSkin skin = factory.useFactory(_params);
             if(_isAutoRendered)
             {
