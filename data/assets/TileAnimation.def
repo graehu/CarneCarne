@@ -1,0 +1,23 @@
+TileAnimation.png
+{
+	acidbubble
+	0
+	0
+	1600
+	128
+	25
+	2
+	0
+	0
+}
+{
+	spritewaterwave
+	0
+	128
+	1728
+	64
+	27
+	1
+	0
+	0
+}

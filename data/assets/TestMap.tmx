@@ -50,7 +50,6 @@
   <tile id="0">
    <properties>
     <property name="Material" value="Edible"/>
-    <property name="Regrows" value="false"/>
     <property name="Type" value="Block"/>
    </properties>
   </tile>
@@ -185,7 +184,6 @@
   <image source="TileBone1.png" width="256" height="256"/>
   <tile id="0">
    <properties>
-    <property name="Anchor" value="True"/>
     <property name="Material" value="Swingable"/>
     <property name="Type" value="Block"/>
    </properties>
@@ -222,14 +220,9 @@
     <property name="Spawn" value="Player"/>
    </properties>
   </tile>
-  <tile id="26">
-   <properties>
-    <property name="Spawn" value="AI"/>
-   </properties>
-  </tile>
  </tileset>
  <tileset firstgid="276" name="TileMelonSkin" tilewidth="64" tileheight="64">
-  <image source="TileMelonSkin.png" width="256" height="512"/>
+  <image source="TileMelonSkin.png" width="256" height="2048"/>
   <tile id="0">
    <properties>
     <property name="Direction" value="DownRight"/>
@@ -332,6 +325,23 @@
  <tileset firstgid="547" name="SpriteSign" tilewidth="64" tileheight="64">
   <image source="SpriteSign.png" width="256" height="1536"/>
  </tileset>
+ <tileset firstgid="643" name="TilePlaceAnimation" tilewidth="64" tileheight="64">
+  <image source="TilePlaceAnimation.png" width="256" height="64"/>
+  <tile id="0">
+   <properties>
+    <property name="animRef" value="spritewaterwave"/>
+    <property name="duration" value="44"/>
+    <property name="maxtimeOffSet" value="0"/>
+   </properties>
+  </tile>
+  <tile id="2">
+   <properties>
+    <property name="animRef" value="acidbubble"/>
+    <property name="duration" value="44"/>
+    <property name="maxTimeOffset" value="5"/>
+   </properties>
+  </tile>
+ </tileset>
  <layer name="Background2" width="100" height="100">
   <properties>
    <property name="ScaleX" value=".2"/>
@@ -357,22 +367,22 @@
  </layer>
  <layer name="Level" width="100" height="100">
   <data encoding="base64" compression="gzip">
-   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
+   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
   </data>
  </layer>
  <layer name="Foreground" width="100" height="100">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC+3ad4/TMBzGcTfssnS8B/iDvcXeIMTeQuwNYm8hNrxs9s+qI1nGduYlVvv9SFZysd24ftJeLj6lkKJZA6Vm91zmmJLKWH+r9l7HLn9K5DG3xDxMt5+qOA+dhUpgrE1MDYpzSSEPLZbJOGRh07mEMkklD82XyS8pSxIaY1tCmfztfCRxU8538DhmkRt43ltqeUwS8kgLeaSlyzwWyblmWGVxw98D2zOldmTxNjulflegzX45fiBQd1COHwrUHZXjxyLnPS51JwrGFdJlHu65mpxHZ7tb3vMez/u2c98r9fsCbXT/w5n/2lgjx48E5vSkHD8Vme/TUnemQh5npe05096XR5n73aXSf5lzzhXy88rIOPS9q32fZP/9sEH6bbT6bpL9zZHXysfty7RM7m6bPu/x9XVxsWEe+vpZnv1/bG1kDldJ3epAve67xarbKvvbzM/zZDwLrPLDtNF/l4xDHra6edSxTuZ3fY3v1WFg7obk0Tn92Vg44XnMd74f+ixuFvb4dF3m3LPpMtPpU6ZN1+85dG/pywPTL3RvSR79II+0kEdayCMtVfJw13gp7ZfQGg6fj5H8mVfTZ5xNkcdI7HlYl8hjhDzSks/D1UypaxWfsZ2X9hdqrneExjHp8nm4KfN6q+Lc6vWOS+TRKvcZcl/ayOOTXBufzfXxQbYfzf4b2b4ted28knavTdsnsn1a0O+R1D+22tyV/XuBPrfl+J2C1yvK47L0v1LxM1Dnnq2NPL7JOL+bsX6R7Vez/0y270u+B932nWn7QrYvC/rp9s+tNtdl/2Ggz305/qBCHr5n7/r1b1TMY1jjHoHvq5F87tr8P9SmefS91tFnyddD2lwHyddufOsvoeKuywAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAKA7/wD9Lp7VQJwAAA==
+   H4sIAAAAAAAAC+3BMQEAAADCoPVP7WULoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgBt5RKnmQJwAAA==
   </data>
  </layer>
  <layer name="Foreground2" width="100" height="100">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC+3ZOw7CMAwA0BYWJhDc/6oIisRQRW2woR+VvrcQybFTJWSJmwYAAAAg59g2zaX9fs4rdhyIndvxvFosEievfe/lIxmLxEtTnN9QjV/qlrlr/8eu3br37vc2sH4tFomXsucXrfGpbm2Py9wpvnErsucXrfGpbm2Py9wpvpE6ewwAAABE7eHNbEsOyXfltd+i9+CU2Ns9vUWvJXMeS72TRu9hf97YOLNWJC/Tv5qr/7a06D3szxsbZ9aK5GX6V3P135YWvYf9eWPjzFqRvEz/aq7+GwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/+cJ4LBR2kCcAAA=
+   H4sIAAAAAAAAC+3BMQEAAADCoPVP7WULoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgBt5RKnmQJwAAA==
   </data>
  </layer>
  <layer name="Flags" width="100" height="100">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC+3OMQEAAAgDoNnA/mkXQw9IQAIAAAB8sXM9AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAKi2qpYkCcAAA=
+   H4sIAAAAAAAAC+3OQQ0AAAgEoLOB/dMaQjc/kIAEAAAAAOBG1/cAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA9gYMZ6OZQJwAAA==
   </data>
  </layer>
 </map>

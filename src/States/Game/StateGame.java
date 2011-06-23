@@ -10,7 +10,6 @@ import Events.KeyDownEvent;
 import Events.MapClickEvent;
 import Events.MouseMoveEvent;
 import Events.sEvents;
-import GUI.OptionsGUI;
 import GUI.sGUI;
 import Graphics.Particles.sParticleManager;
 import GUI.TWL.BasicTWLGameState;
@@ -36,6 +35,7 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.fills.GradientFill;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Vector2f;
+import org.newdawn.slick.opengl.TextureImpl;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.BlobbyTransition;
 
@@ -50,7 +50,7 @@ public class StateGame extends BasicTWLGameState {
     static private int mPlayers;
     
     public int getID() {
-        return 2;
+        return 3;
     }
     
     @Override
@@ -143,6 +143,9 @@ public class StateGame extends BasicTWLGameState {
         
         //render managed sprites
         sGraphicsManager.renderManagedSprites();
+        
+        _grphcs.drawString("AHHHHHHHHHHHHHHHHHHHHHH", 500, 500);
+        
     }
 
     @Override
@@ -216,6 +219,8 @@ ScrollPane scrollPane;
         sSkinFactory.init();
         sSpriteFactory.init();
         sWorld.init();
+        Vec2 s = sGraphicsManager.getTrueScreenDimensions();
+        sWorld.resizeViewport(new Rectangle(0,0,s.x, s.y));
         sLevel.init();
         
         //FIXME TEST: GUI!!!
@@ -229,12 +234,9 @@ ScrollPane scrollPane;
         scrollPane = sGUI.createDialogueBox(getRootPane(), 20, 20, "RAWR!");
         scrollPane.setContent(btn);
         
-        OptionsGUI wid = new OptionsGUI(_sbg);
-        getRootPane().add(wid.getWidget());
-        
         //Initialise sound
         sSound.init();
-        sSound.loadSound("ambiance", "data/assets/sound/sfx/level_ambiance.ogg");
+        sSound.loadSound("ambiance", "assets/sound/sfx/level_ambiance.ogg");
         sSound.setLooping("ambiance", true);
 
     }    

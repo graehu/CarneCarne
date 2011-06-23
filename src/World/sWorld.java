@@ -69,7 +69,8 @@ public class sWorld
         factories.put("SpatBlockFactory", new SpatBlockBodyFactory());
         factories.put("WaterTileFactory", new WaterTileFactory());
         factories.put("TileArrayFactory", new TileArrayFactory());
-        mCamera = new FreeCamera( new Rectangle(0,0,sGraphicsManager.getTrueScreenDimensions().x, sGraphicsManager.getTrueScreenDimensions().y));
+        Vec2 s = sGraphicsManager.getTrueScreenDimensions();
+        mCamera = new FreeCamera( new Rectangle(0,0,s.x,s.y));
     }
     
     public static Body useFactory(String _factory, HashMap _parameters)

@@ -10,14 +10,14 @@ import States.Game.StateGame;
 import States.Menu.StateMenu;
 import States.Splash.StateSplash;
 import States.Title.StateTitle;
-import States.StateChanger;
+import org.newdawn.slick.opengl.renderer.Renderer;
+import org.newdawn.slick.opengl.renderer.SGL;
 
 public class Main extends TWLStateBasedGame
 {
-    private static TWLStateBasedGame mSelf;
     public Main()
     {
-        super("SlickTestbed");
+        super("CarneCarne!");
     }
     public static void main(String[] arguments)
     {
@@ -31,24 +31,32 @@ public class Main extends TWLStateBasedGame
         nativeLibLoaderJinput.setupPath();
         try
         {
+            InitApp initApp = new InitApp();
+            AppGameContainer init = new AppGameContainer(initApp);
+            init.setDisplayMode(800, 600, false);
+            init.setTargetFrameRate(60);
+            init.setForceExit(false);
+            init.start();
+            init.destroy();
+            
             AppGameContainer app = new AppGameContainer(new Main());
-            app.setDisplayMode(800, 600, false);
-            //app.setDisplayMode(app.getScreenWidth(), app.getScreenHeight(), true);
-            //app.setVSync(true);
+            //app.setMouseGrabbed(true);
+            app.setDisplayMode(InitApp.mChosenX, InitApp.mChosenY, false);
+            app.setVSync(true);
             app.setTargetFrameRate(60);
             
             //initialise graphics manager
-            sGraphicsManager.init(800, 600);
-            //app.setDisplayMode(app.getScreenWidth(), app.getScreenHeight(), true);
-            //app.setVSync(true);
-            //app.setTargetFrameRate(60);
+            sGraphicsManager.init(InitApp.mChosenX, InitApp.mChosenY);
+            
             app.start();
+            
         }
         catch(SlickException e)
         {
             e.printStackTrace();
         }
     }
+    
 
     @Override
     protected URL getThemeURL() {
@@ -60,23 +68,27 @@ public class Main extends TWLStateBasedGame
     BasicTWLGameState mSplashState, mTitleState, mGameState, mMenuState;
     
     @Override
-    public void initStatesList(GameContainer gc) throws SlickException {
-        //Splash: state0
+    public void initStatesList(GameContainer gc) throws SlickException {   
+        
+        //Splash: state1
         mSplashState = new StateSplash();
         addState(mSplashState);
-        //title: state1
+        //title: state2
         mTitleState = new StateTitle();
         addState(mTitleState);
-        //game: state2
+        //game: state3
         mGameState = new StateGame();
         addState(mGameState); 
-        //menu: state3
+        //menu: state4
         mMenuState = new StateMenu();
         addState(mMenuState); 
         
         //FIXME: should start on splash
         //enterState(2, null, new BlobbyTransition(new Color(0,0,0)));
-        enterState(2, null, null);
+        enterState(3, null, null);
     }
+
+    
+    
 
 }

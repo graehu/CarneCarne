@@ -69,7 +69,7 @@ public class sLevel {
     public static void init() throws SlickException
     {
         mTiledMap = new AnimatedTiledMap("assets/TestMap.tmx");
-        mTiledMap.initAnimationlayer("assets/splashbig.def");
+        mTiledMap.initAnimationlayer("assets/TileAnimation.def");
         mLevelEditor = new LevelEditor(mTiledMap);
         midLayer = mTiledMap.getLayerIndex("Level");
         mParralaxXScale = new float[mTiledMap.getLayerCount()];
@@ -100,7 +100,7 @@ public class sLevel {
         Vec2 translation = sWorld.getPixelTranslation();
         for (int i = 0; i < midLayer; i++)
         {
-            Vec2 myTranslation = translation;
+            Vec2 myTranslation = translation.clone();
             myTranslation.x = myTranslation.x *(mParralaxXScale[i]);
             myTranslation.y = myTranslation.y *(mParralaxYScale[i]);
             int xStart = -(int)(myTranslation.x/64.0f);
@@ -111,6 +111,7 @@ public class sLevel {
             transY = transY % 64;
             mTiledMap.render(transX,transY, xStart,yStart, xStart+xTiles,yStart+yTiles, i, false);
         }
+        mTiledMap.renderAnimatedLayer(translation.x,translation.y,s.x,s.y);
     }
     public static void renderForeground()
     {
@@ -120,7 +121,7 @@ public class sLevel {
         Vec2 translation = sWorld.getPixelTranslation();
         for (int i = midLayer; i < mTiledMap.getLayerCount(); i++)
         {
-            Vec2 myTranslation = translation;
+            Vec2 myTranslation = translation.clone();
             myTranslation.x = myTranslation.x *(mParralaxXScale[i]);
             myTranslation.y = myTranslation.y *(mParralaxYScale[i]);
             int xStart = -(int)(myTranslation.x/64.0f);
@@ -131,6 +132,6 @@ public class sLevel {
             transY = transY % 64;
             mTiledMap.render(transX,transY, xStart,yStart, xStart+xTiles,yStart+yTiles, i, false);
         }     
-        mTiledMap.renderAnimatedLayer(translation.x,translation.y,s.x,s.y);
+        
     }
 }
