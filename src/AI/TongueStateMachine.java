@@ -25,6 +25,8 @@ public class TongueStateMachine {
     static float tongueLength = 6.0f;
     static int idleAnimationTrigger = 1000;
     int ammoLeft;
+    boolean mIsTongueActive = false;
+    Vec2 mTongueDir = new Vec2(1,0);
     
     Vec2 mPosition = new Vec2(0,0);
     String mBlockMaterial;
@@ -59,20 +61,16 @@ public class TongueStateMachine {
     }
     private sLevel.TileType extendTongue(boolean _grabBlock)
     {
-        mAIController.mEntity.mSkin.startAnim("tng", false, 0.0f);
-         //constant offset required due to offset applied during player creation
-        Vec2 direction = mPosition.sub(new Vec2(0.5f,0.5f)).sub(mAIController.mEntity.mBody.getPosition());
-        direction.normalize();
-        setTongue(direction, ((float)mCurrentStateTimer/(float)tongueFiringTimeout)*tongueLength);
-        direction = direction.mul(((float)mCurrentStateTimer/(float)tongueFiringTimeout)*tongueLength);
+        mTongueDir = mAIController.mPlayerDir;
+        setTongue(mTongueDir, ((float)mCurrentStateTimer/(float)tongueFiringTimeout)*tongueLength);
+        Vec2 tongueOffset = mTongueDir.mul(((float)mCurrentStateTimer/(float)tongueFiringTimeout)*tongueLength);
         if (_grabBlock)
-            return mAIController.grabBlock(mAIController.mEntity.mBody.getPosition().add(direction));
+            return mAIController.grabBlock(mAIController.mEntity.mBody.getPosition().add(tongueOffset));
         else
             return sLevel.TileType.eTileTypesMax;
     }
     private boolean hammerCollide()
     {
-        mAIController.mEntity.mSkin.startAnim("tng", false, 0.0f);
         Vec2 direction = mPosition.sub(mAIController.mEntity.mBody.getPosition());
         direction.normalize();
         setTongue(direction, ((float)mCurrentStateTimer/(float)tongueFiringTimeout)*tongueLength);
@@ -93,7 +91,7 @@ public class TongueStateMachine {
     }
     private int setAnimation(String _name)
     {
-        mAIController.mEntity.mSkin.startAnim(_name, mIsTongueActive, tongueLength);
+        mAIController.mEntity.mSkin.startAnim(_name, false, 0.0f);
         return 1;
     }
     
@@ -102,7 +100,6 @@ public class TongueStateMachine {
         //calc. direction of tongue
         mAIController.mEntity.mSkin.setDimentions("tng", 0, _distance*64);
         Vec2 direction = _direction.clone();
-        direction.normalize();
         float angle = (float)Math.acos(Vec2.dot(direction, mUp));
         if(direction.x < 0)
                 angle = (float) ((2*Math.PI) - angle);
@@ -110,7 +107,6 @@ public class TongueStateMachine {
     }
     public void tick(AIEntity _entity)
     {
-        
         switch (mState)
         {
             case eStart:
@@ -255,9 +251,9 @@ public class TongueStateMachine {
             }
             case eSwinging:
             {
-                Vec2 direction = mJoint.m_bodyB.getPosition().sub(mJoint.m_bodyA.getPosition());
-                float actualLength = direction.normalize();
-                setTongue(direction, actualLength);
+                mTongueDir = mJoint.m_bodyB.getPosition().sub(mJoint.m_bodyA.getPosition());
+                float actualLength = mTongueDir.normalize();
+                setTongue(mTongueDir, actualLength);
                 mJoint.m_length = actualLength * 0.99f;
                 
                 //mJoint.m_length -= 0.01f;
@@ -491,7 +487,7 @@ public class TongueStateMachine {
             }
         }
     }
-    boolean mIsTongueActive = false;
+    
     private void changeState(State _state)
     {
         switch (_state)
@@ -499,94 +495,69 @@ public class TongueStateMachine {
             case eStart:
             {
                 //no tongue
-                if(mIsTongueActive == true)
-                {
-                    mAIController.mEntity.mSkin.stopAnim("tng");
-                    mIsTongueActive = false;
-                }
+                mAIController.mEntity.mSkin.stopAnim("tng");
+                mIsTongueActive = false;
                 mCurrentStateTimer = 0;
                 break;
             }
             case eFiringTongue:
             {
+                //calculate relative dir
+                mTongueDir = mAIController.mPlayerDir;
                 //render tongue
-                if(mIsTongueActive == false)
-                {
-                    mAIController.mEntity.mSkin.startAnim("tng", false, 0.0f);
-                    mIsTongueActive = true;
-                }
+                mAIController.mEntity.mSkin.startAnim("tng", false, 0.0f);
+                mIsTongueActive = true;
                 break;
             }
             case eRetractingTongue:
             {
                 //render tongue
-                if(mIsTongueActive == false)
-                {
-                    mAIController.mEntity.mSkin.startAnim("tng", false, 0.0f);
-                    mIsTongueActive = true;
-                }
+                mAIController.mEntity.mSkin.startAnim("tng", false, 0.0f);
+                mIsTongueActive = true;
                 break;
             }
             case eStuckToBlock:
             {
                 //render tongue
-                if(mIsTongueActive == false)
-                {
-                    mAIController.mEntity.mSkin.startAnim("tng", false, 0.0f);
-                    mIsTongueActive = true;
-                }
+                mAIController.mEntity.mSkin.startAnim("tng", false, 0.0f);
+                mIsTongueActive = true;
                 break;
             }
             case eRetractingWithBlock:
             {
                 //render tongue
-                if(mIsTongueActive == false)
-                {
-                    mAIController.mEntity.mSkin.startAnim("tng", false, 0.0f);
-                    mIsTongueActive = true;
-                }
+                mAIController.mEntity.mSkin.startAnim("tng", false, 0.0f);
+                mIsTongueActive = true;
                 break;
             }
             case eFoodInMouth:
             {
                 //no tongue
-                if(mIsTongueActive == true)
-                {
-                    mAIController.mEntity.mSkin.stopAnim("tng");
-                    mIsTongueActive = false;
-                }
+                mAIController.mEntity.mSkin.stopAnim("tng");
+                mIsTongueActive = false;
                 mCurrentStateTimer = 0;
                 break;
             }
             case eFiringHammer:
             {
                 //render tongue
-                if(mIsTongueActive == false)
-                {
-                    mAIController.mEntity.mSkin.startAnim("tng", false, 0.0f);
-                    mIsTongueActive = true;
-                }
+                mAIController.mEntity.mSkin.startAnim("tng", false, 0.0f);
+                mIsTongueActive = true;
                 mCurrentStateTimer = 0;
                 break;
             }
             case eRetractingHammer:
             {
                 //render tongue
-                if(mIsTongueActive == false)
-                {
-                    mAIController.mEntity.mSkin.startAnim("tng", false, 0.0f);
-                    mIsTongueActive = true;
-                }
+                mAIController.mEntity.mSkin.startAnim("tng", false, 0.0f);
+                mIsTongueActive = true;
                 break;
             }
             case eSpittingBlock:
             {
                 //no tongue
-                if(mIsTongueActive == true)
-                {
-                    mAIController.mEntity.mSkin.stopAnim("tng");
-                    mIsTongueActive = false;
-                }
+                mAIController.mEntity.mSkin.stopAnim("tng");
+                mIsTongueActive = false;
                 mCurrentStateTimer = setAnimation("SpittingBlock");
                 spitBlock();
                 break;
@@ -594,33 +565,24 @@ public class TongueStateMachine {
             case eSpitting:
             {
                 //no tongue
-                if(mIsTongueActive == true)
-                {
-                    mAIController.mEntity.mSkin.stopAnim("tng");
-                    mIsTongueActive = false;
-                }
+                mAIController.mEntity.mSkin.stopAnim("tng");
+                mIsTongueActive = false;
                 mCurrentStateTimer = setAnimation("Spitting");
                 break;
             }
             case eIdleAnimation:
             {
-                if(mIsTongueActive == true)
-                {
-                    //no tongue
-                    mAIController.mEntity.mSkin.stopAnim("tng");
-                    mIsTongueActive = false;
-                }
+                //no tongue
+                mAIController.mEntity.mSkin.stopAnim("tng");
+                mIsTongueActive = false;
                 mCurrentStateTimer = setAnimation("Idle");
                 break;
             }
             case eSwinging:
             {
-                if(mIsTongueActive == false)
-                {
-                    //render tongue
-                    mAIController.mEntity.mSkin.startAnim("tng", false, 0.0f);
-                    mIsTongueActive = true;
-                }
+                //render tongue
+                mAIController.mEntity.mSkin.startAnim("tng", false, 0.0f);
+                mIsTongueActive = true;
                 Vec2 direction = mPosition.sub(mAIController.mEntity.mBody.getPosition());
                 direction.normalize();
                 setTongue(direction, ((float)mCurrentStateTimer/(float)tongueFiringTimeout)*tongueLength);

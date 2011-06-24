@@ -8,6 +8,7 @@ import Events.MapClickReleaseEvent;
 import Entities.sEntityFactory;
 import Events.KeyDownEvent;
 import Events.MapClickEvent;
+import Events.MouseDragEvent;
 import Events.MouseMoveEvent;
 import Events.sEvents;
 import GUI.sGUI;
@@ -35,7 +36,6 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.fills.GradientFill;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Vector2f;
-import org.newdawn.slick.opengl.TextureImpl;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.BlobbyTransition;
 
@@ -48,6 +48,7 @@ public class StateGame extends BasicTWLGameState {
     private iGameMode mGameMode; 
     private Button btn,btn2; // FIXME for testing
     static private int mPlayers;
+    static public Vec2 mMousePos = new Vec2(0,0);
     
     public int getID() {
         return 3;
@@ -94,9 +95,19 @@ public class StateGame extends BasicTWLGameState {
         for (int i = 0; i < mPlayers; i++)
             sEvents.triggerEvent(new MouseMoveEvent(new Vec2(newx,newy), i));
     }
+
+    @Override
+    public void mouseDragged(int oldx, int oldy, int newx, int newy) 
+    {
+        for (int i = 0; i < mPlayers; i++)
+            sEvents.triggerEvent(new MouseDragEvent(new Vec2(newx,newy), i));
+    }
+    
     private ArrayList<XBoxController> xBoxControllers = new ArrayList<XBoxController>();
     public void update(GameContainer _gc, StateBasedGame _sbg, int _i) throws SlickException /// FIXME wtf is '_i'?
     {
+        mMousePos.x = _gc.getInput().getMouseX();
+        mMousePos.y = _gc.getInput().getMouseY();
         mPlayers = _gc.getInput().getControllerCount();
         int i = 0;
         if(_gc.getInput().isKeyDown(Input.KEY_W))
