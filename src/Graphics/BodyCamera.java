@@ -18,14 +18,15 @@ import org.newdawn.slick.geom.Rectangle;
 public class BodyCamera extends iCamera {
     
     Body mBody;
-    Vec2 mPosition;
-    Vec2 mTranslation;
+    Vec2 mPosition = new Vec2(0,0);
+    Vec2 mTranslation = new Vec2(0,0);
     boolean mTopSplit;
     public BodyCamera(Body _body, Rectangle _viewPort, boolean _topSplit)
     {
         super(_viewPort);
         mBody = _body;
         mTopSplit = _topSplit;
+        
     }
     public Vec2 translateToWorld(Vec2 _physicsSpace)
     {

@@ -91,7 +91,8 @@ public class StateGame extends BasicTWLGameState {
     }
     public void mouseMoved(int oldx, int oldy, int newx, int newy)
     {
-        sEvents.triggerEvent(new MouseMoveEvent(new Vec2(newx,newy)));
+        for (int i = 0; i < mPlayers; i++)
+            sEvents.triggerEvent(new MouseMoveEvent(new Vec2(newx,newy), i));
     }
     private ArrayList<XBoxController> xBoxControllers = new ArrayList<XBoxController>();
     public void update(GameContainer _gc, StateBasedGame _sbg, int _i) throws SlickException /// FIXME wtf is '_i'?
@@ -123,6 +124,10 @@ public class StateGame extends BasicTWLGameState {
         catch (ArrayIndexOutOfBoundsException e)
         {
             mPlayers = i;
+            if (mPlayers == 0)
+            {
+                mPlayers = 1;
+            }
         }
         mGameMode.update(_i);
         //update particles

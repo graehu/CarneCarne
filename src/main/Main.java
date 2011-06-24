@@ -10,8 +10,6 @@ import States.Game.StateGame;
 import States.Menu.StateMenu;
 import States.Splash.StateSplash;
 import States.Title.StateTitle;
-import org.newdawn.slick.opengl.renderer.Renderer;
-import org.newdawn.slick.opengl.renderer.SGL;
 
 public class Main extends TWLStateBasedGame
 {
@@ -36,7 +34,7 @@ public class Main extends TWLStateBasedGame
             init.setDisplayMode(800, 600, false);
             init.setTargetFrameRate(60);
             init.setForceExit(false);
-            init.start();
+            //init.start();
             init.destroy();
             
             AppGameContainer app = new AppGameContainer(new Main());

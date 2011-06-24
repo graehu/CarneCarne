@@ -17,6 +17,7 @@ import Events.iEventListener;
 import Events.sEvents;
 import Level.sLevel;
 import Events.RightStickEvent;
+import HUD.Reticle;
 import World.sWorld;
 import java.util.HashMap;
 import org.jbox2d.common.Vec2;
@@ -31,8 +32,9 @@ public class PlayerInputController extends iAIController implements iEventListen
     private TongueStateMachine mTongueState;
     protected String mFaceDirAnim;
     private float mTongueAngle = 0;
-    private Vec2 mCursorPos = new Vec2(0,0);
+    protected Vec2 mPlayerDir = new Vec2(1,0);
     private int mPlayer;
+    private Reticle mReticle;
     public PlayerInputController(AIEntity _entity, int _player)
     {
         super(_entity);
@@ -48,16 +50,19 @@ public class PlayerInputController extends iAIController implements iEventListen
         sEvents.subscribeToEvent("AnalogueStickEvent"+_player, this);
         sEvents.subscribeToEvent("RightStickEvent"+_player, this);
         mTongueState = new TongueStateMachine(this);
+        mReticle = new Reticle(_entity);
     }
     
     public void update()
     {
+        mReticle.updateDirection(mPlayerDir);
         mTongueState.tick(mEntity);
+        
+    
         if(mTongueState.mIsTongueActive)
         {
-            Vec2 direction = mTongueState.position.sub(mEntity.mBody.getPosition().add(new Vec2(0.5f,0.5f))); //offset by half the width and height
-            direction.normalize();
-            look(direction);
+            Vec2 tongueDir = mTongueState.mPosition.sub(mEntity.mBody.getPosition().add(new Vec2(0.5f,0.5f))); //offset by half the width and height
+            look(tongueDir);
             mEntity.mSkin.stopAnim(mFaceDirAnim);
             mEntity.mSkin.stopAnim("h"+mFaceDirAnim); //hat animation
             mEntity.mSkin.startAnim("m"+mFaceDirAnim, false, 0.0f); //mouth animation
@@ -154,24 +159,26 @@ public class PlayerInputController extends iAIController implements iEventListen
         else if (_event.getType().equals("RightStickEvent"))
         {
             RightStickEvent event = (RightStickEvent)_event;
-            Vec2 direction = event.getDirection();
-            look(direction);
+            mPlayerDir = event.getDirection();
+            if(mTongueState.mIsTongueActive == false)
+            {
+                look(mPlayerDir);
+            }
         }
         else if (_event.getType().equals("MouseMoveEvent"))
         {
+            MouseMoveEvent event = (MouseMoveEvent)_event;
+            mPlayerDir = event.getPhysicsPosition().sub(mEntity.mBody.getPosition().add(new Vec2(0.5f,0.5f))); //offset by half the width and height
+            mReticle.updateDirection(mPlayerDir);
             if(mTongueState.mIsTongueActive == false)
             {
-                MouseMoveEvent event = (MouseMoveEvent)_event;
-                Vec2 direction = event.getPhysicsPosition().sub(mEntity.mBody.getPosition().add(new Vec2(0.5f,0.5f))); //offset by half the width and height
-                direction.normalize();
-                look(direction);
+                look(mPlayerDir);
             }
                 
         }
         else if (_event.getType().equals("MapClickReleaseEvent"+mPlayer))
         {
             MapClickReleaseEvent event = (MapClickReleaseEvent)_event;
-            mCursorPos = event.getPosition();
             if (event.leftbutton())
             {
                 mTongueState.leftRelease(event.getPosition());
@@ -184,7 +191,6 @@ public class PlayerInputController extends iAIController implements iEventListen
         else //assume MapClick
         {
             MapClickEvent event = (MapClickEvent)_event;
-            mCursorPos = event.getPosition();
             if (event.leftbutton())
             {
                 mTongueState.leftClick(event.getPosition());
@@ -197,6 +203,7 @@ public class PlayerInputController extends iAIController implements iEventListen
     }    
     private void look(Vec2 _direction)
     {
+        _direction.normalize();
         //assumes 64x64 sprite
         mEntity.mSkin.setOffset("tng", new Vec2(32,32).add(_direction.mul(0.4f*64)));
         mTongueAngle = (float)Math.acos(Vec2.dot(new Vec2(0,-1), _direction));
