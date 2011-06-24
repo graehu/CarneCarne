@@ -46,4 +46,9 @@ public class LevelEditor {
     {
         return rootTiles.getTileType(_id);
     }
+
+    boolean damageTile(int _x, int _y)
+    {
+        return tileGrid.damageTile(_x, _y);
+    }
 }

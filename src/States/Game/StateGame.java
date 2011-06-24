@@ -49,7 +49,8 @@ public class StateGame extends BasicTWLGameState {
     private Button btn,btn2; // FIXME for testing
     static private int mPlayers;
     
-    public int getID() {
+    public int getID()
+    {
         return 2;
     }
     

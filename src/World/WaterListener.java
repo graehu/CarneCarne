@@ -5,6 +5,11 @@
 package World;
 
 import Entities.Entity;
+import Entities.PlayerEntity;
+import Events.PlayerDeathEvent;
+import Events.sEvents;
+import Level.sLevel;
+import Level.sLevel.TileType;
 import World.sWorld.BodyCategories;
 import org.jbox2d.callbacks.ContactImpulse;
 import org.jbox2d.collision.Manifold;
@@ -23,11 +28,21 @@ class WaterListener implements iListener {
     {
         if (_contact.m_fixtureA.m_filter.categoryBits == (1 << BodyCategories.eWater.ordinal()))
         {
+            TileType tileType = sLevel.TileType.class.getEnumConstants()[_contact.m_fixtureA.m_filter.groupIndex];
+            if (tileType.equals(TileType.eAcid))
+            {
+                sEvents.triggerDelayedEvent(new PlayerDeathEvent(((Entity)_contact.m_fixtureB.m_body.m_userData)));
+            }
             ((Entity)_contact.m_fixtureB.m_body.m_userData).submerge(((Integer)_contact.m_fixtureA.m_userData));
         }
         else
         {
-            ((Entity)_contact.m_fixtureA.m_body.m_userData).submerge(((Integer)_contact.m_fixtureB.m_userData));          
+            TileType tileType = sLevel.TileType.class.getEnumConstants()[_contact.m_fixtureB.m_filter.groupIndex];
+            if (tileType.equals(TileType.eAcid))
+            {
+                sEvents.triggerDelayedEvent(new PlayerDeathEvent(((Entity)_contact.m_fixtureA.m_body.m_userData)));
+            }
+            ((Entity)_contact.m_fixtureA.m_body.m_userData).submerge(((Integer)_contact.m_fixtureB.m_userData));        
         }
     }
 

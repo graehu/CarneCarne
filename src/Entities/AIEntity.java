@@ -70,6 +70,11 @@ public class AIEntity extends Entity {
             mJoint.m_motorSpeed = 0.0f;
         else mTurnThisFrame = 0;
         mController.update();
+        subUpdate();
+    }
+    protected void subUpdate()
+    {
+        
     }
     public void walk(float value)
     {

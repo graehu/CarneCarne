@@ -53,4 +53,8 @@ abstract public class Entity {
     {
         mTar--;
     }
+
+    public void kill()
+    {
+    }
 }

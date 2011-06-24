@@ -14,7 +14,6 @@ import Graphics.Skins.sSkinFactory;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 /**
  *
  * @author alasdair
@@ -102,8 +101,7 @@ public class PlayerFactory implements iEntityFactory {
                     }
                 }
             }
-
-            AIEntity entity = new AIEntity(skin);
+            AIEntity entity = new PlayerEntity(skin, position);
             HashMap parameters = new HashMap();
             parameters.put("position", position);
             parameters.put("aIEntity", entity);

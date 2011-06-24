@@ -5,6 +5,7 @@
 package Level;
 
 import Entities.sEntityFactory;
+import World.sWorld;
 import java.util.HashMap;
 import java.util.Stack;
 import org.jbox2d.common.Vec2;
@@ -38,6 +39,11 @@ public class FlagProcessor
                 else if (spawn.equals("Player"))
                 {
                     playerPositions.push(new Vec2(i,ii));
+                }
+                else if (spawn.equals("CheckPoint"))
+                {
+                    parameters.put("position",new Vec2(i,ii));
+                    sWorld.useFactory("CheckPointFactory", parameters);
                 }
             }
         }

@@ -35,7 +35,7 @@ public class TileGrid {
         {
             for (int ii = 0; ii < _tiledMap.getHeight(); ii++)
             {
-                int id = _tiledMap.getTileId(i, ii, _layerIndex);
+                int id = _tiledMap.getTileId(i, ii, layerIndex);
                 if (_rootTiles.get(id).mTileType.equals(TileType.eWater))
                 {
                     waterSearcher.addTile(i,ii,_rootTiles.get(id));
@@ -69,6 +69,28 @@ public class TileGrid {
             _tiledMap.setTileId(xTile, yTile, _layerIndex, id);
         }
         regrowingTiles = new PriorityQueue<RegrowingTile>(10, new TileComparer());
+    }
+
+    boolean damageTile(int _x, int _y)
+    {
+        Tile tile = mTiles[_x][_y];
+        if (tile.mHealth > 1)
+        {
+            tile.mId += 16;
+            tile.mHealth--;
+            tile.mRootId = rootTiles.get(tile.mId);
+            Stack<Integer> stack = new Stack<Integer>();
+            mTiles[_x][_y].checkEdges(_x,_y, stack, this);
+            while (!stack.empty())
+            {
+                int id = stack.pop();
+                int yTile = stack.pop();
+                int xTile = stack.pop();
+                tiledMap.setTileId(xTile, yTile, layerIndex, id);
+            }
+            return false;
+        }
+        return true;
     }
     private static class TileComparer implements Comparator<RegrowingTile> 
     {
@@ -166,8 +188,8 @@ public class TileGrid {
             int xTile = stack.pop();
             tiledMap.setTileId(xTile, yTile, layerIndex, id);
         }
-        /*CaveInSearcher search = new CaveInSearcher(this, tiledMap, layerIndex);
-        search.destroy(_x, _y);*/
+        CaveInSearcher search = new CaveInSearcher(this, tiledMap, layerIndex);
+        search.destroy(_x, _y);
     }
     
     public Tile get(int _x, int _y)
