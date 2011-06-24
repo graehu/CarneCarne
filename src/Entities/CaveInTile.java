@@ -5,6 +5,9 @@
 package Entities;
 
 import Graphics.Skins.iSkin;
+import Graphics.sGraphicsManager;
+import World.sWorld;
+import org.jbox2d.common.Vec2;
 
 /**
  *
@@ -20,6 +23,12 @@ public class CaveInTile extends Entity
     @Override
     public void update()
     {
+    }
+    public void render()
+    {
+        Vec2 pixelPosition = sWorld.translateToWorld(mBody.getPosition());
+        mSkin.render(pixelPosition.x,pixelPosition.y);
+        mSkin.setRotation(mBody.getAngle()*(180/(float)Math.PI));
     }
     
 }

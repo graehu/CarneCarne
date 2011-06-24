@@ -115,7 +115,7 @@ class CaveInSearcher {
         parameters.put("img", image) ;
         
         /// Individual tiles
-        /*Body body = mTileGrid.get(_x, _y).mRootId.createPhysicsBody(_x, _y, parameters);
+        Body body = mTileGrid.get(_x, _y).mRootId.createPhysicsBody(_x, _y, parameters);
         if (mLastBody != null)
         {
             sWorld.weld(body, mLastBody);
@@ -123,9 +123,9 @@ class CaveInSearcher {
         mLastBody = body;
         parameters.put("Body", body);
         sEntityFactory.create("CaveInTileFactory", parameters);
-        tiles.add(new CaveIn.Tile(image, body, new Vec2(_x,_y)));*/
+        tiles.add(new CaveIn.Tile(image, body, new Vec2(_x,_y)));
         /// One tile
-        tiles.add(new CaveIn.Tile(image, null, new Vec2(_x,_y)));
+        //tiles.add(new CaveIn.Tile(image, null, new Vec2(_x,_y)));
         
         sWorld.destroyBody(mTileGrid.get(_x, _y).mBody);
         mTileGrid.set(_x, _y, 0);
@@ -145,9 +145,9 @@ class CaveInSearcher {
                 oldTile = tile;
             }*/
             /// One tile
-            HashMap<String, Object> parameters = new HashMap<String, Object>();
+            /*HashMap<String, Object> parameters = new HashMap<String, Object>();
             parameters.put("tiles", tiles);
-            sEntityFactory.create("CaveIn", parameters);
+            sEntityFactory.create("CaveIn", parameters);*/
             tiles = new ArrayList<CaveIn.Tile>();
         }
     }

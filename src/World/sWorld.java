@@ -223,16 +223,13 @@ public class sWorld
     }
     public static void weld(Body _bodyA, Body _bodyB)
     {
+        /*PrismaticJointDef def = new PrismaticJointDef();
+        def.initialize(_bodyA, _bodyB, _bodyA.getPosition(), _bodyA.getPosition().sub(_bodyB.getPosition()));
+        mWorld.createJoint(def);*/
         WeldJointDef def = new WeldJointDef();
         def.initialize(_bodyA, _bodyB, new Vec2(0,0));
         def.bodyA = _bodyA;
         def.bodyB = _bodyB;
-        Vec2 bodyBAnchor = _bodyB.getLocalPoint(_bodyA.getPosition());
-        Vec2 bodyAAnchor = _bodyA.getLocalPoint(_bodyB.getPosition());
-        def.localAnchorA.x = bodyAAnchor.x;
-        def.localAnchorA.y = bodyAAnchor.y;
-        def.localAnchorB.x = bodyBAnchor.x;
-        def.localAnchorB.y = bodyBAnchor.y;
         def.collideConnected = true;
         WeldJoint joint = (WeldJoint)mWorld.createJoint(def);
     }
@@ -281,7 +278,7 @@ public class sWorld
         float secondsPerFrame = 16.666f;
         try
         {
-            mWorld.step(secondsPerFrame/1000.0f, 8, 8);
+            mWorld.step(secondsPerFrame/1000.0f, 4, 2);
         }
         catch (ArrayIndexOutOfBoundsException e)
         {
