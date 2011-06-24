@@ -68,6 +68,10 @@ public class TileRegrowth
     }
     private boolean isSupported(RegrowingTile _tile)
     {
+        if (_tile.mRootId.mAnchor)
+        {
+            return true;
+        }
         return (mTileGrid.boundaryFrom(_tile.x, _tile.y-1, Direction.eFromDown, _tile.mRootId.mTileType) ||
                 (mTileGrid.boundaryFrom(_tile.x-1, _tile.y, Direction.eFromRight, _tile.mRootId.mTileType)) ||
                 (mTileGrid.boundaryFrom(_tile.x, _tile.y+1, Direction.eFromUp, _tile.mRootId.mTileType)) ||

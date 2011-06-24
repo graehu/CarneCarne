@@ -21,7 +21,7 @@ class NonEdibleTile extends RootTile
 {
     public NonEdibleTile(int _id, sLevel.TileType _tileType)
     {
-        super(TileShape.eBlock, _id, _tileType, true, 1);
+        super(TileShape.eBlock, _id, _tileType, false, true, 1);
     }
     public Body createPhysicsBody(int _xTile, int _yTile, HashMap _parameters)
     {

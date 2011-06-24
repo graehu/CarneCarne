@@ -21,7 +21,7 @@ public class BlockTile extends RootTile
 {
     public BlockTile(int _id, sLevel.TileType _tileType, boolean _regrows, boolean _anchor, int _maxHealth)
     {
-        super(TileShape.eBlock, _id, _tileType, _anchor, _maxHealth);
+        super(TileShape.eBlock, _id, _tileType, _regrows, _anchor, _maxHealth);
         mRegrows = _regrows;
     }
     public Body createPhysicsBody(int _xTile, int _yTile, HashMap _parameters)

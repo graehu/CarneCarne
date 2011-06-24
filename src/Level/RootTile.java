@@ -24,12 +24,12 @@ abstract class RootTile
     boolean mAnchor;
     sLevel.TileType mTileType;
     int mMaxHealth;
-    public RootTile(TileShape _shape, int _id, sLevel.TileType _tileType, boolean _anchor, int _maxHealth)
+    public RootTile(TileShape _shape, int _id, sLevel.TileType _tileType, boolean _regrows, boolean _anchor, int _maxHealth)
     {
         mShape = _shape;
         mId = _id;
         mTileType = _tileType;
-        mRegrows = true;
+        mRegrows = _regrows;
         mAnchor = _anchor;
         mMaxHealth = _maxHealth;
     }

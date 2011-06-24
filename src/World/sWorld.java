@@ -12,17 +12,21 @@ import Graphics.iCamera;
 import Graphics.sGraphicsManager;
 import Level.sLevel;
 import Level.sLevel.TileType;
+import java.util.ArrayList;
 import java.util.HashMap;
 import org.jbox2d.callbacks.RayCastCallback;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.Fixture;
+import org.jbox2d.dynamics.TimeStep;
 import org.jbox2d.dynamics.World;
 import org.jbox2d.dynamics.joints.DistanceJoint;
 import org.jbox2d.dynamics.joints.DistanceJointDef;
 import org.jbox2d.dynamics.joints.Joint;
 import org.jbox2d.dynamics.joints.PrismaticJointDef;
+import org.jbox2d.dynamics.joints.WeldJoint;
+import org.jbox2d.dynamics.joints.WeldJointDef;
 import org.jbox2d.structs.collision.RayCastInput;
 import org.jbox2d.structs.collision.RayCastOutput;
 import org.newdawn.slick.geom.Rectangle;
@@ -35,6 +39,7 @@ public class sWorld
     private static World mWorld;
     private static iCamera mCamera;
     private static HashMap<String,iPhysicsFactory> factories;
+
 
     public enum BodyCategories
     {
@@ -175,6 +180,7 @@ public class sWorld
                 sEvents.triggerEvent(new TileDestroyedEvent((int)callback.getFixture().m_body.getPosition().x, (int)callback.getFixture().m_body.getPosition().y));
                 break;
             }
+            case eEmpty:
             case eIndestructible:
             {
                 break;
@@ -214,6 +220,21 @@ public class sWorld
         def.frequencyHz = 30.0f;
         def.dampingRatio = 1.0f; /// Reduce these to make his tongue springy
         return (DistanceJoint)mWorld.createJoint(def);
+    }
+    public static void weld(Body _bodyA, Body _bodyB)
+    {
+        WeldJointDef def = new WeldJointDef();
+        def.initialize(_bodyA, _bodyB, new Vec2(0,0));
+        def.bodyA = _bodyA;
+        def.bodyB = _bodyB;
+        Vec2 bodyBAnchor = _bodyB.getLocalPoint(_bodyA.getPosition());
+        Vec2 bodyAAnchor = _bodyA.getLocalPoint(_bodyB.getPosition());
+        def.localAnchorA.x = bodyAAnchor.x;
+        def.localAnchorA.y = bodyAAnchor.y;
+        def.localAnchorB.x = bodyBAnchor.x;
+        def.localAnchorB.y = bodyBAnchor.y;
+        def.collideConnected = true;
+        WeldJoint joint = (WeldJoint)mWorld.createJoint(def);
     }
     public static void destroyBody(Body _body)
     {
@@ -258,7 +279,14 @@ public class sWorld
     public static void update(float _time)
     {
         float secondsPerFrame = 16.666f;
-        mWorld.step(secondsPerFrame/1000.0f, 8, 8);
+        try
+        {
+            mWorld.step(secondsPerFrame/1000.0f, 8, 8);
+        }
+        catch (ArrayIndexOutOfBoundsException e)
+        {
+            
+        }
         Body body = mWorld.getBodyList();
         while (body != null)
         {

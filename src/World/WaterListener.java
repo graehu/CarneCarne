@@ -26,23 +26,30 @@ class WaterListener implements iListener {
 
     public void beginContact(Contact _contact)
     {
-        if (_contact.m_fixtureA.m_filter.categoryBits == (1 << BodyCategories.eWater.ordinal()))
+        try
         {
-            TileType tileType = sLevel.TileType.class.getEnumConstants()[_contact.m_fixtureA.m_filter.groupIndex];
-            if (tileType.equals(TileType.eAcid))
+            if (_contact.m_fixtureA.m_filter.categoryBits == (1 << BodyCategories.eWater.ordinal()))
             {
-                sEvents.triggerDelayedEvent(new PlayerDeathEvent(((Entity)_contact.m_fixtureB.m_body.m_userData)));
+                TileType tileType = sLevel.TileType.class.getEnumConstants()[_contact.m_fixtureA.m_filter.groupIndex];
+                if (tileType.equals(TileType.eAcid))
+                {
+                    sEvents.triggerDelayedEvent(new PlayerDeathEvent(((Entity)_contact.m_fixtureB.m_body.m_userData)));
+                }
+                ((Entity)_contact.m_fixtureB.m_body.m_userData).submerge(((Integer)_contact.m_fixtureA.m_userData));
             }
-            ((Entity)_contact.m_fixtureB.m_body.m_userData).submerge(((Integer)_contact.m_fixtureA.m_userData));
+            else
+            {
+                TileType tileType = sLevel.TileType.class.getEnumConstants()[_contact.m_fixtureB.m_filter.groupIndex];
+                if (tileType.equals(TileType.eAcid))
+                {
+                    sEvents.triggerDelayedEvent(new PlayerDeathEvent(((Entity)_contact.m_fixtureA.m_body.m_userData)));
+                }
+                ((Entity)_contact.m_fixtureA.m_body.m_userData).submerge(((Integer)_contact.m_fixtureB.m_userData));        
+            }
         }
-        else
+        catch (NullPointerException e)
         {
-            TileType tileType = sLevel.TileType.class.getEnumConstants()[_contact.m_fixtureB.m_filter.groupIndex];
-            if (tileType.equals(TileType.eAcid))
-            {
-                sEvents.triggerDelayedEvent(new PlayerDeathEvent(((Entity)_contact.m_fixtureA.m_body.m_userData)));
-            }
-            ((Entity)_contact.m_fixtureA.m_body.m_userData).submerge(((Integer)_contact.m_fixtureB.m_userData));        
+            
         }
     }
 
