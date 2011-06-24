@@ -4,7 +4,7 @@
  */
 package States.Title;
 
-import GUI.OptionsGUI;
+import States.Init.OptionsGUI;
 import GUI.TWL.BasicTWLGameState;
 import de.matthiasmann.twl.ComboBox;
 import de.matthiasmann.twl.ToggleButton;
@@ -27,7 +27,7 @@ public class StateTitle extends BasicTWLGameState{
 
     @Override
     public int getID() {
-       return 1;
+       return 2;
     }
     BooleanModel mFullScreen = new SimpleBooleanModel();
     public void init(final GameContainer _gc, final StateBasedGame _sbg) throws SlickException {
@@ -37,9 +37,7 @@ public class StateTitle extends BasicTWLGameState{
         fullScreenToggle.setPosition(500,500);
         fullScreenToggle.adjustSize();
         getRootPane().add(fullScreenToggle);
-        
-        OptionsGUI wid = new OptionsGUI(_sbg);
-        getRootPane().add(wid.getWidget());
+       
         
         
         

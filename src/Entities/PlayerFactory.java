@@ -60,7 +60,7 @@ public class PlayerFactory implements iEntityFactory {
                 mouthHat.set(i, "mh" + mouthHat.get(i));
             }
             //create final list in render order
-            ArrayList<String> charAnims = new ArrayList(Arrays.asList("body"));
+            ArrayList<String> charAnims = new ArrayList(Arrays.asList("body", "shn"));
             charAnims.addAll(face);
             charAnims.addAll(hat);
             charAnims.addAll(mouth);
@@ -75,6 +75,7 @@ public class PlayerFactory implements iEntityFactory {
             //initialise facing, body and tongue animations
             skin.startAnim("e", false, 0.0f);
             skin.startAnim("body", false, 0.0f);
+            skin.startAnim("shn", false, 0.0f);
             skin.setOffset("tng", new Vec2(32,32));
             
             //offsets for sprites bigger than 64x64

@@ -9,13 +9,13 @@ import org.jbox2d.common.Vec2;
 
 /**
  *
- * @author A203946
+ * @author Aaron
  */
-public class MouseMoveEvent extends iEvent {
+public class MouseDragEvent extends iEvent {
     
     Vec2 position;
     int mPlayer;
-    public MouseMoveEvent(Vec2 _position, int _player)
+    public MouseDragEvent(Vec2 _position, int _player)
     {
         position = _position;
         mPlayer = _player;
@@ -23,7 +23,7 @@ public class MouseMoveEvent extends iEvent {
     
     public String getType()
     {
-        return "MouseMoveEvent";
+        return "MouseDragEvent";
     }
     
     public String getName()

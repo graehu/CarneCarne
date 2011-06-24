@@ -56,16 +56,8 @@ public class sGraphicsManager {
     {
     }
     
-    static public void init(int _sx, int _sy) throws SlickException //should be called by sSkinFactory init
+    static public void init(int _sx, int _sy) throws SlickException
     {
-        if(mIsInit == false) //only allow initialisation once
-        {
-            mIsInit = true;
-            //initialise for all spritesheets (could do this from file perhaps)
-            mTrueScreenDimensions.x = _sx;
-            mTrueScreenDimensions.y = _sy;
-        }
-        //initialise for all spritesheets (could do this from file perhaps)
         mTrueScreenDimensions.x = _sx;
         mTrueScreenDimensions.y = _sy;
     }

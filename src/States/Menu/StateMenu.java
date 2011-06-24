@@ -18,7 +18,7 @@ public class StateMenu extends BasicTWLGameState{
 
     @Override
     public int getID() {
-        return 3;
+        return 4;
     }
 
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {

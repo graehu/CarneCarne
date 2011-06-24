@@ -2,10 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package GUI;
+package States.Init;
 
 import Graphics.sGraphicsManager;
-import World.sWorld;
 import de.matthiasmann.twl.ComboBox;
 import de.matthiasmann.twl.Widget;
 import de.matthiasmann.twl.model.ListModel;
@@ -13,10 +12,10 @@ import de.matthiasmann.twl.model.SimpleChangableListModel;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import main.InitApp;
 import org.jbox2d.common.Vec2;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.state.StateBasedGame;
 
 /**
@@ -28,8 +27,8 @@ public class OptionsGUI{
     static final int[] WINDOW_RESOLUTIONS = {800,600,
                                              1280,1024};
     private ComboBox mResolutionComboBox = null;
-    private StateBasedGame mSbg;
-    public OptionsGUI(StateBasedGame _sbg)
+    private InitApp mSbg;
+    public OptionsGUI(InitApp _sbg)
     {
         //hold onto game instance
         mSbg = _sbg;
@@ -65,17 +64,12 @@ public class OptionsGUI{
     }
     class ComboCallback implements Runnable {
         public void run() {
-            
             int selected = mResolutionComboBox.getSelected();
-            ModeModel mode = (ModeModel)mResolutionComboBox.getModel().getEntry(selected);
-            AppGameContainer app = (AppGameContainer)mSbg.getContainer();
-            try {app.setDisplayMode(mode.mWidth, mode.mHeight, false);}
-            catch (SlickException ex) {Logger.getLogger(OptionsGUI.class.getName()).log(Level.SEVERE, null, ex);}
-            sGraphicsManager.setTrueScreenDimensions(new Vec2(mode.mWidth, mode.mHeight));
-            //FIXME: NEED TO ADJUST GUI RESOLUTION SOMEHOW
-            sWorld.resizeViewport(new Rectangle(0,0,mode.mWidth, mode.mHeight));
+            ModeModel mode = (ModeModel)mResolutionComboBox.getModel().getEntry(selected);            
             
-            
+            AppGameContainer app = (AppGameContainer)mSbg.getContainer();            
+            mSbg.setChosenResolution(mode.mWidth, mode.mHeight);
+            app.exit();
         }
     }
 }

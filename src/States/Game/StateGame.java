@@ -8,9 +8,9 @@ import Events.MapClickReleaseEvent;
 import Entities.sEntityFactory;
 import Events.KeyDownEvent;
 import Events.MapClickEvent;
+import Events.MouseDragEvent;
 import Events.MouseMoveEvent;
 import Events.sEvents;
-import GUI.OptionsGUI;
 import GUI.sGUI;
 import Graphics.Particles.sParticleManager;
 import GUI.TWL.BasicTWLGameState;
@@ -48,10 +48,12 @@ public class StateGame extends BasicTWLGameState {
     private iGameMode mGameMode; 
     private Button btn,btn2; // FIXME for testing
     static private int mPlayers;
+    static public Vec2 mMousePos = new Vec2(0,0);
     
+
     public int getID()
     {
-        return 2;
+        return 3;
     }
     
     @Override
@@ -92,11 +94,22 @@ public class StateGame extends BasicTWLGameState {
     }
     public void mouseMoved(int oldx, int oldy, int newx, int newy)
     {
-        sEvents.triggerEvent(new MouseMoveEvent(new Vec2(newx,newy)));
+        for (int i = 0; i < mPlayers; i++)
+            sEvents.triggerEvent(new MouseMoveEvent(new Vec2(newx,newy), i));
     }
+
+    @Override
+    public void mouseDragged(int oldx, int oldy, int newx, int newy) 
+    {
+        for (int i = 0; i < mPlayers; i++)
+            sEvents.triggerEvent(new MouseDragEvent(new Vec2(newx,newy), i));
+    }
+    
     private ArrayList<XBoxController> xBoxControllers = new ArrayList<XBoxController>();
     public void update(GameContainer _gc, StateBasedGame _sbg, int _i) throws SlickException /// FIXME wtf is '_i'?
     {
+        mMousePos.x = _gc.getInput().getMouseX();
+        mMousePos.y = _gc.getInput().getMouseY();
         mPlayers = _gc.getInput().getControllerCount();
         int i = 0;
         if(_gc.getInput().isKeyDown(Input.KEY_W))
@@ -124,6 +137,10 @@ public class StateGame extends BasicTWLGameState {
         catch (ArrayIndexOutOfBoundsException e)
         {
             mPlayers = i;
+            if (mPlayers == 0)
+            {
+                mPlayers = 1;
+            }
         }
         mGameMode.update(_i);
         //update particles
@@ -144,6 +161,9 @@ public class StateGame extends BasicTWLGameState {
         
         //render managed sprites
         sGraphicsManager.renderManagedSprites();
+        
+        _grphcs.drawString("AHHHHHHHHHHHHHHHHHHHHHH", 500, 500);
+        
     }
 
     @Override
@@ -217,6 +237,8 @@ ScrollPane scrollPane;
         sSkinFactory.init();
         sSpriteFactory.init();
         sWorld.init();
+        Vec2 s = sGraphicsManager.getTrueScreenDimensions();
+        sWorld.resizeViewport(new Rectangle(0,0,s.x, s.y));
         sLevel.init();
         
         //FIXME TEST: GUI!!!
@@ -230,12 +252,9 @@ ScrollPane scrollPane;
         scrollPane = sGUI.createDialogueBox(getRootPane(), 20, 20, "RAWR!");
         scrollPane.setContent(btn);
         
-        OptionsGUI wid = new OptionsGUI(_sbg);
-        getRootPane().add(wid.getWidget());
-        
         //Initialise sound
         sSound.init();
-        sSound.loadSound("ambiance", "data/assets/sound/sfx/level_ambiance.ogg");
+        sSound.loadSound("ambiance", "assets/sound/sfx/level_ambiance.ogg");
         sSound.setLooping("ambiance", true);
 
     }    

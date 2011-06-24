@@ -72,7 +72,7 @@ public class sWorld
         factories.put("WaterTileFactory", new WaterTileFactory());
         factories.put("TileArrayFactory", new TileArrayFactory());
         factories.put("CheckPointFactory", new CheckPointFactory());
-        mCamera = new FreeCamera( new Rectangle(0,0,sGraphicsManager.getTrueScreenDimensions().x, sGraphicsManager.getTrueScreenDimensions().y));
+        mCamera = new FreeCamera( new Rectangle(0,0,sGraphicsManager.getTrueScreenDimensions().x, sGraphicsManager.getTrueScreenDimensions().y));        
     }
     
     public static Body useFactory(String _factory, HashMap _parameters)

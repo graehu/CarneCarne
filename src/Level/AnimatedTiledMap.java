@@ -5,8 +5,7 @@
  * Animations are set but adding the propeties:
  *   animRef: ref   -- "bob"    (name of animation on the spritesheet)
  *   duration: t    -- 300      (frame duration in milliseconds)
- *   maxRandOffsetX: -- 29      (limit to random offset in X (pixels))
- *   maxRandOffsetY: -- 56      (limit to random offset in Y (pixels))
+ *   maxTimeOffset  -- 1000     (max initial offset)
  */  
 
 package Level;
@@ -83,20 +82,27 @@ public class AnimatedTiledMap extends TiledMap{
                     if(property == null)
                         continue;
                     int maxTimeOffset = Integer.parseInt(property);
+                    
+                    property = getTileProperty(tileID, "randomiseSpeed", null);
+                    boolean isRandSpeed = Boolean.parseBoolean(property);
 
                     //no fail - create animation
                     SpriteSheet sheet = mTileMapAnimations.getSpriteSheet(animRef);
                     Animation anim = new Animation(sheet,duration);
                     
                     //ofset start of animation
-                    anim.update(rand.nextInt(maxTimeOffset));
+                    if(maxTimeOffset > 0)
+                        anim.update(rand.nextInt(maxTimeOffset));
                     
                     //randomise speed slightly
-                    float randSpeed = rand.nextFloat()%1.25f;
-                    anim.setSpeed(Math.max(0.75f, randSpeed));
+                    if(isRandSpeed)
+                    {
+                        float randSpeed = rand.nextFloat()%1.25f;
+                        anim.setSpeed(Math.max(0.75f, randSpeed));
+                    }
                     
-                    mAnimationOffsets.add(new Vec2( x * anim.getWidth(),
-                                                    y * anim.getHeight()));
+                    mAnimationOffsets.add(new Vec2( x * 64,
+                                                    y * 64));
                     mAnimatedObjects.add(anim);
                 }
             }
@@ -122,8 +128,8 @@ public class AnimatedTiledMap extends TiledMap{
             float xPos = offset.x + _x;
             float yPos = offset.y + _y;
             
-            if( xPos > 0 && xPos < _width &&
-                yPos > 0 && yPos < _height)
+            if( xPos > -anim.getWidth() && xPos < _width &&
+                yPos > -anim.getHeight() && yPos < _height)
                 anim.draw(_x + offset.x, _y + offset.y);
         }
     }
