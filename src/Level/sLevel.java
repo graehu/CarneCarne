@@ -27,6 +27,7 @@ public class sLevel {
         eTar,
         eMelonFlesh,
         eMelonSkin,
+        eEmpty,
         eTileTypesMax,
     }
     public TileType getTileType(int _id)
