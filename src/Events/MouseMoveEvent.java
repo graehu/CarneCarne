@@ -21,12 +21,12 @@ public class MouseMoveEvent extends iEvent {
     
     public String getType()
     {
-        return getName();
+        return "MouseMoveEvent";
     }
     
     public String getName()
     {
-        return "MouseMoveEvent";
+        return getType() + 0;
     }
     public Vec2 getScreenPosition()
     {

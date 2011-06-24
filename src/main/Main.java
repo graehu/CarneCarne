@@ -10,7 +10,6 @@ import States.Game.StateGame;
 import States.Menu.StateMenu;
 import States.Splash.StateSplash;
 import States.Title.StateTitle;
-import States.StateChanger;
 
 public class Main extends TWLStateBasedGame
 {
@@ -34,8 +33,8 @@ public class Main extends TWLStateBasedGame
             AppGameContainer app = new AppGameContainer(new Main());
             app.setDisplayMode(800, 600, false);
             //app.setDisplayMode(app.getScreenWidth(), app.getScreenHeight(), true);
-            //app.setVSync(true);
-            app.setTargetFrameRate(60);
+            app.setVSync(true);
+            //app.setTargetFrameRate(60);
             
             //initialise graphics manager
             sGraphicsManager.init(800, 600);

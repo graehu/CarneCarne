@@ -34,6 +34,7 @@ public class WorldContactListener implements ContactListener{
             set(BodyCategories.eGum.ordinal(),i,new GumListener());
             set(BodyCategories.eTar.ordinal(),i,new TarListener());
         }
+        set(BodyCategories.eCheckPoint.ordinal(), BodyCategories.ePlayer.ordinal(), new CheckPointListener());
     }
     private void set(int _x, int _y, iListener _reaction)
     {

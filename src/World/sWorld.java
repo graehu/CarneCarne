@@ -51,6 +51,7 @@ public class sWorld
         eIce,
         eGum,
         eTar,
+        eCheckPoint,
         eBodyCategoriesMax
     }
     private sWorld()
