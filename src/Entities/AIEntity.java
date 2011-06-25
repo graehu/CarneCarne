@@ -21,6 +21,7 @@ public class AIEntity extends Entity {
     int mTurnThisFrame;
     int mJumpTimer;
     static int mJumpReload = 60; /// NOTE frame rate change
+    float mMoveSpeed;
     public RevoluteJoint mJoint;
     public AIEntity(iSkin _skin)
     {
@@ -28,6 +29,7 @@ public class AIEntity extends Entity {
         mCanJump = false;
         mJumpTimer = 0;
         mTurnThisFrame = mJumpReload;
+        mMoveSpeed = 1;
     }
     public void update()
     {
@@ -90,11 +92,11 @@ public class AIEntity extends Entity {
         mBody.applyLinearImpulse(new Vec2(-0.1f,0), new Vec2(0,0));
         if (mTar == 0)
         {
-            mJoint.m_motorSpeed = 10.0f;
+            mJoint.m_motorSpeed = mMoveSpeed*10.0f;
         }
         else
         {
-            mJoint.m_motorSpeed = 1.0f;
+            mJoint.m_motorSpeed = mMoveSpeed*1.0f;
         }
         mTurnThisFrame = 1000;
     }
@@ -103,11 +105,11 @@ public class AIEntity extends Entity {
         mBody.applyLinearImpulse(new Vec2(0.1f,0), new Vec2(0,0));
         if (mTar == 0)
         {
-            mJoint.m_motorSpeed = -10.0f;
+            mJoint.m_motorSpeed = mMoveSpeed*-10.0f;
         }
         else
         {
-            mJoint.m_motorSpeed = -1.0f;
+            mJoint.m_motorSpeed = mMoveSpeed*-1.0f;
         }
         mTurnThisFrame = 1000;
     }
@@ -120,6 +122,12 @@ public class AIEntity extends Entity {
             mJumpTimer = mJumpReload;
         }
     }
+    
+    public void setMoveSpeed(float _moveSpeed)
+    {
+        mMoveSpeed = _moveSpeed;
+    }
+    
     public void crouch()
     {
     }

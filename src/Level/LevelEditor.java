@@ -42,8 +42,18 @@ public class LevelEditor {
     {
         tileGrid.update();
     }
+    
     public sLevel.TileType getTileType(int _id)
     {
         return rootTiles.getTileType(_id);
     }
+    
+    public sLevel.TileType getTileType(int _xTile, int _yTile)
+    {
+        Tile temp = tileGrid.get(_xTile, _yTile);
+        return temp.mRootId.mTileType;
+        
+        
+    }
+
 }

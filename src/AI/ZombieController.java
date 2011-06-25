@@ -5,6 +5,7 @@
 package AI;
 
 import Entities.AIEntity;
+import Level.sLevel;
 
 /**
  *
@@ -13,16 +14,27 @@ import Entities.AIEntity;
 public class ZombieController extends iAIController
 {
     iPathFinding pathFinding;
+    boolean mToggle;
     public ZombieController(AIEntity _entity)
     {
         super(_entity);
-        //pathFinding = new AStarPathFinder();
+        pathFinding = new AStar();
+        mToggle = true;
+        mEntity.setMoveSpeed(0.9f);
     }
     public void update()
     {
-        /*int x = (int)mEntity.mBody.getPosition().x;
-        int y = (int)mEntity.mBody.getPosition().y;
-        pathFinding.updatePosition(x, y, x+2, y);
+        int x = (int)(mEntity.mBody.getPosition().x);
+        int y = (int)(mEntity.mBody.getPosition().y);
+        if(mToggle)
+        {
+            pathFinding.updatePosition(x, y, x+1, y);
+        }
+        else if(!mToggle)
+        {
+            pathFinding.updatePosition(x, y, x-1, y);
+        }
+        
         switch (pathFinding.follow())
         {
             case eWalkLeft:
@@ -37,8 +49,12 @@ public class ZombieController extends iAIController
             }
             case eStandStill:
             {
+                if(mToggle)
+                    mToggle = false;
+                else if(!mToggle)
+                    mToggle = true;
                 break;
             }
-        }*/
+        }
     }
 }
