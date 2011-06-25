@@ -9,13 +9,12 @@ import Graphics.Skins.iSkin;
 import Graphics.Skins.sSkinFactory;
 import Graphics.Sprites.iSprite;
 import Graphics.Sprites.sSpriteFactory;
-import Level.sLevel;
+import Level.Tile;
 import Level.sLevel.TileType;
 import World.sWorld;
 import java.util.HashMap;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.joints.DistanceJoint;
-import org.newdawn.slick.Image;
 
 /**
  *
@@ -33,7 +32,15 @@ public class TongueStateMachine {
     
     Vec2 mPosition = new Vec2(0,0);
     String mBlockMaterial;
-    sLevel.TileType mTileType;
+    private Tile mTile;
+
+    void layBlock()
+    {
+        if (mState.equals(State.eFoodInMouth))
+        {
+            changeState(State.ePlacingBlock);
+        }
+    }
     enum State
     {
         eStart,
@@ -45,6 +52,7 @@ public class TongueStateMachine {
         eFiringHammer,
         eRetractingHammer,
         eSpittingBlock,
+        ePlacingBlock,
         eSpitting,
         eIdleAnimation,
         eSwinging,
@@ -60,13 +68,13 @@ public class TongueStateMachine {
         mState = State.eStart;
         mCurrentStateTimer = 0;
         mBlockMaterial = "SomeSoftMaterial";
-        mTileType = sLevel.TileType.eTileTypesMax;
+        mTile = null;
         ammoLeft = 0;
         HashMap params = new HashMap();
         params.put("ref", "CrossHair");
         mTongueEndSprite = sSpriteFactory.create("simple", params);
     }
-    private sLevel.TileType extendTongue(boolean _grabBlock)
+    private Tile extendTongue(boolean _grabBlock)
     {
         
         mTongueDir = mAIController.mPlayerDir;
@@ -75,7 +83,7 @@ public class TongueStateMachine {
         if (_grabBlock)
             return mAIController.grabBlock(mAIController.mEntity.mBody.getPosition().add(tongueOffset));
         else
-            return sLevel.TileType.eTileTypesMax;
+            return null;
     }
     private boolean hammerCollide()
     {
@@ -124,8 +132,15 @@ public class TongueStateMachine {
             case eFiringTongue:
             {
                 mCurrentStateTimer++;
-                mTileType = extendTongue(true);
-                switch (mTileType)
+                mTile = extendTongue(true);
+                if (mTile == null)
+                {
+                    if (mCurrentStateTimer > tongueFiringTimeout)
+                    {
+                        changeState(State.eRetractingTongue);
+                    }
+                }
+                else switch (mTile.getTileType())
                 {
                     case eGum:
                     case eEdible:
@@ -181,7 +196,7 @@ public class TongueStateMachine {
                 extendTongue(false);
                 if (mCurrentStateTimer == 0)
                 {
-                    if (mTileType == TileType.eMelonFlesh)
+                    if (mTile.getTileType() == TileType.eMelonFlesh)
                     {
                         ammoLeft = 10;
                     }
@@ -233,6 +248,16 @@ public class TongueStateMachine {
                     {
                         changeState(State.eStart);
                     }
+                }
+                break;
+            }
+            case ePlacingBlock:
+            {
+                mCurrentStateTimer--;
+                if (mCurrentStateTimer == 0)
+                {
+                    mTile = null;
+                    changeState(State.eStart);
                 }
                 break;
             }
@@ -570,6 +595,12 @@ public class TongueStateMachine {
                 spitBlock();
                 break;
             }
+            case ePlacingBlock:
+            {
+                mAIController.layBlock(mTile); //FIXME: placeTile function should take rootID not TileType 
+                mCurrentStateTimer = setAnimation("PlacingBlock");
+                break;
+            }
             case eSpitting:
             {
                 //no tongue
@@ -605,6 +636,6 @@ public class TongueStateMachine {
     private void spitBlock()
     {
         ammoLeft--;
-        mAIController.spitBlock(mPosition, mTileType);
+        mAIController.spitBlock(mPosition, mTile.getTileType());
     }
 }

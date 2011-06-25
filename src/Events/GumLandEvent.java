@@ -16,11 +16,13 @@ public class GumLandEvent extends iEvent {
 
     int x, y;
     Body mBody;
-    public GumLandEvent(int _x, int _y, Body _body)
+    int mRootId;
+    public GumLandEvent(int _x, int _y, Body _body, int _rootId)
     {
         x = _x;
         y = _y;
         mBody = _body;
+        mRootId = _rootId;
     }
     public String getName()
     {
@@ -34,7 +36,7 @@ public class GumLandEvent extends iEvent {
     
     public void process()
     {
-        sLevel.placeTile(x, y, sLevel.TileType.eGum);
+        sLevel.placeTile(x, y, mRootId);
         sWorld.destroyBody(mBody);
     }
     

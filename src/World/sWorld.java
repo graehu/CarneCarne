@@ -10,16 +10,15 @@ import Events.sEvents;
 import Graphics.FreeCamera;
 import Graphics.iCamera;
 import Graphics.sGraphicsManager;
+import Level.Tile;
 import Level.sLevel;
 import Level.sLevel.TileType;
-import java.util.ArrayList;
 import java.util.HashMap;
 import org.jbox2d.callbacks.RayCastCallback;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.Fixture;
-import org.jbox2d.dynamics.TimeStep;
 import org.jbox2d.dynamics.World;
 import org.jbox2d.dynamics.joints.DistanceJoint;
 import org.jbox2d.dynamics.joints.DistanceJointDef;
@@ -120,36 +119,41 @@ public class sWorld
         }
     }
     private static Body mLastHit;
-    public static sLevel.TileType eatTiles(Vec2 start, Vec2 end)
+    public static Tile eatTiles(Vec2 start, Vec2 end)
     {
         TongueCallback callback = new TongueCallback(start, end);
         mWorld.raycast(callback, start, end);
         if (callback.getFixture() == null)
         {
-            return sLevel.TileType.eTileTypesMax;
+            return null;
         }
         mLastHit = callback.getFixture().getBody();
-        TileType tileType = sLevel.TileType.class.getEnumConstants()[callback.getFixture().m_filter.groupIndex];
-        switch (tileType)
+        Tile tile = (Tile)callback.getFixture().getUserData();
+        if (tile != null)
         {
-            case eEdible:
-            case eGum:
-            case eMelonFlesh:
+            TileType tileType = tile.getTileType();
+            switch (tileType)
             {
-                mWorld.destroyBody(callback.getFixture().m_body);
-                if (callback.getFixture().m_filter.categoryBits != (1 << BodyCategories.eSpatTiles.ordinal()))
-                    sLevel.destroyTile((int)callback.getFixture().m_body.getPosition().x, (int)callback.getFixture().m_body.getPosition().y);
-                sEvents.triggerEvent(new TileDestroyedEvent((int)callback.getFixture().m_body.getPosition().x, (int)callback.getFixture().m_body.getPosition().y));
-                break;
-            }
-            case eSwingable:
-            case eIce:
-            case eIndestructible:
-            {
-                break;
+                case eEdible:
+                case eGum:
+                case eMelonFlesh:
+                {
+                    tile = tile.clone();
+                    mWorld.destroyBody(callback.getFixture().m_body);
+                    if (callback.getFixture().m_filter.categoryBits != (1 << BodyCategories.eSpatTiles.ordinal()))
+                        sLevel.destroyTile((int)callback.getFixture().m_body.getPosition().x, (int)callback.getFixture().m_body.getPosition().y);
+                    sEvents.triggerEvent(new TileDestroyedEvent((int)callback.getFixture().m_body.getPosition().x, (int)callback.getFixture().m_body.getPosition().y));
+                    break;
+                }
+                case eSwingable:
+                case eIce:
+                case eIndestructible:
+                {
+                    break;
+                }
             }
         }
-        return tileType;
+        return tile;
     }
     public static boolean smashTiles(Vec2 start, Vec2 end)
     {
@@ -159,32 +163,36 @@ public class sWorld
         {
             return false;
         }
-        TileType tileType = sLevel.TileType.class.getEnumConstants()[callback.getFixture().m_filter.groupIndex];
-        switch (tileType)
+        Tile tile = (Tile)callback.getFixture().getUserData();
+        if (tile != null)
         {
-            case eSwingable:
+            TileType tileType = tile.getTileType();
+            switch (tileType)
             {
-                if (sLevel.damageTile((int)callback.getFixture().m_body.getPosition().x, (int)callback.getFixture().m_body.getPosition().y))
+                case eSwingable:
+                {
+                    if (sLevel.damageTile((int)callback.getFixture().m_body.getPosition().x, (int)callback.getFixture().m_body.getPosition().y))
+                    {
+                        mWorld.destroyBody(callback.getFixture().m_body);
+                        sLevel.destroyTile((int)callback.getFixture().m_body.getPosition().x, (int)callback.getFixture().m_body.getPosition().y);
+                        sEvents.triggerEvent(new TileDestroyedEvent((int)callback.getFixture().m_body.getPosition().x, (int)callback.getFixture().m_body.getPosition().y));
+                    }
+                    break;
+                }
+                case eEdible:
+                case eIce:
+                case eMelonSkin:
                 {
                     mWorld.destroyBody(callback.getFixture().m_body);
                     sLevel.destroyTile((int)callback.getFixture().m_body.getPosition().x, (int)callback.getFixture().m_body.getPosition().y);
                     sEvents.triggerEvent(new TileDestroyedEvent((int)callback.getFixture().m_body.getPosition().x, (int)callback.getFixture().m_body.getPosition().y));
+                    break;
                 }
-                break;
-            }
-            case eEdible:
-            case eIce:
-            case eMelonSkin:
-            {
-                mWorld.destroyBody(callback.getFixture().m_body);
-                sLevel.destroyTile((int)callback.getFixture().m_body.getPosition().x, (int)callback.getFixture().m_body.getPosition().y);
-                sEvents.triggerEvent(new TileDestroyedEvent((int)callback.getFixture().m_body.getPosition().x, (int)callback.getFixture().m_body.getPosition().y));
-                break;
-            }
-            case eEmpty:
-            case eIndestructible:
-            {
-                break;
+                case eEmpty:
+                case eIndestructible:
+                {
+                    break;
+                }
             }
         }
         return true;        

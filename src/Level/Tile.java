@@ -4,6 +4,7 @@
  */
 package Level;
 
+import Level.sLevel.TileType;
 import java.util.HashMap;
 import java.util.Stack;
 import org.jbox2d.dynamics.Body;
@@ -25,6 +26,18 @@ public class Tile {
         mRootId = _rootId;
         mHealth = mRootId.mMaxHealth;
     }
+    public TileType getTileType()
+    {
+        return mRootId.mTileType;
+    }
+    public int getRootId()
+    {
+        return mRootId.mId;
+    }
+    public Tile clone()
+    {
+        return new Tile(mId, mRootId);
+    }
     enum Direction
     {
         eFromUp,
@@ -45,6 +58,7 @@ public class Tile {
     {
         HashMap parameters = new HashMap();
         parameters.put("HighestSurface", mHealth); /// Will only be read by water tile factory
+        parameters.put("Tile", this);
         mBody = mRootId.createPhysicsBody(_xTile, _yTile, parameters);
     }
     public Fixture createFixture(int _xTile, int _yTile)

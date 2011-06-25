@@ -19,10 +19,10 @@ import Events.sEvents;
 import Level.sLevel;
 import Events.RightStickEvent;
 import HUD.Reticle;
+import Level.Tile;
 import World.sWorld;
 import java.util.HashMap;
 import org.jbox2d.common.Vec2;
-import org.newdawn.slick.MouseListener;
 
 /**
  *
@@ -80,7 +80,7 @@ public class PlayerInputController extends iAIController implements iEventListen
         }
     }
     
-    public sLevel.TileType grabBlock(Vec2 _position)
+    public Tile grabBlock(Vec2 _position)
     {
         return sWorld.eatTiles(mEntity.mBody.getPosition(),_position);
     }
@@ -90,7 +90,7 @@ public class PlayerInputController extends iAIController implements iEventListen
         return sWorld.smashTiles(mEntity.mBody.getPosition(),_position);
     }
     
-    public void layBlock(sLevel.TileType _tileType)
+    public void layBlock(Tile _tile)
     {
         //determine tile to grow block
         mPlayerDir.normalize(); //ensure it's normalised
@@ -122,16 +122,16 @@ public class PlayerInputController extends iAIController implements iEventListen
             switch(dir)
             {
                 case 0: //north facing
-                    sLevel.placeTile(playerTileX, playerTileY+1, _tileType);
+                    sLevel.placeTile(playerTileX, playerTileY+1, _tile.getRootId());
                     break;
                 case 1: //east facing
-                    sLevel.placeTile(playerTileX+1, playerTileY, _tileType);                 
+                    sLevel.placeTile(playerTileX+1, playerTileY, _tile.getRootId());                 
                     break;
                 case 2: //south facing
-                    sLevel.placeTile(playerTileX, playerTileY-1, _tileType);
+                    sLevel.placeTile(playerTileX, playerTileY-1, _tile.getRootId());
                     break;
                 case 3: //west facing
-                    sLevel.placeTile(playerTileX-1, playerTileY, _tileType);
+                    sLevel.placeTile(playerTileX-1, playerTileY, _tile.getRootId());
                     break;
             }
         }     
@@ -178,7 +178,7 @@ public class PlayerInputController extends iAIController implements iEventListen
                 }
                 case ' ':
                 {
-                    layBlock(sLevel.TileType.eEdible); //FIXME: placeTile function should take rootID not TileType 
+                    mTongueState.layBlock();
                     break;
                 }
             }

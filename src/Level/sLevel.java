@@ -81,9 +81,9 @@ public class sLevel {
             mParralaxYScale[i] = new Float(mTiledMap.getLayerProperty(i, "ScaleY", "1.0"));
         }
     }
-    public static void placeTile(int _x, int _y, TileType _tileType)
+    public static void placeTile(int _x, int _y, int _rootId)
     {
-        mLevelEditor.placeTile(_x, _y, _tileType);
+        mLevelEditor.placeTile(_x, _y, _rootId);
     }
     public static void destroyTile(int _x, int _y)
     {

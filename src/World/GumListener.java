@@ -7,6 +7,7 @@ package World;
 import Entities.SpatBlock;
 import Events.GumLandEvent;
 import Events.sEvents;
+import Level.Tile;
 import World.sWorld.BodyCategories;
 import org.jbox2d.callbacks.ContactImpulse;
 import org.jbox2d.collision.Manifold;
@@ -27,13 +28,13 @@ class GumListener implements iListener {
         {
             int x = (int)(_contact.m_fixtureA.m_body.getPosition().x+0.1f);
             int y = (int)(_contact.m_fixtureA.m_body.getPosition().y+0.1f);
-            sEvents.triggerDelayedEvent(new GumLandEvent(x,y,_contact.m_fixtureA.m_body));
+            sEvents.triggerDelayedEvent(new GumLandEvent(x,y,_contact.m_fixtureA.m_body,((Tile)_contact.m_fixtureA.getUserData()).getRootId()));
         }
         else
         {
             int x = (int)(_contact.m_fixtureB.m_body.getPosition().x+0.1f);
             int y = (int)(_contact.m_fixtureB.m_body.getPosition().y+0.1f);
-            sEvents.triggerDelayedEvent(new GumLandEvent(x,y,_contact.m_fixtureB.m_body));
+            sEvents.triggerDelayedEvent(new GumLandEvent(x,y,_contact.m_fixtureB.m_body,((Tile)_contact.m_fixtureA.getUserData()).getRootId()));
         }
     }
 

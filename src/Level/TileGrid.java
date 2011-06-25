@@ -164,8 +164,8 @@ public class TileGrid {
             int xTile = stack.pop();
             tiledMap.setTileId(xTile, yTile, layerIndex, id);
         }
-        CaveInSearcher search = new CaveInSearcher(this, tiledMap, layerIndex);
-        search.destroy(_x, _y);
+        /*CaveInSearcher search = new CaveInSearcher(this, tiledMap, layerIndex);
+        search.destroy(_x, _y);*/
     }
     
     public Tile get(int _x, int _y)
