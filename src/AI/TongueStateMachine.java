@@ -7,12 +7,15 @@ package AI;
 import Entities.AIEntity;
 import Graphics.Skins.iSkin;
 import Graphics.Skins.sSkinFactory;
+import Graphics.Sprites.iSprite;
+import Graphics.Sprites.sSpriteFactory;
 import Level.sLevel;
 import Level.sLevel.TileType;
 import World.sWorld;
 import java.util.HashMap;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.joints.DistanceJoint;
+import org.newdawn.slick.Image;
 
 /**
  *
@@ -50,6 +53,7 @@ public class TongueStateMachine {
     State mState;
     int mCurrentStateTimer;
     PlayerInputController mAIController;
+    iSprite mTongueEndSprite;
     public TongueStateMachine(PlayerInputController _aIController)
     {
         mAIController = _aIController;
@@ -58,9 +62,13 @@ public class TongueStateMachine {
         mBlockMaterial = "SomeSoftMaterial";
         mTileType = sLevel.TileType.eTileTypesMax;
         ammoLeft = 0;
+        HashMap params = new HashMap();
+        params.put("ref", "CrossHair");
+        mTongueEndSprite = sSpriteFactory.create("simple", params);
     }
     private sLevel.TileType extendTongue(boolean _grabBlock)
     {
+        
         mTongueDir = mAIController.mPlayerDir;
         setTongue(mTongueDir, ((float)mCurrentStateTimer/(float)tongueFiringTimeout)*tongueLength);
         Vec2 tongueOffset = mTongueDir.mul(((float)mCurrentStateTimer/(float)tongueFiringTimeout)*tongueLength);

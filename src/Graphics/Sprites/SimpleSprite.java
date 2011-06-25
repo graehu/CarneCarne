@@ -4,7 +4,6 @@
  */
 package Graphics.Sprites;
 
-import Graphics.Skins.iSkin;
 import Graphics.Skins.sSkinFactory;
 import java.util.HashMap;
 import org.jbox2d.common.Vec2;

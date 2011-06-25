@@ -20,6 +20,10 @@ import org.newdawn.slick.Input;
  */
 /* XBox Controls
  * 0 - A
+ * 1 - B
+ * 2 - X
+ * 3 - Y
+ * 4 - L1
  * 5 - R1
  * 6 - Select
  * 8 - L3
@@ -49,34 +53,43 @@ public class XBoxController
     
     public void update(Input _input)
     {
-        if(_input.isButtonPressed(5, mPlayer))
+        //get player direction
+        Vec2 rightStick = new Vec2(_input.getAxisValue(mPlayer, 3),_input.getAxisValue(mPlayer, 2));
+        
+        if(_input.isButtonPressed(0, mPlayer)) //jump
             sEvents.triggerEvent(new KeyDownEvent('w', mPlayer));
+        if(_input.isButtonPressed(5, mPlayer)) //tongue
+            sEvents.triggerEvent(new ShoulderButtonEvent(rightStick,true, mPlayer));
+        else//on release
+            sEvents.triggerEvent(new MapClickReleaseEvent(rightStick,true, mPlayer)); //spit
+        if(_input.isButtonPressed(4, mPlayer)) //spit
+            sEvents.triggerEvent(new ShoulderButtonEvent(rightStick,false, mPlayer));
+        else //on release
+            sEvents.triggerEvent(new MapClickReleaseEvent(rightStick,false, mPlayer)); 
+        
         float xAxis = _input.getAxisValue(mPlayer, 1);
         if (xAxisHit)
         {
             if (xAxis > stickEpsilon || xAxis < -stickEpsilon)
             {
-                sEvents.triggerEvent(new AnalogueStickEvent(xAxis, mPlayer));
+                sEvents.triggerEvent(new AnalogueStickEvent(xAxis, mPlayer)); //move
             }
         }
         else if (xAxis != -1.0f)
         {
             xAxisHit = true;
         }
-        Vec2 rightStick = new Vec2(_input.getAxisValue(mPlayer, 3),_input.getAxisValue(mPlayer, 2));
         
         float shoulderButtons =_input.getAxisValue(mPlayer,4);
         if (mTriggerState != TriggerState.eStart || shoulderButtons != -1.0f)
         {
-            if (shoulderButtons > shoulderButtonEpsilon)
+            if (shoulderButtons > shoulderButtonEpsilon) //right trigger
             {
                 changeState(TriggerState.eRightPressed, rightStick);
-                sEvents.triggerEvent(new ShoulderButtonEvent(rightStick,true, mPlayer));
             }
-            else if (shoulderButtons < -shoulderButtonEpsilon)
+            else if (shoulderButtons < -shoulderButtonEpsilon) //left trigger
             {
                 changeState(TriggerState.eLeftPressed, rightStick);
-                sEvents.triggerEvent(new ShoulderButtonEvent(rightStick,false, mPlayer));
             }
             else
             {
@@ -89,6 +102,7 @@ public class XBoxController
             sEvents.triggerEvent(new RightStickEvent(rightStick, mPlayer));
         }        
     }
+    //statemachine required to determine releases
     private void changeState(TriggerState _newState, Vec2 _rightStick)
     {
         switch (mTriggerState) /// Old
@@ -102,7 +116,7 @@ public class XBoxController
             {
                 if (_newState != TriggerState.eRightPressed)
                 {
-                    sEvents.triggerEvent(new MapClickReleaseEvent(_rightStick,true, mPlayer));
+                   // sEvents.triggerEvent(new MapClickReleaseEvent(_rightStick,true, mPlayer)); //tongue
                 }
                 break;
             }
@@ -110,7 +124,8 @@ public class XBoxController
             {
                 if (_newState != TriggerState.eLeftPressed)
                 {
-                    sEvents.triggerEvent(new MapClickReleaseEvent(_rightStick,false, mPlayer));
+                    sEvents.triggerEvent(new KeyDownEvent(' ', mPlayer)); //lay
+                   // sEvents.triggerEvent(new MapClickReleaseEvent(_rightStick,false, mPlayer)); //spit
                 }
                 break;
             }
@@ -124,12 +139,12 @@ public class XBoxController
             }
             case eRightPressed:
             {
-                sEvents.triggerEvent(new ShoulderButtonEvent(_rightStick,true, mPlayer));
+                //sEvents.triggerEvent(new ShoulderButtonEvent(_rightStick,true, mPlayer));
                 break;
             }
             case eLeftPressed:
             {
-                sEvents.triggerEvent(new ShoulderButtonEvent(_rightStick,false, mPlayer));
+                //sEvents.triggerEvent(new ShoulderButtonEvent(_rightStick,false, mPlayer));
                 break;
             }
             

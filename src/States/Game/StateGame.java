@@ -118,6 +118,8 @@ public class StateGame extends BasicTWLGameState {
             sEvents.triggerEvent(new KeyDownEvent('s', 0));
         if(_gc.getInput().isKeyDown(Input.KEY_D))
             sEvents.triggerEvent(new KeyDownEvent('d', 0));
+        if(_gc.getInput().isKeyDown(Input.KEY_SPACE))
+            sEvents.triggerEvent(new KeyDownEvent(' ', 0));
         try
         {
             for (i = 0; i < xBoxControllers.size(); i++)

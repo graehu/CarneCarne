@@ -29,6 +29,8 @@ import org.newdawn.slick.MouseListener;
  * @author alasdair
  */
 public class PlayerInputController extends iAIController implements iEventListener {
+    //constants
+    final static float root2 = (float) Math.sqrt(2);
     //protected to allow TongueStateMachine access
     private TongueStateMachine mTongueState;
     protected String mFaceDirAnim;
@@ -45,6 +47,7 @@ public class PlayerInputController extends iAIController implements iEventListen
         sEvents.subscribeToEvent("KeyDownEvent"+'a'+_player, this);
         sEvents.subscribeToEvent("KeyDownEvent"+'s'+_player, this);
         sEvents.subscribeToEvent("KeyDownEvent"+'d'+_player, this);
+        sEvents.subscribeToEvent("KeyDownEvent"+' '+_player, this);
         sEvents.subscribeToEvent("MapClickEvent"+_player, this);
         sEvents.subscribeToEvent("MapClickReleaseEvent"+_player, this);
         sEvents.subscribeToEvent("MouseMoveEvent"+_player, this);
@@ -62,7 +65,6 @@ public class PlayerInputController extends iAIController implements iEventListen
     
         if(mTongueState.mIsTongueActive)
         {
-            Vec2 tongueDir = mTongueState.mPosition.sub(mEntity.mBody.getPosition().add(new Vec2(0.5f,0.5f))); //offset by half the width and height
             look(mTongueState.mTongueDir);
             mEntity.mSkin.stopAnim(mFaceDirAnim);
             mEntity.mSkin.stopAnim("h"+mFaceDirAnim); //hat animation
@@ -86,6 +88,53 @@ public class PlayerInputController extends iAIController implements iEventListen
     public boolean hammer(Vec2 _position)
     {
         return sWorld.smashTiles(mEntity.mBody.getPosition(),_position);
+    }
+    
+    public void layBlock(sLevel.TileType _tileType)
+    {
+        //determine tile to grow block
+        mPlayerDir.normalize(); //ensure it's normalised
+        int dir = -1; //N:0 E:1 S:2 W:3
+        //determine direction by quadrants
+        if(mPlayerDir.x >= 0)
+        {
+            if(mPlayerDir.y >= 1/root2)
+                dir = 0;                        //north
+            else if(mPlayerDir.y > -1/root2)
+                dir = 1;                        //east
+            else //if(mPlayerDir.y > -1)
+                dir = 2;                        //south
+        }
+        else //if(mPlayerDir < 0)
+        {
+            if(mPlayerDir.y >= 1/root2)
+                dir = 0;                        //north
+            else if(mPlayerDir.y > -1/root2)
+                dir = 3;                        //west
+            else //if(mPlayerDir.y > -1)
+                dir = 2;                        //south
+        }
+        if(dir != -1)
+        {
+            Vec2 playerPos = mEntity.mBody.getPosition().add(new Vec2(0.5f,0.5f)); //offset to center
+            int playerTileX = (int)playerPos.x; //casting floors value
+            int playerTileY = (int)playerPos.y;
+            switch(dir)
+            {
+                case 0: //north facing
+                    sLevel.placeTile(playerTileX, playerTileY+1, _tileType);
+                    break;
+                case 1: //east facing
+                    sLevel.placeTile(playerTileX+1, playerTileY, _tileType);                 
+                    break;
+                case 2: //south facing
+                    sLevel.placeTile(playerTileX, playerTileY-1, _tileType);
+                    break;
+                case 3: //west facing
+                    sLevel.placeTile(playerTileX-1, playerTileY, _tileType);
+                    break;
+            }
+        }     
     }
     
     public void spitBlock(Vec2 _position, sLevel.TileType _tileType)
@@ -125,6 +174,11 @@ public class PlayerInputController extends iAIController implements iEventListen
                 case 'd':
                 {
                     mEntity.walkRight();
+                    break;
+                }
+                case ' ':
+                {
+                    layBlock(sLevel.TileType.eEdible); //FIXME: placeTile function should take rootID not TileType 
                     break;
                 }
             }
