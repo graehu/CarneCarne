@@ -72,6 +72,7 @@ public class sWorld
         factories.put("WaterTileFactory", new WaterTileFactory());
         factories.put("TileArrayFactory", new TileArrayFactory());
         factories.put("CheckPointFactory", new CheckPointFactory());
+        factories.put("SeeSawBodyFactory", new SeeSawBodyFactory());
         mCamera = new FreeCamera( new Rectangle(0,0,sGraphicsManager.getTrueScreenDimensions().x, sGraphicsManager.getTrueScreenDimensions().y));        
     }
     
@@ -276,11 +277,11 @@ public class sWorld
     public static void update(float _time)
     {
         float secondsPerFrame = 16.666f;
-        try
+        //try
         {
             mWorld.step(secondsPerFrame/1000.0f, 4, 2);
         }
-        catch (ArrayIndexOutOfBoundsException e)
+        //catch (ArrayIndexOutOfBoundsException e)
         {
             
         }
