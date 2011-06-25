@@ -21,7 +21,7 @@ public class RootTileList {
     {
         HashMap<String, sLevel.TileType> typeMap = new HashMap<String, sLevel.TileType>();
         typeMap.put("Ice", sLevel.TileType.eIce);
-        typeMap.put("Acid", sLevel.TileType.eWater);
+        typeMap.put("Acid", sLevel.TileType.eAcid);
         typeMap.put("Swim", sLevel.TileType.eWater);
         typeMap.put("Edible", sLevel.TileType.eEdible);
         typeMap.put("Swingable", sLevel.TileType.eSwingable);
@@ -52,6 +52,7 @@ public class RootTileList {
         {
             String shape = _tiledMap.getTileProperty(i, "Type", "None");
             String typeString = _tiledMap.getTileProperty(i, "Material", "Edible");
+            int maxHealth = new Integer(_tiledMap.getTileProperty(i, "MaxHealth", "1")).intValue();
             sLevel.TileType type = typeMap.get(typeString);
             int assertion = type.ordinal();
             if (shape.equals("Block"))
@@ -60,19 +61,19 @@ public class RootTileList {
                 boolean anchor = Boolean.valueOf(_tiledMap.getTileProperty(i, "Anchor", "false")).booleanValue();
                 for (int rootId = i; i < rootId + 16; i++)
                 {
-                    mRootTiles.add(new BlockTile(rootId, type, regrows, anchor));
+                    mRootTiles.add(new BlockTile(rootId, type, regrows, anchor, maxHealth));
                 }
             }
             else if (shape.equals("Slope"))
             {
                 for (int rootId = i; i < rootId + 4; i++)
-                    mRootTiles.add(new RightDownSlope(i,type)); 
+                    mRootTiles.add(new RightDownSlope(i,type, maxHealth)); 
                 for (int rootId = i; i < rootId + 4; i++)
-                    mRootTiles.add(new LeftDownSlope(i,type)); 
+                    mRootTiles.add(new LeftDownSlope(i,type, maxHealth)); 
                 for (int rootId = i; i < rootId + 4; i++)
-                    mRootTiles.add(new LeftUpSlope(i,type)); 
+                    mRootTiles.add(new LeftUpSlope(i,type, maxHealth)); 
                 for (int rootId = i; i < rootId + 4; i++)
-                    mRootTiles.add(new RightUpSlope(i,type));
+                    mRootTiles.add(new RightUpSlope(i,type, maxHealth));
             }
             else if (shape.equals("NonEdible"))
             {
@@ -92,7 +93,7 @@ public class RootTileList {
                 {
                     String directionString = _tiledMap.getTileProperty(i, "Direction", "Right");
                     SkinDirection direction = directionMap.get(directionString);
-                    mRootTiles.add(new MelonSkinTile(i, type, direction));
+                    mRootTiles.add(new MelonSkinTile(i, type, direction, maxHealth));
                 }
             }
             else

@@ -36,7 +36,7 @@ public class TiledSkin implements iSkin
 
     public void setRotation(float _radians)
     {
-        //throw new UnsupportedOperationException("Not supported yet.");
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     

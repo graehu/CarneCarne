@@ -17,17 +17,16 @@ import org.jbox2d.dynamics.Fixture;
  */
 abstract public class SlopeTile extends RootTile{
     
-    public SlopeTile(int _id, int _slopeType, sLevel.TileType _tileType)
+    public SlopeTile(int _id, int _slopeType, sLevel.TileType _tileType, int _maxHealth)
     {
-        super (TileShape.eSlope, _id, _tileType, _slopeType);
+        super (TileShape.eSlope, _id, _tileType, _slopeType, _maxHealth);
     }
-    public Body createPhysicsBody(int _xTile, int _yTile)
+    public Body createPhysicsBody(int _xTile, int _yTile, HashMap _parameters)
     {
-        HashMap parameters = new HashMap();
-        parameters.put("position", new Vec2(_xTile,_yTile));
-        parameters.put("TileType", mTileType);
-        parameters.put("slopeType",mSlopeType);
-        return sWorld.useFactory("SlopeFactory",parameters);
+        _parameters.put("position", new Vec2(_xTile,_yTile));
+        _parameters.put("TileType", mTileType);
+        _parameters.put("slopeType",mSlopeType);
+        return sWorld.useFactory("SlopeFactory",_parameters);
     }
     public Fixture createFixture(int _xTile, int _yTile)
     {

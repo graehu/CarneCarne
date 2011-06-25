@@ -19,17 +19,16 @@ import org.jbox2d.dynamics.Fixture;
  */
 public class BlockTile extends RootTile
 {
-    public BlockTile(int _id, sLevel.TileType _tileType, boolean _regrows, boolean _anchor)
+    public BlockTile(int _id, sLevel.TileType _tileType, boolean _regrows, boolean _anchor, int _maxHealth)
     {
-        super(TileShape.eBlock, _id, _tileType, _anchor);
+        super(TileShape.eBlock, _id, _tileType, _regrows, _anchor, _maxHealth);
         mRegrows = _regrows;
     }
-    public Body createPhysicsBody(int _xTile, int _yTile)
+    public Body createPhysicsBody(int _xTile, int _yTile, HashMap _parameters)
     {
-        HashMap parameters = new HashMap();
-        parameters.put("position", new Vec2(_xTile,_yTile));
-        parameters.put("TileType", mTileType);
-        return sWorld.useFactory("TileFactory",parameters);
+        _parameters.put("position", new Vec2(_xTile,_yTile));
+        _parameters.put("TileType", mTileType);
+        return sWorld.useFactory("TileFactory",_parameters);
     }
     public Fixture createFixture(int _xTile, int _yTile)
     {

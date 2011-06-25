@@ -12,15 +12,21 @@ import Graphics.iCamera;
 import Graphics.sGraphicsManager;
 import Level.sLevel;
 import Level.sLevel.TileType;
+import java.util.ArrayList;
 import java.util.HashMap;
 import org.jbox2d.callbacks.RayCastCallback;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
+import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.Fixture;
+import org.jbox2d.dynamics.TimeStep;
 import org.jbox2d.dynamics.World;
 import org.jbox2d.dynamics.joints.DistanceJoint;
 import org.jbox2d.dynamics.joints.DistanceJointDef;
 import org.jbox2d.dynamics.joints.Joint;
+import org.jbox2d.dynamics.joints.PrismaticJointDef;
+import org.jbox2d.dynamics.joints.WeldJoint;
+import org.jbox2d.dynamics.joints.WeldJointDef;
 import org.jbox2d.structs.collision.RayCastInput;
 import org.jbox2d.structs.collision.RayCastOutput;
 import org.newdawn.slick.geom.Rectangle;
@@ -34,11 +40,6 @@ public class sWorld
     private static iCamera mCamera;
     private static HashMap<String,iPhysicsFactory> factories;
 
-    public static void setWaterHeight(int _highestSurface)
-    {
-        WaterTileFactory factory = (WaterTileFactory)factories.get("WaterTileFactory");
-        factory.setWaterHeight(_highestSurface);
-    }
 
     public enum BodyCategories
     {
@@ -70,8 +71,9 @@ public class sWorld
         factories.put("SpatBlockFactory", new SpatBlockBodyFactory());
         factories.put("WaterTileFactory", new WaterTileFactory());
         factories.put("TileArrayFactory", new TileArrayFactory());
-        Vec2 s = sGraphicsManager.getTrueScreenDimensions();
-        mCamera = new FreeCamera( new Rectangle(0,0,s.x,s.y));
+        factories.put("CheckPointFactory", new CheckPointFactory());
+        factories.put("SeeSawBodyFactory", new SeeSawBodyFactory());
+        mCamera = new FreeCamera( new Rectangle(0,0,sGraphicsManager.getTrueScreenDimensions().x, sGraphicsManager.getTrueScreenDimensions().y));        
     }
     
     public static Body useFactory(String _factory, HashMap _parameters)
@@ -161,6 +163,15 @@ public class sWorld
         switch (tileType)
         {
             case eSwingable:
+            {
+                if (sLevel.damageTile((int)callback.getFixture().m_body.getPosition().x, (int)callback.getFixture().m_body.getPosition().y))
+                {
+                    mWorld.destroyBody(callback.getFixture().m_body);
+                    sLevel.destroyTile((int)callback.getFixture().m_body.getPosition().x, (int)callback.getFixture().m_body.getPosition().y);
+                    sEvents.triggerEvent(new TileDestroyedEvent((int)callback.getFixture().m_body.getPosition().x, (int)callback.getFixture().m_body.getPosition().y));
+                }
+                break;
+            }
             case eEdible:
             case eIce:
             case eMelonSkin:
@@ -170,12 +181,32 @@ public class sWorld
                 sEvents.triggerEvent(new TileDestroyedEvent((int)callback.getFixture().m_body.getPosition().x, (int)callback.getFixture().m_body.getPosition().y));
                 break;
             }
+            case eEmpty:
             case eIndestructible:
             {
                 break;
             }
         }
         return true;        
+    }
+    static Body groundBody = null;
+    public static Joint createMouseJoint(Vec2 _targetPosition, Body _body)
+    { /// FIXME mouse joint doesn't work the same as in c++
+        if (groundBody == null)
+        {
+            BodyDef bodyDef = new BodyDef();
+            bodyDef.position = _targetPosition;
+            groundBody = mWorld.createBody(bodyDef);
+        }
+        PrismaticJointDef def = new PrismaticJointDef();
+        Vec2 axis = _body.getPosition().sub(_targetPosition);
+        axis.normalize();
+        def.initialize(_body, groundBody, _targetPosition, axis);
+        def.enableMotor = true;
+        def.motorSpeed = 10.0f;
+        def.maxMotorForce = 5000.0f;
+        Joint joint = mWorld.createJoint(def);
+        return joint;
     }
     public static DistanceJoint createTongueJoint(Body _body)
     {
@@ -191,6 +222,18 @@ public class sWorld
         def.dampingRatio = 1.0f; /// Reduce these to make his tongue springy
         return (DistanceJoint)mWorld.createJoint(def);
     }
+    public static void weld(Body _bodyA, Body _bodyB)
+    {
+        /*PrismaticJointDef def = new PrismaticJointDef();
+        def.initialize(_bodyA, _bodyB, _bodyA.getPosition(), _bodyA.getPosition().sub(_bodyB.getPosition()));
+        mWorld.createJoint(def);*/
+        WeldJointDef def = new WeldJointDef();
+        def.initialize(_bodyA, _bodyB, new Vec2(0,0));
+        def.bodyA = _bodyA;
+        def.bodyB = _bodyB;
+        def.collideConnected = true;
+        WeldJoint joint = (WeldJoint)mWorld.createJoint(def);
+    }
     public static void destroyBody(Body _body)
     {
         mWorld.destroyBody(_body);
@@ -198,6 +241,11 @@ public class sWorld
     public static void destroyJoint(Joint _joint)
     {
         mWorld.destroyJoint(_joint);
+    }
+    public static void destroyMouseJoint(Joint _joint)
+    {
+        mWorld.destroyJoint(_joint);
+        mWorld.destroyBody(groundBody);
     }
     public static void addPlayer(Body _body)
     {
@@ -229,7 +277,14 @@ public class sWorld
     public static void update(float _time)
     {
         float secondsPerFrame = 16.666f;
-        mWorld.step(secondsPerFrame/1000.0f, 8, 8);
+        //try
+        {
+            mWorld.step(secondsPerFrame/1000.0f, 4, 2);
+        }
+        //catch (ArrayIndexOutOfBoundsException e)
+        {
+            
+        }
         Body body = mWorld.getBodyList();
         while (body != null)
         {

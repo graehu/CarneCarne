@@ -8,7 +8,6 @@ import Graphics.sGraphicsManager;
 import World.sWorld;
 import org.jbox2d.common.Vec2;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.tiled.TiledMap;
 /**
  *
  * @author alasdair
@@ -17,10 +16,12 @@ public class sLevel {
     
     public static enum TileType
     {
+        eEmpty,
         eEdible,
         eSwingable,
         eIndestructible,
         eWater,
+        eAcid,
         eIce,
         eBouncy,
         eGum,
@@ -87,6 +88,10 @@ public class sLevel {
     public static void destroyTile(int _x, int _y)
     {
         mLevelEditor.destroyTile(_x, _y);
+    }
+    public static boolean damageTile(int _x, int _y)
+    {
+        return mLevelEditor.damageTile(_x, _y);
     }
     public static void update()
     {

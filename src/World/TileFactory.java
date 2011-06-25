@@ -62,6 +62,7 @@ public class TileFactory implements iPhysicsFactory {
         if (dynamic)
         {
             def.type = BodyType.DYNAMIC;
+            fixture.density = 1.0f;
         }
         //def.userData = _entity;
         def.position = new Vec2((position.x),(position.y));

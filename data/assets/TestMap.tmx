@@ -50,6 +50,7 @@
   <tile id="0">
    <properties>
     <property name="Material" value="Edible"/>
+    <property name="Regrows" value="true"/>
     <property name="Type" value="Block"/>
    </properties>
   </tile>
@@ -184,7 +185,9 @@
   <image source="TileBone1.png" width="256" height="256"/>
   <tile id="0">
    <properties>
+    <property name="Anchor" value="True"/>
     <property name="Material" value="Swingable"/>
+    <property name="MaxHealth" value="2"/>
     <property name="Type" value="Block"/>
    </properties>
   </tile>
@@ -218,6 +221,11 @@
   <tile id="23">
    <properties>
     <property name="Spawn" value="Player"/>
+   </properties>
+  </tile>
+  <tile id="26">
+   <properties>
+    <property name="Spawn" value="AI"/>
    </properties>
   </tile>
  </tileset>
@@ -318,29 +326,25 @@
  </tileset>
  <tileset firstgid="420" name="TileBackMeat" tilewidth="64" tileheight="64">
   <image source="TileBackMeat.png" width="256" height="1408"/>
+  <tile id="87">
+   <properties>
+    <property name="Spawn" value="CheckPoint"/>
+   </properties>
+  </tile>
  </tileset>
  <tileset firstgid="508" name="TileBackHard" tilewidth="64" tileheight="64">
   <image source="TileBackHard.png" width="192" height="832"/>
+  <tile id="36">
+   <properties>
+    <property name="Height" value="1.0"/>
+    <property name="Image" value="seesaw"/>
+    <property name="Spawn" value="SeeSaw"/>
+    <property name="Width" value="3.0"/>
+   </properties>
+  </tile>
  </tileset>
  <tileset firstgid="547" name="SpriteSign" tilewidth="64" tileheight="64">
   <image source="SpriteSign.png" width="256" height="1536"/>
- </tileset>
- <tileset firstgid="643" name="TilePlaceAnimation" tilewidth="64" tileheight="64">
-  <image source="TilePlaceAnimation.png" width="256" height="64"/>
-  <tile id="0">
-   <properties>
-    <property name="animRef" value="spritewaterwave"/>
-    <property name="duration" value="44"/>
-    <property name="maxtimeOffSet" value="0"/>
-   </properties>
-  </tile>
-  <tile id="2">
-   <properties>
-    <property name="animRef" value="acidbubble"/>
-    <property name="duration" value="44"/>
-    <property name="maxTimeOffset" value="5"/>
-   </properties>
-  </tile>
  </tileset>
  <layer name="Background2" width="100" height="100">
   <properties>
@@ -367,22 +371,22 @@
  </layer>
  <layer name="Level" width="100" height="100">
   <data encoding="base64" compression="gzip">
-   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
+   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
   </data>
  </layer>
  <layer name="Foreground" width="100" height="100">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC+3BMQEAAADCoPVP7WULoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgBt5RKnmQJwAAA==
+   H4sIAAAAAAAAC+3ad4/TMBzGcTfssnS8B/iDvcXeIMTeQuwNYm8hNrxs9s+qI1nGduYlVvv9SFZysd24ftJeLj6lkKJZA6Vm91zmmJLKWH+r9l7HLn9K5DG3xDxMt5+qOA+dhUpgrE1MDYpzSSEPLZbJOGRh07mEMkklD82XyS8pSxIaY1tCmfztfCRxU8538DhmkRt43ltqeUwS8kgLeaSlyzwWyblmWGVxw98D2zOldmTxNjulflegzX45fiBQd1COHwrUHZXjxyLnPS51JwrGFdJlHu65mpxHZ7tb3vMez/u2c98r9fsCbXT/w5n/2lgjx48E5vSkHD8Vme/TUnemQh5npe05096XR5n73aXSf5lzzhXy88rIOPS9q32fZP/9sEH6bbT6bpL9zZHXysfty7RM7m6bPu/x9XVxsWEe+vpZnv1/bG1kDldJ3epAve67xarbKvvbzM/zZDwLrPLDtNF/l4xDHra6edSxTuZ3fY3v1WFg7obk0Tn92Vg44XnMd74f+ixuFvb4dF3m3LPpMtPpU6ZN1+85dG/pywPTL3RvSR79II+0kEdayCMtVfJw13gp7ZfQGg6fj5H8mVfTZ5xNkcdI7HlYl8hjhDzSks/D1UypaxWfsZ2X9hdqrneExjHp8nm4KfN6q+Lc6vWOS+TRKvcZcl/ayOOTXBufzfXxQbYfzf4b2b4ted28knavTdsnsn1a0O+R1D+22tyV/XuBPrfl+J2C1yvK47L0v1LxM1Dnnq2NPL7JOL+bsX6R7Vez/0y270u+B932nWn7QrYvC/rp9s+tNtdl/2Ggz305/qBCHr5n7/r1b1TMY1jjHoHvq5F87tr8P9SmefS91tFnyddD2lwHyddufOsvoeKuywAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAKA7/wD9Lp7VQJwAAA==
   </data>
  </layer>
  <layer name="Foreground2" width="100" height="100">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC+3BMQEAAADCoPVP7WULoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgBt5RKnmQJwAAA==
+   H4sIAAAAAAAAC+3ZOw7CMAwA0BYWJhDc/6oIisRQRW2woR+VvrcQybFTJWSJmwYAAAAg59g2zaX9fs4rdhyIndvxvFosEievfe/lIxmLxEtTnN9QjV/qlrlr/8eu3br37vc2sH4tFomXsucXrfGpbm2Py9wpvnErsucXrfGpbm2Py9wpvpE6ewwAAABE7eHNbEsOyXfltd+i9+CU2Ns9vUWvJXMeS72TRu9hf97YOLNWJC/Tv5qr/7a06D3szxsbZ9aK5GX6V3P135YWvYf9eWPjzFqRvEz/aq7+GwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/+cJ4LBR2kCcAAA=
   </data>
  </layer>
  <layer name="Flags" width="100" height="100">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC+3OMQEAAAgDoNnA/ml9bbAHEpAAAAAAAAAAAAAAAAAATTvtAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADwHSFKoB9AnAAA
+   H4sIAAAAAAAAC+3YuwkAIBBEQbUCS7D/Fk0swAMjfzBTweOShUsJAIDdar5dAMAverAZrZzvWIk6ibkVAAAA8Dr/CwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgNkA4T2hKkCcAAA=
   </data>
  </layer>
 </map>

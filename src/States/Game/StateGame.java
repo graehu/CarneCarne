@@ -50,7 +50,9 @@ public class StateGame extends BasicTWLGameState {
     static private int mPlayers;
     static public Vec2 mMousePos = new Vec2(0,0);
     
-    public int getID() {
+
+    public int getID()
+    {
         return 3;
     }
     
