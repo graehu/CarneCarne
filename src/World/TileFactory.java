@@ -26,7 +26,7 @@ public class TileFactory implements iPhysicsFactory {
     public Body useFactory(HashMap _parameters, World _world)
     {
         Vec2 position = (Vec2)_parameters.get("position");
-        Object tile = _parameters.get("Tile");
+        Tile tile = (Tile)_parameters.get("Tile");
         boolean dynamic;
         try
         {
@@ -57,6 +57,11 @@ public class TileFactory implements iPhysicsFactory {
             fixture.filter.categoryBits = (1 << BodyCategories.eTar.ordinal());
             fixture.restitution = 0.0f;
             fixture.friction = 1000.0f;
+        }
+        else if (tileType.equals(TileType.eSpikes))
+        {
+            fixture.filter.categoryBits = (1 << BodyCategories.eSpikes.ordinal());
+            fixture.filter.maskBits = Integer.MAX_VALUE;            
         }
         fixture.shape = shape;
         fixture.userData = tile;

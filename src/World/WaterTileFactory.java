@@ -4,8 +4,7 @@
  */
 package World;
 
-import Level.sLevel;
-import Level.sLevel.TileType;
+import Level.Tile;
 import World.sWorld.BodyCategories;
 import java.util.HashMap;
 import org.jbox2d.collision.shapes.PolygonShape;
@@ -28,17 +27,15 @@ class WaterTileFactory implements iPhysicsFactory
     public Body useFactory(HashMap _parameters, World _world)
     {
         Vec2 position = (Vec2)_parameters.get("position");
-        sLevel.TileType tileType = (sLevel.TileType)_parameters.get("TileType");
-        int highestSurface = (Integer)_parameters.get("HighestSurface");
+        Tile tile = (Tile)_parameters.get("Tile");
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(0.5f, 0.5f);
         FixtureDef fixture = new FixtureDef();
         fixture.shape = shape;
         fixture.isSensor = true;
-        fixture.filter.groupIndex = tileType.ordinal();
+        fixture.userData = tile;
         fixture.filter.categoryBits = (1 << BodyCategories.eWater.ordinal());
         fixture.filter.maskBits = Integer.MAX_VALUE;
-        fixture.userData = highestSurface;
         BodyDef def = new BodyDef();
         //def.userData = _entity;
         def.position = new Vec2((position.x),(position.y));

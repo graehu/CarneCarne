@@ -34,6 +34,7 @@ public class WorldContactListener implements ContactListener{
             set(BodyCategories.eGum.ordinal(),i,new GumListener());
             set(BodyCategories.eTar.ordinal(),i,new TarListener());
         }
+        set(BodyCategories.ePlayer.ordinal(),BodyCategories.eSpikes.ordinal(),new DeathListener());
         set(BodyCategories.eCheckPoint.ordinal(), BodyCategories.ePlayer.ordinal(), new CheckPointListener());
     }
     private void set(int _x, int _y, iListener _reaction)
@@ -57,24 +58,6 @@ public class WorldContactListener implements ContactListener{
         categories[0] = getIndex(_contact.m_fixtureA.m_filter.categoryBits);
         categories[1] = getIndex(_contact.m_fixtureB.m_filter.categoryBits);
         reactions[categories[0]][categories[1]].beginContact(_contact);
-        /*if (_contact.m_fixtureA.m_filter.categoryBits == (1 << BodyCategories.eWater.ordinal()))
-        {
-            float height = (_contact.m_fixtureA.m_body.getPosition().y - _contact.m_fixtureB.m_body.getPosition().y)*1.0f;
-            if (height > 1.0f)
-            {
-                height = 1.0f;
-            }
-            ((Entity)_contact.m_fixtureB.m_body.m_userData).submerge(((Integer)_contact.m_fixtureA.m_userData));
-        }
-        if (_contact.m_fixtureB.m_filter.categoryBits == (1 << BodyCategories.eWater.ordinal()))
-        {
-            float height = (_contact.m_fixtureB.m_body.getPosition().y - _contact.m_fixtureA.m_body.getPosition().y)*1.0f;
-            if (height > 1.0f)
-            {
-                height = 1.0f;
-            }
-            ((Entity)_contact.m_fixtureA.m_body.m_userData).submerge(((Integer)_contact.m_fixtureB.m_userData));          
-        }*/
     }
 
     public void endContact(Contact _contact)
@@ -83,24 +66,6 @@ public class WorldContactListener implements ContactListener{
         categories[0] = getIndex(_contact.m_fixtureA.m_filter.categoryBits);
         categories[1] = getIndex(_contact.m_fixtureB.m_filter.categoryBits);
         reactions[categories[0]][categories[1]].endContact(_contact);
-        /*if (_contact.m_fixtureA.m_filter.groupIndex == TileType.eWater.ordinal())
-        {
-            float height = (_contact.m_fixtureA.m_body.getPosition().y - _contact.m_fixtureB.m_body.getPosition().y)*1.0f;
-            if (height > 1.0f)
-            {
-                height = 1.0f;
-            }
-            ((Entity)_contact.m_fixtureB.m_body.m_userData).unsubmerge();
-        }
-        if (_contact.m_fixtureB.m_filter.groupIndex == TileType.eWater.ordinal())
-        {
-            float height = (_contact.m_fixtureB.m_body.getPosition().y - _contact.m_fixtureA.m_body.getPosition().y)*1.0f;
-            if (height > 1.0f)
-            {
-                height = 1.0f;
-            }
-            ((Entity)_contact.m_fixtureA.m_body.m_userData).unsubmerge();          
-        }*/
     }
 
     public void preSolve(Contact _contact, Manifold _manifold)

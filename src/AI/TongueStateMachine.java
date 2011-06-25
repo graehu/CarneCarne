@@ -92,12 +92,13 @@ public class TongueStateMachine {
         setTongue(direction, ((float)mCurrentStateTimer/(float)tongueFiringTimeout)*tongueLength);
         direction = direction.mul(((float)mCurrentStateTimer/(float)tongueFiringTimeout)*tongueLength);
         
-        HashMap parameters = new HashMap();
+        /// Need new image for this
+        /*HashMap parameters = new HashMap();
         parameters.put("ref", "ChewedBlock");
         iSkin skin = sSkinFactory.create("static", parameters);
         Vec2 hammerPosition = mAIController.mEntity.mBody.getPosition();
         hammerPosition = sWorld.translateToWorld(hammerPosition);
-        skin.render(hammerPosition.x, hammerPosition.y);
+        skin.render(hammerPosition.x, hammerPosition.y);*/
                 
         return mAIController.hammer(mAIController.mEntity.mBody.getPosition().add(direction));
     }
@@ -636,6 +637,6 @@ public class TongueStateMachine {
     private void spitBlock()
     {
         ammoLeft--;
-        mAIController.spitBlock(mPosition, mTile.getTileType());
+        mAIController.spitBlock(mPosition, mTile);
     }
 }

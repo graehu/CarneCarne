@@ -21,6 +21,7 @@ public class RootTileList {
     {
         HashMap<String, sLevel.TileType> typeMap = new HashMap<String, sLevel.TileType>();
         typeMap.put("Ice", sLevel.TileType.eIce);
+        typeMap.put("Spikes", sLevel.TileType.eSpikes);
         typeMap.put("Acid", sLevel.TileType.eAcid);
         typeMap.put("Swim", sLevel.TileType.eWater);
         typeMap.put("Edible", sLevel.TileType.eEdible);

@@ -57,7 +57,6 @@ public class Tile {
     public void createPhysicsBody(int _xTile, int _yTile)
     {
         HashMap parameters = new HashMap();
-        parameters.put("HighestSurface", mHealth); /// Will only be read by water tile factory
         parameters.put("Tile", this);
         mBody = mRootId.createPhysicsBody(_xTile, _yTile, parameters);
     }

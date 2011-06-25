@@ -137,7 +137,7 @@ public class PlayerInputController extends iAIController implements iEventListen
         }     
     }
     
-    public void spitBlock(Vec2 _position, sLevel.TileType _tileType)
+    public void spitBlock(Vec2 _position, Tile _tile)
     {
         HashMap parameters = new HashMap();
         Vec2 direction = _position.sub( mEntity.mBody.getPosition());
@@ -145,7 +145,8 @@ public class PlayerInputController extends iAIController implements iEventListen
         //intialise velocity relative to carne's
         parameters.put("velocity", direction.mul(10.0f).add(mEntity.mBody.getLinearVelocityFromLocalPoint(new Vec2(0,0))));
         parameters.put("position", mEntity.mBody.getPosition());
-        parameters.put("tileType",_tileType);
+        parameters.put("tileType",_tile.getTileType());
+        parameters.put("rootId",_tile.getRootId());
         sEntityFactory.create("SpatBlock", parameters); 
     }
 

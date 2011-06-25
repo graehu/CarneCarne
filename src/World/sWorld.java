@@ -52,7 +52,8 @@ public class sWorld
         eGum,
         eTar,
         eCheckPoint,
-        eBodyCategoriesMax
+        eSpikes,
+        eBodyCategoriesMax;
     }
     private sWorld()
     {

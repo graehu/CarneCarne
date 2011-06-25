@@ -27,7 +27,6 @@ class WaterTile extends RootTile {
     Body createPhysicsBody(int _xTile, int _yTile, HashMap _parameters)
     {
         _parameters.put("position", new Vec2(_xTile,_yTile));
-        _parameters.put("TileType", mTileType);
         return sWorld.useFactory("WaterTileFactory",_parameters);
     }
     public Fixture createFixture(int _xTile, int _yTile)

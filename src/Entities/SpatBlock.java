@@ -5,6 +5,7 @@
 package Entities;
 
 import Graphics.Skins.iSkin;
+import Level.sLevel;
 import World.sWorld;
 import org.jbox2d.common.Vec2;
 
@@ -14,17 +15,25 @@ import org.jbox2d.common.Vec2;
  */
 public class SpatBlock extends Entity {
     
-    SpatBlock(iSkin _skin)
+    float mRadius; /// This is only needed if I need to render it, thats all
+    int mRootId;
+    SpatBlock(iSkin _skin, int _rootId, float _radius) /// Note, in SpatBlockFactory this currently hard coded to 0.125f
     {
         super(_skin);
+        mRadius = _radius;
+        mRootId = _rootId;
     }
     public void update()
     {
         
     }
+    public int getRootId()
+    {
+        return mRootId;
+    }
     public void render()
     {
-        Vec2 pixelPosition = sWorld.translateToWorld(mBody.getPosition());
+        Vec2 pixelPosition = sWorld.translateToWorld(mBody.getPosition().add(new Vec2(0.5f-mRadius,0.5f-mRadius))); /// FIXME
         mSkin.render(pixelPosition.x,pixelPosition.y);
         mSkin.setRotation(mBody.getAngle()*(180/(float)Math.PI));
     }
