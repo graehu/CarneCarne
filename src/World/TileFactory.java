@@ -4,6 +4,7 @@
  */
 package World;
 
+import Level.Tile;
 import Level.sLevel;
 import Level.sLevel.TileType;
 import World.sWorld.BodyCategories;
@@ -25,6 +26,7 @@ public class TileFactory implements iPhysicsFactory {
     public Body useFactory(HashMap _parameters, World _world)
     {
         Vec2 position = (Vec2)_parameters.get("position");
+        Tile tile = (Tile)_parameters.get("Tile");
         boolean dynamic;
         try
         {
@@ -34,11 +36,10 @@ public class TileFactory implements iPhysicsFactory {
         {
             dynamic = false;
         }
-        sLevel.TileType tileType = (sLevel.TileType)_parameters.get("TileType");
+        sLevel.TileType tileType = ((Tile)tile).getTileType();
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(0.5f, 0.5f);
         FixtureDef fixture = new FixtureDef();
-        fixture.filter.groupIndex = tileType.ordinal();
         fixture.filter.categoryBits = (1 << BodyCategories.eEdibleTiles.ordinal());
         fixture.filter.maskBits = Integer.MAX_VALUE;
         if (tileType.equals(TileType.eIce))
@@ -57,13 +58,19 @@ public class TileFactory implements iPhysicsFactory {
             fixture.restitution = 0.0f;
             fixture.friction = 1000.0f;
         }
+        else if (tileType.equals(TileType.eSpikes))
+        {
+            fixture.filter.categoryBits = (1 << BodyCategories.eSpikes.ordinal());
+            fixture.filter.maskBits = Integer.MAX_VALUE;            
+        }
         fixture.shape = shape;
+        fixture.userData = tile;
         BodyDef def = new BodyDef();
         if (dynamic)
         {
             def.type = BodyType.DYNAMIC;
+            fixture.density = 1.0f;
         }
-        //def.userData = _entity;
         def.position = new Vec2((position.x),(position.y));
         
         Body body = _world.createBody(def);

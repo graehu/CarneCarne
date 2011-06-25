@@ -32,7 +32,7 @@ class SpatBlockBodyFactory implements iPhysicsFactory {
         Entity entity = (Entity)_parameters.get("entity");
         sLevel.TileType tileType = (sLevel.TileType)_parameters.get("tileType");
         CircleShape shape = new CircleShape();
-        shape.m_radius = 0.2f;
+        shape.m_radius = 0.125f;
         FixtureDef fixture = new FixtureDef();
         fixture.shape = shape;
         fixture.filter.groupIndex = tileType.ordinal();

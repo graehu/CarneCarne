@@ -21,14 +21,13 @@ class NonEdibleTile extends RootTile
 {
     public NonEdibleTile(int _id, sLevel.TileType _tileType)
     {
-        super(TileShape.eBlock, _id, _tileType, true);
+        super(TileShape.eBlock, _id, _tileType, false, true, 1);
     }
-    public Body createPhysicsBody(int _xTile, int _yTile)
+    public Body createPhysicsBody(int _xTile, int _yTile, HashMap _parameters)
     {
-        HashMap parameters = new HashMap();
-        parameters.put("position", new Vec2(_xTile,_yTile));
-        parameters.put("TileType", mTileType);
-        return sWorld.useFactory("NonEdibleTileFactory",parameters);
+        _parameters.put("position", new Vec2(_xTile,_yTile));
+        _parameters.put("TileType", mTileType);
+        return sWorld.useFactory("NonEdibleTileFactory",_parameters);
     }
     public Fixture createFixture(int _xTile, int _yTile)
     {

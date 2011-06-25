@@ -13,9 +13,9 @@ import Level.sLevel.TileType;
  */
 public class LeftUpSlope extends SlopeTile
 {
-    public LeftUpSlope(int _id, sLevel.TileType _tileType)
+    public LeftUpSlope(int _id, sLevel.TileType _tileType, int _maxHealth)
     {
-        super(_id, 2, _tileType);
+        super(_id, 2, _tileType, _maxHealth);
     }
 
     public void getEdges(boolean _boundaries[], int _xTile, int _yTile, TileGrid _tileGrid)

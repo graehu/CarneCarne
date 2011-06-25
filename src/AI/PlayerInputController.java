@@ -12,11 +12,14 @@ import Events.KeyDownEvent;
 import Events.KeyUpEvent;
 import Events.MapClickEvent;
 import Events.MapClickReleaseEvent;
+import Events.MouseDragEvent;
 import Events.iEvent;
 import Events.iEventListener;
 import Events.sEvents;
 import Level.sLevel;
 import Events.RightStickEvent;
+import HUD.Reticle;
+import Level.Tile;
 import World.sWorld;
 import java.util.HashMap;
 import org.jbox2d.common.Vec2;
@@ -25,14 +28,16 @@ import org.jbox2d.common.Vec2;
  *
  * @author alasdair
  */
-public class PlayerInputController extends iAIController implements iEventListener{
-
+public class PlayerInputController extends iAIController implements iEventListener {
+    //constants
+    final static float root2 = (float) Math.sqrt(2);
     //protected to allow TongueStateMachine access
     private TongueStateMachine mTongueState;
     protected String mFaceDirAnim;
     private float mTongueAngle = 0;
-    private Vec2 mCursorPos = new Vec2(0,0);
+    protected Vec2 mPlayerDir = new Vec2(1,0);
     private int mPlayer;
+    private Reticle mReticle;
     public PlayerInputController(AIEntity _entity, int _player)
     {
         super(_entity);
@@ -42,22 +47,25 @@ public class PlayerInputController extends iAIController implements iEventListen
         sEvents.subscribeToEvent("KeyDownEvent"+'a'+_player, this);
         sEvents.subscribeToEvent("KeyDownEvent"+'s'+_player, this);
         sEvents.subscribeToEvent("KeyDownEvent"+'d'+_player, this);
+        sEvents.subscribeToEvent("KeyDownEvent"+' '+_player, this);
         sEvents.subscribeToEvent("MapClickEvent"+_player, this);
         sEvents.subscribeToEvent("MapClickReleaseEvent"+_player, this);
         sEvents.subscribeToEvent("MouseMoveEvent"+_player, this);
+        sEvents.subscribeToEvent("MouseDragEvent"+_player, this);
         sEvents.subscribeToEvent("AnalogueStickEvent"+_player, this);
         sEvents.subscribeToEvent("RightStickEvent"+_player, this);
         mTongueState = new TongueStateMachine(this);
+        mReticle = new Reticle(_entity);
     }
     
     public void update()
-    {
+    {        
         mTongueState.tick(mEntity);
+        mReticle.updateDirection(mPlayerDir);
+    
         if(mTongueState.mIsTongueActive)
         {
-            Vec2 direction = mTongueState.position.sub(mEntity.mBody.getPosition().add(new Vec2(0.5f,0.5f))); //offset by half the width and height
-            direction.normalize();
-            look(direction);
+            look(mTongueState.mTongueDir);
             mEntity.mSkin.stopAnim(mFaceDirAnim);
             mEntity.mSkin.stopAnim("h"+mFaceDirAnim); //hat animation
             mEntity.mSkin.startAnim("m"+mFaceDirAnim, false, 0.0f); //mouth animation
@@ -72,7 +80,7 @@ public class PlayerInputController extends iAIController implements iEventListen
         }
     }
     
-    public sLevel.TileType grabBlock(Vec2 _position)
+    public Tile grabBlock(Vec2 _position)
     {
         return sWorld.eatTiles(mEntity.mBody.getPosition(),_position);
     }
@@ -82,7 +90,54 @@ public class PlayerInputController extends iAIController implements iEventListen
         return sWorld.smashTiles(mEntity.mBody.getPosition(),_position);
     }
     
-    public void spitBlock(Vec2 _position, sLevel.TileType _tileType)
+    public void layBlock(Tile _tile)
+    {
+        //determine tile to grow block
+        mPlayerDir.normalize(); //ensure it's normalised
+        int dir = -1; //N:0 E:1 S:2 W:3
+        //determine direction by quadrants
+        if(mPlayerDir.x >= 0)
+        {
+            if(mPlayerDir.y >= 1/root2)
+                dir = 0;                        //north
+            else if(mPlayerDir.y > -1/root2)
+                dir = 1;                        //east
+            else //if(mPlayerDir.y > -1)
+                dir = 2;                        //south
+        }
+        else //if(mPlayerDir < 0)
+        {
+            if(mPlayerDir.y >= 1/root2)
+                dir = 0;                        //north
+            else if(mPlayerDir.y > -1/root2)
+                dir = 3;                        //west
+            else //if(mPlayerDir.y > -1)
+                dir = 2;                        //south
+        }
+        if(dir != -1)
+        {
+            Vec2 playerPos = mEntity.mBody.getPosition().add(new Vec2(0.5f,0.5f)); //offset to center
+            int playerTileX = (int)playerPos.x; //casting floors value
+            int playerTileY = (int)playerPos.y;
+            switch(dir)
+            {
+                case 0: //north facing
+                    sLevel.placeTile(playerTileX, playerTileY+1, _tile.getRootId());
+                    break;
+                case 1: //east facing
+                    sLevel.placeTile(playerTileX+1, playerTileY, _tile.getRootId());                 
+                    break;
+                case 2: //south facing
+                    sLevel.placeTile(playerTileX, playerTileY-1, _tile.getRootId());
+                    break;
+                case 3: //west facing
+                    sLevel.placeTile(playerTileX-1, playerTileY, _tile.getRootId());
+                    break;
+            }
+        }     
+    }
+    
+    public void spitBlock(Vec2 _position, Tile _tile)
     {
         HashMap parameters = new HashMap();
         Vec2 direction = _position.sub( mEntity.mBody.getPosition());
@@ -90,7 +145,8 @@ public class PlayerInputController extends iAIController implements iEventListen
         //intialise velocity relative to carne's
         parameters.put("velocity", direction.mul(10.0f).add(mEntity.mBody.getLinearVelocityFromLocalPoint(new Vec2(0,0))));
         parameters.put("position", mEntity.mBody.getPosition());
-        parameters.put("tileType",_tileType);
+        parameters.put("tileType",_tile.getTileType());
+        parameters.put("rootId",_tile.getRootId());
         sEntityFactory.create("SpatBlock", parameters); 
     }
 
@@ -119,6 +175,11 @@ public class PlayerInputController extends iAIController implements iEventListen
                 case 'd':
                 {
                     mEntity.walkRight();
+                    break;
+                }
+                case ' ':
+                {
+                    mTongueState.layBlock();
                     break;
                 }
             }
@@ -154,24 +215,35 @@ public class PlayerInputController extends iAIController implements iEventListen
         else if (_event.getType().equals("RightStickEvent"))
         {
             RightStickEvent event = (RightStickEvent)_event;
-            Vec2 direction = event.getDirection();
-            look(direction);
+            mPlayerDir = event.getDirection();
+            if(mTongueState.mIsTongueActive == false)
+            {
+                look(mPlayerDir);
+            }
         }
         else if (_event.getType().equals("MouseMoveEvent"))
         {
+            MouseMoveEvent event = (MouseMoveEvent)_event;
+            mPlayerDir = event.getPhysicsPosition().sub(mEntity.mBody.getPosition().add(new Vec2(0.5f,0.5f))); //offset by half the width and height
+            mReticle.updateDirection(mPlayerDir);
             if(mTongueState.mIsTongueActive == false)
             {
-                MouseMoveEvent event = (MouseMoveEvent)_event;
-                Vec2 direction = event.getPhysicsPosition().sub(mEntity.mBody.getPosition().add(new Vec2(0.5f,0.5f))); //offset by half the width and height
-                direction.normalize();
-                look(direction);
-            }
-                
+                look(mPlayerDir);
+            }    
+        }
+        else if (_event.getType().equals("MouseDragEvent"))
+        {
+            MouseDragEvent event = (MouseDragEvent)_event;
+            mPlayerDir = event.getPhysicsPosition().sub(mEntity.mBody.getPosition().add(new Vec2(0.5f,0.5f))); //offset by half the width and height
+            mReticle.updateDirection(mPlayerDir);
+            if(mTongueState.mIsTongueActive == false)
+            {
+                look(mPlayerDir);
+            }    
         }
         else if (_event.getType().equals("MapClickReleaseEvent"+mPlayer))
         {
             MapClickReleaseEvent event = (MapClickReleaseEvent)_event;
-            mCursorPos = event.getPosition();
             if (event.leftbutton())
             {
                 mTongueState.leftRelease(event.getPosition());
@@ -184,7 +256,6 @@ public class PlayerInputController extends iAIController implements iEventListen
         else //assume MapClick
         {
             MapClickEvent event = (MapClickEvent)_event;
-            mCursorPos = event.getPosition();
             if (event.leftbutton())
             {
                 mTongueState.leftClick(event.getPosition());
@@ -197,10 +268,12 @@ public class PlayerInputController extends iAIController implements iEventListen
     }    
     private void look(Vec2 _direction)
     {
+        Vec2 direction = _direction.clone();
+        direction.normalize();
         //assumes 64x64 sprite
-        mEntity.mSkin.setOffset("tng", new Vec2(32,32).add(_direction.mul(0.4f*64)));
-        mTongueAngle = (float)Math.acos(Vec2.dot(new Vec2(0,-1), _direction));
-        if(_direction.x < 0)
+        mEntity.mSkin.setOffset("tng", new Vec2(32,32).add(direction.mul(0.4f*64)));
+        mTongueAngle = (float)Math.acos(Vec2.dot(new Vec2(0,-1), direction));
+        if(direction.x < 0)
             mTongueAngle = (float) ((2*Math.PI) - mTongueAngle);
         float halfSeg = (float) (Math.PI/16.0f);
         //if statement splits left from right for efficiency

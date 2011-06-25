@@ -6,10 +6,7 @@ package Level;
 
 import Level.Tile.Direction;
 import Level.sLevel.TileType;
-import java.util.Comparator;
-import java.util.PriorityQueue;
 import java.util.Stack;
-import org.jbox2d.dynamics.joints.WeldJoint;
 import org.newdawn.slick.tiled.TiledMap;
 
 /**
@@ -19,23 +16,23 @@ import org.newdawn.slick.tiled.TiledMap;
 public class TileGrid {
     
     private Tile[][] mTiles;
-    private int mFrames;
     private TiledMap tiledMap;
     private RootTileList rootTiles;
     private int layerIndex;
+    //private static PriorityQueue<RegrowingTile> regrowingTiles;
+    private TileRegrowth regrowingTiles;
     public TileGrid(TiledMap _tiledMap, RootTileList _rootTiles, int _layerIndex)
     {
         tiledMap = _tiledMap;
         rootTiles = _rootTiles;
         layerIndex = _layerIndex;
         WaterSearcher waterSearcher = new WaterSearcher(_tiledMap.getWidth(),_tiledMap.getHeight());
-        mFrames = 0;
         mTiles = new Tile[_tiledMap.getWidth()][_tiledMap.getHeight()];
         for (int i = 0; i < _tiledMap.getWidth(); i++)
         {
             for (int ii = 0; ii < _tiledMap.getHeight(); ii++)
             {
-                int id = _tiledMap.getTileId(i, ii, _layerIndex);
+                int id = _tiledMap.getTileId(i, ii, layerIndex);
                 if (_rootTiles.get(id).mTileType.equals(TileType.eWater))
                 {
                     waterSearcher.addTile(i,ii,_rootTiles.get(id));
@@ -68,33 +65,34 @@ public class TileGrid {
             int xTile = stack.pop();
             _tiledMap.setTileId(xTile, yTile, _layerIndex, id);
         }
-        regrowingTiles = new PriorityQueue<RegrowingTile>(10, new TileComparer());
+        //regrowingTiles = new PriorityQueue<RegrowingTile>(10, new TileComparer());
+        regrowingTiles = new TileRegrowth(this,_tiledMap.getWidth(),_tiledMap.getHeight());
     }
-    private static class TileComparer implements Comparator<RegrowingTile> 
+
+    boolean damageTile(int _x, int _y)
     {
-        public int compare(RegrowingTile x, RegrowingTile y)
+        Tile tile = mTiles[_x][_y];
+        if (tile.mHealth > 1)
         {
-            if (x.timer < y.timer)
+            tile.mId += 16;
+            tile.mHealth--;
+            tile.mRootId = rootTiles.get(tile.mId);
+            Stack<Integer> stack = new Stack<Integer>();
+            mTiles[_x][_y].checkEdges(_x,_y, stack, this);
+            while (!stack.empty())
             {
-                return -1;
+                int id = stack.pop();
+                int yTile = stack.pop();
+                int xTile = stack.pop();
+                tiledMap.setTileId(xTile, yTile, layerIndex, id);
             }
-            if (x.timer > y.timer)
-            {
-                return 1;
-            }
-            return 0;
+            return false;
         }
+        return true;
     }
-    private static PriorityQueue<RegrowingTile> regrowingTiles;
     void update()
     {
-        mFrames++;
-        RegrowingTile tile = regrowingTiles.peek();
-        if (tile != null && tile.timer == mFrames)
-        {
-            regrowingTiles.remove(tile);
-            placeTile(tile.x, tile.y, tile.mRootId);
-        }
+        regrowingTiles.update();
     }
     public void placeTile(int _x, int _y, int _rootId)
     {
@@ -140,7 +138,7 @@ public class TileGrid {
         Stack<Integer> stack = new Stack<Integer>();
         
         if (mTiles[_x][_y].mRootId.mRegrows)
-            regrowingTiles.add(new RegrowingTile(_x,_y, mTiles[_x][_y].mRootId.mId,mFrames+180));
+            regrowingTiles.add(_x,_y, mTiles[_x][_y].mRootId);
         
         set(_x,_y,0);
         

@@ -10,17 +10,22 @@ import Events.sEvents;
 import Graphics.FreeCamera;
 import Graphics.iCamera;
 import Graphics.sGraphicsManager;
+import Level.Tile;
 import Level.sLevel;
 import Level.sLevel.TileType;
 import java.util.HashMap;
 import org.jbox2d.callbacks.RayCastCallback;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
+import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.Fixture;
 import org.jbox2d.dynamics.World;
 import org.jbox2d.dynamics.joints.DistanceJoint;
 import org.jbox2d.dynamics.joints.DistanceJointDef;
 import org.jbox2d.dynamics.joints.Joint;
+import org.jbox2d.dynamics.joints.PrismaticJointDef;
+import org.jbox2d.dynamics.joints.WeldJoint;
+import org.jbox2d.dynamics.joints.WeldJointDef;
 import org.jbox2d.structs.collision.RayCastInput;
 import org.jbox2d.structs.collision.RayCastOutput;
 import org.newdawn.slick.geom.Rectangle;
@@ -34,11 +39,6 @@ public class sWorld
     private static iCamera mCamera;
     private static HashMap<String,iPhysicsFactory> factories;
 
-    public static void setWaterHeight(int _highestSurface)
-    {
-        WaterTileFactory factory = (WaterTileFactory)factories.get("WaterTileFactory");
-        factory.setWaterHeight(_highestSurface);
-    }
 
     public enum BodyCategories
     {
@@ -52,7 +52,8 @@ public class sWorld
         eGum,
         eTar,
         eCheckPoint,
-        eBodyCategoriesMax
+        eSpikes,
+        eBodyCategoriesMax;
     }
     private sWorld()
     {
@@ -70,7 +71,9 @@ public class sWorld
         factories.put("SpatBlockFactory", new SpatBlockBodyFactory());
         factories.put("WaterTileFactory", new WaterTileFactory());
         factories.put("TileArrayFactory", new TileArrayFactory());
-        mCamera = new FreeCamera( new Rectangle(0,0,sGraphicsManager.getTrueScreenDimensions().x, sGraphicsManager.getTrueScreenDimensions().y));
+        factories.put("CheckPointFactory", new CheckPointFactory());
+        factories.put("SeeSawBodyFactory", new SeeSawBodyFactory());
+        mCamera = new FreeCamera( new Rectangle(0,0,sGraphicsManager.getTrueScreenDimensions().x, sGraphicsManager.getTrueScreenDimensions().y));        
     }
     
     public static Body useFactory(String _factory, HashMap _parameters)
@@ -117,36 +120,41 @@ public class sWorld
         }
     }
     private static Body mLastHit;
-    public static sLevel.TileType eatTiles(Vec2 start, Vec2 end)
+    public static Tile eatTiles(Vec2 start, Vec2 end)
     {
         TongueCallback callback = new TongueCallback(start, end);
         mWorld.raycast(callback, start, end);
         if (callback.getFixture() == null)
         {
-            return sLevel.TileType.eTileTypesMax;
+            return null;
         }
         mLastHit = callback.getFixture().getBody();
-        TileType tileType = sLevel.TileType.class.getEnumConstants()[callback.getFixture().m_filter.groupIndex];
-        switch (tileType)
+        Tile tile = (Tile)callback.getFixture().getUserData();
+        if (tile != null)
         {
-            case eEdible:
-            case eGum:
-            case eMelonFlesh:
+            TileType tileType = tile.getTileType();
+            switch (tileType)
             {
-                mWorld.destroyBody(callback.getFixture().m_body);
-                if (callback.getFixture().m_filter.categoryBits != (1 << BodyCategories.eSpatTiles.ordinal()))
-                    sLevel.destroyTile((int)callback.getFixture().m_body.getPosition().x, (int)callback.getFixture().m_body.getPosition().y);
-                sEvents.triggerEvent(new TileDestroyedEvent((int)callback.getFixture().m_body.getPosition().x, (int)callback.getFixture().m_body.getPosition().y));
-                break;
-            }
-            case eSwingable:
-            case eIce:
-            case eIndestructible:
-            {
-                break;
+                case eEdible:
+                case eGum:
+                case eMelonFlesh:
+                {
+                    tile = tile.clone();
+                    mWorld.destroyBody(callback.getFixture().m_body);
+                    if (callback.getFixture().m_filter.categoryBits != (1 << BodyCategories.eSpatTiles.ordinal()))
+                        sLevel.destroyTile((int)callback.getFixture().m_body.getPosition().x, (int)callback.getFixture().m_body.getPosition().y);
+                    sEvents.triggerEvent(new TileDestroyedEvent((int)callback.getFixture().m_body.getPosition().x, (int)callback.getFixture().m_body.getPosition().y));
+                    break;
+                }
+                case eSwingable:
+                case eIce:
+                case eIndestructible:
+                {
+                    break;
+                }
             }
         }
-        return tileType;
+        return tile;
     }
     public static boolean smashTiles(Vec2 start, Vec2 end)
     {
@@ -156,25 +164,58 @@ public class sWorld
         {
             return false;
         }
-        TileType tileType = sLevel.TileType.class.getEnumConstants()[callback.getFixture().m_filter.groupIndex];
-        switch (tileType)
+        Tile tile = (Tile)callback.getFixture().getUserData();
+        if (tile != null)
         {
-            case eSwingable:
-            case eEdible:
-            case eIce:
-            case eMelonSkin:
+            TileType tileType = tile.getTileType();
+            switch (tileType)
             {
-                mWorld.destroyBody(callback.getFixture().m_body);
-                sLevel.destroyTile((int)callback.getFixture().m_body.getPosition().x, (int)callback.getFixture().m_body.getPosition().y);
-                sEvents.triggerEvent(new TileDestroyedEvent((int)callback.getFixture().m_body.getPosition().x, (int)callback.getFixture().m_body.getPosition().y));
-                break;
-            }
-            case eIndestructible:
-            {
-                break;
+                case eSwingable:
+                {
+                    if (sLevel.damageTile((int)callback.getFixture().m_body.getPosition().x, (int)callback.getFixture().m_body.getPosition().y))
+                    {
+                        mWorld.destroyBody(callback.getFixture().m_body);
+                        sLevel.destroyTile((int)callback.getFixture().m_body.getPosition().x, (int)callback.getFixture().m_body.getPosition().y);
+                        sEvents.triggerEvent(new TileDestroyedEvent((int)callback.getFixture().m_body.getPosition().x, (int)callback.getFixture().m_body.getPosition().y));
+                    }
+                    break;
+                }
+                case eEdible:
+                case eIce:
+                case eMelonSkin:
+                {
+                    mWorld.destroyBody(callback.getFixture().m_body);
+                    sLevel.destroyTile((int)callback.getFixture().m_body.getPosition().x, (int)callback.getFixture().m_body.getPosition().y);
+                    sEvents.triggerEvent(new TileDestroyedEvent((int)callback.getFixture().m_body.getPosition().x, (int)callback.getFixture().m_body.getPosition().y));
+                    break;
+                }
+                case eEmpty:
+                case eIndestructible:
+                {
+                    break;
+                }
             }
         }
         return true;        
+    }
+    static Body groundBody = null;
+    public static Joint createMouseJoint(Vec2 _targetPosition, Body _body)
+    { /// FIXME mouse joint doesn't work the same as in c++
+        if (groundBody == null)
+        {
+            BodyDef bodyDef = new BodyDef();
+            bodyDef.position = _targetPosition;
+            groundBody = mWorld.createBody(bodyDef);
+        }
+        PrismaticJointDef def = new PrismaticJointDef();
+        Vec2 axis = _body.getPosition().sub(_targetPosition);
+        axis.normalize();
+        def.initialize(_body, groundBody, _targetPosition, axis);
+        def.enableMotor = true;
+        def.motorSpeed = 10.0f;
+        def.maxMotorForce = 5000.0f;
+        Joint joint = mWorld.createJoint(def);
+        return joint;
     }
     public static DistanceJoint createTongueJoint(Body _body)
     {
@@ -190,6 +231,18 @@ public class sWorld
         def.dampingRatio = 1.0f; /// Reduce these to make his tongue springy
         return (DistanceJoint)mWorld.createJoint(def);
     }
+    public static void weld(Body _bodyA, Body _bodyB)
+    {
+        /*PrismaticJointDef def = new PrismaticJointDef();
+        def.initialize(_bodyA, _bodyB, _bodyA.getPosition(), _bodyA.getPosition().sub(_bodyB.getPosition()));
+        mWorld.createJoint(def);*/
+        WeldJointDef def = new WeldJointDef();
+        def.initialize(_bodyA, _bodyB, new Vec2(0,0));
+        def.bodyA = _bodyA;
+        def.bodyB = _bodyB;
+        def.collideConnected = true;
+        WeldJoint joint = (WeldJoint)mWorld.createJoint(def);
+    }
     public static void destroyBody(Body _body)
     {
         mWorld.destroyBody(_body);
@@ -197,6 +250,11 @@ public class sWorld
     public static void destroyJoint(Joint _joint)
     {
         mWorld.destroyJoint(_joint);
+    }
+    public static void destroyMouseJoint(Joint _joint)
+    {
+        mWorld.destroyJoint(_joint);
+        mWorld.destroyBody(groundBody);
     }
     public static void addPlayer(Body _body)
     {
@@ -228,7 +286,14 @@ public class sWorld
     public static void update(float _time)
     {
         float secondsPerFrame = 16.666f;
-        mWorld.step(secondsPerFrame/1000.0f, 8, 8);
+        //try
+        {
+            mWorld.step(secondsPerFrame/1000.0f, 4, 2);
+        }
+        //catch (ArrayIndexOutOfBoundsException e)
+        {
+            
+        }
         Body body = mWorld.getBodyList();
         while (body != null)
         {

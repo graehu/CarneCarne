@@ -16,12 +16,14 @@ import org.jbox2d.dynamics.joints.RevoluteJoint;
  * @author alasdair
  */
 public class AIEntity extends Entity {
-    iAIController mController;
-    boolean mCanJump;
-    int mTurnThisFrame;
-    int mJumpTimer;
-    static int mJumpReload = 60; /// NOTE frame rate change
-    float mMoveSpeed;
+
+    protected iAIController mController;
+    protected boolean mCanJump;
+    protected int mTurnThisFrame;
+    protected int mJumpTimer;
+    protected static int mJumpReload = 60; /// NOTE frame rate change
+    protected float mMoveSpeed;
+
     public RevoluteJoint mJoint;
     public AIEntity(iSkin _skin)
     {
@@ -72,6 +74,11 @@ public class AIEntity extends Entity {
             mJoint.m_motorSpeed = 0.0f;
         else mTurnThisFrame = 0;
         mController.update();
+        subUpdate();
+    }
+    protected void subUpdate()
+    {
+        
     }
     public void walk(float value)
     {

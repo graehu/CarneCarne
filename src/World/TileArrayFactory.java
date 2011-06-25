@@ -31,11 +31,13 @@ class TileArrayFactory implements iPhysicsFactory
         BodyDef def = new BodyDef();
         def.type = BodyType.DYNAMIC;
         def.userData = entity;
+        def.fixedRotation = false;
         
         FixtureDef fixture = new FixtureDef();
+        fixture.filter.categoryBits = (1 << sWorld.BodyCategories.eSpatTiles.ordinal());
         PolygonShape shape = new PolygonShape();
         fixture.shape = shape;
-        //fixture.density = 1.0f;
+        fixture.density = 1.0f;
         Body body = _world.createBody(def);
         for (CaveIn.Tile tile: tiles)
         {

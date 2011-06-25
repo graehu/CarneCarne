@@ -14,9 +14,11 @@ import org.jbox2d.common.Vec2;
 public class MouseMoveEvent extends iEvent {
     
     Vec2 position;
-    public MouseMoveEvent(Vec2 _position)
+    int mPlayer;
+    public MouseMoveEvent(Vec2 _position, int _player)
     {
         position = _position;
+        mPlayer = _player;
     }
     
     public String getType()
@@ -26,7 +28,7 @@ public class MouseMoveEvent extends iEvent {
     
     public String getName()
     {
-        return getType() + 0;
+        return getType() + mPlayer;
     }
     public Vec2 getScreenPosition()
     {

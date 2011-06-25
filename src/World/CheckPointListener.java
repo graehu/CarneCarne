@@ -4,10 +4,11 @@
  */
 package World;
 
-import Entities.Entity;
+import Entities.PlayerEntity;
 import World.sWorld.BodyCategories;
 import org.jbox2d.callbacks.ContactImpulse;
 import org.jbox2d.collision.Manifold;
+import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.contacts.Contact;
 
 /**
@@ -21,13 +22,13 @@ class CheckPointListener implements iListener {
 
     public void beginContact(Contact _contact)
     {
-        if (_contact.m_fixtureA.m_filter.categoryBits == (1 << BodyCategories.eWater.ordinal()))
+        if (_contact.m_fixtureA.m_filter.categoryBits == (1 << BodyCategories.ePlayer.ordinal()))
         {
-            ((Entity)_contact.m_fixtureB.m_body.m_userData).submerge(((Integer)_contact.m_fixtureA.m_userData));
+            ((PlayerEntity)_contact.m_fixtureA.m_body.m_userData).placeCheckPoint(((Vec2)_contact.m_fixtureB.m_body.getPosition()));
         }
         else
         {
-            ((Entity)_contact.m_fixtureA.m_body.m_userData).submerge(((Integer)_contact.m_fixtureB.m_userData));          
+            ((PlayerEntity)_contact.m_fixtureB.m_body.m_userData).placeCheckPoint(((Vec2)_contact.m_fixtureB.m_body.getPosition()));          
         }
     }
 

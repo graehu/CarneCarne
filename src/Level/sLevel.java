@@ -8,7 +8,6 @@ import Graphics.sGraphicsManager;
 import World.sWorld;
 import org.jbox2d.common.Vec2;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.tiled.TiledMap;
 /**
  *
  * @author alasdair
@@ -17,16 +16,19 @@ public class sLevel {
     
     public static enum TileType
     {
+        eEmpty,
         eEdible,
         eSwingable,
         eIndestructible,
         eWater,
+        eAcid,
         eIce,
         eBouncy,
         eGum,
         eTar,
         eMelonFlesh,
         eMelonSkin,
+        eSpikes,
         eTileTypesMax,
     }
     public static TileType getTileType(int _id)
@@ -70,7 +72,7 @@ public class sLevel {
     public static void init() throws SlickException
     {
         mTiledMap = new AnimatedTiledMap("assets/TestMap.tmx");
-        mTiledMap.initAnimationlayer("assets/splashbig.def");
+        mTiledMap.initAnimationlayer("assets/TileAnimation.def");
         mLevelEditor = new LevelEditor(mTiledMap);
         midLayer = mTiledMap.getLayerIndex("Level");
         mParralaxXScale = new float[mTiledMap.getLayerCount()];
@@ -81,13 +83,17 @@ public class sLevel {
             mParralaxYScale[i] = new Float(mTiledMap.getLayerProperty(i, "ScaleY", "1.0"));
         }
     }
-    public static void placeTile(int _x, int _y, TileType _tileType)
+    public static void placeTile(int _x, int _y, int _rootId)
     {
-        mLevelEditor.placeTile(_x, _y, _tileType);
+        mLevelEditor.placeTile(_x, _y, _rootId);
     }
     public static void destroyTile(int _x, int _y)
     {
         mLevelEditor.destroyTile(_x, _y);
+    }
+    public static boolean damageTile(int _x, int _y)
+    {
+        return mLevelEditor.damageTile(_x, _y);
     }
     public static void update()
     {
@@ -101,7 +107,7 @@ public class sLevel {
         Vec2 translation = sWorld.getPixelTranslation();
         for (int i = 0; i < midLayer; i++)
         {
-            Vec2 myTranslation = translation;
+            Vec2 myTranslation = translation.clone();
             myTranslation.x = myTranslation.x *(mParralaxXScale[i]);
             myTranslation.y = myTranslation.y *(mParralaxYScale[i]);
             int xStart = -(int)(myTranslation.x/64.0f);
@@ -112,6 +118,7 @@ public class sLevel {
             transY = transY % 64;
             mTiledMap.render(transX,transY, xStart,yStart, xStart+xTiles,yStart+yTiles, i, false);
         }
+        mTiledMap.renderAnimatedLayer(translation.x,translation.y,s.x,s.y);
     }
     public static void renderForeground()
     {
@@ -121,7 +128,7 @@ public class sLevel {
         Vec2 translation = sWorld.getPixelTranslation();
         for (int i = midLayer; i < mTiledMap.getLayerCount(); i++)
         {
-            Vec2 myTranslation = translation;
+            Vec2 myTranslation = translation.clone();
             myTranslation.x = myTranslation.x *(mParralaxXScale[i]);
             myTranslation.y = myTranslation.y *(mParralaxYScale[i]);
             int xStart = -(int)(myTranslation.x/64.0f);
@@ -132,6 +139,6 @@ public class sLevel {
             transY = transY % 64;
             mTiledMap.render(transX,transY, xStart,yStart, xStart+xTiles,yStart+yTiles, i, false);
         }     
-        mTiledMap.renderAnimatedLayer(translation.x,translation.y,s.x,s.y);
+        
     }
 }

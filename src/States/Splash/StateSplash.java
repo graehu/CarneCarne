@@ -15,7 +15,7 @@ public class StateSplash extends BasicTWLGameState{
 
     @Override
     public int getID() {
-        return 0;
+        return 1;
     }
 
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {

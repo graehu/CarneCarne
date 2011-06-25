@@ -125,13 +125,13 @@ class WaterSearcher {
         params.put("Tiles", currentBody);
         params.put("TileType", _tile.id);
         sWorld.useFactory("WaterTileFactory", params);*/
-        sWorld.setWaterHeight(highestSurface);
         while (!currentBody.isEmpty())
         {
             TileNode node = currentBody.pop();
             int x = node.x;
             int y = node.y;
             _tiles[x][y] = new Tile(_tile.id.mId,_tile.id);
+            _tiles[x][y].setWaterHeight(highestSurface);
             _tiles[x][y].createPhysicsBody(x,y);
         }
     }

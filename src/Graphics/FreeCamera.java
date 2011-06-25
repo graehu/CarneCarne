@@ -91,7 +91,7 @@ public class FreeCamera extends iCamera implements iEventListener
     
     public iCamera addPlayer(Body _body)
     {
-        return new BodyCamera(_body, new Rectangle(0,0,800,600), true);
+        return new BodyCamera(_body, mViewPort, true);
     }
 
     public void update() {

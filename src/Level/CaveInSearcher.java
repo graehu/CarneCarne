@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Stack;
 import org.jbox2d.common.Vec2;
+import org.jbox2d.dynamics.Body;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.tiled.TiledMap;
 
@@ -105,22 +106,48 @@ class CaveInSearcher {
     }
     
     ArrayList<CaveIn.Tile> tiles = new ArrayList<CaveIn.Tile>();
+    Body mLastBody = null;
     private void add(int _x, int _y)
     {
         Image image = mTiledMap.getTileImage(_x, _y, mLayerIndex);
-        tiles.add(new CaveIn.Tile(image,new Vec2(_x,_y)));
+        HashMap parameters = new HashMap();
+        parameters.put("isDynamic", true);
+        parameters.put("img", image) ;
+        
+        /// Individual tiles
+        Body body = mTileGrid.get(_x, _y).mRootId.createPhysicsBody(_x, _y, parameters);
+        if (mLastBody != null)
+        {
+            sWorld.weld(body, mLastBody);
+        }
+        mLastBody = body;
+        parameters.put("Body", body);
+        sEntityFactory.create("CaveInTileFactory", parameters);
+        tiles.add(new CaveIn.Tile(image, body, new Vec2(_x,_y)));
+        /// One tile
+        //tiles.add(new CaveIn.Tile(image, null, new Vec2(_x,_y)));
+        
         sWorld.destroyBody(mTileGrid.get(_x, _y).mBody);
         mTileGrid.set(_x, _y, 0);
-        /*tiles.add(new CaveIn.Tile(image,new Vec2(_x+1,_y)));
-        tiles.add(new CaveIn.Tile(image,new Vec2(_x+1,_y+1)));*/
     }
     private void finish()
     {
         if (!tiles.isEmpty())
         {
-            HashMap<String, Object> parameters = new HashMap<String, Object>();
+            /// Individual tiles
+            /*CaveIn.Tile oldTile = null;
+            for (CaveIn.Tile tile: tiles)
+            {
+                if (oldTile != null)
+                {
+                    sWorld.weld(tile.mBody, oldTile.mBody);
+                }
+                oldTile = tile;
+            }*/
+            /// One tile
+            /*HashMap<String, Object> parameters = new HashMap<String, Object>();
             parameters.put("tiles", tiles);
-            sEntityFactory.create("CaveIn", parameters);
+            sEntityFactory.create("CaveIn", parameters);*/
             tiles = new ArrayList<CaveIn.Tile>();
         }
     }

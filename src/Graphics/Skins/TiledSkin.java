@@ -6,7 +6,6 @@ package Graphics.Skins;
 
 import Entities.CaveIn;
 import Entities.CaveIn.Tile;
-import Graphics.sGraphicsManager;
 import World.sWorld;
 import java.util.ArrayList;
 import org.jbox2d.common.Vec2;
@@ -36,7 +35,7 @@ public class TiledSkin implements iSkin
 
     public void setRotation(float _radians)
     {
-        //throw new UnsupportedOperationException("Not supported yet.");
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     

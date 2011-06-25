@@ -4,7 +4,6 @@
  */
 package Level;
 
-import Level.sLevel.TileType;
 import org.newdawn.slick.tiled.TiledMap;
 
 /**
@@ -30,9 +29,9 @@ public class LevelEditor {
         FlagProcessor flagProcessor = new FlagProcessor(_tiledMap);
         flagProcessor = null;
     }
-    public void placeTile(int _x, int _y, TileType _tileType)
+    public void placeTile(int _x, int _y, int _rootId)
     {
-        tileGrid.placeTile(_x, _y, 1);        
+        tileGrid.placeTile(_x, _y, _rootId);        
     }
     public void destroyTile(int _xTile, int _yTile)
     {
@@ -56,4 +55,8 @@ public class LevelEditor {
         
     }
 
+    boolean damageTile(int _x, int _y)
+    {
+        return tileGrid.damageTile(_x, _y);
+    }
 }

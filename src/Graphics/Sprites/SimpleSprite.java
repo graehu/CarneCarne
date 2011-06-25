@@ -4,7 +4,6 @@
  */
 package Graphics.Sprites;
 
-import Graphics.Skins.iSkin;
 import Graphics.Skins.sSkinFactory;
 import java.util.HashMap;
 import org.jbox2d.common.Vec2;
@@ -16,7 +15,6 @@ import org.newdawn.slick.Image;
  */
 public class SimpleSprite extends iSprite
 {
-    protected iSkin mSkin;
     SimpleSprite(Image _image, Vec2 _pos)
     {
         HashMap params = new HashMap();
@@ -28,14 +26,5 @@ public class SimpleSprite extends iSprite
         HashMap params = new HashMap();
         params.put("ref", _ref);
         mSkin = sSkinFactory.create("static", params, true);
-    }
-    public void render(float _x, float y)
-    {
-        mSkin.render(_x, y);
-    }
-    
-    public void setRotation(float _radians)
-    {
-        mSkin.setRotation(_radians);
     }
 }

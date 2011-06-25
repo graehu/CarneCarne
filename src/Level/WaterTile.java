@@ -21,15 +21,13 @@ class WaterTile extends RootTile {
 
     public WaterTile(int _rootId, TileType _tileType)
     {
-        super(TileShape.eBlock, _rootId, _tileType, false);
+        super(TileShape.eBlock, _rootId, _tileType, false, false, -1);
     }
 
-    Body createPhysicsBody(int _xTile, int _yTile)
+    Body createPhysicsBody(int _xTile, int _yTile, HashMap _parameters)
     {
-        HashMap parameters = new HashMap();
-        parameters.put("position", new Vec2(_xTile,_yTile));
-        parameters.put("TileType", mTileType);
-        return sWorld.useFactory("WaterTileFactory",parameters);
+        _parameters.put("position", new Vec2(_xTile,_yTile));
+        return sWorld.useFactory("WaterTileFactory",_parameters);
     }
     public Fixture createFixture(int _xTile, int _yTile)
     {

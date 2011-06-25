@@ -4,6 +4,8 @@
  */
 package Level;
 
+import Level.sLevel.TileType;
+import java.util.HashMap;
 import java.util.Stack;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.Fixture;
@@ -17,10 +19,24 @@ public class Tile {
     RootTile mRootId;
     int mId;
     Body mBody;
+    int mHealth; /// Aliases as water height
     public Tile(int _id, RootTile _rootId)
     {
         mId = _id;
         mRootId = _rootId;
+        mHealth = mRootId.mMaxHealth;
+    }
+    public TileType getTileType()
+    {
+        return mRootId.mTileType;
+    }
+    public int getRootId()
+    {
+        return mRootId.mId;
+    }
+    public Tile clone()
+    {
+        return new Tile(mId, mRootId);
     }
     enum Direction
     {
@@ -30,9 +46,19 @@ public class Tile {
         eFromDown,
         eDirectionsMax
     }
+    public int getWaterHeight()
+    {
+        return mHealth;
+    }
+    public void setWaterHeight(int _height)
+    {
+        mHealth = _height;
+    }
     public void createPhysicsBody(int _xTile, int _yTile)
     {
-        mBody = mRootId.createPhysicsBody(_xTile, _yTile);
+        HashMap parameters = new HashMap();
+        parameters.put("Tile", this);
+        mBody = mRootId.createPhysicsBody(_xTile, _yTile, parameters);
     }
     public Fixture createFixture(int _xTile, int _yTile)
     {
