@@ -229,20 +229,6 @@ public class sWorld
         def.dampingRatio = 1.0f; /// Reduce these to make his tongue springy
         return (DistanceJoint)mWorld.createJoint(def);
     }
-    public static void weld(Body _bodyA, Body _bodyB)
-    {
-        /*PrismaticJointDef def = new PrismaticJointDef();
-        def.initialize(_bodyA, _bodyB, _bodyA.getPosition(), _bodyA.getPosition().sub(_bodyB.getPosition()));
-        mWorld.createJoint(def);*/
-        //PrismaticJointDef joint = new PrismaticJointDef();
-        //joint.initialize(_bodyA, _bodyB, null, null);
-        WeldJointDef def = new WeldJointDef();
-        def.initialize(_bodyA, _bodyB,_bodyA.getWorldPoint(new Vec2(0,0)));
-        def.bodyA = _bodyA;
-        def.bodyB = _bodyB;
-        def.collideConnected = true;
-        WeldJoint joint = (WeldJoint)mWorld.createJoint(def);
-    }
     public static void destroyBody(Body _body)
     {
         mWorld.destroyBody(_body);

@@ -31,7 +31,7 @@ public class sLevel {
         eSpikes,
         eTileTypesMax,
     }
-    public TileType getTileType(int _id)
+    public static TileType getTileType(int _id)
     {
         return mLevelEditor.getTileType(_id);
     }
@@ -42,7 +42,7 @@ public class sLevel {
     private static int layerIndex;  
     private static int midLayer; 
     private static int xTiles, yTiles;
-    private enum PathInfo
+    public enum PathInfo
     {
         eNotPassable,
         eAir,
@@ -51,15 +51,16 @@ public class sLevel {
         ePathable
     };
     
-    public int getTileSizeInMetres()
+    public static int getTileSizeInMetres()
     {
+        int happy = mTiledMap.getTileId(1, 1, layerIndex);
         return 1; //just incase we want to make tiles smaller than a meter.
     }
     
-    static PathInfo getPathInfo(int _xTile, int _yTile)
+    public static PathInfo getPathInfo(int _xTile, int _yTile)
     {
-        int id = mTiledMap.getTileId(_xTile, _yTile, layerIndex);
-        if (id == 0)
+        TileType type = mLevelEditor.getTileType(_xTile,_yTile);
+        if (type == TileType.eTileTypesMax)
         {
             return PathInfo.eAir;
         }

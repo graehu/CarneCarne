@@ -47,7 +47,7 @@ public class PlayerEntity extends AIEntity {
     protected void subUpdate()
     {
         if (mDeathJoint != null)
-        {
+        {//when player is within half a tile of checkpoint destroy joint
             if (compareFloat(mBody.getPosition().x, mCheckPoint.x, 0.5f) && compareFloat(mBody.getPosition().y, mCheckPoint.y, 0.5f))
             {
                 sWorld.destroyMouseJoint(mDeathJoint);

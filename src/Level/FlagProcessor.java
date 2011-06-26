@@ -48,7 +48,7 @@ public class FlagProcessor
                 else if (spawn.equals("SeeSaw"))
                 {
                     Vec2 dimensions = new Vec2(0,0);
-                    dimensions.x = new Float(_tiledMap.getTileProperty(id, "Width", "2.0"));
+                    dimensions.x = new Float(_tiledMap.getTileProperty(id, "Width", "3.0"));
                     dimensions.y = new Float(_tiledMap.getTileProperty(id, "Height", "1.0"));
                     parameters.put("dimensions",dimensions);
                     parameters.put("ref",_tiledMap.getTileProperty(id, "Image","Error, image not defined"));

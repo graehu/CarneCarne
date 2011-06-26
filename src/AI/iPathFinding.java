@@ -10,14 +10,14 @@ package AI;
  */
 public interface iPathFinding 
 { 
-    enum Instruction
+    enum Command
     {
         eWalkLeft,
         eWalkRight,
         eStandStill,
         eInstructionMax
     }
-    public void updatePosition(int x, int y, int x2, int y2);
+    public void updatePosition(int _xNow, int _yNow, int _xDest, int _yDest);
     
-    public Instruction follow();
+    public Command follow();
 }
