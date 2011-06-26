@@ -55,6 +55,17 @@ public class FlagProcessor
                     parameters.put("position",new Vec2(i,ii));
                     sEntityFactory.create("SeeSaw", parameters);
                 }
+                else if (spawn.equals("Platform"))
+                {
+                    Vec2 dimensions = new Vec2(0,0);
+                    dimensions.x = new Float(_tiledMap.getTileProperty(id, "Width", "3.0"));
+                    dimensions.y = new Float(_tiledMap.getTileProperty(id, "Height", "1.0"));  
+                    parameters.put("dimensions",dimensions);   
+                    parameters.put("ref",_tiledMap.getTileProperty(id, "Image","Error, image not defined")); 
+                    parameters.put("position",new Vec2(i,ii));
+                    parameters.put("Type",_tiledMap.getTileProperty(id, "Type", "Error, platform type not defined"));
+                    sEntityFactory.create("MovingPlatform", parameters);              
+                }
             }
         }
         while (!playerPositions.isEmpty())

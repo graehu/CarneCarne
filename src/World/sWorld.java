@@ -70,6 +70,7 @@ public class sWorld
         factories.put("TileArrayFactory", new TileArrayFactory());
         factories.put("CheckPointFactory", new CheckPointFactory());
         factories.put("SeeSawBodyFactory", new SeeSawBodyFactory());
+        factories.put("MovingPlatformBodyFactory", new MovingPlatformBodyFactory());
         mCamera = new FreeCamera( new Rectangle(0,0,sGraphicsManager.getTrueScreenDimensions().x, sGraphicsManager.getTrueScreenDimensions().y));        
     }
     
