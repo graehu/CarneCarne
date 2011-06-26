@@ -10,7 +10,6 @@ import Events.MapClickReleaseEvent;
 import Events.RightStickEvent;
 import Events.ShoulderButtonEvent;
 import Events.sEvents;
-import World.sWorld;
 import org.jbox2d.common.Vec2;
 import org.newdawn.slick.Input;
 
@@ -35,6 +34,7 @@ public class XBoxController
     static private float stickEpsilon = 0.1f; /// TWEAK
     static private float shoulderButtonEpsilon = 0.3f;
     private boolean xAxisHit = false;
+    private boolean mLeftShoulderButton = false, mRightShoulderButton = false;
     //private boolean yAxisHit = false;
     private enum TriggerState
     {
@@ -56,17 +56,33 @@ public class XBoxController
         //get player direction
         Vec2 rightStick = new Vec2(_input.getAxisValue(mPlayer, 3),_input.getAxisValue(mPlayer, 2));
         
+        //handle ABXY buttons
         if(_input.isButtonPressed(0, mPlayer)) //jump
             sEvents.triggerEvent(new KeyDownEvent('w', mPlayer));
-        if(_input.isButtonPressed(5, mPlayer)) //tongue
-            sEvents.triggerEvent(new ShoulderButtonEvent(rightStick,true, mPlayer));
-        else//on release
-            sEvents.triggerEvent(new MapClickReleaseEvent(rightStick,true, mPlayer)); //spit
-        if(_input.isButtonPressed(4, mPlayer)) //spit
-            sEvents.triggerEvent(new ShoulderButtonEvent(rightStick,false, mPlayer));
-        else //on release
-            sEvents.triggerEvent(new MapClickReleaseEvent(rightStick,false, mPlayer)); 
         
+        //handle shoulder buttons
+        if(_input.isButtonPressed(5, mPlayer)) //tongue 
+        {
+            sEvents.triggerEvent(new ShoulderButtonEvent(rightStick,true, mPlayer));
+            mRightShoulderButton = true;
+        }
+        else if(mRightShoulderButton)//on release
+        {
+            mRightShoulderButton = false;
+            sEvents.triggerEvent(new MapClickReleaseEvent(rightStick,true, mPlayer));
+        }
+        if(_input.isButtonPressed(4, mPlayer)) //spit
+        {
+            sEvents.triggerEvent(new ShoulderButtonEvent(rightStick,false, mPlayer));
+            mLeftShoulderButton = true;
+        }
+        else if(mLeftShoulderButton)//on release
+        {
+            mLeftShoulderButton = false;
+            sEvents.triggerEvent(new MapClickReleaseEvent(rightStick,false, mPlayer)); 
+        }
+        
+        //handle shoulder triggers
         float xAxis = _input.getAxisValue(mPlayer, 1);
         if (xAxisHit)
         {
@@ -102,7 +118,7 @@ public class XBoxController
             sEvents.triggerEvent(new RightStickEvent(rightStick, mPlayer));
         }        
     }
-    //statemachine required to determine releases
+    //statemachine required to determine releases for triggers
     private void changeState(TriggerState _newState, Vec2 _rightStick)
     {
         switch (mTriggerState) /// Old

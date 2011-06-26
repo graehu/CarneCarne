@@ -75,9 +75,8 @@ public class BodyCamera extends iCamera {
     protected void calculatePosition()
     {
         mPosition = mBody.getPosition();
-        mPosition = mPosition.add(new Vec2(1.0f,1.0f));
         Vec2 s = sGraphicsManager.getScreenDimensions();
-        mTranslation = new Vec2(( (s.x/2)/64.0f) + 1.0f, ((s.y/2)/64.0f) + 1.0f);
+        mTranslation = new Vec2(( (s.x/2)/64.0f), ((s.y/2)/64.0f));
         if (mPosition.x < mTranslation.x)
         {
             mTranslation.x -= ((mTranslation.x)-mPosition.x);

@@ -4,6 +4,7 @@
  */
 package World;
 
+import Utils.Jbox2DUtils;
 import java.util.HashMap;
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Vec2;
@@ -35,9 +36,10 @@ class SeeSawBodyFactory implements iPhysicsFactory {
         Body body = _world.createBody(def);
         FixtureDef fixture = new FixtureDef();
         fixture.density = 1.0f;
+        fixture.filter.categoryBits = (1 << sWorld.BodyCategories.eSpatTiles.ordinal());
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(dimensions.x*0.5f, dimensions.y*0.5f);
-        fixture.shape = shape;
+        fixture.shape = shape;       
         body.createFixture(fixture);
         return body;
     }

@@ -237,7 +237,7 @@ public class sWorld
         def.initialize(_bodyA, _bodyB, _bodyA.getPosition(), _bodyA.getPosition().sub(_bodyB.getPosition()));
         mWorld.createJoint(def);*/
         WeldJointDef def = new WeldJointDef();
-        def.initialize(_bodyA, _bodyB, new Vec2(0,0));
+        def.initialize(_bodyA, _bodyB, new Vec2(0.0f,0.0f));
         def.bodyA = _bodyA;
         def.bodyB = _bodyB;
         def.collideConnected = true;
