@@ -9,6 +9,7 @@ import java.util.Stack;
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
+import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.Fixture;
 import org.jbox2d.dynamics.FixtureDef;
 
@@ -74,13 +75,20 @@ abstract public class SlopeTile extends RootTile{
         }
         shape.m_centroid.x = _xTile;
         shape.m_centroid.y = _yTile;
+        for (int i = 0; i < shape.m_vertexCount; ++i)
+        {
+            shape.m_vertices[i] = shape.m_vertices[i].add(shape.m_centroid);
+        }
         FixtureDef fixture = new FixtureDef();
         fixture.shape = shape;
-        fixture.filter.groupIndex = mTileType.ordinal();
+        //fixture.filter.groupIndex = mTileType.ordinal();
         fixture.filter.categoryBits = (1 << BodyCategories.eEdibleTiles.ordinal());
         fixture.filter.maskBits = Integer.MAX_VALUE;
-        fixture.density = 1.0f;
-        //def.userData = _entity;
+        if (_body.m_type.equals(BodyType.DYNAMIC))
+        {
+            fixture.density = 1.0f;
+        }
+        fixture.userData = _tile;
         return _body.createFixture(fixture);
     }
     public Fixture createFixture(int _xTile, int _yTile)
