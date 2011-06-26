@@ -122,16 +122,16 @@ public class PlayerInputController extends iAIController implements iEventListen
             switch(dir)
             {
                 case 0: //north facing
-                    sLevel.placeTile(playerTileX, playerTileY+1, _tile.getRootId());
+                    _tile.getTileGrid().placeTile(playerTileX, playerTileY+1, _tile.getRootId());
                     break;
                 case 1: //east facing
-                    sLevel.placeTile(playerTileX+1, playerTileY, _tile.getRootId());                 
+                    _tile.getTileGrid().placeTile(playerTileX+1, playerTileY, _tile.getRootId());                 
                     break;
                 case 2: //south facing
-                    sLevel.placeTile(playerTileX, playerTileY-1, _tile.getRootId());
+                    _tile.getTileGrid().placeTile(playerTileX, playerTileY-1, _tile.getRootId());
                     break;
                 case 3: //west facing
-                    sLevel.placeTile(playerTileX-1, playerTileY, _tile.getRootId());
+                    _tile.getTileGrid().placeTile(playerTileX-1, playerTileY, _tile.getRootId());
                     break;
             }
         }     

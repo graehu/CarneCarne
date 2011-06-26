@@ -6,43 +6,53 @@ package Level;
 
 import Level.Tile.Direction;
 import Level.sLevel.TileType;
+import World.sWorld;
+import java.util.HashMap;
 import java.util.Stack;
-import org.newdawn.slick.tiled.TiledMap;
+import org.jbox2d.dynamics.Body;
 
 /**
  *
- * @author A203946
+ * @author alasdair
  */
-public class TileGrid {
+abstract public class TileGrid {
     
-    private Tile[][] mTiles;
-    private TiledMap tiledMap;
-    private RootTileList rootTiles;
-    private int layerIndex;
-    //private static PriorityQueue<RegrowingTile> regrowingTiles;
+    Tile[][] mTiles;
+    RootTileList rootTiles;
     private TileRegrowth regrowingTiles;
-    public TileGrid(TiledMap _tiledMap, RootTileList _rootTiles, int _layerIndex)
+    private int mWidth, mHeight;
+    Body mBody;
+    abstract int getTileId(int _x, int _y);
+    abstract void setTileId(int _x, int _y, int _id);
+    abstract void createPhysicsBody(int _x, int _y, Tile _tile);
+    abstract void caveInSearch(int _x, int _y);
+    abstract public void destroyTile(int _x, int _y);
+    public TileGrid(RootTileList _rootTiles, int _width, int _height)
     {
-        tiledMap = _tiledMap;
         rootTiles = _rootTiles;
-        layerIndex = _layerIndex;
-        WaterSearcher waterSearcher = new WaterSearcher(_tiledMap.getWidth(),_tiledMap.getHeight());
-        mTiles = new Tile[_tiledMap.getWidth()][_tiledMap.getHeight()];
-        for (int i = 0; i < _tiledMap.getWidth(); i++)
+        mTiles = new Tile[_width][_height];
+        mWidth = _width;
+        mHeight = _height;
+    }
+    
+    protected void init(HashMap _parameters)
+    {
+        mBody = sWorld.useFactory("TileFactory", _parameters);
+        WaterSearcher waterSearcher = new WaterSearcher(mWidth,mHeight, this);
+        for (int i = 0; i < mWidth; i++)
         {
-            for (int ii = 0; ii < _tiledMap.getHeight(); ii++)
+            for (int ii = 0; ii < mHeight; ii++)
             {
-                int id = _tiledMap.getTileId(i, ii, layerIndex);
-                if (_rootTiles.get(id).mTileType.equals(TileType.eWater))
+                int id = getTileId(i, ii);
+                if (rootTiles.get(id).mTileType.equals(TileType.eWater))
                 {
-                    waterSearcher.addTile(i,ii,_rootTiles.get(id));
-                    //mTiles[i][ii] = new Tile(id,_rootTiles.get(id));
-                    //mTiles[i][ii].createPhysicsBody(i, ii);
+                    waterSearcher.addTile(i,ii,rootTiles.get(id));
                 }
                 else
                 {
-                    mTiles[i][ii] = new Tile(id,_rootTiles.get(id));
-                    mTiles[i][ii].createPhysicsBody(i, ii);
+                    mTiles[i][ii] = new Tile(id,rootTiles.get(id),this,i,ii);
+                    createPhysicsBody(i, ii, mTiles[i][ii]);
+                    //mTiles[i][ii].createPhysicsBody(i, ii);
                 }
             }
         }
@@ -52,9 +62,9 @@ public class TileGrid {
         {
             for (int ii = 0; ii < mTiles[0].length; ii++)
             {
-                if (i > 0 && ii > 0 && i < _tiledMap.getWidth()-1 && ii <_tiledMap.getHeight()-1)
+                if (i > 0 && ii > 0 && i < mWidth-1 && ii < mHeight-1)
                 {
-                    mTiles[i][ii].checkEdges(i, ii, stack, this);
+                    mTiles[i][ii].checkEdges(stack, this);
                 }
             }
         }
@@ -63,13 +73,12 @@ public class TileGrid {
             int id = stack.pop();
             int yTile = stack.pop();
             int xTile = stack.pop();
-            _tiledMap.setTileId(xTile, yTile, _layerIndex, id);
+            setTileId(xTile, yTile, id);
         }
-        //regrowingTiles = new PriorityQueue<RegrowingTile>(10, new TileComparer());
-        regrowingTiles = new TileRegrowth(this,_tiledMap.getWidth(),_tiledMap.getHeight());
+        regrowingTiles = new TileRegrowth(this,mWidth,mHeight);
     }
 
-    boolean damageTile(int _x, int _y)
+    public boolean damageTile(int _x, int _y)
     {
         Tile tile = mTiles[_x][_y];
         if (tile.mHealth > 1)
@@ -78,13 +87,13 @@ public class TileGrid {
             tile.mHealth--;
             tile.mRootId = rootTiles.get(tile.mId);
             Stack<Integer> stack = new Stack<Integer>();
-            mTiles[_x][_y].checkEdges(_x,_y, stack, this);
+            mTiles[_x][_y].checkEdges(stack, this);
             while (!stack.empty())
             {
                 int id = stack.pop();
                 int yTile = stack.pop();
                 int xTile = stack.pop();
-                tiledMap.setTileId(xTile, yTile, layerIndex, id);
+                setTileId(xTile, yTile, id);
             }
             return false;
         }
@@ -98,47 +107,48 @@ public class TileGrid {
     {
         mTiles[_x][_y].mId = _rootId;
         mTiles[_x][_y].mRootId = rootTiles.get(_rootId);
-        mTiles[_x][_y].createPhysicsBody(_x, _y);
         int x;
         int y;
         Stack<Integer> stack = new Stack<Integer>();
 
         x = _x;
         y = _y;
-        mTiles[x][y].checkEdges(x, y, stack, this);
+        mTiles[x][y].checkEdges(stack, this);
         x = _x-1;
         y = _y;
-        mTiles[x][y].checkEdges(x, y, stack, this);
+        mTiles[x][y].checkEdges(stack, this);
         x = _x+1;
         y = _y;
-        mTiles[x][y].checkEdges(x, y, stack, this);
+        mTiles[x][y].checkEdges(stack, this);
         x = _x;
         y = _y-1;
-        mTiles[x][y].checkEdges(x, y, stack, this);
+        mTiles[x][y].checkEdges(stack, this);
         x = _x;
         y = _y+1;
-        mTiles[x][y].checkEdges(x, y, stack, this);
+        mTiles[x][y].checkEdges(stack, this);
         while (!stack.empty())
         {
             int id = stack.pop();
             int yTile = stack.pop();
             int xTile = stack.pop();
-            tiledMap.setTileId(xTile, yTile, layerIndex, id);
+            setTileId(xTile, yTile, id);
         }
+        createPhysicsBody(_x, _y, mTiles[_x][_y]);
     }
     void set(int _x, int _y, int _gid)
     {
-        tiledMap.setTileId(_x, _y, layerIndex, _gid);
+        setTileId(_x, _y, _gid);
         mTiles[_x][_y].mId = _gid;
         mTiles[_x][_y].mRootId = rootTiles.get(_gid);
         
     }
-    public void destroyTile(int _x, int _y)
+    protected void destroyTileImplementation(int _x, int _y)
     {
         Stack<Integer> stack = new Stack<Integer>();
         
         if (mTiles[_x][_y].mRootId.mRegrows)
             regrowingTiles.add(_x,_y, mTiles[_x][_y].mRootId);
+        //mBody.destroyFixture(mTiles[_x][_y].mFixture);
         
         set(_x,_y,0);
         
@@ -147,25 +157,51 @@ public class TileGrid {
         
         x = _x-1;
         y = _y;
-        mTiles[x][y].checkEdges(x, y, stack, this);
+        try
+        {
+            mTiles[x][y].checkEdges(stack, this);
+        }
+        catch (ArrayIndexOutOfBoundsException e)
+        {
+        }
         x = _x+1;
         y = _y;
-        mTiles[x][y].checkEdges(x, y, stack, this);
+        
+        try
+        {
+            mTiles[x][y].checkEdges(stack, this);
+        }
+        catch (ArrayIndexOutOfBoundsException e)
+        {
+        }
         x = _x;
         y = _y-1;
-        mTiles[x][y].checkEdges(x, y, stack, this);
+        
+        try
+        {
+            mTiles[x][y].checkEdges(stack, this);
+        }
+        catch (ArrayIndexOutOfBoundsException e)
+        {
+        }
         x = _x;
         y = _y+1;
-        mTiles[x][y].checkEdges(x, y, stack, this);
+        
+        try
+        {
+            mTiles[x][y].checkEdges(stack, this);
+        }
+        catch (ArrayIndexOutOfBoundsException e)
+        {
+        }
         while (!stack.empty())
         {
             int id = stack.pop();
             int yTile = stack.pop();
             int xTile = stack.pop();
-            tiledMap.setTileId(xTile, yTile, layerIndex, id);
+            setTileId(xTile, yTile, id);
         }
-        /*CaveInSearcher search = new CaveInSearcher(this, tiledMap, layerIndex);
-        search.destroy(_x, _y);*/
+        caveInSearch(_x, _y);
     }
     
     public Tile get(int _x, int _y)
@@ -177,64 +213,5 @@ public class TileGrid {
     {
         Tile tile = get(_xTile, _yTile);
         return tile.mRootId.boundaryFrom(_direction, _tileType, mMaterialEdges);
-        /*TileShape shape = tile.mRootId.mShape;
-        switch (shape)
-        {
-            case eEmpty:
-            {
-                return false;
-            }
-            case eBlock:
-            {
-                //return mMaterialEdges.check(_tileType, tile.mRootId.mTileType);
-                return tile.mRootId.boundaryFrom(_direction, _tileType, mMaterialEdges);
-            }
-            case eSlope:
-            {
-                return tile.mRootId.boundaryFrom(_direction, _tileType, mMaterialEdges);
-                //return mMaterialEdges.check(_tileType, tile.mRootId.mTileType);
-            }
-            case eUndefined:
-            {
-                return false;
-            }
-        }*/
-        /*int slope = tile.mRootId.mSlopeType;
-        switch (slope)
-        {
-            case 0:
-            {
-                if (_direction == Direction.eFromDown || _direction == Direction.eFromLeft)
-                {
-                    return mMaterialEdges.check(_tileType, tile.mRootId.mTileType);
-                }
-                return false;
-            }
-            case 1:
-            {
-                if (_direction == Direction.eFromDown || _direction == Direction.eFromRight)
-                {
-                    return mMaterialEdges.check(_tileType, tile.mRootId.mTileType);
-                }
-                return false;
-            }
-            case 2:
-            {
-                if (_direction == Direction.eFromUp || _direction == Direction.eFromRight)
-                {
-                    return mMaterialEdges.check(_tileType, tile.mRootId.mTileType);
-                }
-                return false;
-            }
-            case 3:
-            {
-                if (_direction == Direction.eFromUp || _direction == Direction.eFromLeft)
-                {
-                    return mMaterialEdges.check(_tileType, tile.mRootId.mTileType);
-                }
-                return false;
-            }
-        }*/
-        //return false;
     }
 }

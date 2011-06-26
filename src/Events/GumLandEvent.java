@@ -4,6 +4,7 @@
  */
 package Events;
 
+import Level.Tile;
 import Level.sLevel;
 import World.sWorld;
 import org.jbox2d.dynamics.Body;
@@ -16,13 +17,15 @@ public class GumLandEvent extends iEvent {
 
     int x, y;
     Body mBody;
+    Tile mTile;
     int mRootId;
-    public GumLandEvent(int _x, int _y, Body _body, int _rootId)
+    public GumLandEvent(int _x, int _y, Body _body, int _rootId, Tile _tile)
     {
         x = _x;
         y = _y;
         mBody = _body;
         mRootId = _rootId;
+        mTile = _tile;
     }
     public String getName()
     {
@@ -36,7 +39,7 @@ public class GumLandEvent extends iEvent {
     
     public void process()
     {
-        sLevel.placeTile(x, y, mRootId);
+        mTile.getTileGrid().placeTile(x, y, mRootId);
         sWorld.destroyBody(mBody);
     }
     

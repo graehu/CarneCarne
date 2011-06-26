@@ -7,11 +7,14 @@ package Level;
 import Level.Tile.Direction;
 import Level.sLevel.TileType;
 import World.sWorld;
+import World.sWorld.BodyCategories;
 import java.util.HashMap;
 import java.util.Stack;
+import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.Fixture;
+import org.jbox2d.dynamics.FixtureDef;
 
 /**
  *
@@ -29,6 +32,20 @@ class WaterTile extends RootTile {
         _parameters.put("position", new Vec2(_xTile,_yTile));
         return sWorld.useFactory("WaterTileFactory",_parameters);
     }
+    @Override
+    Fixture createPhysicsBody(int _xTile, int _yTile, Body _body, Tile _tile)
+    {
+        PolygonShape shape = new PolygonShape();
+        shape.setAsBox(0.5f, 0.5f, new Vec2((_xTile),(_yTile)), 0);
+        FixtureDef fixture = new FixtureDef();
+        fixture.shape = shape;
+        fixture.isSensor = true;
+        fixture.userData = _tile;
+        fixture.filter.categoryBits = (1 << BodyCategories.eWater.ordinal());
+        fixture.filter.maskBits = Integer.MAX_VALUE;
+        
+        return _body.createFixture(fixture);
+    }
     public Fixture createFixture(int _xTile, int _yTile)
     {
         return null;
@@ -43,5 +60,6 @@ class WaterTile extends RootTile {
     {
         return _materialEdges.check(_tileType, mTileType);
     }
+
     
 }

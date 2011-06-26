@@ -6,8 +6,8 @@ package Entities;
 
 import Graphics.Skins.iSkin;
 import Graphics.Skins.sSkinFactory;
-import World.sWorld;
 import java.util.HashMap;
+import org.jbox2d.dynamics.Body;
 
 /**
  *
@@ -23,7 +23,7 @@ class CaveInFactory implements iEntityFactory
         iSkin skin = sSkinFactory.create("tiled", _parameters, false);
         CaveIn entity = new CaveIn(skin);
         _parameters.put("entity", entity);
-        entity.mBody = sWorld.useFactory("TileArrayFactory", _parameters);
+        entity.mBody = (Body)_parameters.get("body");
         return entity;
     }
     

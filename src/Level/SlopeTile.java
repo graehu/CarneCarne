@@ -5,11 +5,15 @@
 package Level;
 
 import World.sWorld;
+import World.sWorld.BodyCategories;
 import java.util.HashMap;
 import java.util.Stack;
+import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
+import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.Fixture;
+import org.jbox2d.dynamics.FixtureDef;
 
 /**
  *
@@ -27,6 +31,66 @@ abstract public class SlopeTile extends RootTile{
         _parameters.put("TileType", mTileType);
         _parameters.put("slopeType",mSlopeType);
         return sWorld.useFactory("SlopeFactory",_parameters);
+    }
+    @Override
+    Fixture createPhysicsBody(int _xTile, int _yTile, Body _body, Tile _tile)
+    {
+        PolygonShape shape = new PolygonShape();
+        shape.m_vertexCount = 3;
+        float hx = 0.5f;
+        float hy = 0.5f;
+        switch (mSlopeType)
+        {
+            case 0:
+            {
+                shape.m_vertices[0] = new Vec2(-hx, -hy);
+                shape.m_vertices[1] = new Vec2( hx, hy);
+                shape.m_vertices[2] = new Vec2(-hx, hy);
+                shape.m_normals[0] = new Vec2(1.0f/1.414f, -1.0f/1.414f);
+                shape.m_normals[1] = new Vec2(0.0f, 1.0f);
+                shape.m_normals[2] = new Vec2(-1.0f, 0.0f);
+                break;
+            }
+            case 1:
+            {
+                shape.m_vertices[0] = new Vec2( hx, -hy);
+                shape.m_vertices[1] = new Vec2( hx, hy);
+                shape.m_vertices[2] = new Vec2(-hx, hy);
+                shape.m_normals[0] = new Vec2(1.0f, 0.0f);
+                shape.m_normals[1] = new Vec2(0.0f, 1.0f);
+                shape.m_normals[2] = new Vec2(-1.0f/1.414f, -1.0f/1.414f);
+                break;
+            }
+            case 2:
+            {
+                shape.m_vertices[0] = new Vec2(-hx, -hy);
+                shape.m_vertices[1] = new Vec2( hx, -hy);
+                shape.m_vertices[2] = new Vec2( hx, hy);
+                shape.m_normals[0] = new Vec2(0.0f, -1.0f);
+                shape.m_normals[1] = new Vec2(1.0f, 0.0f);
+                shape.m_normals[2] = new Vec2(-1.0f/1.414f, 1.0f/1.414f);
+                break;
+            }
+            case 3:
+            {
+                shape.m_vertices[0] = new Vec2(-hx, -hy);
+                shape.m_vertices[1] = new Vec2( hx, -hy);
+                shape.m_vertices[2] = new Vec2(-hx, hy);
+                shape.m_normals[0] = new Vec2(0.0f, -1.0f);
+                shape.m_normals[1] = new Vec2(1.0f/1.414f, 1.0f/1.414f);
+                shape.m_normals[2] = new Vec2(-1.0f, 0.0f);
+                break;
+            }
+        }
+        shape.m_centroid.x = _xTile;
+        shape.m_centroid.y = _yTile;
+        FixtureDef fixture = new FixtureDef();
+        fixture.shape = shape;
+        fixture.filter.groupIndex = mTileType.ordinal();
+        fixture.filter.categoryBits = (1 << BodyCategories.eEdibleTiles.ordinal());
+        fixture.filter.maskBits = Integer.MAX_VALUE;
+        //def.userData = _entity;
+        return _body.createFixture(fixture);
     }
     public Fixture createFixture(int _xTile, int _yTile)
     {

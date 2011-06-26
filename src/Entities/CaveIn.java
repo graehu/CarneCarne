@@ -8,8 +8,6 @@ import Graphics.Skins.iSkin;
 import Graphics.sGraphicsManager;
 import World.sWorld;
 import org.jbox2d.common.Vec2;
-import org.jbox2d.dynamics.Body;
-import org.newdawn.slick.Image;
 
 /**
  *
@@ -17,18 +15,6 @@ import org.newdawn.slick.Image;
  */
 public class CaveIn extends Entity
 {
-    public static class Tile
-    {
-        public Image mImage;
-        public Vec2 mPosition;
-        public Body mBody;
-        public Tile(Image _image, Body _body, Vec2 _position)
-        {
-            mImage = _image;
-            mBody = _body;
-            mPosition = _position;
-        }
-    }
     CaveIn(iSkin _skin)
     {
         super(_skin);

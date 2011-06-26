@@ -28,8 +28,10 @@ class WaterSearcher {
     }
     private boolean flags[][];
     private LinkedList<WaterTile> tiles;
-    public WaterSearcher(int _width, int _height)
+    private TileGrid mTileGrid;
+    public WaterSearcher(int _width, int _height, TileGrid _tileGrid)
     {
+        mTileGrid = _tileGrid;
         flags = new boolean[_width][_height];
         for (int i = 0; i < _width; i++)
             for (int ii = 0; ii < _height; ii++)
@@ -130,9 +132,9 @@ class WaterSearcher {
             TileNode node = currentBody.pop();
             int x = node.x;
             int y = node.y;
-            _tiles[x][y] = new Tile(_tile.id.mId,_tile.id);
+            _tiles[x][y] = new Tile(_tile.id.mId,_tile.id,mTileGrid,x,y);
             _tiles[x][y].setWaterHeight(highestSurface);
-            _tiles[x][y].createPhysicsBody(x,y);
+            _tiles[x][y].createPhysicsBody(mTileGrid.mBody);
         }
     }
 }

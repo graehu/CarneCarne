@@ -11,7 +11,6 @@ import Graphics.FreeCamera;
 import Graphics.iCamera;
 import Graphics.sGraphicsManager;
 import Level.Tile;
-import Level.sLevel;
 import Level.sLevel.TileType;
 import java.util.HashMap;
 import org.jbox2d.callbacks.RayCastCallback;
@@ -139,11 +138,11 @@ public class sWorld
                 case eGum:
                 case eMelonFlesh:
                 {
-                    tile = tile.clone();
-                    mWorld.destroyBody(callback.getFixture().m_body);
-                    if (callback.getFixture().m_filter.categoryBits != (1 << BodyCategories.eSpatTiles.ordinal()))
-                        sLevel.destroyTile((int)callback.getFixture().m_body.getPosition().x, (int)callback.getFixture().m_body.getPosition().y);
                     sEvents.triggerEvent(new TileDestroyedEvent((int)callback.getFixture().m_body.getPosition().x, (int)callback.getFixture().m_body.getPosition().y));
+                    tile.destroyFixture();
+                    tile = tile.clone();
+                    //if (callback.getFixture().m_filter.categoryBits != (1 << BodyCategories.eSpatTiles.ordinal()))
+                    //    tile.getTileGrid().destroyTile((int)callback.getFixture().m_body.getPosition().x, (int)callback.getFixture().m_body.getPosition().y);
                     break;
                 }
                 case eSwingable:
@@ -172,11 +171,11 @@ public class sWorld
             {
                 case eSwingable:
                 {
-                    if (sLevel.damageTile((int)callback.getFixture().m_body.getPosition().x, (int)callback.getFixture().m_body.getPosition().y))
+                    if (tile.getTileGrid().damageTile((int)callback.getFixture().m_body.getPosition().x, (int)callback.getFixture().m_body.getPosition().y))
                     {
-                        mWorld.destroyBody(callback.getFixture().m_body);
-                        sLevel.destroyTile((int)callback.getFixture().m_body.getPosition().x, (int)callback.getFixture().m_body.getPosition().y);
+                        //tile.getTileGrid().destroyTile((int)callback.getFixture()..getPosition().x, (int)callback.getFixture().m_body.getPosition().y);
                         sEvents.triggerEvent(new TileDestroyedEvent((int)callback.getFixture().m_body.getPosition().x, (int)callback.getFixture().m_body.getPosition().y));
+                        tile.destroyFixture();
                     }
                     break;
                 }
@@ -184,9 +183,9 @@ public class sWorld
                 case eIce:
                 case eMelonSkin:
                 {
-                    mWorld.destroyBody(callback.getFixture().m_body);
-                    sLevel.destroyTile((int)callback.getFixture().m_body.getPosition().x, (int)callback.getFixture().m_body.getPosition().y);
+                    //tile.getTileGrid().destroyTile((int)callback.getFixture().m_body.getPosition().x, (int)callback.getFixture().m_body.getPosition().y);
                     sEvents.triggerEvent(new TileDestroyedEvent((int)callback.getFixture().m_body.getPosition().x, (int)callback.getFixture().m_body.getPosition().y));
+                    tile.destroyFixture();
                     break;
                 }
                 case eEmpty:
@@ -236,8 +235,10 @@ public class sWorld
         /*PrismaticJointDef def = new PrismaticJointDef();
         def.initialize(_bodyA, _bodyB, _bodyA.getPosition(), _bodyA.getPosition().sub(_bodyB.getPosition()));
         mWorld.createJoint(def);*/
+        //PrismaticJointDef joint = new PrismaticJointDef();
+        //joint.initialize(_bodyA, _bodyB, null, null);
         WeldJointDef def = new WeldJointDef();
-        def.initialize(_bodyA, _bodyB, new Vec2(0,0));
+        def.initialize(_bodyA, _bodyB,_bodyA.getWorldPoint(new Vec2(0,0)));
         def.bodyA = _bodyA;
         def.bodyB = _bodyB;
         def.collideConnected = true;
@@ -286,11 +287,11 @@ public class sWorld
     public static void update(float _time)
     {
         float secondsPerFrame = 16.666f;
-        //try
+        try
         {
             mWorld.step(secondsPerFrame/1000.0f, 4, 2);
         }
-        //catch (ArrayIndexOutOfBoundsException e)
+        catch (ArrayIndexOutOfBoundsException e)
         {
             
         }

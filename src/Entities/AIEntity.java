@@ -118,9 +118,9 @@ public class AIEntity extends Entity {
     }
     public void jump()
     {
-        if (mCanJump && mJumpTimer == 0)
+        //if (mCanJump && mJumpTimer == 0)
         {
-            mBody.applyLinearImpulse(new Vec2(0,-30.0f), new Vec2(0,0));
+            mBody.applyLinearImpulse(new Vec2(0,-3.0f), new Vec2(0,0));
             mCanJump = false;
             mJumpTimer = mJumpReload;
         }

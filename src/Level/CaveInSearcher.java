@@ -4,29 +4,28 @@
  */
 package Level;
 
-import Entities.CaveIn;
-import Entities.sEntityFactory;
-import World.sWorld;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Stack;
-import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.tiled.TileSet;
 import org.newdawn.slick.tiled.TiledMap;
 
 /**
  *
  * @author alasdair
  */
-class CaveInSearcher {
+public class CaveInSearcher {
     
     TileGrid mTileGrid;
     TiledMap mTiledMap;
     int mLayerIndex;
     private boolean mChecked[][];
+    int lowestX, lowestY, highestX, highestY;
     public CaveInSearcher(TileGrid _tileGrid, TiledMap _tiledMap, int _layerIndex)
     {
+        lowestX = lowestY = Integer.MAX_VALUE;
+        highestX = highestY = Integer.MIN_VALUE;
         mTileGrid = _tileGrid;
         mTiledMap = _tiledMap;
         mLayerIndex = _layerIndex;
@@ -104,51 +103,71 @@ class CaveInSearcher {
         }
         return false;
     }
-    
-    ArrayList<CaveIn.Tile> tiles = new ArrayList<CaveIn.Tile>();
+    public class TempTile
+    {
+        public int x, y;
+        private int id;
+        public Image image;
+        public TempTile(int _x, int _y, int _id)
+        {
+            x = _x;
+            y = _y;
+            id = _id;
+            TileSet tileSet = mTiledMap.findTileSet(id);
+            int idDiff = id - tileSet.firstGID;
+            image = tileSet.tiles.getSubImage(idDiff%tileSet.tilesAcross, idDiff/tileSet.tilesAcross);
+        }
+        public int getId()
+        {
+            return id;
+        }
+        public void setId(int _id)
+        {
+            id = _id;
+            if (id == 0)
+            {
+                image = null;
+            }
+            else
+            {
+                TileSet tileSet = mTiledMap.findTileSet(id);
+                int idDiff = id - tileSet.firstGID;
+                image = tileSet.tiles.getSubImage(idDiff%tileSet.tilesAcross, idDiff/tileSet.tilesAcross);
+            }
+        }
+    }
+    ArrayList<TempTile> tiles = new ArrayList<TempTile>();
     Body mLastBody = null;
     private void add(int _x, int _y)
     {
-        Image image = mTiledMap.getTileImage(_x, _y, mLayerIndex);
-        HashMap parameters = new HashMap();
-        parameters.put("isDynamic", true);
-        parameters.put("img", image) ;
-        
-        /// Individual tiles
-        Body body = mTileGrid.get(_x, _y).mRootId.createPhysicsBody(_x, _y, parameters);
-        if (mLastBody != null)
+        int id = mTileGrid.getTileId(_x, _y);
+        if (id != 0)
         {
-            sWorld.weld(body, mLastBody);
+            if (_x < lowestX)
+                lowestX = _x;
+            if (_x > highestX)
+                highestX = _x;
+            if (_y < lowestY)
+                lowestY = _y;
+            if (_y > highestY)
+                highestY = _y;
+            tiles.add(new TempTile(_x,_y, id));
+            //mTileGrid.get(_x, _y).destroyFixture();
+            mTileGrid.mBody.destroyFixture(mTileGrid.get(_x, _y).mFixture);
+            mTileGrid.set(_x, _y, 0);
         }
-        mLastBody = body;
-        parameters.put("Body", body);
-        sEntityFactory.create("CaveInTileFactory", parameters);
-        tiles.add(new CaveIn.Tile(image, body, new Vec2(_x,_y)));
-        /// One tile
-        //tiles.add(new CaveIn.Tile(image, null, new Vec2(_x,_y)));
-        
-        sWorld.destroyBody(mTileGrid.get(_x, _y).mBody);
-        mTileGrid.set(_x, _y, 0);
     }
     private void finish()
     {
         if (!tiles.isEmpty())
         {
             /// Individual tiles
-            /*CaveIn.Tile oldTile = null;
-            for (CaveIn.Tile tile: tiles)
-            {
-                if (oldTile != null)
-                {
-                    sWorld.weld(tile.mBody, oldTile.mBody);
-                }
-                oldTile = tile;
-            }*/
             /// One tile
-            /*HashMap<String, Object> parameters = new HashMap<String, Object>();
-            parameters.put("tiles", tiles);
-            sEntityFactory.create("CaveIn", parameters);*/
-            tiles = new ArrayList<CaveIn.Tile>();
+            CaveInTileGrid newTileGrid = new CaveInTileGrid(mTileGrid.rootTiles, mTiledMap, lowestX, lowestY, 1+highestX-lowestX, 1+highestY-lowestY, mLayerIndex);
+            newTileGrid.finish(tiles);
+            tiles = new ArrayList<TempTile>();
+            lowestX = lowestY = Integer.MAX_VALUE;
+            highestX = highestY = Integer.MIN_VALUE;
         }
     }
 }
