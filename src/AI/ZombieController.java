@@ -18,7 +18,7 @@ public class ZombieController extends iAIController
     public ZombieController(AIEntity _entity)
     {
         super(_entity);
-        pathFinding = new AStar();
+        pathFinding = new AStar(_entity, new ShortestDistance());
         mToggle = true;
         mEntity.setMoveSpeed(0.9f);
     }
@@ -26,13 +26,14 @@ public class ZombieController extends iAIController
     {
         int x = (int)(mEntity.mBody.getPosition().x);
         int y = (int)(mEntity.mBody.getPosition().y);
+        
         if(mToggle)
         {
-            pathFinding.updatePosition(x, y, x+1, y);
+            pathFinding.updatePath(x, y, x+1, y);
         }
         else if(!mToggle)
         {
-            pathFinding.updatePosition(x, y, x-1, y);
+            pathFinding.updatePath(x, y, x-1, y);
         }
         
         switch (pathFinding.follow())

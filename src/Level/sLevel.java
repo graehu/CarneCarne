@@ -53,14 +53,13 @@ public class sLevel {
     
     public static int getTileSizeInMetres()
     {
-        int happy = mTiledMap.getTileId(1, 1, layerIndex);
         return 1; //just incase we want to make tiles smaller than a meter.
     }
     
     public static PathInfo getPathInfo(int _xTile, int _yTile)
     {
         TileType type = mLevelEditor.getTileType(_xTile,_yTile);
-        if (type == TileType.eTileTypesMax)
+        if (type == TileType.eEmpty)
         {
             return PathInfo.eAir;
         }
