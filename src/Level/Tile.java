@@ -7,6 +7,7 @@ package Level;
 import Level.sLevel.TileType;
 import java.util.HashMap;
 import java.util.Stack;
+import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.Fixture;
 
@@ -39,13 +40,17 @@ public class Tile {
     {
         return mTileGrid;
     }
+    public Vec2 getPosition()
+    {
+        return new Vec2(mXTile, mYTile);
+    }
     public int getRootId()
     {
         return mRootId.mId;
     }
     public Tile clone()
     {
-        return new Tile(mId, mRootId, mTileGrid,mXTile,mYTile);
+        return new Tile(mId, mRootId, null,-1,-1);
     }
     enum Direction
     {

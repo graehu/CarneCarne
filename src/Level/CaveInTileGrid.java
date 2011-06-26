@@ -71,8 +71,11 @@ public class CaveInTileGrid extends TileGrid
         if (mBody != null)
         {
             Entity entity = (Entity)mBody.getUserData();
-            TiledSkin skin = (TiledSkin)entity.mSkin;
-            skin.setId(_x,_y,_id);
+            if (entity != null)
+            {
+                TiledSkin skin = (TiledSkin)entity.mSkin;
+                skin.setId(_x,_y,_id);
+            }
         }
     }
     void createPhysicsBody(int _x, int _y, Tile _tile)

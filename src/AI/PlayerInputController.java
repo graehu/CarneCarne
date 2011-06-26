@@ -16,7 +16,6 @@ import Events.MouseDragEvent;
 import Events.iEvent;
 import Events.iEventListener;
 import Events.sEvents;
-import Level.sLevel;
 import Events.RightStickEvent;
 import HUD.Reticle;
 import Level.Tile;

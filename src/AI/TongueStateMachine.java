@@ -285,7 +285,7 @@ public class TongueStateMachine {
             }
             case eSwinging:
             {
-                mTongueDir = mJoint.m_bodyB.getPosition().sub(mJoint.m_bodyA.getPosition());
+                mTongueDir = (mJoint.m_bodyB.getPosition().add(mJoint.m_localAnchor2)).sub((mJoint.m_bodyA.getPosition().add(mJoint.m_localAnchor1)));
                 float actualLength = mTongueDir.normalize();
                 setTongue(mTongueDir, actualLength);
                 mJoint.m_length = actualLength * 0.99f;

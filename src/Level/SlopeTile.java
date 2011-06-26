@@ -4,14 +4,11 @@
  */
 package Level;
 
-import World.sWorld;
 import World.sWorld.BodyCategories;
-import java.util.HashMap;
 import java.util.Stack;
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
-import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.Fixture;
 import org.jbox2d.dynamics.FixtureDef;
 
@@ -24,13 +21,6 @@ abstract public class SlopeTile extends RootTile{
     public SlopeTile(int _id, int _slopeType, sLevel.TileType _tileType, int _maxHealth)
     {
         super (TileShape.eSlope, _id, _tileType, _slopeType, _maxHealth);
-    }
-    public Body createPhysicsBody(int _xTile, int _yTile, HashMap _parameters)
-    {
-        _parameters.put("position", new Vec2(_xTile,_yTile));
-        _parameters.put("TileType", mTileType);
-        _parameters.put("slopeType",mSlopeType);
-        return sWorld.useFactory("SlopeFactory",_parameters);
     }
     @Override
     Fixture createPhysicsBody(int _xTile, int _yTile, Body _body, Tile _tile)
@@ -89,6 +79,7 @@ abstract public class SlopeTile extends RootTile{
         fixture.filter.groupIndex = mTileType.ordinal();
         fixture.filter.categoryBits = (1 << BodyCategories.eEdibleTiles.ordinal());
         fixture.filter.maskBits = Integer.MAX_VALUE;
+        fixture.density = 1.0f;
         //def.userData = _entity;
         return _body.createFixture(fixture);
     }

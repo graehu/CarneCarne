@@ -64,11 +64,9 @@ public class sWorld
         mWorld.setContactListener(new WorldContactListener());
         factories = new HashMap<String, iPhysicsFactory>();
         factories.put("TileFactory", new TileFactory());
-        factories.put("SlopeFactory", new SlopeFactory());
         factories.put("CharacterFactory", new CharacterFactory());
         factories.put("NonEdibleTileFactory", new NonEdibleTileFactory());
         factories.put("SpatBlockFactory", new SpatBlockBodyFactory());
-        factories.put("WaterTileFactory", new WaterTileFactory());
         factories.put("TileArrayFactory", new TileArrayFactory());
         factories.put("CheckPointFactory", new CheckPointFactory());
         factories.put("SeeSawBodyFactory", new SeeSawBodyFactory());
@@ -118,7 +116,7 @@ public class sWorld
             return fixture;
         }
     }
-    private static Body mLastHit;
+    private static Fixture mLastHit;
     public static Tile eatTiles(Vec2 start, Vec2 end)
     {
         TongueCallback callback = new TongueCallback(start, end);
@@ -127,8 +125,9 @@ public class sWorld
         {
             return null;
         }
-        mLastHit = callback.getFixture().getBody();
+        mLastHit = callback.getFixture();
         Tile tile = (Tile)callback.getFixture().getUserData();
+        Tile ret = tile;
         if (tile != null)
         {
             TileType tileType = tile.getTileType();
@@ -138,9 +137,9 @@ public class sWorld
                 case eGum:
                 case eMelonFlesh:
                 {
+                    ret = tile.clone();
                     sEvents.triggerEvent(new TileDestroyedEvent((int)callback.getFixture().m_body.getPosition().x, (int)callback.getFixture().m_body.getPosition().y));
                     tile.destroyFixture();
-                    tile = tile.clone();
                     //if (callback.getFixture().m_filter.categoryBits != (1 << BodyCategories.eSpatTiles.ordinal()))
                     //    tile.getTileGrid().destroyTile((int)callback.getFixture().m_body.getPosition().x, (int)callback.getFixture().m_body.getPosition().y);
                     break;
@@ -153,7 +152,7 @@ public class sWorld
                 }
             }
         }
-        return tile;
+        return ret;
     }
     public static boolean smashTiles(Vec2 start, Vec2 end)
     {
@@ -219,10 +218,10 @@ public class sWorld
     public static DistanceJoint createTongueJoint(Body _body)
     {
         DistanceJointDef def = new DistanceJointDef();
-        def.bodyA = _body;
-        def.bodyB = mLastHit;
+        Vec2 anchor = ((Tile)mLastHit.getUserData()).getPosition();
+        def.initialize(_body, mLastHit.m_body, _body.getPosition(), anchor);
         def.collideConnected = true;
-        Vec2 direction = def.bodyA.getPosition().sub(def.bodyB.getPosition());
+        Vec2 direction = _body.getPosition().sub(anchor);
         def.length = direction.normalize();
         //def.frequencyHz = 1.0f;
         //def.dampingRatio = 0.1f;
