@@ -53,7 +53,6 @@ public class sLevel {
     
     public static int getTileSizeInMetres()
     {
-        int happy = mTiledMap.getTileId(1, 1, layerIndex);
         return 1; //just incase we want to make tiles smaller than a meter.
     }
     
@@ -104,7 +103,7 @@ public class sLevel {
             int transY = (int)myTranslation.y;
             transX = transX % 64;
             transY = transY % 64;
-            mTiledMap.render(transX,transY, xStart,yStart, xStart+xTiles,yStart+yTiles, i, false);
+            mTiledMap.render(transX,transY, xStart,yStart, xTiles,yTiles, i, false);
         }
         mTiledMap.renderAnimatedLayer(translation.x,translation.y,s.x,s.y);
     }
@@ -125,7 +124,7 @@ public class sLevel {
             int transY = (int)myTranslation.y;
             transX = transX % 64;
             transY = transY % 64;
-            mTiledMap.render(transX,transY, xStart,yStart, xStart+xTiles,yStart+yTiles, i, false);
+            mTiledMap.render(transX,transY, xStart,yStart, xTiles,yTiles, i, false);
         }     
         
     }

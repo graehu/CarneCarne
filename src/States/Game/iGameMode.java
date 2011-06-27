@@ -5,6 +5,7 @@
 package States.Game;
 
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.SlickException;
 
 /**
  *

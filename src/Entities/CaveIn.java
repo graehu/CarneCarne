@@ -24,7 +24,7 @@ public class CaveIn extends Entity
     public void update()
     {
     }
-    public void render() throws SlickException
+    public void render()
     { 
         sGraphicsManager.beginTransform();
             Vec2 axis = sWorld.translateToWorld(new Vec2(mBody.getPosition().x+0.5f,mBody.getPosition().y+0.5f));

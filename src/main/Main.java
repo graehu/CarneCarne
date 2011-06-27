@@ -34,7 +34,7 @@ public class Main extends TWLStateBasedGame
             init.setDisplayMode(800, 600, false);
             init.setTargetFrameRate(60);
             init.setForceExit(false);
-            //init.start();
+            init.start();
             init.destroy();
             
             AppGameContainer app = new AppGameContainer(new Main());

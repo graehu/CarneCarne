@@ -30,7 +30,7 @@ abstract public class Entity {
     
     abstract public void update();
     
-    public void render() throws SlickException
+    public void render() //throws SlickException
     {
         Vec2 pixelPosition = sWorld.translateToWorld(mBody.getPosition());
         mSkin.render(pixelPosition.x,pixelPosition.y);

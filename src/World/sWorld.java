@@ -23,10 +23,9 @@ import org.jbox2d.dynamics.joints.DistanceJoint;
 import org.jbox2d.dynamics.joints.DistanceJointDef;
 import org.jbox2d.dynamics.joints.Joint;
 import org.jbox2d.dynamics.joints.PrismaticJointDef;
-import org.jbox2d.dynamics.joints.WeldJoint;
-import org.jbox2d.dynamics.joints.WeldJointDef;
 import org.jbox2d.structs.collision.RayCastInput;
 import org.jbox2d.structs.collision.RayCastOutput;
+import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
 /**
  *
