@@ -39,13 +39,13 @@ class SpatBlockBodyFactory implements iPhysicsFactory {
         fixture.filter.categoryBits = (1 << BodyCategories.eSpatTiles.ordinal());
         fixture.filter.maskBits = Integer.MAX_VALUE ^ 
                 ((1 << BodyCategories.ePlayer.ordinal()));
+        fixture.density = 1;
         if (tileType.equals(sLevel.TileType.eGum))
         {
             fixture.filter.categoryBits = (1 << BodyCategories.eGum.ordinal());
             fixture.filter.maskBits = Integer.MAX_VALUE ^ 
                 ((1 << BodyCategories.ePlayer.ordinal()));
         }
-        fixture.density = 1;
         BodyDef def = new BodyDef();
         def.type = BodyType.DYNAMIC;
         def.userData = entity;

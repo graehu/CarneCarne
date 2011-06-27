@@ -26,6 +26,8 @@ public class sLevel {
         eBouncy,
         eGum,
         eTar,
+        eChilli,
+        eBurningTar,
         eMelonFlesh,
         eMelonSkin,
         eSpikes,

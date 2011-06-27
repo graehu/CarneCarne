@@ -23,8 +23,6 @@ import org.jbox2d.dynamics.joints.DistanceJoint;
 import org.jbox2d.dynamics.joints.DistanceJointDef;
 import org.jbox2d.dynamics.joints.Joint;
 import org.jbox2d.dynamics.joints.PrismaticJointDef;
-import org.jbox2d.dynamics.joints.WeldJoint;
-import org.jbox2d.dynamics.joints.WeldJointDef;
 import org.jbox2d.structs.collision.RayCastInput;
 import org.jbox2d.structs.collision.RayCastOutput;
 import org.newdawn.slick.geom.Rectangle;
@@ -52,6 +50,7 @@ public class sWorld
         eTar,
         eCheckPoint,
         eSpikes,
+        eFire,
         eBodyCategoriesMax;
     }
     private sWorld()
@@ -71,6 +70,7 @@ public class sWorld
         factories.put("CheckPointFactory", new CheckPointFactory());
         factories.put("SeeSawBodyFactory", new SeeSawBodyFactory());
         factories.put("MovingPlatformBodyFactory", new MovingPlatformBodyFactory());
+        factories.put("FireParticleBody", new FireParticleBody());
         mCamera = new FreeCamera( new Rectangle(0,0,sGraphicsManager.getTrueScreenDimensions().x, sGraphicsManager.getTrueScreenDimensions().y));        
     }
     
@@ -137,6 +137,7 @@ public class sWorld
                 case eEdible:
                 case eGum:
                 case eMelonFlesh:
+                case eChilli:
                 {
                     ret = tile.clone();
                     sEvents.triggerEvent(new TileDestroyedEvent((int)callback.getFixture().m_body.getPosition().x, (int)callback.getFixture().m_body.getPosition().y));

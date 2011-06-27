@@ -30,6 +30,7 @@ public class RootTileList {
         typeMap.put("Bouncy", sLevel.TileType.eBouncy);
         typeMap.put("Gum", sLevel.TileType.eGum);
         typeMap.put("Tar", sLevel.TileType.eTar);
+        typeMap.put("Chilli", sLevel.TileType.eChilli);
         typeMap.put("MelonFlesh", sLevel.TileType.eMelonFlesh);
         typeMap.put("MelonSkin", sLevel.TileType.eMelonSkin);
         HashMap<String, SkinDirection> directionMap = new HashMap<String, SkinDirection>();
@@ -60,9 +61,12 @@ public class RootTileList {
             {
                 boolean regrows = Boolean.valueOf(_tiledMap.getTileProperty(i,"Regrows","true")).booleanValue();
                 boolean anchor = Boolean.valueOf(_tiledMap.getTileProperty(i, "Anchor", "false")).booleanValue();
+                String flammableString = _tiledMap.getTileProperty(i, "Flammable", "false");
+                boolean isFlammable = Boolean.valueOf(flammableString).booleanValue();
+                int size = (isFlammable) ? 32 : 16;
                 for (int rootId = i; i < rootId + 16; i++)
                 {
-                    mRootTiles.add(new BlockTile(rootId, type, regrows, anchor, maxHealth));
+                    mRootTiles.add(new BlockTile(rootId, type, regrows, anchor, isFlammable, maxHealth));
                 }
             }
             else if (shape.equals("Slope"))
@@ -78,7 +82,8 @@ public class RootTileList {
             }
             else if (shape.equals("NonEdible"))
             {
-                mRootTiles.add(new NonEdibleTile(i, type));
+                boolean anchor = Boolean.valueOf(_tiledMap.getTileProperty(i, "Anchor", "true")).booleanValue();
+                mRootTiles.add(new NonEdibleTile(i, type, anchor));
                 i++;
             }
             else if (shape.equals("Water"))

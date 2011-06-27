@@ -99,7 +99,7 @@ public class TongueStateMachine {
         Vec2 hammerPosition = mAIController.mEntity.mBody.getPosition();
         hammerPosition = sWorld.translateToWorld(hammerPosition);
         skin.render(hammerPosition.x, hammerPosition.y);*/
-                
+
         return mAIController.hammer(mAIController.mEntity.mBody.getPosition().add(direction));
     }
     private boolean hasFood()
@@ -146,6 +146,7 @@ public class TongueStateMachine {
                     case eGum:
                     case eEdible:
                     case eMelonFlesh:
+                    case eChilli:
                     {
                         changeState(State.eStuckToBlock);
                         break;
@@ -197,9 +198,13 @@ public class TongueStateMachine {
                 extendTongue(false);
                 if (mCurrentStateTimer == 0)
                 {
-                    if (mTile.getTileType() == TileType.eMelonFlesh)
+                    if (mTile.getTileType().equals(TileType.eMelonFlesh))
                     {
                         ammoLeft = 10;
+                    }
+                    else if (mTile.getTileType().equals(TileType.eChilli))
+                    {
+                        ammoLeft = 50;
                     }
                     else
                     {
@@ -598,7 +603,7 @@ public class TongueStateMachine {
             }
             case ePlacingBlock:
             {
-                mAIController.layBlock(mTile); //FIXME: placeTile function should take rootID not TileType 
+                mAIController.layBlock(mTile);
                 mCurrentStateTimer = setAnimation("PlacingBlock");
                 break;
             }
@@ -637,6 +642,13 @@ public class TongueStateMachine {
     private void spitBlock()
     {
         ammoLeft--;
-        mAIController.spitBlock(mPosition, mTile);
+        if (mTile.getTileType().equals(TileType.eChilli))
+        {
+            mAIController.breathFire(mPosition);
+        }
+        else
+        {
+            mAIController.spitBlock(mPosition, mTile);
+        }
     }
 }

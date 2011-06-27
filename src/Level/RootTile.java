@@ -6,7 +6,6 @@ package Level;
 
 import Level.Tile.Direction;
 import Level.sLevel.TileType;
-import java.util.HashMap;
 import java.util.Stack;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.Fixture;
@@ -24,13 +23,15 @@ abstract class RootTile
     boolean mAnchor;
     sLevel.TileType mTileType;
     int mMaxHealth;
-    public RootTile(TileShape _shape, int _id, sLevel.TileType _tileType, boolean _regrows, boolean _anchor, int _maxHealth)
+    boolean mIsFlammable;
+    public RootTile(TileShape _shape, int _id, sLevel.TileType _tileType, boolean _regrows, boolean _anchor, boolean _isFlammable, int _maxHealth)
     {
         mShape = _shape;
         mId = _id;
         mTileType = _tileType;
         mRegrows = _regrows;
         mAnchor = _anchor;
+        mIsFlammable = _isFlammable;
         mMaxHealth = _maxHealth;
     }
     public RootTile(TileShape _shape, int _id, sLevel.TileType _tileType, int _slopeType, int _maxHealth)

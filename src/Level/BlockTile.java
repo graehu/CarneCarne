@@ -23,9 +23,9 @@ import org.jbox2d.dynamics.FixtureDef;
  */
 public class BlockTile extends RootTile
 {
-    public BlockTile(int _id, sLevel.TileType _tileType, boolean _regrows, boolean _anchor, int _maxHealth)
+    public BlockTile(int _id, sLevel.TileType _tileType, boolean _regrows, boolean _anchor, boolean _isFlammable, int _maxHealth)
     {
-        super(TileShape.eBlock, _id, _tileType, _regrows, _anchor, _maxHealth);
+        super(TileShape.eBlock, _id, _tileType, _regrows, _anchor, _isFlammable, _maxHealth);
         mRegrows = _regrows;
     }
     public Fixture createPhysicsBody(int _xTile, int _yTile, Body _body, Tile _tile)
@@ -50,11 +50,6 @@ public class BlockTile extends RootTile
             fixture.filter.categoryBits = (1 << BodyCategories.eTar.ordinal());
             fixture.restitution = 0.0f;
             fixture.friction = 1000.0f;
-        }
-        else if (mTileType.equals(TileType.eSpikes))
-        {
-            fixture.filter.categoryBits = (1 << BodyCategories.eSpikes.ordinal());
-            fixture.filter.maskBits = Integer.MAX_VALUE;            
         }
         fixture.shape = shape;
         fixture.userData = _tile; /// FIXME make this body data instead

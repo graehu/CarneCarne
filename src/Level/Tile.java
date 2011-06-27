@@ -23,6 +23,7 @@ public class Tile {
     int mHealth; /// Aliases as water height
     TileGrid mTileGrid;
     int mXTile,mYTile;
+    boolean isOnFire;
     public Tile(int _id, RootTile _rootId, TileGrid _tileGrid, int _xTile, int _yTile)
     {
         mId = _id;
@@ -31,10 +32,19 @@ public class Tile {
         mTileGrid = _tileGrid;
         mXTile = _xTile;
         mYTile = _yTile;
+        isOnFire = false;
     }
     public TileType getTileType()
     {
         return mRootId.mTileType;
+    }
+    public void setOnFire()
+    {
+        if (!isOnFire && mRootId.mIsFlammable)
+        {
+            isOnFire = true;
+            mTileGrid.placeTile(mXTile, mYTile, mId + 16);
+        }
     }
     public TileGrid getTileGrid()
     {
@@ -50,7 +60,7 @@ public class Tile {
     }
     public Tile clone()
     {
-        return new Tile(mId, mRootId, null,-1,-1);
+        return new Tile(mId, mRootId, mTileGrid,-1,-1);
     }
     enum Direction
     {

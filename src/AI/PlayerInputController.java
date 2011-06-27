@@ -148,6 +148,16 @@ public class PlayerInputController extends iAIController implements iEventListen
         parameters.put("rootId",_tile.getRootId());
         sEntityFactory.create("SpatBlock", parameters); 
     }
+    public void breathFire(Vec2 _position)
+    {
+        HashMap parameters = new HashMap();
+        Vec2 direction = _position.sub( mEntity.mBody.getPosition());
+        direction.normalize();
+        //intialise velocity relative to carne's
+        parameters.put("velocity", direction.mul(10.0f).add(mEntity.mBody.getLinearVelocityFromLocalPoint(new Vec2(0,0))));
+        parameters.put("position", mEntity.mBody.getPosition());
+        sEntityFactory.create("FireParticle", parameters);
+    }
 
     public void trigger(iEvent _event)
     {

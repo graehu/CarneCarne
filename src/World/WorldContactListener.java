@@ -33,6 +33,7 @@ public class WorldContactListener implements ContactListener{
             set(BodyCategories.eWater.ordinal(),i,new WaterListener());
             set(BodyCategories.eTar.ordinal(),i,new TarListener());
         }
+        set(BodyCategories.eTar.ordinal(),BodyCategories.eFire.ordinal(),new TarFireListener());
         set(BodyCategories.eGum.ordinal(),BodyCategories.eEdibleTiles.ordinal(),new GumListener());
         set(BodyCategories.eGum.ordinal(),BodyCategories.eNonEdibleTiles.ordinal(),new GumListener());
         set(BodyCategories.ePlayer.ordinal(),BodyCategories.eSpikes.ordinal(),new DeathListener());

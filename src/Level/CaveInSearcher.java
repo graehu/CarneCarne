@@ -87,7 +87,15 @@ public class CaveInSearcher {
     
     public boolean check(int _x, int _y, Stack<TileIndex> _workingSet, Stack<TileIndex> _thisBlock) /// Returns true if this is an anchor
     {
-        Tile tile = mTileGrid.get(_x, _y);
+        Tile tile;
+        try
+        {
+            tile = mTileGrid.get(_x, _y);
+        }
+        catch (ArrayIndexOutOfBoundsException e) /// FIXME algorithm shouldn't reach here
+        {
+            return false;
+        }
         if (tile.mRootId.mAnchor)
         {
             return true;

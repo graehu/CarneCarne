@@ -22,9 +22,9 @@ import org.jbox2d.dynamics.FixtureDef;
  */
 class NonEdibleTile extends RootTile
 {
-    public NonEdibleTile(int _id, sLevel.TileType _tileType)
+    public NonEdibleTile(int _id, sLevel.TileType _tileType, boolean _anchor)
     {
-        super(TileShape.eBlock, _id, _tileType, false, true, 1);
+        super(TileShape.eBlock, _id, _tileType, false, false, _anchor, 1);
     }
     public Body createPhysicsBody(int _xTile, int _yTile, HashMap _parameters)
     {
@@ -43,6 +43,11 @@ class NonEdibleTile extends RootTile
         fixture.filter.categoryBits = (1 << BodyCategories.eNonEdibleTiles.ordinal());
         fixture.filter.maskBits = Integer.MAX_VALUE;
         fixture.density = 1.0f;
+        if (mTileType.equals(TileType.eSpikes))
+        {
+            fixture.filter.categoryBits = (1 << BodyCategories.eSpikes.ordinal());
+            fixture.filter.maskBits = Integer.MAX_VALUE;            
+        }
         
         return _body.createFixture(fixture);
     }
