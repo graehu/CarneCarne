@@ -351,6 +351,13 @@
     <property name="Width" value="3.0"/>
    </properties>
   </tile>
+  <tile id="37">
+   <properties>
+    <property name="Image" value="SeeSaw"/>
+    <property name="Spawn" value="Platform"/>
+    <property name="Type" value="StupidPlatform"/>
+   </properties>
+  </tile>
  </tileset>
  <tileset firstgid="563" name="SpriteSign" tilewidth="64" tileheight="64">
   <image source="SpriteSign.png" width="256" height="1536"/>

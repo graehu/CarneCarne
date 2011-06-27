@@ -21,7 +21,7 @@ public class EmptyTile extends RootTile{
     {
         super(TileShape.eEmpty,0, sLevel.TileType.eEmpty, false, false, 0);
     }
-    public Body createPhysicsBody(int _xTile, int _yTile, HashMap _parameters)
+    Fixture createPhysicsBody(int _xTile, int _yTile, Body _body, Tile _tile)
     {
         return null;
     }

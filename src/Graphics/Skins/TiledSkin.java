@@ -4,8 +4,7 @@
  */
 package Graphics.Skins;
 
-import Entities.CaveIn;
-import Entities.CaveIn.Tile;
+import Level.CaveInSearcher;
 import World.sWorld;
 import java.util.ArrayList;
 import org.jbox2d.common.Vec2;
@@ -16,20 +15,33 @@ import org.jbox2d.common.Vec2;
  */
 public class TiledSkin implements iSkin
 {
-    ArrayList<CaveIn.Tile> mTiles;
-    public TiledSkin(ArrayList<Tile> _tiles)
+    ArrayList<CaveInSearcher.TempTile> mTiles;
+    public TiledSkin(ArrayList<CaveInSearcher.TempTile> _tiles)
     {
         mTiles = _tiles;
     }
+    public void setId(int _x, int _y, int _id)
+    {
+        for (CaveInSearcher.TempTile tile: mTiles)
+        {
+            if (tile.x == _x && tile.y == _y)
+            {
+                tile.setId(_id);
+            }
+        }
+    }
     public void render(float _x, float _y)
     {
-        for (CaveIn.Tile tile: mTiles)
+        for (CaveInSearcher.TempTile tile: mTiles)
         {
-            Vec2 position = tile.mPosition.clone();
-            position.x += _x;
-            position.y += _y;
-            Vec2 pixelPosition = sWorld.translateToWorld(position);
-            tile.mImage.draw(pixelPosition.x, pixelPosition.y);
+            if (tile.image != null)
+            {
+                Vec2 position = new Vec2(tile.x, tile.y);
+                position.x += _x;
+                position.y += _y;
+                Vec2 pixelPosition = sWorld.translateToWorld(position);
+                tile.image.draw(pixelPosition.x, pixelPosition.y);
+            }
         }
     }
 

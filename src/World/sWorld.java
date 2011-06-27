@@ -11,7 +11,6 @@ import Graphics.FreeCamera;
 import Graphics.iCamera;
 import Graphics.sGraphicsManager;
 import Level.Tile;
-import Level.sLevel;
 import Level.sLevel.TileType;
 import java.util.HashMap;
 import org.jbox2d.callbacks.RayCastCallback;
@@ -65,14 +64,13 @@ public class sWorld
         mWorld.setContactListener(new WorldContactListener());
         factories = new HashMap<String, iPhysicsFactory>();
         factories.put("TileFactory", new TileFactory());
-        factories.put("SlopeFactory", new SlopeFactory());
         factories.put("CharacterFactory", new CharacterFactory());
         factories.put("NonEdibleTileFactory", new NonEdibleTileFactory());
         factories.put("SpatBlockFactory", new SpatBlockBodyFactory());
-        factories.put("WaterTileFactory", new WaterTileFactory());
         factories.put("TileArrayFactory", new TileArrayFactory());
         factories.put("CheckPointFactory", new CheckPointFactory());
         factories.put("SeeSawBodyFactory", new SeeSawBodyFactory());
+        factories.put("MovingPlatformBodyFactory", new MovingPlatformBodyFactory());
         mCamera = new FreeCamera( new Rectangle(0,0,sGraphicsManager.getTrueScreenDimensions().x, sGraphicsManager.getTrueScreenDimensions().y));        
     }
     
@@ -119,7 +117,7 @@ public class sWorld
             return fixture;
         }
     }
-    private static Body mLastHit;
+    private static Fixture mLastHit;
     public static Tile eatTiles(Vec2 start, Vec2 end)
     {
         TongueCallback callback = new TongueCallback(start, end);
@@ -128,8 +126,9 @@ public class sWorld
         {
             return null;
         }
-        mLastHit = callback.getFixture().getBody();
+        mLastHit = callback.getFixture();
         Tile tile = (Tile)callback.getFixture().getUserData();
+        Tile ret = tile;
         if (tile != null)
         {
             TileType tileType = tile.getTileType();
@@ -139,11 +138,11 @@ public class sWorld
                 case eGum:
                 case eMelonFlesh:
                 {
-                    tile = tile.clone();
-                    mWorld.destroyBody(callback.getFixture().m_body);
-                    if (callback.getFixture().m_filter.categoryBits != (1 << BodyCategories.eSpatTiles.ordinal()))
-                        sLevel.destroyTile((int)callback.getFixture().m_body.getPosition().x, (int)callback.getFixture().m_body.getPosition().y);
+                    ret = tile.clone();
                     sEvents.triggerEvent(new TileDestroyedEvent((int)callback.getFixture().m_body.getPosition().x, (int)callback.getFixture().m_body.getPosition().y));
+                    tile.destroyFixture();
+                    //if (callback.getFixture().m_filter.categoryBits != (1 << BodyCategories.eSpatTiles.ordinal()))
+                    //    tile.getTileGrid().destroyTile((int)callback.getFixture().m_body.getPosition().x, (int)callback.getFixture().m_body.getPosition().y);
                     break;
                 }
                 case eSwingable:
@@ -154,7 +153,7 @@ public class sWorld
                 }
             }
         }
-        return tile;
+        return ret;
     }
     public static boolean smashTiles(Vec2 start, Vec2 end)
     {
@@ -172,11 +171,11 @@ public class sWorld
             {
                 case eSwingable:
                 {
-                    if (sLevel.damageTile((int)callback.getFixture().m_body.getPosition().x, (int)callback.getFixture().m_body.getPosition().y))
+                    if (tile.getTileGrid().damageTile((int)callback.getFixture().m_body.getPosition().x, (int)callback.getFixture().m_body.getPosition().y))
                     {
-                        mWorld.destroyBody(callback.getFixture().m_body);
-                        sLevel.destroyTile((int)callback.getFixture().m_body.getPosition().x, (int)callback.getFixture().m_body.getPosition().y);
+                        //tile.getTileGrid().destroyTile((int)callback.getFixture()..getPosition().x, (int)callback.getFixture().m_body.getPosition().y);
                         sEvents.triggerEvent(new TileDestroyedEvent((int)callback.getFixture().m_body.getPosition().x, (int)callback.getFixture().m_body.getPosition().y));
+                        tile.destroyFixture();
                     }
                     break;
                 }
@@ -184,9 +183,9 @@ public class sWorld
                 case eIce:
                 case eMelonSkin:
                 {
-                    mWorld.destroyBody(callback.getFixture().m_body);
-                    sLevel.destroyTile((int)callback.getFixture().m_body.getPosition().x, (int)callback.getFixture().m_body.getPosition().y);
+                    //tile.getTileGrid().destroyTile((int)callback.getFixture().m_body.getPosition().x, (int)callback.getFixture().m_body.getPosition().y);
                     sEvents.triggerEvent(new TileDestroyedEvent((int)callback.getFixture().m_body.getPosition().x, (int)callback.getFixture().m_body.getPosition().y));
+                    tile.destroyFixture();
                     break;
                 }
                 case eEmpty:
@@ -220,28 +219,16 @@ public class sWorld
     public static DistanceJoint createTongueJoint(Body _body)
     {
         DistanceJointDef def = new DistanceJointDef();
-        def.bodyA = _body;
-        def.bodyB = mLastHit;
+        Vec2 anchor = ((Tile)mLastHit.getUserData()).getPosition();
+        def.initialize(_body, mLastHit.m_body, _body.getPosition(), anchor);
         def.collideConnected = true;
-        Vec2 direction = def.bodyA.getPosition().sub(def.bodyB.getPosition());
+        Vec2 direction = _body.getPosition().sub(anchor);
         def.length = direction.normalize();
         //def.frequencyHz = 1.0f;
         //def.dampingRatio = 0.1f;
         def.frequencyHz = 30.0f;
         def.dampingRatio = 1.0f; /// Reduce these to make his tongue springy
         return (DistanceJoint)mWorld.createJoint(def);
-    }
-    public static void weld(Body _bodyA, Body _bodyB)
-    {
-        /*PrismaticJointDef def = new PrismaticJointDef();
-        def.initialize(_bodyA, _bodyB, _bodyA.getPosition(), _bodyA.getPosition().sub(_bodyB.getPosition()));
-        mWorld.createJoint(def);*/
-        WeldJointDef def = new WeldJointDef();
-        def.initialize(_bodyA, _bodyB, new Vec2(0,0));
-        def.bodyA = _bodyA;
-        def.bodyB = _bodyB;
-        def.collideConnected = true;
-        WeldJoint joint = (WeldJoint)mWorld.createJoint(def);
     }
     public static void destroyBody(Body _body)
     {
@@ -286,11 +273,11 @@ public class sWorld
     public static void update(float _time)
     {
         float secondsPerFrame = 16.666f;
-        //try
+        try
         {
             mWorld.step(secondsPerFrame/1000.0f, 4, 2);
         }
-        //catch (ArrayIndexOutOfBoundsException e)
+        catch (ArrayIndexOutOfBoundsException e)
         {
             
         }

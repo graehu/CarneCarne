@@ -4,10 +4,11 @@
  */
 package World;
 
-import Entities.CaveIn;
+import Level.CaveInSearcher;
 import java.util.ArrayList;
 import java.util.HashMap;
 import org.jbox2d.collision.shapes.PolygonShape;
+import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.BodyType;
@@ -26,7 +27,7 @@ class TileArrayFactory implements iPhysicsFactory
 
     public Body useFactory(HashMap _parameters, World _world)
     {
-        ArrayList<CaveIn.Tile> tiles = (ArrayList<CaveIn.Tile>)_parameters.get("tiles");
+        ArrayList<CaveInSearcher.TempTile> tiles = (ArrayList<CaveInSearcher.TempTile>)_parameters.get("tiles");
         Object entity = _parameters.get("entity");
         BodyDef def = new BodyDef();
         def.type = BodyType.DYNAMIC;
@@ -39,9 +40,9 @@ class TileArrayFactory implements iPhysicsFactory
         fixture.shape = shape;
         fixture.density = 1.0f;
         Body body = _world.createBody(def);
-        for (CaveIn.Tile tile: tiles)
+        for (CaveInSearcher.TempTile tile: tiles)
         {
-            shape.setAsBox(0.5f, 0.5f, tile.mPosition, 0);
+            shape.setAsBox(0.5f, 0.5f, new Vec2(tile.x, tile.y), 0);
             body.createFixture(fixture);
         }
         return body;

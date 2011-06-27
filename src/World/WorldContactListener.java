@@ -31,9 +31,10 @@ public class WorldContactListener implements ContactListener{
         for (int i = 0; i < BodyCategories.eBodyCategoriesMax.ordinal(); i++)
         {
             set(BodyCategories.eWater.ordinal(),i,new WaterListener());
-            set(BodyCategories.eGum.ordinal(),i,new GumListener());
             set(BodyCategories.eTar.ordinal(),i,new TarListener());
         }
+        set(BodyCategories.eGum.ordinal(),BodyCategories.eEdibleTiles.ordinal(),new GumListener());
+        set(BodyCategories.eGum.ordinal(),BodyCategories.eNonEdibleTiles.ordinal(),new GumListener());
         set(BodyCategories.ePlayer.ordinal(),BodyCategories.eSpikes.ordinal(),new DeathListener());
         set(BodyCategories.eCheckPoint.ordinal(), BodyCategories.ePlayer.ordinal(), new CheckPointListener());
     }

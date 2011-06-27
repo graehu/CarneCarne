@@ -7,6 +7,7 @@ package Level;
 import Level.sLevel.TileType;
 import java.util.HashMap;
 import java.util.Stack;
+import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.Fixture;
 
@@ -18,17 +19,30 @@ public class Tile {
 
     RootTile mRootId;
     int mId;
-    Body mBody;
+    Fixture mFixture;
     int mHealth; /// Aliases as water height
-    public Tile(int _id, RootTile _rootId)
+    TileGrid mTileGrid;
+    int mXTile,mYTile;
+    public Tile(int _id, RootTile _rootId, TileGrid _tileGrid, int _xTile, int _yTile)
     {
         mId = _id;
         mRootId = _rootId;
         mHealth = mRootId.mMaxHealth;
+        mTileGrid = _tileGrid;
+        mXTile = _xTile;
+        mYTile = _yTile;
     }
     public TileType getTileType()
     {
         return mRootId.mTileType;
+    }
+    public TileGrid getTileGrid()
+    {
+        return mTileGrid;
+    }
+    public Vec2 getPosition()
+    {
+        return new Vec2(mXTile, mYTile);
     }
     public int getRootId()
     {
@@ -36,7 +50,7 @@ public class Tile {
     }
     public Tile clone()
     {
-        return new Tile(mId, mRootId);
+        return new Tile(mId, mRootId, null,-1,-1);
     }
     enum Direction
     {
@@ -54,18 +68,28 @@ public class Tile {
     {
         mHealth = _height;
     }
-    public void createPhysicsBody(int _xTile, int _yTile)
+    public void createPhysicsBody(Body _body)
     {
         HashMap parameters = new HashMap();
         parameters.put("Tile", this);
-        mBody = mRootId.createPhysicsBody(_xTile, _yTile, parameters);
+        mFixture = mRootId.createPhysicsBody(mXTile, mYTile, _body, this);
     }
-    public Fixture createFixture(int _xTile, int _yTile)
+    public void destroyFixture()
     {
-        return mRootId.createFixture(_xTile, _yTile);
+        mTileGrid.mBody.destroyFixture(mFixture);
+        mTileGrid.destroyTile(mXTile, mYTile);
     }
-    public void checkEdges(int _xTile, int _yTile, Stack<Integer> _stack, TileGrid _tileGrid)
+    public void createPhysicsBody(int _xTile, int _yTile, HashMap _parameters, Body _body)
     {
-        mRootId.checkEdges(_xTile, _yTile, _stack, _tileGrid);
+        _parameters.put("Tile", this);
+        mFixture = mRootId.createPhysicsBody(_xTile, _yTile, _body, this);
+    }
+    public Fixture createFixture()
+    {
+        return mRootId.createFixture(mXTile, mYTile);
+    }
+    public void checkEdges(Stack<Integer> _stack, TileGrid _tileGrid)
+    {
+        mRootId.checkEdges(mXTile, mYTile, _stack, _tileGrid);
     }
 }

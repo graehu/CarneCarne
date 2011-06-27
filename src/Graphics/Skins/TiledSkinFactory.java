@@ -4,7 +4,7 @@
  */
 package Graphics.Skins;
 
-import Entities.CaveIn;
+import Level.CaveInSearcher;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -21,7 +21,7 @@ class TiledSkinFactory implements iSkinFactory
 
     public iSkin useFactory(HashMap _params)
     {
-        ArrayList<CaveIn.Tile> tiles = (ArrayList<CaveIn.Tile>)_params.get("tiles");
+        ArrayList<CaveInSearcher.TempTile> tiles = (ArrayList<CaveInSearcher.TempTile>)_params.get("tiles");
         return new TiledSkin(tiles);
     }
     
