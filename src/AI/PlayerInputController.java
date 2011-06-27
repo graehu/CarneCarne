@@ -30,13 +30,14 @@ import org.jbox2d.common.Vec2;
 public class PlayerInputController extends iAIController implements iEventListener {
     //constants
     final static float root2 = (float) Math.sqrt(2);
+    
     //protected to allow TongueStateMachine access
     private TongueStateMachine mTongueState;
     protected String mFaceDirAnim;
-    private float mTongueAngle = 0;
     protected Vec2 mPlayerDir = new Vec2(1,0);
     private int mPlayer;
     private Reticle mReticle;
+    
     public PlayerInputController(AIEntity _entity, int _player)
     {
         super(_entity);
@@ -79,17 +80,17 @@ public class PlayerInputController extends iAIController implements iEventListen
         }
     }
     
-    public Tile grabBlock(Vec2 _position)
+    public Tile grabBlock(final Vec2 _position)
     {
         return sWorld.eatTiles(mEntity.mBody.getPosition(),_position);
     }
     
-    public boolean hammer(Vec2 _position)
+    public boolean hammer(final Vec2 _position)
     {
         return sWorld.smashTiles(mEntity.mBody.getPosition(),_position);
     }
     
-    public void layBlock(Tile _tile)
+    public void layBlock(final Tile _tile)
     {
         //determine tile to grow block
         mPlayerDir.normalize(); //ensure it's normalised
@@ -136,20 +137,18 @@ public class PlayerInputController extends iAIController implements iEventListen
         }     
     }
     
-    public void spitBlock(Vec2 _position, Tile _tile)
+    public void spitBlock(final Tile _tile)
     {
         HashMap parameters = new HashMap();
-        Vec2 direction = _position.sub( mEntity.mBody.getPosition());
-        direction.normalize();
         //intialise velocity relative to carne's
-        parameters.put("velocity", direction.mul(10.0f).add(mEntity.mBody.getLinearVelocityFromLocalPoint(new Vec2(0,0))));
+        parameters.put("velocity", mPlayerDir.mul(10.0f).add(mEntity.mBody.getLinearVelocityFromLocalPoint(new Vec2(0,0))));
         parameters.put("position", mEntity.mBody.getPosition());
         parameters.put("tileType",_tile.getTileType());
         parameters.put("rootId",_tile.getRootId());
         sEntityFactory.create("SpatBlock", parameters); 
     }
 
-    public void trigger(iEvent _event)
+    public void trigger(final iEvent _event)
     {
         if (_event.getType().equals("KeyDownEvent"))
         {
@@ -215,6 +214,7 @@ public class PlayerInputController extends iAIController implements iEventListen
         {
             RightStickEvent event = (RightStickEvent)_event;
             mPlayerDir = event.getDirection();
+            mPlayerDir.normalize();
             if(mTongueState.mIsTongueActive == false)
             {
                 look(mPlayerDir);
@@ -224,6 +224,7 @@ public class PlayerInputController extends iAIController implements iEventListen
         {
             MouseMoveEvent event = (MouseMoveEvent)_event;
             mPlayerDir = event.getPhysicsPosition().sub(mEntity.mBody.getPosition().add(new Vec2(0.5f,0.5f))); //offset by half the width and height
+            mPlayerDir.normalize();
             mReticle.updateDirection(mPlayerDir);
             if(mTongueState.mIsTongueActive == false)
             {
@@ -234,6 +235,7 @@ public class PlayerInputController extends iAIController implements iEventListen
         {
             MouseDragEvent event = (MouseDragEvent)_event;
             mPlayerDir = event.getPhysicsPosition().sub(mEntity.mBody.getPosition().add(new Vec2(0.5f,0.5f))); //offset by half the width and height
+            mPlayerDir.normalize();
             mReticle.updateDirection(mPlayerDir);
             if(mTongueState.mIsTongueActive == false)
             {
@@ -265,15 +267,13 @@ public class PlayerInputController extends iAIController implements iEventListen
             }
         }
     }    
-    private void look(Vec2 _direction)
+    private void look(final Vec2 _direction)
     {
         Vec2 direction = _direction.clone();
         direction.normalize();
-        //assumes 64x64 sprite
-        mEntity.mSkin.setOffset("tng", new Vec2(32,32).add(direction.mul(0.4f*64)));
-        mTongueAngle = (float)Math.acos(Vec2.dot(new Vec2(0,-1), direction));
+        float angle = (float)Math.acos(Vec2.dot(new Vec2(0,-1), direction));
         if(direction.x < 0)
-            mTongueAngle = (float) ((2*Math.PI) - mTongueAngle);
+            angle = (float) ((2*Math.PI) - angle);
         float halfSeg = (float) (Math.PI/16.0f);
         //if statement splits left from right for efficiency
         //could further split into quadrents
@@ -282,76 +282,76 @@ public class PlayerInputController extends iAIController implements iEventListen
         mEntity.mSkin.stopAnim("h"+mFaceDirAnim); //hat animation
         mEntity.mSkin.stopAnim("m"+mFaceDirAnim); //mouth animation
         mEntity.mSkin.stopAnim("mh"+mFaceDirAnim);
-        if(mTongueAngle < Math.PI)
+        if(angle < Math.PI)
         {
-            if(mTongueAngle < halfSeg)
+            if(angle < halfSeg)
                 mFaceDirAnim = "n";
-            else if(mTongueAngle >= halfSeg && mTongueAngle < 2*halfSeg)
+            else if(angle >= halfSeg && angle < 2*halfSeg)
                 mFaceDirAnim = "nbe";
-            else if(mTongueAngle >= 2*halfSeg && mTongueAngle < 3*halfSeg)
+            else if(angle >= 2*halfSeg && angle < 3*halfSeg)
                 mFaceDirAnim = "nne";
-            else if(mTongueAngle >= 3*halfSeg && mTongueAngle < 4*halfSeg)
+            else if(angle >= 3*halfSeg && angle < 4*halfSeg)
                 mFaceDirAnim = "nebn";
-            else if(mTongueAngle >= 4*halfSeg && mTongueAngle < 5*halfSeg)
+            else if(angle >= 4*halfSeg && angle < 5*halfSeg)
                 mFaceDirAnim = "ne";
-            else if(mTongueAngle >= 5*halfSeg && mTongueAngle < 6*halfSeg)
+            else if(angle >= 5*halfSeg && angle < 6*halfSeg)
                 mFaceDirAnim = "nebe";
-            else if(mTongueAngle >= 6*halfSeg && mTongueAngle < 7*halfSeg)
+            else if(angle >= 6*halfSeg && angle < 7*halfSeg)
                 mFaceDirAnim = "ene";
-            else if(mTongueAngle >= 7*halfSeg && mTongueAngle < 8*halfSeg)
+            else if(angle >= 7*halfSeg && angle < 8*halfSeg)
                 mFaceDirAnim = "ebn";
-            else if(mTongueAngle >= 8*halfSeg && mTongueAngle < 9*halfSeg)
+            else if(angle >= 8*halfSeg && angle < 9*halfSeg)
                 mFaceDirAnim = "e";
-            else if(mTongueAngle >= 9*halfSeg && mTongueAngle < 10*halfSeg)
+            else if(angle >= 9*halfSeg && angle < 10*halfSeg)
                 mFaceDirAnim = "ebs";
-            else if(mTongueAngle >= 10*halfSeg && mTongueAngle < 11*halfSeg)
+            else if(angle >= 10*halfSeg && angle < 11*halfSeg)
                 mFaceDirAnim = "ese";
-            else if(mTongueAngle >= 11*halfSeg && mTongueAngle < 12*halfSeg)
+            else if(angle >= 11*halfSeg && angle < 12*halfSeg)
                 mFaceDirAnim = "sebe";
-            else if(mTongueAngle >= 12*halfSeg && mTongueAngle < 13*halfSeg)
+            else if(angle >= 12*halfSeg && angle < 13*halfSeg)
                 mFaceDirAnim = "se";
-            else if(mTongueAngle >= 13*halfSeg && mTongueAngle < 14*halfSeg)
+            else if(angle >= 13*halfSeg && angle < 14*halfSeg)
                 mFaceDirAnim = "sebs";
-            else if(mTongueAngle >= 14*halfSeg && mTongueAngle < 15*halfSeg)
+            else if(angle >= 14*halfSeg && angle < 15*halfSeg)
                 mFaceDirAnim = "sse";
-            else if(mTongueAngle >= 15*halfSeg && mTongueAngle < 16*halfSeg)
+            else if(angle >= 15*halfSeg && angle < 16*halfSeg)
                 mFaceDirAnim = "sbe";
-            else if(mTongueAngle >= 16*halfSeg && mTongueAngle < 17*halfSeg)
+            else if(angle >= 16*halfSeg && angle < 17*halfSeg)
                 mFaceDirAnim = "s";
         }
         else //angle < 0
         {
-            if(mTongueAngle < 17*halfSeg)
+            if(angle < 17*halfSeg)
                 mFaceDirAnim = "s";
-            else if(mTongueAngle >= 17*halfSeg && mTongueAngle < 18*halfSeg)
+            else if(angle >= 17*halfSeg && angle < 18*halfSeg)
                 mFaceDirAnim = "sbw";
-            else if(mTongueAngle >= 18*halfSeg && mTongueAngle < 19*halfSeg)
+            else if(angle >= 18*halfSeg && angle < 19*halfSeg)
                 mFaceDirAnim = "ssw";
-            else if(mTongueAngle >= 19*halfSeg && mTongueAngle < 20*halfSeg)
+            else if(angle >= 19*halfSeg && angle < 20*halfSeg)
                 mFaceDirAnim = "swbs";
-            else if(mTongueAngle >= 20*halfSeg && mTongueAngle < 21*halfSeg)
+            else if(angle >= 20*halfSeg && angle < 21*halfSeg)
                 mFaceDirAnim = "sw";
-            else if(mTongueAngle >= 21*halfSeg && mTongueAngle < 22*halfSeg)
+            else if(angle >= 21*halfSeg && angle < 22*halfSeg)
                 mFaceDirAnim = "swbw";
-            else if(mTongueAngle >= 22*halfSeg && mTongueAngle < 23*halfSeg)
+            else if(angle >= 22*halfSeg && angle < 23*halfSeg)
                 mFaceDirAnim = "wsw";
-            else if(mTongueAngle >= 23*halfSeg && mTongueAngle < 24*halfSeg)
+            else if(angle >= 23*halfSeg && angle < 24*halfSeg)
                 mFaceDirAnim = "wbs";
-            else if(mTongueAngle >= 24*halfSeg && mTongueAngle < 25*halfSeg)
+            else if(angle >= 24*halfSeg && angle < 25*halfSeg)
                 mFaceDirAnim = "w";
-            else if(mTongueAngle >= 25*halfSeg && mTongueAngle < 26*halfSeg)
+            else if(angle >= 25*halfSeg && angle < 26*halfSeg)
                 mFaceDirAnim = "wbn";
-            else if(mTongueAngle >= 26*halfSeg && mTongueAngle < 27*halfSeg)
+            else if(angle >= 26*halfSeg && angle < 27*halfSeg)
                 mFaceDirAnim = "wnw";
-            else if(mTongueAngle >= 27*halfSeg && mTongueAngle < 28*halfSeg)
+            else if(angle >= 27*halfSeg && angle < 28*halfSeg)
                 mFaceDirAnim = "nwbw";
-            else if(mTongueAngle >= 28*halfSeg && mTongueAngle < 29*halfSeg)
+            else if(angle >= 28*halfSeg && angle < 29*halfSeg)
                 mFaceDirAnim = "nw";
-            else if(mTongueAngle >= 29*halfSeg && mTongueAngle < 30*halfSeg)
+            else if(angle >= 29*halfSeg && angle < 30*halfSeg)
                 mFaceDirAnim = "nwbn";
-            else if(mTongueAngle >= 30*halfSeg && mTongueAngle < 31*halfSeg)
+            else if(angle >= 30*halfSeg && angle < 31*halfSeg)
                 mFaceDirAnim = "nnw";
-            else if(mTongueAngle >= 31*halfSeg && mTongueAngle < 32*halfSeg)
+            else if(angle >= 31*halfSeg && angle < 32*halfSeg)
                 mFaceDirAnim = "nbw";
         }
     }
