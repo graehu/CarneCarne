@@ -76,19 +76,19 @@ public class sGraphicsManager {
         mAllowTransform = false;
         mGraphics.popTransform();
     }
-    public static void translate(float _x, float _y) throws SlickException
+    public static void translate(float _x, float _y)
     {
         if(mAllowTransform)
             mGraphics.translate(_x, _y);
-        else
-            throw new SlickException("Must call beginTrasform first");
+        //else
+            //throw new SlickException("Must call beginTrasform first");
     }
-    public static void rotate(float _x, float _y, float _angle) throws SlickException
+    public static void rotate(float _x, float _y, float _angle)
     {
         if(mAllowTransform)
             mGraphics.rotate(_x, _y, _angle);
-        else
-            throw new SlickException("Must call beginTrasform first");
+        //else
+            //throw new SlickException("Must call beginTrasform first");
     }
     public static void addSprite(iSprite _sprite)
     {
