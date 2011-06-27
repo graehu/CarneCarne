@@ -13,12 +13,12 @@ import Level.sLevel;
  */
 public class ZombieController extends iAIController
 {
-    iPathFinding pathFinding;
+    iPathFinding mPathFinding;
     boolean mToggle;
     public ZombieController(AIEntity _entity)
     {
         super(_entity);
-        pathFinding = new AStar();
+        mPathFinding = new AStar(_entity, new ShortestDistance());
         mToggle = true;
         mEntity.setMoveSpeed(0.9f);
     }
@@ -26,23 +26,24 @@ public class ZombieController extends iAIController
     {
         int x = (int)(mEntity.mBody.getPosition().x);
         int y = (int)(mEntity.mBody.getPosition().y);
+        
         if(mToggle)
         {
-            pathFinding.updatePosition(x, y, x+1, y);
+            mPathFinding.updatePath(x, y, x+2, y);
         }
         else if(!mToggle)
         {
-            pathFinding.updatePosition(x, y, x-1, y);
+            mPathFinding.updatePath(x, y, x-2, y);
         }
         
-        switch (pathFinding.follow())
+        switch (mPathFinding.follow())
         {
-            case eWalkLeft:
+            case eMoveLeft:
             {
                 mEntity.walkLeft();
                 break;
             }
-            case eWalkRight:
+            case eMoveRight:
             {
                 mEntity.walkRight();
                 break;

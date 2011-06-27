@@ -25,6 +25,7 @@ import org.jbox2d.dynamics.joints.Joint;
 import org.jbox2d.dynamics.joints.PrismaticJointDef;
 import org.jbox2d.structs.collision.RayCastInput;
 import org.jbox2d.structs.collision.RayCastOutput;
+import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
 /**
  *
@@ -307,7 +308,7 @@ public class sWorld
                 entity.render();
             body = body.getNext();
         }
-        mWorld.drawDebugData();      
+        mWorld.drawDebugData();
     }
 }
 

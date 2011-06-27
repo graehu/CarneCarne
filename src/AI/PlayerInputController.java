@@ -29,6 +29,12 @@ import org.jbox2d.common.Vec2;
  * @author alasdair
  */
 public class PlayerInputController extends iAIController implements iEventListener {
+    enum Controls
+    {
+        eTongue,
+        eSpit,
+        eControlsMax
+    }
     //constants
     final static float root2 = (float) Math.sqrt(2);
     

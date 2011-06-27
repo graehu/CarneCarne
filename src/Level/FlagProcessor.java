@@ -4,6 +4,8 @@
  */
 package Level;
 
+import AI.sPathFinding;
+import Entities.Entity;
 import Entities.sEntityFactory;
 import World.sWorld;
 import java.util.HashMap;
@@ -25,6 +27,7 @@ public class FlagProcessor
         int layerIndex = _tiledMap.getLayerIndex("Flags");
         playerPositions = new Stack<Vec2>();
         HashMap parameters = new HashMap();
+        
         for (int i = 0; i < width; i++)
         {
             for (int ii = 0; ii < height; ii++)
@@ -34,7 +37,8 @@ public class FlagProcessor
                 if (spawn.equals("AI"))
                 {
                     parameters.put("position",new Vec2(i,ii));
-                    sEntityFactory.create("Zombie",parameters);                    
+                    //sEntityFactory.create("Zombie",parameters               
+                    sEntityFactory.create("Carrot",parameters);
                 }
                 else if (spawn.equals("Player"))
                 {
@@ -71,7 +75,8 @@ public class FlagProcessor
         while (!playerPositions.isEmpty())
         {
             parameters.put("position", playerPositions.pop());
-            sEntityFactory.create("Player",parameters);
+            Entity player = sEntityFactory.create("Player",parameters);
+            sPathFinding.addPlayer(player);
         }
     }
 }
