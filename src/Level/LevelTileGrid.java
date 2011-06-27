@@ -24,6 +24,7 @@ public final class LevelTileGrid extends TileGrid
         HashMap parameters = new HashMap();
         parameters.put("isDynamic", false);
         parameters.put("position", new Vec2(0, 0));
+        parameters.put("angle", 0.0f);
         init(parameters);
     }
     int getTileId(int _x, int _y)
@@ -44,7 +45,7 @@ public final class LevelTileGrid extends TileGrid
     }
     void caveInSearch(int _x, int _y)
     {
-        CaveInSearcher search = new CaveInSearcher(this, tiledMap, layerIndex);
+        CaveInSearcher search = new CaveInSearcher(this, tiledMap, layerIndex, new Vec2(0,0), 0);
         search.destroy(_x, _y);
     }
 }

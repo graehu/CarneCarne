@@ -16,19 +16,19 @@ import org.jbox2d.common.Vec2;
 public class TiledSkin implements iSkin
 {
     ArrayList<CaveInSearcher.TempTile> mTiles;
-    public TiledSkin(ArrayList<CaveInSearcher.TempTile> _tiles)
+    CaveInSearcher.TempTile tiles[][];
+    public TiledSkin(ArrayList<CaveInSearcher.TempTile> _tiles, int _width, int _height)
     {
         mTiles = _tiles;
+        tiles = new CaveInSearcher.TempTile[_width][_height];
+        for (CaveInSearcher.TempTile tile: _tiles)
+        {
+            tiles[tile.x][tile.y] = tile;
+        }
     }
     public void setId(int _x, int _y, int _id)
     {
-        for (CaveInSearcher.TempTile tile: mTiles)
-        {
-            if (tile.x == _x && tile.y == _y)
-            {
-                tile.setId(_id);
-            }
-        }
+        tiles[_x][_y].setId(_id);
     }
     public void render(float _x, float _y)
     {
