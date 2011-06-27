@@ -306,7 +306,7 @@ public class sWorld
                 entity.render();
             body = body.getNext();
         }
-        mWorld.drawDebugData();      
+        mWorld.drawDebugData();
     }
 }
 

@@ -10,10 +10,17 @@ package AI;
  */
 public interface iPathFinding 
 { 
+    
     enum Command
     {
-        eWalkLeft,
-        eWalkRight,
+        eMoveLeft,
+        eMoveRight,
+        eMoveUp,
+        eMoveDown,
+        eMoveTopLeft,
+        eMoveTopRight,
+        eMoveBottomLeft,
+        eMoveBottomRight,
         eStandStill,
         eCommandMax
     }

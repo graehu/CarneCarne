@@ -28,9 +28,9 @@ public class AStar implements iPathFinding
     int mMaxDepth;
     Entity mEntity;
     Command mCommand;
-    private LinkedList<Node> mWorkingSet;
-    private LinkedList<Node> mClosedSet;
-    private LinkedList<Vec2> mPath;
+    private LinkedList<Node> mWorkingSet = new LinkedList();
+    private LinkedList<Node> mClosedSet = new LinkedList();
+    private LinkedList<Vec2> mPath = new LinkedList();
     iHeuristic mHeuristic;
     ///private Array bestPath;
     ///private Array heuristicPath;
@@ -56,31 +56,26 @@ public class AStar implements iPathFinding
     {
         if (mXTarget > mXStart)
         {
-                mCommand = Command.eWalkRight;
+                mCommand = Command.eMoveRight;
         }
         else if(mXTarget < mXStart)
         {
-            mCommand = Command.eWalkLeft;
+            mCommand = Command.eMoveLeft;
         }
+                
         else
         {
             mCommand = Command.eStandStill;
         }
         
-        //if(mCommand == Command.eWalkLeft)
-        //{
-        if((sLevel.getPathInfo(mXStart, mYStart) == PathInfo.eNotPassable || sLevel.getPathInfo(mXStart, mYStart+1) == PathInfo.eAir) &&  (mCommand != Command.eWalkRight))
-        {
-            mCommand = Command.eStandStill;
-        }        
-        //}
-        //else if(mCommand == Command.eWalkRight)
-        //{
-        if((sLevel.getPathInfo(mXStart+1, mYStart) == PathInfo.eNotPassable || sLevel.getPathInfo(mXStart+1, mYStart+1) == PathInfo.eAir) && (mCommand != Command.eWalkLeft))
+        /*if((sLevel.getPathInfo(mXStart, mYStart) == PathInfo.eNotPassable || sLevel.getPathInfo(mXStart, mYStart+1) == PathInfo.eAir) &&  (mCommand != Command.eMoveRight))
         {
             mCommand = Command.eStandStill;
         }
-        
+        if((sLevel.getPathInfo(mXStart+1, mYStart) == PathInfo.eNotPassable || sLevel.getPathInfo(mXStart+1, mYStart+1) == PathInfo.eAir) && (mCommand != Command.eMoveLeft))
+        {
+            mCommand = Command.eStandStill;
+        }*/
         return mCommand;
     }
     
@@ -92,12 +87,15 @@ public class AStar implements iPathFinding
             mYStart = _yStart;
             mXTarget = _xTarget;
             mYTarget = _yTarget;
-            //path();
+            path();
         }
     }
     
     private boolean path()
-    {
+    { 
+        mWorkingSet.clear();
+        mClosedSet.clear();
+        mPath.clear();
         Node startNode = new Node(mXStart,mYStart);
         mWorkingSet.add(startNode);
         mWorkingSet.peek().mCost = mHeuristic.getCost(mXStart, mXStart, mXTarget, mXTarget);
@@ -131,7 +129,7 @@ public class AStar implements iPathFinding
                     {
                         Node neighbour = new Node(xp,yp);
                         //neighbour.mCost = mHeuristic.getCost(xp,yp, mXTarget, mXTarget);
-                        float stepCost = workingNode.mCost + 1;
+                        float stepCost = workingNode.mCost + mHeuristic.getCost(xp,yp, mXTarget, mXTarget);
                         
                         if(stepCost < neighbour.mCost) 
                         {
@@ -158,16 +156,18 @@ public class AStar implements iPathFinding
                     }
                 }
             }
-            // since we'e've run out of search 
+                // since we'e've run out of search 
 		// there was no path. Just return null
-		if (workingNode.mParent == null) 
+            
+		if (workingNode.mParent == null)
                 {
 			return false;
 		}
 		
 		while (targetNode != startNode)
                 {
-                    mPath.push(new Vec2(targetNode.mX, targetNode.mY));
+                    //mPath.push(new Vec2(targetNode.mX, targetNode.mY));
+                    mPath.addFirst(new Vec2(targetNode.mX, targetNode.mY));
                     targetNode = targetNode.mParent;
 		}
 		mPath.push(new Vec2(mXStart, mYStart));

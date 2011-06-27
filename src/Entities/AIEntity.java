@@ -5,6 +5,7 @@
 package Entities;
 
 import AI.iAIController;
+import AI.iPathFinding.Command;
 import Graphics.Skins.iSkin;
 import World.sWorld;
 import org.jbox2d.common.Vec2;
@@ -23,6 +24,7 @@ public class AIEntity extends Entity {
     protected int mJumpTimer;
     protected static int mJumpReload = 60; /// NOTE frame rate change
     protected float mMoveSpeed;
+    protected Command mCommand;
 
     public RevoluteJoint mJoint;
     public AIEntity(iSkin _skin)
@@ -128,6 +130,43 @@ public class AIEntity extends Entity {
             mCanJump = false;
             mJumpTimer = mJumpReload;
         }
+    }
+    
+    public void fly(Command _command)
+    {
+        //do sommit
+        //Hover();
+        switch(_command)
+        {
+            case eMoveLeft:
+                mBody.setLinearVelocity(new Vec2(-mMoveSpeed,0));
+                break;
+            case eMoveRight:
+                mBody.setLinearVelocity(new Vec2(mMoveSpeed,0));
+                break;
+            case eMoveUp:
+                mBody.setLinearVelocity(new Vec2(0,-mMoveSpeed));
+                break;
+            case eMoveDown:
+                mBody.setLinearVelocity(new Vec2(0,mMoveSpeed));
+                break;
+            case eMoveTopLeft:
+                mBody.setLinearVelocity(new Vec2(-mMoveSpeed,-mMoveSpeed));
+                break;
+            case eMoveBottomLeft:
+                mBody.setLinearVelocity(new Vec2(mMoveSpeed,-mMoveSpeed));
+                break;
+            case eMoveBottomRight:
+                mBody.setLinearVelocity(new Vec2(mMoveSpeed, mMoveSpeed));
+                break;
+            case eMoveTopRight:
+                mBody.setLinearVelocity(new Vec2(-mMoveSpeed, mMoveSpeed));
+                break;
+        }
+    }
+    public void Hover()
+    {
+        mBody.setLinearVelocity(new Vec2(0,0));
     }
     
     public void setMoveSpeed(float _moveSpeed)

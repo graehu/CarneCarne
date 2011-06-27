@@ -23,6 +23,7 @@ public class sEntityFactory {
         mFactories.put("Player", new PlayerFactory());
         mFactories.put("SpatBlock", new SpatBlockFactory());
         mFactories.put("Zombie", new ZombieFactory());
+        mFactories.put("Carrot", new CarrotFactory());
         mFactories.put("CaveIn", new CaveInFactory());
         mFactories.put("CaveInTileFactory", new CaveInTileFactory());
         mFactories.put("SeeSaw", new SeeSawFactory());
