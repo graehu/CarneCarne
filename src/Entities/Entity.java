@@ -8,6 +8,7 @@ import org.jbox2d.dynamics.Body;
 import Graphics.Skins.iSkin;
 import World.sWorld;
 import org.jbox2d.common.Vec2;
+import org.newdawn.slick.SlickException;
 /**
  *
  * @author alasdair
@@ -29,7 +30,7 @@ abstract public class Entity {
     
     abstract public void update();
     
-    public void render()
+    public void render() throws SlickException
     {
         Vec2 pixelPosition = sWorld.translateToWorld(mBody.getPosition());
         mSkin.render(pixelPosition.x,pixelPosition.y);

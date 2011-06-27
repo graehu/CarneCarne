@@ -83,7 +83,6 @@ public class TongueStateMachine {
     }
     private Tile extendTongue(boolean _grabBlock)
     {
-        mTongueDir = mAIController.mPlayerDir; //assume nomalised
         float currentLength = ((float)mCurrentStateTimer/(float)tongueFiringTimeout)*tongueLength;
         setTongue(mTongueDir, currentLength);
         
@@ -539,6 +538,7 @@ public class TongueStateMachine {
             }
             case eFiringTongue:
             {
+                mTongueDir = mAIController.mPlayerDir; //assume nomalised
                 //render tongue
                 mAIController.mEntity.mSkin.startAnim("tng", false, 0.0f);
                 mIsTongueActive = true;
@@ -579,6 +579,7 @@ public class TongueStateMachine {
             }
             case eFiringHammer:
             {
+                mTongueDir = mAIController.mPlayerDir; //assume nomalised
                 //DISPLAY TONGUE END
                 mTongueEndSprite.setVisible(true);
                 //render tongue

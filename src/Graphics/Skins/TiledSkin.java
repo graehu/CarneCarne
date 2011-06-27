@@ -47,7 +47,13 @@ public class TiledSkin implements iSkin
 
     public void setRotation(float _radians)
     {
-        throw new UnsupportedOperationException("Not supported yet.");
+        for (CaveInSearcher.TempTile tile: mTiles)
+        {
+            if (tile.image != null)
+            {
+                tile.image.setRotation(_radians);
+            }
+        }
     }
 
     
