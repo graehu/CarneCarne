@@ -5,6 +5,7 @@
 package Entities;
 
 import Graphics.Skins.iSkin;
+import HUD.Reticle;
 import Level.sLevel.TileType;
 import World.sWorld;
 import org.jbox2d.common.Vec2;
@@ -20,10 +21,13 @@ public class PlayerEntity extends AIEntity {
     String mBodyType = "bdy";
     private Vec2 mCheckPoint;
     private Joint mDeathJoint;
+    private Vec2 mDirection;
+    public Reticle mReticle;
     public PlayerEntity(iSkin _skin, Vec2 _checkPointPosition)
     {
         super(_skin);
         mCheckPoint = _checkPointPosition.clone();
+        mReticle = new Reticle(this);
     }
     public void placeCheckPoint(Vec2 _position)
     {
@@ -48,6 +52,7 @@ public class PlayerEntity extends AIEntity {
     }
     protected void subUpdate()
     {
+        mReticle.updateDirection(mDirection);
         if (mDeathJoint != null)
         {//when player is within half a tile of checkpoint destroy joint
             if (compareFloat(mBody.getPosition().x, mCheckPoint.x, 0.5f) && compareFloat(mBody.getPosition().y, mCheckPoint.y, 0.5f))
@@ -63,11 +68,12 @@ public class PlayerEntity extends AIEntity {
             }
         }
     }
-    @Override
+
     public void render()
     { 
         mSkin.setRotation(mBodyType, mBody.getAngle()*(180/(float)Math.PI));
         super.render();
+        //mReticle.render();
     }
     
     public void changeBodyType(TileType _type)
@@ -98,5 +104,8 @@ public class PlayerEntity extends AIEntity {
                 break;
         }
     }
-    
+    public void setDirection(Vec2 _dir)
+    {
+        mDirection = _dir;
+    }
 }

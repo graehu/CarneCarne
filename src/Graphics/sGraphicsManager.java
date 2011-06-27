@@ -27,6 +27,7 @@ public class sGraphicsManager {
     protected static Vec2 mTrueScreenDimensions = new Vec2(0,0);
     protected static Vec2 mScreenDimensions = mTrueScreenDimensions;
     private static boolean mIsInit = false;
+    private static boolean mAllowTransform = false;
     
     public static Vec2 getScreenDimensions()
     {
@@ -65,17 +66,29 @@ public class sGraphicsManager {
     {
         mGraphics = _graphics;
     }
-    public static void resetTransform()
+    public static void beginTransform()
     {
-        mGraphics.resetTransform();
+        mAllowTransform = true;
+        mGraphics.pushTransform();
     }
-    public static void translate(float _x, float _y)
+    public static void endTransform()
     {
-        mGraphics.translate(_x, _y);
+        mAllowTransform = false;
+        mGraphics.popTransform();
     }
-    public static void rotate(float _x, float _y, float _angle)
+    public static void translate(float _x, float _y) throws SlickException
     {
-        mGraphics.rotate(_x, _y, _angle);
+        if(mAllowTransform)
+            mGraphics.translate(_x, _y);
+        else
+            throw new SlickException("Must call beginTrasform first");
+    }
+    public static void rotate(float _x, float _y, float _angle) throws SlickException
+    {
+        if(mAllowTransform)
+            mGraphics.rotate(_x, _y, _angle);
+        else
+            throw new SlickException("Must call beginTrasform first");
     }
     public static void addSprite(iSprite _sprite)
     {

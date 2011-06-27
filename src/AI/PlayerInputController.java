@@ -6,6 +6,7 @@ package AI;
 
 import Events.MouseMoveEvent;
 import Entities.AIEntity;
+import Entities.PlayerEntity;
 import Entities.sEntityFactory;
 import Events.AnalogueStickEvent;
 import Events.KeyDownEvent;
@@ -36,7 +37,6 @@ public class PlayerInputController extends iAIController implements iEventListen
     protected String mFaceDirAnim;
     protected Vec2 mPlayerDir = new Vec2(1,0);
     private int mPlayer;
-    private Reticle mReticle;
     
     public PlayerInputController(AIEntity _entity, int _player)
     {
@@ -55,13 +55,12 @@ public class PlayerInputController extends iAIController implements iEventListen
         sEvents.subscribeToEvent("AnalogueStickEvent"+_player, this);
         sEvents.subscribeToEvent("RightStickEvent"+_player, this);
         mTongueState = new TongueStateMachine(this);
-        mReticle = new Reticle(_entity);
     }
     
     public void update()
     {        
         mTongueState.tick(mEntity);
-        mReticle.updateDirection(mPlayerDir);
+        ((PlayerEntity)mEntity).setDirection(mPlayerDir);
     
         if(mTongueState.mIsTongueActive)
         {
@@ -225,7 +224,6 @@ public class PlayerInputController extends iAIController implements iEventListen
             MouseMoveEvent event = (MouseMoveEvent)_event;
             mPlayerDir = event.getPhysicsPosition().sub(mEntity.mBody.getPosition().add(new Vec2(0.5f,0.5f))); //offset by half the width and height
             mPlayerDir.normalize();
-            mReticle.updateDirection(mPlayerDir);
             if(mTongueState.mIsTongueActive == false)
             {
                 look(mPlayerDir);
@@ -236,7 +234,6 @@ public class PlayerInputController extends iAIController implements iEventListen
             MouseDragEvent event = (MouseDragEvent)_event;
             mPlayerDir = event.getPhysicsPosition().sub(mEntity.mBody.getPosition().add(new Vec2(0.5f,0.5f))); //offset by half the width and height
             mPlayerDir.normalize();
-            mReticle.updateDirection(mPlayerDir);
             if(mTongueState.mIsTongueActive == false)
             {
                 look(mPlayerDir);
