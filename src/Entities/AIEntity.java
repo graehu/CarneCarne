@@ -7,9 +7,10 @@ package Entities;
 import AI.iAIController;
 import AI.iPathFinding.Command;
 import Graphics.Skins.iSkin;
+import Level.Tile;
 import World.sWorld;
 import org.jbox2d.common.Vec2;
-import org.jbox2d.dynamics.Body;
+import org.jbox2d.dynamics.Fixture;
 import org.jbox2d.dynamics.contacts.ContactEdge;
 import org.jbox2d.dynamics.joints.RevoluteJoint;
 /**
@@ -60,11 +61,16 @@ public class AIEntity extends Entity {
         mCanJump = false;
         while (edge != null)
         {
-            Body body = edge.other;
-            if (body.m_fixtureList.m_filter.categoryBits == (1 << sWorld.BodyCategories.eEdibleTiles.ordinal())||
-                    body.m_fixtureList.m_filter.categoryBits == (1 << sWorld.BodyCategories.eNonEdibleTiles.ordinal()))
+            Fixture other = edge.contact.m_fixtureA;
+            if (other.m_body != edge.other)
             {
-                if (body.getPosition().y > mBody.getPosition().y)
+                other = edge.contact.m_fixtureB;
+            }
+            //if (other.m_filter.categoryBits == (1 << sWorld.BodyCategories.eEdibleTiles.ordinal())||
+            //        other.m_filter.categoryBits == (1 << sWorld.BodyCategories.eNonEdibleTiles.ordinal()))
+            if (other.getUserData() != null)
+            {
+                if (((Tile)other.getUserData()).getPosition().y > mBody.getPosition().y)
                 {
                     mCanJump = true;
                     break;
@@ -124,9 +130,9 @@ public class AIEntity extends Entity {
     }
     public void jump()
     {
-        //if (mCanJump && mJumpTimer == 0)
+        if (mCanJump && mJumpTimer == 0)
         {
-            mBody.applyLinearImpulse(new Vec2(0,-3.0f), new Vec2(0,0));
+            mBody.applyLinearImpulse(new Vec2(0,-30.0f), new Vec2(0,0));
             mCanJump = false;
             mJumpTimer = mJumpReload;
         }
