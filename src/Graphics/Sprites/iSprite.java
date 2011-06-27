@@ -14,6 +14,7 @@ import org.jbox2d.common.Vec2;
 public abstract class iSprite {
     protected Vec2 mPos = new Vec2(0,0);
     protected iSkin mSkin = null;
+    private boolean mIsVisible = true;
     protected iSprite()
     {
         
@@ -23,7 +24,8 @@ public abstract class iSprite {
      */
     public void render(float _x, float _y)
     {
-        mSkin.render(_x + mPos.x, _y + mPos.y);
+        if(mIsVisible)
+            mSkin.render(_x + mPos.x, _y + mPos.y);
     }
     public void setRotation(float _radians)
     {
@@ -32,5 +34,9 @@ public abstract class iSprite {
     public void setPosition(Vec2 _pos)
     {
         mPos = _pos;
+    }
+    public void setVisible(boolean _isVisible)
+    {
+        mIsVisible = _isVisible;
     }
 }

@@ -29,9 +29,9 @@ class ZombieFactory implements iEntityFactory {
         //if (!used)
         HashMap animDef = new HashMap();
         animDef.put("ref", "ss_1");
-        animDef.put("anims", Arrays.asList("body"));
+        animDef.put("anims", Arrays.asList("bdy"));
         iSkin skin = sSkinFactory.create("character", animDef);
-        skin.startAnim("body", true, 1.0f);
+        skin.startAnim("bdy", true, 1.0f);
         AIEntity entity = new AIEntity(skin);
         HashMap parameters = new HashMap();
         parameters.put("position", position);

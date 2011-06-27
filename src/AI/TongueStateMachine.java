@@ -5,8 +5,7 @@
 package AI;
 
 import Entities.AIEntity;
-import Graphics.Skins.iSkin;
-import Graphics.Skins.sSkinFactory;
+import Entities.PlayerEntity;
 import Graphics.Sprites.iSprite;
 import Graphics.Sprites.sSpriteFactory;
 import Level.Tile;
@@ -22,25 +21,6 @@ import org.jbox2d.dynamics.joints.DistanceJoint;
  */
 public class TongueStateMachine {
     
-    static Vec2 mUp = new Vec2(0,-1);
-    static int tongueFiringTimeout = 10;
-    static float tongueLength = 6.0f;
-    static int idleAnimationTrigger = 1000;
-    int ammoLeft;
-    boolean mIsTongueActive = false;
-    Vec2 mTongueDir = new Vec2(1,0);
-    
-    Vec2 mPosition = new Vec2(0,0);
-    String mBlockMaterial;
-    private Tile mTile;
-
-    void layBlock()
-    {
-        if (mState.equals(State.eFoodInMouth))
-        {
-            changeState(State.ePlacingBlock);
-        }
-    }
     enum State
     {
         eStart,
@@ -58,10 +38,36 @@ public class TongueStateMachine {
         eSwinging,
         eStatesMax
     }
-    State mState;
-    int mCurrentStateTimer;
-    PlayerInputController mAIController;
-    iSprite mTongueEndSprite;
+    
+    
+    //static members
+    static Vec2 mUp = new Vec2(0,-1);
+    static int tongueFiringTimeout = 10;
+    static float tongueLength = 6.0f;
+    static int idleAnimationTrigger = 1000;
+    
+    //members (protected to allow access by PlayerInputController
+    private State mState;
+    private int mCurrentStateTimer;
+    private PlayerInputController mAIController;
+    private iSprite mTongueEndSprite;
+    protected Vec2 mTongueDir = new Vec2(1,0);
+    private Vec2 mTonguePosition = new Vec2(0,0);
+    private int ammoLeft;
+    protected boolean mIsTongueActive = false;
+    private String mBlockMaterial;
+    private Tile mTile;
+
+    void layBlock()
+    {
+        if (mState.equals(State.eFoodInMouth))
+        {
+            changeState(State.ePlacingBlock);
+        }
+    }
+    
+    
+    
     public TongueStateMachine(PlayerInputController _aIController)
     {
         mAIController = _aIController;
@@ -71,21 +77,28 @@ public class TongueStateMachine {
         mTile = null;
         ammoLeft = 0;
         HashMap params = new HashMap();
-        params.put("ref", "CrossHair");
+        params.put("ref", "mouthBlock");
         mTongueEndSprite = sSpriteFactory.create("simple", params);
+        mTongueEndSprite.setVisible(false);
     }
     private Tile extendTongue(boolean _grabBlock)
     {
+        float currentLength = ((float)mCurrentStateTimer/(float)tongueFiringTimeout)*tongueLength;
+        setTongue(mTongueDir, currentLength);
         
-        mTongueDir = mAIController.mPlayerDir;
-        setTongue(mTongueDir, ((float)mCurrentStateTimer/(float)tongueFiringTimeout)*tongueLength);
-        Vec2 tongueOffset = mTongueDir.mul(((float)mCurrentStateTimer/(float)tongueFiringTimeout)*tongueLength);
+        Vec2 tongueOffset = mTongueDir.mul(currentLength);
+        mTonguePosition = mAIController.mEntity.mBody.getPosition().add(tongueOffset);
+        
+        //update end of tongue sprite's position
+        mTongueEndSprite.setPosition(mTonguePosition.add(new Vec2(0.25f,0.25f)).mul(64));
+        
         if (_grabBlock)
-            return mAIController.grabBlock(mAIController.mEntity.mBody.getPosition().add(tongueOffset));
+            return mAIController.grabBlock(mTonguePosition);
         else
             return null;
     }
     private boolean hammerCollide()
+/*<<<<<<< HEAD
     {
         Vec2 direction = mPosition.sub(mAIController.mEntity.mBody.getPosition());
         direction.normalize();
@@ -98,13 +111,18 @@ public class TongueStateMachine {
         iSkin skin = sSkinFactory.create("static", parameters);
         Vec2 hammerPosition = mAIController.mEntity.mBody.getPosition();
         hammerPosition = sWorld.translateToWorld(hammerPosition);
-        skin.render(hammerPosition.x, hammerPosition.y);*/
+        skin.render(hammerPosition.x, hammerPosition.y);* /
 
         return mAIController.hammer(mAIController.mEntity.mBody.getPosition().add(direction));
+=======*/
+    {                
+        Vec2 tongueOffset = mTongueDir.mul(((float)mCurrentStateTimer/(float)tongueFiringTimeout)*tongueLength);
+        return mAIController.hammer(mAIController.mEntity.mBody.getPosition().add(tongueOffset));
+//>>>>>>> 152a29cbf0cbb227fc5507e22a58138d0dc1c4ec
     }
     private boolean hasFood()
     {
-        return false;
+        return ammoLeft != 0;
     }
     private int setAnimation(String _name)
     {
@@ -112,15 +130,14 @@ public class TongueStateMachine {
         return 1;
     }
     
-    public void setTongue(Vec2 _direction, float _distance)
+    public void setTongue(final Vec2 _direction, final float _distance)
     {
-        //calc. direction of tongue
+        mAIController.mEntity.mSkin.setOffset("tng", new Vec2(32,32).add(_direction.mul(0.4f*64)));
         mAIController.mEntity.mSkin.setDimentions("tng", 0, _distance*64);
-        Vec2 direction = _direction.clone();
-        float angle = (float)Math.acos(Vec2.dot(direction, mUp));
-        if(direction.x < 0)
-                angle = (float) ((2*Math.PI) - angle);
-        mAIController.mEntity.mSkin.setRotation("tng", 180 + (angle*(180.0f/(float)Math.PI)));
+        double angle = Math.acos(Vec2.dot(_direction, mUp));
+        if(_direction.x < 0)
+                angle = ((2*Math.PI) - angle);
+        mAIController.mEntity.mSkin.setRotation("tng", 180.0f + (float)(angle*(180.0/Math.PI)));
     }
     public void tick(AIEntity _entity)
     {
@@ -221,6 +238,7 @@ public class TongueStateMachine {
             case eFiringHammer:
             {
                 mCurrentStateTimer++;
+                extendTongue(false);
                 if (hammerCollide())
                 {
                     changeState(State.eRetractingHammer);
@@ -292,7 +310,7 @@ public class TongueStateMachine {
             {
                 mTongueDir = (mJoint.m_bodyB.getPosition().add(mJoint.m_localAnchor2)).sub((mJoint.m_bodyA.getPosition().add(mJoint.m_localAnchor1)));
                 float actualLength = mTongueDir.normalize();
-                setTongue(mTongueDir, actualLength);
+                setTongue(mTongueDir, actualLength); //lock tongue to block
                 mJoint.m_length = actualLength * 0.99f;
                 
                 //mJoint.m_length -= 0.01f;
@@ -307,7 +325,7 @@ public class TongueStateMachine {
         {
             case eStart:
             {
-                mPosition = _position;
+                mTonguePosition = _position;
                 changeState(State.eFiringTongue);
                 break;
             }
@@ -331,7 +349,7 @@ public class TongueStateMachine {
             }
             case eFoodInMouth:
             {
-                mPosition = _position;
+                mTonguePosition = _position;
                 changeState(State.eFiringHammer);
                 break;
             }
@@ -364,7 +382,7 @@ public class TongueStateMachine {
         {
             case eStart:
             {
-                mPosition = _position;
+                mTonguePosition = _position;
                 changeState(State.eSpitting);
                 break;
             }
@@ -386,7 +404,7 @@ public class TongueStateMachine {
             }
             case eFoodInMouth:
             {
-                mPosition = _position;
+                mTonguePosition = _position;
                 changeState(State.eSpittingBlock);
                 break;
             }
@@ -533,6 +551,8 @@ public class TongueStateMachine {
         {
             case eStart:
             {
+                //set body type
+                ((PlayerEntity)mAIController.mEntity).changeBodyType(TileType.eTileTypesMax);
                 //no tongue
                 mAIController.mEntity.mSkin.stopAnim("tng");
                 mIsTongueActive = false;
@@ -541,8 +561,7 @@ public class TongueStateMachine {
             }
             case eFiringTongue:
             {
-                //calculate relative dir
-                mTongueDir = mAIController.mPlayerDir;
+                mTongueDir = mAIController.mPlayerDir; //assume nomalised
                 //render tongue
                 mAIController.mEntity.mSkin.startAnim("tng", false, 0.0f);
                 mIsTongueActive = true;
@@ -571,6 +590,10 @@ public class TongueStateMachine {
             }
             case eFoodInMouth:
             {
+                //STOP DISPLAYING TONGUE END
+                mTongueEndSprite.setVisible(false);
+                //set body type
+                ((PlayerEntity)mAIController.mEntity).changeBodyType(mTile.getTileType());
                 //no tongue
                 mAIController.mEntity.mSkin.stopAnim("tng");
                 mIsTongueActive = false;
@@ -579,6 +602,9 @@ public class TongueStateMachine {
             }
             case eFiringHammer:
             {
+                mTongueDir = mAIController.mPlayerDir; //assume nomalised
+                //DISPLAY TONGUE END
+                mTongueEndSprite.setVisible(true);
                 //render tongue
                 mAIController.mEntity.mSkin.startAnim("tng", false, 0.0f);
                 mIsTongueActive = true;
@@ -617,6 +643,8 @@ public class TongueStateMachine {
             }
             case eIdleAnimation:
             {
+                //set body type
+                ((PlayerEntity)mAIController.mEntity).changeBodyType(TileType.eTileTypesMax);
                 //no tongue
                 mAIController.mEntity.mSkin.stopAnim("tng");
                 mIsTongueActive = false;
@@ -628,11 +656,6 @@ public class TongueStateMachine {
                 //render tongue
                 mAIController.mEntity.mSkin.startAnim("tng", false, 0.0f);
                 mIsTongueActive = true;
-                Vec2 direction = mPosition.sub(mAIController.mEntity.mBody.getPosition());
-                direction.normalize();
-                setTongue(direction, ((float)mCurrentStateTimer/(float)tongueFiringTimeout)*tongueLength);
-                direction = direction.mul(((float)mCurrentStateTimer/(float)tongueFiringTimeout)*tongueLength);
-                Vec2 position = mAIController.mEntity.mBody.getPosition().add(direction);
                 mJoint = sWorld.createTongueJoint(mAIController.mEntity.mBody);
             }
         }
@@ -644,11 +667,12 @@ public class TongueStateMachine {
         ammoLeft--;
         if (mTile.getTileType().equals(TileType.eChilli))
         {
-            mAIController.breathFire(mPosition);
+            mAIController.breathFire();
         }
         else
         {
-            mAIController.spitBlock(mPosition, mTile);
+            //mAIController.spitBlock(mPosition, mTile);
+            mAIController.spitBlock(mTile);
         }
     }
 }

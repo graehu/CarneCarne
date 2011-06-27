@@ -99,7 +99,8 @@ public class CharacterSkin implements iSkin
     }
 
     public void setRotation(String _animation, float _radians) {
-        mSkins.get(mSkinNames.get(_animation)).setRotation(_radians);
+        Integer ref = mSkinNames.get(_animation);
+        mSkins.get(ref).setRotation(_radians);
     }
     
     public void restart() {
