@@ -19,7 +19,7 @@ public class Reticle {
     private iSprite mReticleSprite = null;
     private AIEntity mPlayer = null;
     private Vec2 mCurrentDir = new Vec2(1,0);
-    private float mOffset = 100;
+    private float mOffset = 200;
     public Reticle(AIEntity _player)
     {
         mPlayer = _player;

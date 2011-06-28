@@ -19,7 +19,8 @@ abstract public class Entity {
     public iSkin mSkin;
     protected int mWaterHeight;
     protected int mWaterTiles;
-    protected int mTar;
+    protected int mTar = 0;
+    protected int mIce = 0;
     
     public Entity(iSkin _skin)
     {
@@ -53,6 +54,15 @@ abstract public class Entity {
     public void untar()
     {
         mTar--;
+    }
+    
+    public void ice()
+    {
+        mIce++;
+    }
+    public void unice()
+    {
+        mIce--;
     }
 
     public void kill()
