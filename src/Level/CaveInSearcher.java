@@ -6,6 +6,7 @@ package Level;
 
 import java.util.ArrayList;
 import java.util.Stack;
+import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.tiled.TileSet;
@@ -20,10 +21,14 @@ public class CaveInSearcher {
     TileGrid mTileGrid;
     TiledMap mTiledMap;
     int mLayerIndex;
-    private boolean mChecked[][];
+    protected boolean mChecked[][];
     int lowestX, lowestY, highestX, highestY;
-    public CaveInSearcher(TileGrid _tileGrid, TiledMap _tiledMap, int _layerIndex)
+    Vec2 mOffset;
+    float mAngle;
+    public CaveInSearcher(TileGrid _tileGrid, TiledMap _tiledMap, int _layerIndex, Vec2 _offset, float _angle)
     {
+        mOffset = _offset;
+        mAngle = _angle;
         lowestX = lowestY = Integer.MAX_VALUE;
         highestX = highestY = Integer.MIN_VALUE;
         mTileGrid = _tileGrid;
@@ -35,7 +40,7 @@ public class CaveInSearcher {
                 mChecked[i][ii] = false;
     }
     
-    private class TileIndex
+    protected class TileIndex
     {
         int x, y;
         TileIndex(int _x, int _y)
@@ -171,7 +176,7 @@ public class CaveInSearcher {
         {
             /// Individual tiles
             /// One tile
-            CaveInTileGrid newTileGrid = new CaveInTileGrid(mTileGrid.rootTiles, mTiledMap, lowestX, lowestY, 1+highestX-lowestX, 1+highestY-lowestY, mLayerIndex);
+            CaveInTileGrid newTileGrid = new CaveInTileGrid(mTileGrid.rootTiles, mTiledMap, lowestX, lowestY, 1+highestX-lowestX, 1+highestY-lowestY, mLayerIndex, mOffset, mAngle);
             newTileGrid.finish(tiles);
             tiles = new ArrayList<TempTile>();
             lowestX = lowestY = Integer.MAX_VALUE;

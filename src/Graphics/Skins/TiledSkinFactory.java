@@ -22,7 +22,9 @@ class TiledSkinFactory implements iSkinFactory
     public iSkin useFactory(HashMap _params)
     {
         ArrayList<CaveInSearcher.TempTile> tiles = (ArrayList<CaveInSearcher.TempTile>)_params.get("tiles");
-        return new TiledSkin(tiles);
+        int width = (Integer)_params.get("width");
+        int height = (Integer)_params.get("height");
+        return new TiledSkin(tiles, width, height);
     }
     
 }

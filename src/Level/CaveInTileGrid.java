@@ -24,12 +24,16 @@ import org.newdawn.slick.tiled.TiledMap;
 public class CaveInTileGrid extends TileGrid
 {
     private int mXTrans, mYTrans;
-    private int ids[][];
+    int ids[][];
     private TiledMap mTiledMap;
     private int mLayerIndex;
-    public CaveInTileGrid(RootTileList _rootTiles, TiledMap _tiledMap, int _xTrans, int _yTrans, int _width, int _height, int _layerIndex)
+    Vec2 mPosition;
+    float mAngle;
+    public CaveInTileGrid(RootTileList _rootTiles, TiledMap _tiledMap, int _xTrans, int _yTrans, int _width, int _height, int _layerIndex, Vec2 _position, float _angle)
     {
         super(_rootTiles, _width, _height);
+        mPosition = _position;
+        mAngle = _angle;
         mXTrans = _xTrans;
         mYTrans = _yTrans;
         ids = new int[_width][_height];
@@ -51,11 +55,14 @@ public class CaveInTileGrid extends TileGrid
         }
         HashMap<String, Object> parameters = new HashMap<String, Object>();
         parameters.put("isDynamic", true);
-        parameters.put("position", new Vec2(mXTrans, mYTrans));
+        parameters.put("position", new Vec2(mXTrans, mYTrans).add(mPosition));
+        parameters.put("angle", mAngle);
         init(parameters);
         parameters = new HashMap<String, Object>();
         parameters.put("tiles", tiles);
         parameters.put("body",mBody);
+        parameters.put("width",ids.length);
+        parameters.put("height",ids[0].length);
         mBody.setUserData(sEntityFactory.create("CaveIn", parameters));
     }
     @Override
@@ -107,10 +114,18 @@ public class CaveInTileGrid extends TileGrid
             mBody = null;
         }
     }
+    boolean searching = false;
     void caveInSearch(int _x, int _y)
     {
-        /*sWorld.destroyBody(mBody);
-        ((Entity)mBody.getUserData()).mBody = null;
-        mBody.setUserData(null);*/
+        if (!searching)
+        {
+            searching = true;
+            CaveInSearcher search = new CaveInSearcher(this, mTiledMap, mLayerIndex, mBody.getPosition(), mBody.getAngle());
+            search.destroy(_x, _y);
+            sWorld.destroyBody(mBody);
+            ((Entity)mBody.getUserData()).mBody = null;
+            mBody.setUserData(null);
+            searching = false;
+        }
     }
 }

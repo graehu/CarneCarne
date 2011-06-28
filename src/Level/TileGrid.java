@@ -20,6 +20,7 @@ abstract public class TileGrid {
     Tile[][] mTiles;
     RootTileList rootTiles;
     private TileRegrowth regrowingTiles;
+    TileFire mTileFire;
     private int mWidth, mHeight;
     Body mBody;
     abstract int getTileId(int _x, int _y);
@@ -30,6 +31,7 @@ abstract public class TileGrid {
     public TileGrid(RootTileList _rootTiles, int _width, int _height)
     {
         rootTiles = _rootTiles;
+        mTileFire = new TileFire(this);
         mTiles = new Tile[_width][_height];
         mWidth = _width;
         mHeight = _height;
@@ -102,8 +104,15 @@ abstract public class TileGrid {
     void update()
     {
         regrowingTiles.update();
+        mTileFire.update();
     }
+    
     public void placeTile(int _x, int _y, int _rootId)
+    {
+        placeTileNoBody(_x, _y, _rootId);
+        createPhysicsBody(_x, _y, mTiles[_x][_y]);
+    }
+    void placeTileNoBody(int _x, int _y, int _rootId)
     {
         mTiles[_x][_y].mId = _rootId;
         mTiles[_x][_y].mRootId = rootTiles.get(_rootId);
@@ -133,7 +142,6 @@ abstract public class TileGrid {
             int xTile = stack.pop();
             setTileId(xTile, yTile, id);
         }
-        createPhysicsBody(_x, _y, mTiles[_x][_y]);
     }
     void set(int _x, int _y, int _gid)
     {
