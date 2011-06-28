@@ -15,8 +15,8 @@ import org.jbox2d.dynamics.Fixture;
  *
  * @author alasdair
  */
-public class Tile {
-
+public class Tile
+{
     RootTile mRootId;
     int mId;
     Fixture mFixture;
@@ -43,7 +43,8 @@ public class Tile {
         if (!isOnFire && mRootId.mIsFlammable)
         {
             isOnFire = true;
-            mTileGrid.placeTile(mXTile, mYTile, mId + 16);
+            mTileGrid.placeTileNoBody(mXTile, mYTile, mId + 16);
+            mTileGrid.mTileFire.addTile(this);
         }
     }
     public TileGrid getTileGrid()
@@ -87,6 +88,7 @@ public class Tile {
     public void destroyFixture()
     {
         mTileGrid.mBody.destroyFixture(mFixture);
+        mFixture = null;
         mTileGrid.destroyTile(mXTile, mYTile);
     }
     public void createPhysicsBody(int _xTile, int _yTile, HashMap _parameters, Body _body)

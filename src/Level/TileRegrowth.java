@@ -5,7 +5,6 @@
 package Level;
 
 import Level.Tile.Direction;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.PriorityQueue;
 
