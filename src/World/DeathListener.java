@@ -5,7 +5,7 @@
 package World;
 
 import Entities.Entity;
-import Events.PlayerDeathEvent;
+import Events.EntityDeathEvent;
 import Events.sEvents;
 import Level.Tile;
 import org.jbox2d.callbacks.ContactImpulse;
@@ -27,11 +27,11 @@ class DeathListener implements iListener
         Tile tile = (Tile)_contact.m_fixtureA.getUserData();//sLevel.TileType.class.getEnumConstants()[_contact.m_fixtureA.m_filter.groupIndex];
         if (_contact.m_fixtureA.m_filter.categoryBits == (1 << sWorld.BodyCategories.eSpikes.ordinal()))
         {
-            sEvents.triggerDelayedEvent(new PlayerDeathEvent(((Entity)_contact.m_fixtureB.m_body.m_userData)));
+            sEvents.triggerDelayedEvent(new EntityDeathEvent(((Entity)_contact.m_fixtureB.m_body.m_userData)));
         }
         else
         {
-            sEvents.triggerDelayedEvent(new PlayerDeathEvent(((Entity)_contact.m_fixtureA.m_body.m_userData)));
+            sEvents.triggerDelayedEvent(new EntityDeathEvent(((Entity)_contact.m_fixtureA.m_body.m_userData)));
         }
     }
 

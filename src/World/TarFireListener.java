@@ -4,8 +4,10 @@
  */
 package World;
 
+import Entities.Entity;
 import Events.TarFireEvent;
 import Entities.FireParticle;
+import Events.EntityDeathEvent;
 import Events.sEvents;
 import Level.Tile;
 import World.sWorld.BodyCategories;
@@ -29,10 +31,12 @@ class TarFireListener implements iListener
         if (_contact.m_fixtureA.m_filter.categoryBits == (1 << BodyCategories.eTar.ordinal()))
         {
             sEvents.triggerDelayedEvent(new TarFireEvent((Tile)_contact.m_fixtureA.getUserData(),(FireParticle)_contact.m_fixtureB.m_body.getUserData()));
+            sEvents.triggerDelayedEvent(new EntityDeathEvent((Entity)_contact.m_fixtureB.m_body.getUserData()));
         }
         else 
         {
-            sEvents.triggerDelayedEvent(new TarFireEvent((Tile)_contact.m_fixtureB.getUserData(),(FireParticle)_contact.m_fixtureA.m_body.getUserData()));        
+            sEvents.triggerDelayedEvent(new TarFireEvent((Tile)_contact.m_fixtureB.getUserData(),(FireParticle)_contact.m_fixtureA.m_body.getUserData())); 
+            sEvents.triggerDelayedEvent(new EntityDeathEvent((Entity)_contact.m_fixtureA.m_body.getUserData()));       
         }
     }
 

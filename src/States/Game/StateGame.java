@@ -200,7 +200,7 @@ public class StateGame extends BasicTWLGameState implements iEventListener {
     {         
         super.enter(container, game);
         //TEST: PARTICLE SYSTEM
-        sParticleManager.createSystem("particleSystems/testSystem.xml", 500, 500, 3.0f);
+        sParticleManager.createSystem("testSystem", 500, 500, 3.0f);
 
         //TEST: MANAGED SPRITE
 //        HashMap params = new HashMap();

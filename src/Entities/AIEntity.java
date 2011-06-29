@@ -7,8 +7,11 @@ package Entities;
 import AI.iAIController;
 import AI.iPathFinding.Command;
 import Graphics.Skins.iSkin;
+import Level.Tile;
+import Level.sLevel.TileType;
 import World.sWorld;
 import org.jbox2d.common.Vec2;
+import org.jbox2d.dynamics.Fixture;
 import org.jbox2d.dynamics.contacts.ContactEdge;
 import org.jbox2d.dynamics.joints.RevoluteJoint;
 /**
@@ -27,6 +30,8 @@ public class AIEntity extends Entity {
     protected static int mJumpReload = 60; /// NOTE frame rate change
     protected float mMoveSpeed;
     protected Command mCommand;
+    protected int mTar = 0;
+    protected int mIce = 0;
 
     public RevoluteJoint mJoint;
     public AIEntity(iSkin _skin)
@@ -41,6 +46,51 @@ public class AIEntity extends Entity {
     public void update()
     {
         //apply gravity
+        ContactEdge edge = mBody.m_contactList;
+        mCanJump = false;
+        mTar = mIce = mJumpContacts = 0;
+        while (edge != null)
+        {
+            Fixture other = edge.contact.m_fixtureA;
+            if (other.m_body == mBody)
+            {
+                other = edge.contact.m_fixtureB;
+            }
+            //if (other.m_filter.categoryBits == (1 << sWorld.BodyCategories.eEdibleTiles.ordinal())||
+            //        other.m_filter.categoryBits == (1 << sWorld.BodyCategories.eNonEdibleTiles.ordinal()))
+            //if (other.getUserData() != null)
+            {
+                if (other.getUserData() != null)
+                {
+                    TileType tileType = ((Tile)other.getUserData()).getTileType();
+                    switch (tileType)
+                    {
+                        case eIce:
+                            mIce++;
+                            break;
+                        case eTar:
+                            mTar++;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                Vec2 collisionNorm = edge.contact.m_manifold.localNormal;
+                collisionNorm.normalize();
+                if(collisionNorm.y > 0.9) //up
+                {
+                }
+                else if(collisionNorm.y < - 1/root2) //down
+                {
+                    mCanJump = true;
+                    mJumpContacts++;
+                }
+                else //horizontal
+                {
+                }
+            }
+            edge = edge.next;
+        }
         mBody.applyLinearImpulse(new Vec2(0,0.1f*mBody.getMass()), mBody.getWorldCenter());
         if (mWaterTiles != 0)
         {
@@ -59,36 +109,6 @@ public class AIEntity extends Entity {
             mJumpTimer--;
         }
         mBody.setAngularDamping(8);
-        ContactEdge edge = mBody.m_contactList;
-        mCanJump = false;
-        /*mAirBorn = true;
-        while (edge != null)
-        {
-            Fixture other = edge.contact.m_fixtureA;
-            if (other.m_body != edge.other)
-            {
-                other = edge.contact.m_fixtureB;
-            }
-            //if (other.m_filter.categoryBits == (1 << sWorld.BodyCategories.eEdibleTiles.ordinal())||
-            //        other.m_filter.categoryBits == (1 << sWorld.BodyCategories.eNonEdibleTiles.ordinal()))
-            if (other.getUserData() != null)
-            {
-                Vec2 collisionNorm = edge.contact.m_manifold.localNormal;
-                collisionNorm.normalize();
-                if(collisionNorm.y > 0.9) //up
-                {
-                }
-                else if(collisionNorm.y < - 1/root2) //down
-                {
-                    mCanJump = true;
-                    mAirBorn = false;
-                }
-                else //horizontal
-                {
-                }
-            }
-            edge = edge.next;
-        }*/
 
         mController.update();
         subUpdate();

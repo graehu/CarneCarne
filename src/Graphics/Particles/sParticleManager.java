@@ -33,7 +33,7 @@ public class sParticleManager {
      * _y           position in Y (pixels)
      * _lifeTime:   time until death (seconds)
      */
-    public static ParticleSys createSystem(String _ref, float _x, float _y, float _lifeTime) throws SlickException
+    public static ParticleSys createSystem(String _ref, float _x, float _y, float _lifeTime)
     {
         ParticleSystem system = null;
         if(mLoadedSystems.containsKey(_ref))
@@ -42,12 +42,19 @@ public class sParticleManager {
         }
         else
         {//create new
-            try {system = ParticleIO.loadConfiguredSystem(_ref);} 
+            try {system = ParticleIO.loadConfiguredSystem("particleSystems/" + _ref + ".xml");} 
             catch (IOException ex) {Logger.getLogger(sParticleManager.class.getName()).log(Level.SEVERE, null, ex);}
             mLoadedSystems.put(_ref, system);
         }
         //clone and initialise new system
-        system = system.duplicate(); //clone
+        try
+        {
+            system = system.duplicate(); //clone
+        }
+        catch (SlickException e)
+        {
+            
+        }
         system.setPosition(_x, _y);
         //Create wrapper for system and instance it
         ParticleSys p = new ParticleSys(system, _lifeTime);

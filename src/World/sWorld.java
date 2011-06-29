@@ -92,6 +92,7 @@ public class sWorld
                     (1 << BodyCategories.eNonEdibleTiles.ordinal())|
                     (1 << BodyCategories.eGum.ordinal())|
                     (1 << BodyCategories.eSpatTiles.ordinal())|
+                    (1 << BodyCategories.ePlayer.ordinal())|
                     (1 << BodyCategories.eIce.ordinal());
         }
         public float reportFixture(Fixture _fixture, Vec2 _p1, Vec2 _p2, float _fraction)
@@ -119,6 +120,7 @@ public class sWorld
         }
     }
     private static Fixture mLastHit;
+    private static Vec2 mLastAnchor;
     public static Tile eatTiles(Vec2 start, Vec2 end)
     {
         TongueCallback callback = new TongueCallback(start, end);
@@ -151,9 +153,13 @@ public class sWorld
                 case eIce:
                 case eIndestructible:
                 {
+                    mLastAnchor = ((Tile)mLastHit.getUserData()).getPosition();
                     break;
                 }
             }
+        }
+        else
+        {
         }
         return ret;
     }
@@ -221,10 +227,9 @@ public class sWorld
     public static DistanceJoint createTongueJoint(Body _body)
     {
         DistanceJointDef def = new DistanceJointDef();
-        Vec2 anchor = ((Tile)mLastHit.getUserData()).getPosition();
-        def.initialize(_body, mLastHit.m_body, _body.getPosition(), anchor);
+        def.initialize(_body, mLastHit.m_body, _body.getPosition(), mLastAnchor);
         def.collideConnected = true;
-        Vec2 direction = _body.getPosition().sub(anchor);
+        Vec2 direction = _body.getPosition().sub(mLastAnchor);
         def.length = direction.normalize();
         //def.frequencyHz = 1.0f;
         //def.dampingRatio = 0.1f;

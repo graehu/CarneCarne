@@ -5,7 +5,7 @@
 package World;
 
 import Entities.Entity;
-import Events.PlayerDeathEvent;
+import Events.EntityDeathEvent;
 import Events.sEvents;
 import Level.Tile;
 import World.sWorld.BodyCategories;

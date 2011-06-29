@@ -53,6 +53,7 @@ class SeeSawBodyFactory implements iPhysicsFactory {
             Body axel = _world.createBody(def);
             FixtureDef fixture = new FixtureDef();
             fixture.isSensor = true;
+            fixture.filter.categoryBits = (1 << sWorld.BodyCategories.eSpatTiles.ordinal());
             CircleShape shape = new CircleShape();
             shape.m_radius = 0.1f;
             fixture.shape = shape;

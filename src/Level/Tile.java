@@ -28,7 +28,10 @@ public class Tile
     {
         mId = _id;
         mRootId = _rootId;
-        mHealth = mRootId.mMaxHealth;
+        if (mRootId != null)
+            mHealth = mRootId.mMaxHealth;
+        else
+            mHealth = -1;
         mTileGrid = _tileGrid;
         mXTile = _xTile;
         mYTile = _yTile;

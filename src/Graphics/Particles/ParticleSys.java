@@ -34,6 +34,12 @@ public class ParticleSys
         return mIsDead;
     }
     
+    public void kill()
+    {
+        mLife = 0.0f;
+        mCanDie = true;
+    }
+    
     //move emitters only
     public void moveTo(float _x, float _y)
     {
