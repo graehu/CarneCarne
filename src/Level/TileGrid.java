@@ -26,7 +26,7 @@ abstract public class TileGrid {
     abstract int getTileId(int _x, int _y);
     abstract void setTileId(int _x, int _y, int _id);
     abstract void createPhysicsBody(int _x, int _y, Tile _tile);
-    abstract void caveInSearch(int _x, int _y);
+    abstract void caveInSearch(int _x, int _y, TileType _tileType);
     abstract public void destroyTile(int _x, int _y);
     public TileGrid(RootTileList _rootTiles, int _width, int _height)
     {
@@ -153,7 +153,7 @@ abstract public class TileGrid {
     protected void destroyTileImplementation(int _x, int _y)
     {
         Stack<Integer> stack = new Stack<Integer>();
-        
+        TileType tileType = mTiles[_x][_y].getTileType();
         if (mTiles[_x][_y].mRootId.mRegrows)
             regrowingTiles.add(_x,_y, mTiles[_x][_y].mRootId);
         //mBody.destroyFixture(mTiles[_x][_y].mFixture);
@@ -209,17 +209,16 @@ abstract public class TileGrid {
             int xTile = stack.pop();
             setTileId(xTile, yTile, id);
         }
-        caveInSearch(_x, _y);
+        caveInSearch(_x, _y, tileType);
     }
     
     public Tile get(int _x, int _y)
     {
         return mTiles[_x][_y];
     }
-    private static MaterialEdges mMaterialEdges = new MaterialEdges();
     boolean boundaryFrom(int _xTile, int _yTile, Direction _direction, TileType _tileType)
     {
         Tile tile = get(_xTile, _yTile);
-        return tile.mRootId.boundaryFrom(_direction, _tileType, mMaterialEdges);
+        return tile.mRootId.boundaryFrom(_direction, _tileType, MaterialEdges.GraphicalEdges);
     }
 }

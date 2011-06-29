@@ -49,7 +49,7 @@ public class BlockTile extends RootTile
         {
             fixture.filter.categoryBits = (1 << BodyCategories.eTar.ordinal());
             fixture.restitution = 0.0f;
-            fixture.friction = 0.01f;
+            fixture.friction = 10f;
         }
         fixture.shape = shape;
         fixture.userData = _tile; /// FIXME make this body data instead

@@ -4,6 +4,7 @@
  */
 package Level;
 
+import Level.sLevel.TileType;
 import java.util.HashMap;
 import org.jbox2d.common.Vec2;
 import org.newdawn.slick.tiled.TiledMap;
@@ -43,9 +44,9 @@ public final class LevelTileGrid extends TileGrid
     {
         destroyTileImplementation(_x, _y);
     }
-    void caveInSearch(int _x, int _y)
+    void caveInSearch(int _x, int _y, TileType _tileType)
     {
         CaveInSearcher search = new CaveInSearcher(this, tiledMap, layerIndex, new Vec2(0,0), 0);
-        search.destroy(_x, _y);
+        search.destroy(_x, _y, _tileType);
     }
 }

@@ -153,7 +153,7 @@ public class PlayerInputController extends iAIController implements iEventListen
         HashMap parameters = new HashMap();
         //intialise velocity relative to carne's
         parameters.put("velocity", mPlayerDir.mul(10.0f).add(mEntity.mBody.getLinearVelocityFromLocalPoint(new Vec2(0,0))));
-        parameters.put("position", mEntity.mBody.getPosition());
+        parameters.put("position", mEntity.mBody.getPosition().add(mPlayerDir));
         parameters.put("tileType",_tile.getTileType());
         parameters.put("rootId",_tile.getRootId());
         sEntityFactory.create("SpatBlock", parameters); 
@@ -163,7 +163,7 @@ public class PlayerInputController extends iAIController implements iEventListen
         HashMap parameters = new HashMap();
         //intialise velocity relative to carne's
         parameters.put("velocity", mPlayerDir.mul(10.0f).add(mEntity.mBody.getLinearVelocityFromLocalPoint(new Vec2(0,0))));
-        parameters.put("position", mEntity.mBody.getPosition());
+        parameters.put("position", mEntity.mBody.getPosition().add(mPlayerDir));
         sEntityFactory.create("FireParticle", parameters);
     }
 

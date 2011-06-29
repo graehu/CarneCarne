@@ -55,6 +55,12 @@ abstract public class Entity {
     {
         mTar--;
     }
+    public void canJump()
+    {
+    }
+    public void cantJump()
+    {
+    }
     
     public void ice()
     {

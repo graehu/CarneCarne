@@ -30,7 +30,7 @@ class MelonSkinTile extends BlockTile {
     SkinDirection mDirection;
     public MelonSkinTile(int _id, TileType type, SkinDirection _direction, int _maxHealth)
     {
-        super(_id, type, false, false, false, _maxHealth);
+        super(_id, type, false, true, false, _maxHealth);
         mDirection = _direction;
     }
     

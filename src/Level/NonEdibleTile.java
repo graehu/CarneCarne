@@ -42,7 +42,6 @@ class NonEdibleTile extends RootTile
         fixture.filter.groupIndex = mTileType.ordinal();
         fixture.filter.categoryBits = (1 << BodyCategories.eNonEdibleTiles.ordinal());
         fixture.filter.maskBits = Integer.MAX_VALUE;
-        fixture.density = 1.0f;
         if (mTileType.equals(TileType.eSpikes))
         {
             fixture.filter.categoryBits = (1 << BodyCategories.eSpikes.ordinal());
@@ -62,6 +61,6 @@ class NonEdibleTile extends RootTile
 
     boolean boundaryFrom(Direction _direction, TileType _tileType, MaterialEdges _materialEdges)
     {
-        return false;
+        return _materialEdges.check(_tileType, mTileType);
     }
 }

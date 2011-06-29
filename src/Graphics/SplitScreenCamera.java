@@ -49,13 +49,12 @@ class SplitScreenCamera extends iCamera
         return mActiveCamera.getPixelTranslation();
     }
     
-    public void render(Graphics _graphics)
+    public void render()
     {
         mActiveCamera = mCameraA;
-        mActiveCamera.render(_graphics);
+        mActiveCamera.render();
         mActiveCamera = mCameraB;
-        mActiveCamera.render(_graphics);
-        _graphics.setClip(mViewPort);
+        mActiveCamera.render();
     }
     
     public iCamera addPlayer(Body _body)
