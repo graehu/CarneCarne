@@ -7,6 +7,7 @@ package HUD;
 import Entities.AIEntity;
 import Graphics.Sprites.iSprite;
 import Graphics.Sprites.sSpriteFactory;
+import Input.sInput;
 import World.sWorld;
 import java.util.HashMap;
 import org.jbox2d.common.Vec2;
@@ -20,6 +21,8 @@ public class Reticle {
     private AIEntity mPlayer = null;
     private Vec2 mCurrentDir = new Vec2(1,0);
     private float mOffset = 200;
+    private float mDistance = 200;
+    private Vec2 mWorldPosition;
     public Reticle(AIEntity _player)
     {
         mPlayer = _player;
@@ -27,12 +30,30 @@ public class Reticle {
         params.put("ref", "CrossHair2");
         mReticleSprite = sSpriteFactory.create("simple", params, false);
     }
+    public void update()
+    {
+            Vec2 playerPixelPosition = mPlayer.mBody.getPosition().mul(64);
+            Vec2 reticlePos = playerPixelPosition.add(mCurrentDir.mul(mDistance));
+            mReticleSprite.setPosition(reticlePos); //20,20 offset to center sprite
+            if(mDistance == mOffset)
+            {
+                //Vec2 pixelPosition = sWorld.translateToWorld(new Vec2(0,0));
+               // sInput.setCursorPos(pixelPosition.sub(reticlePos).sub(mCurrentDir.mul(20)));
+            }
+    }
     public void updateDirection(Vec2 dir)
     {
         mCurrentDir = dir;
         mCurrentDir.normalize();
         Vec2 wBodyPos = mPlayer.mBody.getPosition().mul(64);
-        mReticleSprite.setPosition(wBodyPos.add(mCurrentDir.mul(mOffset))); //20,20 offset to center sprite
+        mDistance = mOffset;
+    }
+    public void setPhysPosition(Vec2 _pos)
+    {
+        Vec2 playerPixelPosition = mPlayer.mBody.getPosition().mul(64);
+        mCurrentDir = _pos.mul(64).sub(playerPixelPosition);
+        mDistance = mCurrentDir.normalize();
+        mDistance = Math.min(mDistance,mOffset);
     }
     public void render()
     {

@@ -8,7 +8,6 @@ import de.matthiasmann.twl.ComboBox;
 import de.matthiasmann.twl.Widget;
 import de.matthiasmann.twl.model.ListModel;
 import de.matthiasmann.twl.model.SimpleChangableListModel;
-import java.util.ArrayList;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.logging.Level;
@@ -17,7 +16,6 @@ import main.InitApp;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
-import org.newdawn.slick.AppGameContainer;
 
 
 /**

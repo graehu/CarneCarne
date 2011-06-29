@@ -69,7 +69,7 @@ public class BodyCamera extends iCamera {
         Rectangle shape = new Rectangle(0,0, mViewPort.getWidth(),mViewPort.getHeight());
         sGraphicsManager.fill(shape, fill);
         sLevel.renderBackground();
-        
+
         sWorld.render();
         
         sLevel.renderForeground();

@@ -4,6 +4,7 @@ package main;
 import GUI.TWL.BasicTWLGameState;
 import GUI.TWL.TWLStateBasedGame;
 import Graphics.sGraphicsManager;
+import Input.sInput;
 import java.net.URL;
 import org.newdawn.slick.*;
 import States.Game.StateGame;
@@ -42,9 +43,7 @@ public class Main extends TWLStateBasedGame
             app.setDisplayMode(InitApp.mChosenX, InitApp.mChosenY, false);
             app.setVSync(true);
             app.setTargetFrameRate(60);
-            
-            //initialise graphics manager
-            sGraphicsManager.init(InitApp.mChosenX, InitApp.mChosenY);
+            app.setMouseGrabbed(true);
             
             app.start();
             
@@ -66,8 +65,10 @@ public class Main extends TWLStateBasedGame
     BasicTWLGameState mSplashState, mTitleState, mGameState, mMenuState;
     
     @Override
-    public void initStatesList(GameContainer gc) throws SlickException {   
-        
+    public void initStatesList(GameContainer _gc) throws SlickException {   
+        //initialise static classes
+        sGraphicsManager.init(InitApp.mChosenX, InitApp.mChosenY);
+        sInput.init(_gc); 
         //Splash: state1
         mSplashState = new StateSplash();
         addState(mSplashState);

@@ -12,12 +12,13 @@ import org.jbox2d.common.Vec2;
  * @author A203946
  */
 public class MouseMoveEvent extends iEvent {
-    
+    Vec2 oldPosition;
     Vec2 position;
     int mPlayer;
-    public MouseMoveEvent(Vec2 _position, int _player)
+    public MouseMoveEvent(Vec2 _position, Vec2 _oldPosition, int _player)
     {
         position = _position;
+        oldPosition = _oldPosition;
         mPlayer = _player;
     }
     
@@ -38,5 +39,9 @@ public class MouseMoveEvent extends iEvent {
     public Vec2 getPhysicsPosition()
     {
         return sWorld.translateToPhysics(position);
+    }
+    public Vec2 getDeltaPhysicsPosition()
+    {
+        return sWorld.translateToPhysics(position.sub(oldPosition));
     }
 }
