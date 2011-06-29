@@ -10,6 +10,9 @@ import Events.KeyDownEvent;
 import Events.MapClickEvent;
 import Events.MouseDragEvent;
 import Events.MouseMoveEvent;
+import Events.PlayerCreatedEvent;
+import Events.iEvent;
+import Events.iEventListener;
 import Events.sEvents;
 import GUI.sGUI;
 import Graphics.Particles.sParticleManager;
@@ -43,14 +46,35 @@ import org.newdawn.slick.state.transition.BlobbyTransition;
  *
  * @author a203945
  */
-public class StateGame extends BasicTWLGameState {
+public class StateGame extends BasicTWLGameState implements iEventListener {
 
     private iGameMode mGameMode; 
+    StateChanger mChangeToMenu;
     private Button btn,btn2; // FIXME for testing
     static private int mPlayers;
     static public Vec2 mMousePos = new Vec2(0,0);
     
-
+    public StateGame()
+    {
+    }
+    public void trigger(iEvent _event) {
+        //on player creation subscribe to their input
+        if(_event.getType().equals("PlayerCreatedEvent"))
+        {
+            PlayerCreatedEvent event = (PlayerCreatedEvent) _event;
+            sEvents.subscribeToEvent("KeyDownEvent"+"Q"+event.getPlayerID(), this);
+        }
+        if(_event.getType().equals("KeyDownEvent"))
+        {
+            KeyDownEvent event = (KeyDownEvent) _event;
+            if(event.getKey() == 'Q')
+            {
+                //goto menu
+                mChangeToMenu.run();
+            }
+        }
+    }
+    
     public int getID()
     {
         return 3;
@@ -77,6 +101,7 @@ public class StateGame extends BasicTWLGameState {
                 sEvents.triggerEvent(new MapClickEvent(sWorld.translateToPhysics(position),false,i));
         }
     }
+    @Override
     public void mouseReleased(int _button, int _x, int _y)
     {
         if (_button == Input.MOUSE_LEFT_BUTTON)
@@ -92,6 +117,7 @@ public class StateGame extends BasicTWLGameState {
                 sEvents.triggerEvent(new MapClickReleaseEvent(sWorld.translateToPhysics(position),false, i));
         }
     }
+    @Override
     public void mouseMoved(int oldx, int oldy, int newx, int newy)
     {
         for (int i = 0; i < mPlayers; i++)
@@ -106,7 +132,7 @@ public class StateGame extends BasicTWLGameState {
     }
     
     private ArrayList<XBoxController> xBoxControllers = new ArrayList<XBoxController>();
-    public void update(GameContainer _gc, StateBasedGame _sbg, int _i) throws SlickException /// FIXME wtf is '_i'?
+    public void update(GameContainer _gc, StateBasedGame _sbg, int _delta) throws SlickException 
     {
         mMousePos.x = _gc.getInput().getMouseX();
         mMousePos.y = _gc.getInput().getMouseY();
@@ -122,6 +148,8 @@ public class StateGame extends BasicTWLGameState {
             sEvents.triggerEvent(new KeyDownEvent('d', 0));
         if(_gc.getInput().isKeyDown(Input.KEY_SPACE))
             sEvents.triggerEvent(new KeyDownEvent(' ', 0));
+        if(_gc.getInput().isKeyDown(Input.KEY_ESCAPE))
+            sEvents.triggerEvent(new KeyDownEvent('Q', 0));
         try
         {
             for (i = 0; i < xBoxControllers.size(); i++)
@@ -144,9 +172,9 @@ public class StateGame extends BasicTWLGameState {
                 mPlayers = 1;
             }
         }
-        mGameMode.update(_i);
+        mGameMode.update(_delta);
         //update particles
-        sParticleManager.update(_i);
+        sParticleManager.update(_delta);
     }
     
     public void render(GameContainer _gc, StateBasedGame _sbg, Graphics _grphcs)
@@ -163,8 +191,6 @@ public class StateGame extends BasicTWLGameState {
         
         //render managed sprites
         sGraphicsManager.renderManagedSprites();
-        
-        _grphcs.drawString("AHHHHHHHHHHHHHHHHHHHHHH", 500, 500);
         
     }
 
@@ -235,6 +261,10 @@ ScrollPane scrollPane;
         sGraphicsManager.setGraphics(_gc.getGraphics());
         mGameMode = new PlayMode();
         sEvents.init();
+        
+        //subscribe to events (must be done before further initialisation)
+        sEvents.subscribeToEvent("PlayerCreatedEvent", this);
+        
         sEntityFactory.init();
         sSkinFactory.init();
         sSpriteFactory.init();
@@ -243,9 +273,11 @@ ScrollPane scrollPane;
         sWorld.resizeViewport(new Rectangle(0,0,s.x, s.y));
         sLevel.init();
         
+        //create state changers
+        mChangeToMenu = new StateChanger(4, new BlobbyTransition(Color.green), null, _sbg);
         //FIXME TEST: GUI!!!
         btn = new Button("Hello World");
-        btn.addCallback(new StateChanger(3, new BlobbyTransition(Color.green), null, _sbg));
+        btn.addCallback(new StateChanger(4, new BlobbyTransition(Color.green), null, _sbg));
         btn2 = new Button("FullScreen");
         btn2.addCallback(new FullScreenChanger(_sbg));
         
@@ -259,5 +291,6 @@ ScrollPane scrollPane;
         sSound.loadSound("ambiance", "assets/sound/sfx/level_ambiance.ogg");
         sSound.setLooping("ambiance", true);
 
-    }    
+    }
+
 }

@@ -24,7 +24,8 @@ import org.newdawn.slick.Input;
  * 3 - Y
  * 4 - L1
  * 5 - R1
- * 6 - Select
+ * 6 - Back
+ * 7 - Start
  * 8 - L3
  * 9 - R3
  * Thinking about sitting and mapping the rest of these? Get a job!
@@ -56,6 +57,11 @@ public class XBoxController
         //get player direction
         Vec2 rightStick = new Vec2(_input.getAxisValue(mPlayer, 3),_input.getAxisValue(mPlayer, 2));
         
+        //handle start and back buttons
+        if(_input.isButtonPressed(7, mPlayer)) //start
+        {
+            sEvents.triggerEvent(new KeyDownEvent('Q', 0)); //menu
+        }
         //handle shoulder buttons
         if(_input.isButtonPressed(5, mPlayer)) //tongue 
         {

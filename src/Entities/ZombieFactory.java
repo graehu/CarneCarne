@@ -40,7 +40,6 @@ class ZombieFactory implements iEntityFactory {
         entity.mBody = sWorld.useFactory("CharacterFactory",parameters);
         ZombieController controller = new ZombieController(entity);
         entity.mController = controller;
-        sEvents.triggerEvent(new PlayerCreatedEvent(entity));
         return entity;
     }
     

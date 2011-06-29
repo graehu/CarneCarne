@@ -13,9 +13,11 @@ import Entities.Entity;
 public class PlayerCreatedEvent extends iEvent {
     
     Entity mEntity;
-    public PlayerCreatedEvent(Entity _entity)
+    int mPlayerID;
+    public PlayerCreatedEvent(Entity _entity, int _playerID)
     {
         mEntity = _entity;
+        mPlayerID = _playerID;
     }
     public String getName()
     {
@@ -24,5 +26,9 @@ public class PlayerCreatedEvent extends iEvent {
     public String getType()
     {
         return "PlayerCreatedEvent";
+    }
+    public int getPlayerID()
+    {
+        return mPlayerID;
     }
 }

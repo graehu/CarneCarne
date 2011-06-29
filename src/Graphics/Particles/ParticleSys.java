@@ -6,6 +6,7 @@
 
 package Graphics.Particles;
 
+import org.newdawn.slick.particles.ConfigurableEmitter;
 import org.newdawn.slick.particles.ParticleSystem;
 
 /**
@@ -57,7 +58,29 @@ public class ParticleSys
         mSystem.setPosition(newX, newY);
     }
     
+    public void setWind(ConfigurableEmitter.Value _value)
+    {
+        for(int i = 0; i < mSystem.getEmitterCount(); i++)
+        {
+            ((ConfigurableEmitter)mSystem.getEmitter(i)).windFactor = _value;
+        }
+    }
     
+    public void setGravity(ConfigurableEmitter.Value _value)
+    {
+        for(int i = 0; i < mSystem.getEmitterCount(); i++)
+        {
+            ((ConfigurableEmitter)mSystem.getEmitter(i)).gravityFactor = _value;
+        }
+    }
+    
+    public void setAngularOffset(ConfigurableEmitter.Value _value)
+    {
+        for(int i = 0; i < mSystem.getEmitterCount(); i++)
+        {
+            ((ConfigurableEmitter)mSystem.getEmitter(i)).angularOffset = _value;
+        }
+    }
 
     /*
      * Assumes time step in milliseconds

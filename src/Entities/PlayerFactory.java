@@ -109,7 +109,7 @@ public class PlayerFactory implements iEntityFactory {
             PlayerInputController controller = new PlayerInputController(entity, players);
             entity.mController = controller;
             sWorld.addPlayer(entity.mBody);
-            sEvents.triggerEvent(new PlayerCreatedEvent(entity));
+            sEvents.triggerEvent(new PlayerCreatedEvent(entity, players));
             players++;
             return entity;
         }
