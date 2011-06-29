@@ -55,6 +55,5 @@ abstract class RootTile
         eTileIdMax
     }
     abstract Fixture createPhysicsBody(int _xTile, int _yTile, Body _body, Tile _tile);
-    abstract Fixture createFixture(int _xTile, int _yTile);
     abstract void checkEdges(int _xTile, int _yTile, Stack<Integer> _stack, TileGrid _tileGrid);
 }

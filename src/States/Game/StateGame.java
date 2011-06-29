@@ -152,9 +152,9 @@ public class StateGame extends BasicTWLGameState {
     public void render(GameContainer _gc, StateBasedGame _sbg, Graphics _grphcs)
     {
         Vec2 s = sGraphicsManager.getScreenDimensions();
-        ShapeFill fill = new GradientFill(new Vector2f(0,0), new Color(159,111,89), new Vector2f(s.x,s.y), new Color(186, 160, 149), false);
+        /*ShapeFill fill = new GradientFill(new Vector2f(0,0), new Color(159,111,89), new Vector2f(s.x,s.y), new Color(186, 160, 149), false);
         Rectangle shape = new Rectangle(0,0, s.x, s.y);
-        _gc.getGraphics().fill(shape, fill);
+        sGraphicsManager.fill(shape, fill);*/
         mGameMode.render(_gc.getGraphics());
         
         //render particles

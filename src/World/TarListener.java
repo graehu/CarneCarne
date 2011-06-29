@@ -5,6 +5,9 @@
 package World;
 
 import Entities.Entity;
+import Events.PlayerDeathEvent;
+import Events.sEvents;
+import Level.Tile;
 import World.sWorld.BodyCategories;
 import org.jbox2d.callbacks.ContactImpulse;
 import org.jbox2d.collision.Manifold;
@@ -25,11 +28,27 @@ class TarListener implements iListener {
     {
         if (_contact.m_fixtureA.m_filter.categoryBits == (1 << BodyCategories.eTar.ordinal()))
         {
-            ((Entity)_contact.m_fixtureB.m_body.m_userData).tar();
+            if (((Tile)_contact.m_fixtureA.getUserData()).isOnFire())
+            {
+                sEvents.triggerDelayedEvent(new PlayerDeathEvent(((Entity)_contact.m_fixtureB.m_body.m_userData)));
+            }
+            else
+            {
+                ((Entity)_contact.m_fixtureB.m_body.m_userData).tar();
+                ((Entity)_contact.m_fixtureB.m_body.getUserData()).canJump();
+            }
         }
         else
         {
-            ((Entity)_contact.m_fixtureA.m_body.m_userData).tar();          
+            if (((Tile)_contact.m_fixtureB.getUserData()).isOnFire())
+            {
+                sEvents.triggerDelayedEvent(new PlayerDeathEvent(((Entity)_contact.m_fixtureA.m_body.m_userData)));
+            }
+            else
+            {
+                ((Entity)_contact.m_fixtureA.m_body.m_userData).tar();  
+                ((Entity)_contact.m_fixtureA.m_body.getUserData()).canJump();
+            }
         }
     }
 
@@ -38,10 +57,12 @@ class TarListener implements iListener {
         if (_contact.m_fixtureA.m_filter.categoryBits == (1 << BodyCategories.eTar.ordinal()))
         {
             ((Entity)_contact.m_fixtureB.m_body.m_userData).untar();
+            ((Entity)_contact.m_fixtureB.m_body.getUserData()).cantJump(); 
         }
         else
         {
-            ((Entity)_contact.m_fixtureA.m_body.m_userData).untar();          
+            ((Entity)_contact.m_fixtureA.m_body.m_userData).untar();   
+            ((Entity)_contact.m_fixtureA.m_body.getUserData()).cantJump();        
         }
     }
 

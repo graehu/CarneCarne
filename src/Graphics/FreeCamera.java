@@ -12,8 +12,6 @@ import Level.sLevel;
 import World.sWorld;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
 
 /**
@@ -56,7 +54,7 @@ public class FreeCamera extends iCamera implements iEventListener
         Vec2 s = sGraphicsManager.getScreenDimensions();
         return new Vec2((s.x/2)+(-xPixel),(s.y/2)+(-yPixel));        
     }
-    public void render(Graphics _graphics)
+    public void render()
     {
         sLevel.renderBackground();
         sWorld.render();

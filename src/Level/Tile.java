@@ -43,9 +43,43 @@ public class Tile
         if (!isOnFire && mRootId.mIsFlammable)
         {
             isOnFire = true;
-            mTileGrid.placeTileNoBody(mXTile, mYTile, mId + 16);
-            mTileGrid.mTileFire.addTile(this);
+            try /// FIXME not sure why this is happening, possibly to do with cave ins, Tiles shouldn't be transfered in cave ins without changing coordinates
+            {
+                mTileGrid.placeTileNoBody(mXTile, mYTile, mId + 16);
+                mTileGrid.mTileFire.addTile(this);
+            }
+            catch (ArrayIndexOutOfBoundsException e)
+            {
+                
+            }
         }
+        else
+        {
+            if (mRootId.mTileType.equals(TileType.eIce))
+            {
+                destroyFixture();
+            }
+        }
+    }
+    public boolean damageTile()
+    {
+        if (mHealth > 1)
+        {
+            mId += 16;
+            mHealth--;
+            //mRootId = rootTiles.get(tile.mId);
+            Stack<Integer> stack = new Stack<Integer>();
+            mTileGrid.mTiles[mXTile][mYTile].checkEdges(stack, mTileGrid);
+            while (!stack.empty())
+            {
+                int id = stack.pop();
+                int yTile = stack.pop();
+                int xTile = stack.pop();
+                mTileGrid.setTileId(xTile, yTile, id);
+            }
+            return false;
+        }
+        return true;
     }
     public TileGrid getTileGrid()
     {
@@ -62,6 +96,11 @@ public class Tile
     public Tile clone()
     {
         return new Tile(mId, mRootId, mTileGrid,-1,-1);
+    }
+
+    public boolean isOnFire()
+    {
+        return isOnFire;
     }
     enum Direction
     {
@@ -91,17 +130,17 @@ public class Tile
         mFixture = null;
         mTileGrid.destroyTile(mXTile, mYTile);
     }
-    public void createPhysicsBody(int _xTile, int _yTile, HashMap _parameters, Body _body)
+    public void createPhysicsBody(HashMap _parameters, Body _body)
     {
         _parameters.put("Tile", this);
-        mFixture = mRootId.createPhysicsBody(_xTile, _yTile, _body, this);
-    }
-    public Fixture createFixture()
-    {
-        return mRootId.createFixture(mXTile, mYTile);
+        mFixture = mRootId.createPhysicsBody(mXTile, mYTile, _body, this);
     }
     public void checkEdges(Stack<Integer> _stack, TileGrid _tileGrid)
     {
         mRootId.checkEdges(mXTile, mYTile, _stack, _tileGrid);
+    }
+    boolean boundaryFrom(Direction _direction, TileType _tileType, MaterialEdges _materialEdges)
+    {
+        return mRootId.boundaryFrom(_direction, _tileType, _materialEdges);
     }
 }

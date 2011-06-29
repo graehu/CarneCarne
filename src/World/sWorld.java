@@ -173,7 +173,7 @@ public class sWorld
             {
                 case eSwingable:
                 {
-                    if (tile.getTileGrid().damageTile((int)callback.getFixture().m_body.getPosition().x, (int)callback.getFixture().m_body.getPosition().y))
+                    if (tile.damageTile())
                     {
                         //tile.getTileGrid().destroyTile((int)callback.getFixture()..getPosition().x, (int)callback.getFixture().m_body.getPosition().y);
                         sEvents.triggerEvent(new TileDestroyedEvent((int)callback.getFixture().m_body.getPosition().x, (int)callback.getFixture().m_body.getPosition().y));

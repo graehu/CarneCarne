@@ -12,20 +12,29 @@ import Level.sLevel.TileType;
  */
 class MaterialEdges
 {
+    static MaterialEdges GraphicalEdges = new MaterialEdges(true);
+    static MaterialEdges AnchorEdges = new MaterialEdges(false);
     private boolean flags[][];
 
-    public MaterialEdges()
+    public MaterialEdges(boolean _graphicalEdge)
     {
         flags = new boolean[TileType.eTileTypesMax.ordinal()][TileType.eTileTypesMax.ordinal()];
         for (int i = 0; i < TileType.eTileTypesMax.ordinal(); i++)
             for (int ii = 0; ii < TileType.eTileTypesMax.ordinal(); ii++)
                 flags[i][ii] = true;
-        setFalse(TileType.eSwingable.ordinal(),TileType.eSwingable.ordinal());
-        setFalse(TileType.eWater.ordinal(),TileType.eIce.ordinal());
-        setFalse(TileType.eWater.ordinal(),TileType.eEdible.ordinal());
-        
-        flags[TileType.eSwingable.ordinal()][TileType.eIce.ordinal()] = false;
-        //setFalse(TileType.eSwingable.ordinal(),TileType.eIce.ordinal());
+        if (_graphicalEdge)
+        {
+            setFalse(TileType.eSwingable.ordinal(),TileType.eSwingable.ordinal());
+            setFalse(TileType.eWater.ordinal(),TileType.eIce.ordinal());
+            setFalse(TileType.eWater.ordinal(),TileType.eEdible.ordinal());
+
+            flags[TileType.eSwingable.ordinal()][TileType.eIce.ordinal()] = false;
+            //setFalse(TileType.eSwingable.ordinal(),TileType.eIce.ordinal());
+        }
+        else
+        {
+            /// All anchor edges are true, for the moment anyway
+        }
     }
     
     private void setFalse(int i, int ii)

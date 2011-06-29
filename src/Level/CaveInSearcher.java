@@ -4,6 +4,8 @@
  */
 package Level;
 
+import Level.Tile.Direction;
+import Level.sLevel.TileType;
 import java.util.ArrayList;
 import java.util.Stack;
 import org.jbox2d.common.Vec2;
@@ -21,7 +23,14 @@ public class CaveInSearcher {
     TileGrid mTileGrid;
     TiledMap mTiledMap;
     int mLayerIndex;
-    protected boolean mChecked[][];
+    enum Checked
+    {
+        eUnchecked,
+        eAnchor,
+        eNoAnchor,
+        eCheckedMax,
+    }
+    Checked mChecked[][];
     int lowestX, lowestY, highestX, highestY;
     Vec2 mOffset;
     float mAngle;
@@ -34,36 +43,38 @@ public class CaveInSearcher {
         mTileGrid = _tileGrid;
         mTiledMap = _tiledMap;
         mLayerIndex = _layerIndex;
-        mChecked = new boolean[_tiledMap.getWidth()][_tiledMap.getHeight()];
+        mChecked = new Checked[_tiledMap.getWidth()][_tiledMap.getHeight()];
         for (int i = 0; i < _tiledMap.getWidth(); i++)
             for (int ii = 0; ii < _tiledMap.getHeight(); ii++)
-                mChecked[i][ii] = false;
+                mChecked[i][ii] = Checked.eUnchecked;
     }
     
     protected class TileIndex
     {
         int x, y;
-        TileIndex(int _x, int _y)
+        TileType mTileType;
+        TileIndex(int _x, int _y, TileType _tileType)
         {
             x = _x;
             y = _y;
+            mTileType = _tileType;
         }
     }
-    public void destroy(int _x, int _y)
+    public void destroy(int _x, int _y, TileType _tileType)
     {
         Stack<TileIndex> workingSetSets = new Stack<TileIndex>();
         Stack<TileIndex> gridSets = new Stack<TileIndex>();
-        
-        check(_x-1,_y,workingSetSets,gridSets);
+        //mChecked[_x][_y] = true;
+        check(_x-1,_y, Direction.eFromRight,_tileType,workingSetSets,gridSets);
         calculate(workingSetSets, gridSets);
         
-        check(_x+1,_y,workingSetSets,gridSets);
+        check(_x+1,_y, Direction.eFromLeft,_tileType,workingSetSets,gridSets);
         calculate(workingSetSets, gridSets);
         
-        check(_x,_y-1,workingSetSets,gridSets);
+        check(_x,_y-1, Direction.eFromDown,_tileType,workingSetSets,gridSets);
         calculate(workingSetSets, gridSets);
         
-        check(_x,_y+1,workingSetSets,gridSets);
+        check(_x,_y+1, Direction.eFromUp,_tileType,workingSetSets,gridSets);
         calculate(workingSetSets, gridSets);
     }
     private void calculate(Stack<TileIndex> workingSet, Stack<TileIndex> grid)
@@ -71,12 +82,16 @@ public class CaveInSearcher {
         while (!workingSet.isEmpty())
         {
             TileIndex tile = workingSet.pop();
-            if (check(tile.x-1,tile.y,workingSet,grid)
-                    || check(tile.x+1,tile.y,workingSet,grid)
-                    || check(tile.x,tile.y-1,workingSet,grid)
-                    || check(tile.x,tile.y+1,workingSet,grid))
+            if (check(tile.x-1,tile.y, Direction.eFromRight, tile.mTileType, workingSet,grid)
+                    || check(tile.x+1,tile.y,Direction.eFromLeft, tile.mTileType,workingSet,grid)
+                    || check(tile.x,tile.y-1,Direction.eFromDown, tile.mTileType,workingSet,grid)
+                    || check(tile.x,tile.y+1,Direction.eFromUp, tile.mTileType,workingSet,grid))
             {
-                grid.clear();
+                while (!grid.isEmpty())
+                {
+                    TileIndex anchorTile = grid.pop();
+                    mChecked[anchorTile.x][anchorTile.y] = Checked.eAnchor;
+                }
                 workingSet.clear();
                 break;
             }
@@ -90,7 +105,7 @@ public class CaveInSearcher {
         grid.clear();
     }
     
-    public boolean check(int _x, int _y, Stack<TileIndex> _workingSet, Stack<TileIndex> _thisBlock) /// Returns true if this is an anchor
+    public boolean check(int _x, int _y, Direction _direction, TileType _tileType, Stack<TileIndex> _workingSet, Stack<TileIndex> _thisBlock) /// Returns true if this is an anchor
     {
         Tile tile;
         try
@@ -101,17 +116,18 @@ public class CaveInSearcher {
         {
             return false;
         }
-        if (tile.mRootId.mAnchor)
+        if ((tile.mRootId.mAnchor || mChecked[_x][_y].equals(Checked.eAnchor)))
         {
-            return true;
+            if (tile.boundaryFrom(_direction, _tileType, MaterialEdges.AnchorEdges))
+                return true;
         }
-        if (!mChecked[_x][_y])
+        if (!mChecked[_x][_y].equals(Checked.eNoAnchor))
         {
-            mChecked[_x][_y] = true;
-            if (tile.mId != 0)
+            mChecked[_x][_y] = Checked.eNoAnchor;
+            if (tile.mFixture != null && tile.boundaryFrom(_direction, _tileType, MaterialEdges.AnchorEdges))
             {
-                _workingSet.add(new TileIndex(_x, _y));
-                _thisBlock.add(new TileIndex(_x, _y));
+                _workingSet.add(new TileIndex(_x, _y, tile.getTileType()));
+                _thisBlock.add(new TileIndex(_x, _y, tile.getTileType()));
             }
         }
         return false;
