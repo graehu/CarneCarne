@@ -216,6 +216,7 @@
   <tile id="0">
    <properties>
     <property name="Material" value="Ice"/>
+    <property name="Regrows" value="False"/>
     <property name="Type" value="Block"/>
    </properties>
   </tile>
@@ -394,7 +395,7 @@
  </layer>
  <layer name="Level" width="100" height="100">
   <data encoding="base64" compression="gzip">
-   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
+   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
   </data>
  </layer>
  <layer name="Foreground" width="100" height="100">

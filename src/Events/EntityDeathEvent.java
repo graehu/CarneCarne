@@ -29,8 +29,10 @@ public class EntityDeathEvent extends iEvent {
         return "PlayerDeathEvent";
     }
     
-    public void process()
+    @Override
+    public boolean process()
     {
         mEntity.kill();
+        return true;
     }
 }

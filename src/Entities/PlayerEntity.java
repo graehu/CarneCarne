@@ -57,6 +57,7 @@ public class PlayerEntity extends AIEntity
     {
         return (a < b + epsilon && a > b - epsilon);
     }
+    @Override
     protected void subUpdate()
     {
         mReticle.updateDirection(mDirection);
@@ -72,6 +73,7 @@ public class PlayerEntity extends AIEntity
                     fixture.setSensor(false);
                     fixture = fixture.getNext();
                 }
+                mAIEntityState.unkill();
             }
         }
     }

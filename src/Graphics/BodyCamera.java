@@ -5,6 +5,10 @@
 package Graphics;
 
 import Entities.PlayerEntity;
+import Events.CaveInEvent;
+import Events.iEvent;
+import Events.iEventListener;
+import Events.sEvents;
 import Level.sLevel;
 import World.sWorld;
 import org.jbox2d.common.Vec2;
@@ -19,18 +23,23 @@ import org.newdawn.slick.geom.Vector2f;
  *
  * @author alasdair
  */
-public class BodyCamera extends iCamera {
+public class BodyCamera extends iCamera implements iEventListener{
     
     Body mBody;
     Vec2 mPosition = new Vec2(0,0);
     Vec2 mTranslation = new Vec2(0,0);
+    Vec2 mShake = new Vec2(0,0);
     boolean mTopSplit;
+    float mTimer;
+    CaveInEvent mCaveInEvent;
     public BodyCamera(Body _body, Rectangle _viewPort, boolean _topSplit)
     {
         super(_viewPort);
         mBody = _body;
         ((PlayerEntity)_body.getUserData()).setClip(_viewPort);
         mTopSplit = _topSplit;
+        mTimer = 0;
+        sEvents.subscribeToEvent("CaveInEvent", this);
         
     }
     public Vec2 translateToWorld(Vec2 _physicsSpace)
@@ -39,7 +48,7 @@ public class BodyCamera extends iCamera {
         worldSpace.x -= mPosition.x*64.0f;
         worldSpace.y -= mPosition.y*64.0f;
         worldSpace.x += mTranslation.x;//64.0f;
-        worldSpace.y += mTranslation.y;//64.0f;        
+        worldSpace.y += mTranslation.y;//64.0f;    
         return worldSpace;
     }
     public Vec2 translateToPhysics(Vec2 _worldSpace)
@@ -58,6 +67,20 @@ public class BodyCamera extends iCamera {
     public void update()
     {
         calculatePosition();
+        mTimer += 1.0f;
+        if (mCaveInEvent != null)
+        {
+            float scale = mCaveInEvent.getScale(mBody.getPosition());
+            if (scale != 0.0f)
+            {
+                mShake.x = scale*(float)Math.sin(mTimer*8.0f);
+                mShake.y = scale*(float)Math.sin(mTimer*5.0f);
+            }
+            else
+            {
+                mCaveInEvent = null;
+            }
+        }
     }
     public void render()
     {
@@ -95,5 +118,11 @@ public class BodyCamera extends iCamera {
             mTranslation.y -= ((mTranslation.y)-mPosition.y);
         }        
         mTranslation = mTranslation.mul(64.0f);
+        mTranslation = mTranslation.add(mShake);
+    }
+
+    public void trigger(iEvent _event)
+    {
+        mCaveInEvent = (CaveInEvent)_event;
     }
 }

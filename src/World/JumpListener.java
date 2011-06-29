@@ -22,7 +22,7 @@ class JumpListener implements iListener
 
     public void beginContact(Contact _contact)
     {
-        if (_contact.m_fixtureA.m_filter.categoryBits == (1 << sWorld.BodyCategories.ePlayer.ordinal()) ||
+        /*if (_contact.m_fixtureA.m_filter.categoryBits == (1 << sWorld.BodyCategories.ePlayer.ordinal()) ||
                 _contact.m_fixtureA.m_filter.categoryBits == (1 << sWorld.BodyCategories.eEnemy.ordinal()))
         {
             ((AIEntity)_contact.m_fixtureA.m_body.getUserData()).canJump();
@@ -30,12 +30,12 @@ class JumpListener implements iListener
         else
         {
             ((AIEntity)_contact.m_fixtureB.m_body.getUserData()).canJump();
-        }
+        }*/
     }
 
     public void endContact(Contact _contact)
     {
-        if (_contact.m_fixtureA.m_filter.categoryBits == (1 << sWorld.BodyCategories.ePlayer.ordinal()) ||
+        /*if (_contact.m_fixtureA.m_filter.categoryBits == (1 << sWorld.BodyCategories.ePlayer.ordinal()) ||
                 _contact.m_fixtureA.m_filter.categoryBits == (1 << sWorld.BodyCategories.eEnemy.ordinal()))
         {
             ((AIEntity)_contact.m_fixtureA.m_body.getUserData()).cantJump();
@@ -43,7 +43,7 @@ class JumpListener implements iListener
         else
         {
             ((AIEntity)_contact.m_fixtureB.m_body.getUserData()).cantJump();
-        }
+        }*/
     }
 
     public void preSolve(Contact _contact, Manifold _manifold)

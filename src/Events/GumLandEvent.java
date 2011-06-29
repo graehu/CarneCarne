@@ -37,10 +37,12 @@ public class GumLandEvent extends iEvent {
         return getName();
     }
     
-    public void process()
+    @Override
+    public boolean process()
     {
         mTile.getTileGrid().placeTile(x, y, mRootId);
         sWorld.destroyBody(mBody);
+        return true;
     }
     
 }

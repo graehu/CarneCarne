@@ -25,7 +25,7 @@ class DeathListener implements iListener
     public void beginContact(Contact _contact)
     {
         Tile tile = (Tile)_contact.m_fixtureA.getUserData();//sLevel.TileType.class.getEnumConstants()[_contact.m_fixtureA.m_filter.groupIndex];
-        if (_contact.m_fixtureA.m_filter.categoryBits == (1 << sWorld.BodyCategories.eSpikes.ordinal()))
+        if (_contact.m_fixtureB.m_filter.categoryBits == (1 << sWorld.BodyCategories.ePlayer.ordinal()))
         {
             sEvents.triggerDelayedEvent(new EntityDeathEvent(((Entity)_contact.m_fixtureB.m_body.m_userData)));
         }

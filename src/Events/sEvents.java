@@ -5,7 +5,10 @@
 package Events;
 
 import java.util.Hashtable;
-import java.util.Stack;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.ListIterator;
 import main.sLog;
 /**
  *
@@ -14,7 +17,7 @@ import main.sLog;
 public class sEvents {
     
     private static Hashtable mTable;
-    private static Stack<iEvent> delayedEvents;
+    private static List<iEvent> delayedEvents;
     private sEvents()
     {
         
@@ -22,7 +25,7 @@ public class sEvents {
     public static void init()
     {
         mTable = new Hashtable();
-        delayedEvents = new Stack<iEvent>();
+        delayedEvents = new LinkedList<iEvent>();
     }
     
     public static void subscribeToEvent(String _eventName, iEventListener _listener)
@@ -47,9 +50,19 @@ public class sEvents {
     }
     public static void processEvents()
     {
-        while (!delayedEvents.isEmpty())
+        ListIterator<iEvent> i = delayedEvents.listIterator();
+        while(i.hasNext())
         {
-            triggerEvent(delayedEvents.pop());
+            iEvent event = i.next();
+            iEventListener listener = (iEventListener)mTable.get(event.getName());
+            if (listener != null)
+            {
+                listener.trigger(event);
+            }
+            if (event.process())
+            {
+                i.remove();
+            }
         }
     }
     public static void triggerEvent(iEvent _event)

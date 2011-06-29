@@ -28,7 +28,7 @@ class TarFireListener implements iListener
 
     public void beginContact(Contact _contact)
     {
-        if (_contact.m_fixtureA.m_filter.categoryBits == (1 << BodyCategories.eTar.ordinal()))
+        if (_contact.m_fixtureA.m_filter.categoryBits != (1 << BodyCategories.eFire.ordinal()))
         {
             sEvents.triggerDelayedEvent(new TarFireEvent((Tile)_contact.m_fixtureA.getUserData(),(FireParticle)_contact.m_fixtureB.m_body.getUserData()));
             sEvents.triggerDelayedEvent(new EntityDeathEvent((Entity)_contact.m_fixtureB.m_body.getUserData()));
