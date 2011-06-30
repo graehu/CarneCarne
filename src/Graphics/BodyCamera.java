@@ -68,7 +68,7 @@ public class BodyCamera extends iCamera implements iEventListener{
     {
         calculatePosition();
         mTimer += 1.0f;
-        if (mCaveInEvent != null)
+        /*if (mCaveInEvent != null)
         {
             float scale = mCaveInEvent.getScale(mBody.getPosition());
             if (scale != 0.0f)
@@ -80,7 +80,7 @@ public class BodyCamera extends iCamera implements iEventListener{
             {
                 mCaveInEvent = null;
             }
-        }
+        }*/
     }
     public void render()
     {

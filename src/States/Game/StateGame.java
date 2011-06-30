@@ -199,8 +199,6 @@ public class StateGame extends BasicTWLGameState implements iEventListener {
     public void enter(GameContainer container, StateBasedGame game) throws SlickException 
     {         
         super.enter(container, game);
-        //TEST: PARTICLE SYSTEM
-        sParticleManager.createSystem("testSystem", 500, 500, 3.0f);
 
         //TEST: MANAGED SPRITE
 //        HashMap params = new HashMap();

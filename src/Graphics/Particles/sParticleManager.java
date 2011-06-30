@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.jbox2d.common.Vec2;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.particles.ParticleIO;
 import org.newdawn.slick.particles.ParticleSystem;
@@ -33,7 +34,7 @@ public class sParticleManager {
      * _y           position in Y (pixels)
      * _lifeTime:   time until death (seconds)
      */
-    public static ParticleSys createSystem(String _ref, float _x, float _y, float _lifeTime)
+    public static ParticleSys createSystem(String _ref, Vec2 _position, float _lifeTime)
     {
         ParticleSystem system = null;
         if(mLoadedSystems.containsKey(_ref))
@@ -55,7 +56,7 @@ public class sParticleManager {
         {
             
         }
-        system.setPosition(_x, _y);
+        system.setPosition(_position.x, _position.y);
         //Create wrapper for system and instance it
         ParticleSys p = new ParticleSys(system, _lifeTime);
         mInstancedSystems.add(p);

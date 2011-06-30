@@ -4,11 +4,11 @@
  */
 package Events;
 
+import java.util.Collection;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.List;
-import java.util.ListIterator;
+import java.util.Stack;
 import main.sLog;
 /**
  *
@@ -17,7 +17,7 @@ import main.sLog;
 public class sEvents {
     
     private static Hashtable mTable;
-    private static List<iEvent> delayedEvents;
+    private static Collection<iEvent> delayedEvents;
     private sEvents()
     {
         
@@ -50,7 +50,10 @@ public class sEvents {
     }
     public static void processEvents()
     {
-        ListIterator<iEvent> i = delayedEvents.listIterator();
+        Collection<iEvent> currentEvents = delayedEvents;
+        Stack<iEvent> newEvents = new Stack<iEvent>();
+        delayedEvents = newEvents;
+        Iterator<iEvent> i = currentEvents.iterator();
         while(i.hasNext())
         {
             iEvent event = i.next();
@@ -64,6 +67,11 @@ public class sEvents {
                 i.remove();
             }
         }
+        while (!newEvents.isEmpty())
+        {
+            currentEvents.add(newEvents.pop());
+        }
+        delayedEvents = currentEvents;
     }
     public static void triggerEvent(iEvent _event)
     {

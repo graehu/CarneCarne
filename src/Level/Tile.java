@@ -43,22 +43,22 @@ public class Tile
     }
     public void setOnFire()
     {
-        if (!isOnFire && mRootId.mIsFlammable)
+        if (!isOnFire)
         {
             isOnFire = true;
-            try /// FIXME not sure why this is happening, possibly to do with cave ins, Tiles shouldn't be transfered in cave ins without changing coordinates
+            if (mRootId.mIsFlammable)
             {
-                mTileGrid.placeTileNoBody(mXTile, mYTile, mId + 16);
-                mTileGrid.mTileFire.addTile(this);
+                try /// FIXME not sure why this is happening, possibly to do with cave ins, Tiles shouldn't be transfered in cave ins without changing coordinates
+                {
+                    mTileGrid.placeTileNoBody(mXTile, mYTile, mId + 16);
+                    mTileGrid.mTileFire.addTile(this);
+                }
+                catch (ArrayIndexOutOfBoundsException e)
+                {
+
+                }
             }
-            catch (ArrayIndexOutOfBoundsException e)
-            {
-                
-            }
-        }
-        else
-        {
-            if (mRootId.mTileType.equals(TileType.eIce))
+            else if (mRootId.mTileType.equals(TileType.eIce))
             {
                 destroyFixture();
             }
