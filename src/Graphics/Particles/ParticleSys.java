@@ -94,12 +94,16 @@ public class ParticleSys
     protected boolean update(int _delta)
     {
         mSystem.update(_delta);
-        mLife -= Math.min(mLife,((float)_delta)/1000.0f);
-        if(mLife != 0.0f)
-        {//while still alive
+        if(mLife < 0.0f)
+        {//while persistant
             return true;
         }
-        else
+        else if(mLife > 0.0f)
+        {//while still alive
+            mLife -= Math.min(mLife,((float)_delta)/1000.0f);
+            return true;
+        }
+        else //if(mLife == 0.0f)
         {//end of life
             for(int i = 0; i < mSystem.getEmitterCount(); i++)
             {
@@ -122,6 +126,7 @@ public class ParticleSys
         {
             return true;
         }
+        
     }
 
     protected void render(float _x, float _y)

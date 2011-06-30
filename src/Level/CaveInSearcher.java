@@ -4,6 +4,8 @@
  */
 package Level;
 
+import Events.CaveInEvent;
+import Events.sEvents;
 import Level.Tile.Direction;
 import Level.sLevel.TileType;
 import java.util.ArrayList;
@@ -193,6 +195,7 @@ public class CaveInSearcher {
             /// Individual tiles
             /// One tile
             CaveInTileGrid newTileGrid = new CaveInTileGrid(mTileGrid.rootTiles, mTiledMap, lowestX, lowestY, 1+highestX-lowestX, 1+highestY-lowestY, mLayerIndex, mOffset, mAngle);
+            sEvents.triggerDelayedEvent(new CaveInEvent(newTileGrid, tiles.size()));
             newTileGrid.finish(tiles);
             tiles = new ArrayList<TempTile>();
             lowestX = lowestY = Integer.MAX_VALUE;

@@ -89,6 +89,7 @@ public class PlayerFactory implements iEntityFactory {
                     {
                         //in the format: (prefix + compass direction, offset)
                         skin.setOffset(t[k] + p[j],                     v[k]);
+                        //skin.setOffset(t[k] + p[j] + p[j] +"b" +q[i],   v[k]);
                         skin.setOffset(t[k] + p[j] + "b"  +q[i],        v[k]);
                         skin.setOffset(t[k] + p[j] + p[j] +q[i],        v[k]);
                         skin.setOffset(t[k] + p[j] + q[i] +"b" +p[j],   v[k]);

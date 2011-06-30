@@ -35,9 +35,10 @@ public class TarFireEvent extends iEvent {
     }
     
     @Override
-    public void process()
+    public boolean process()
     {
         mTile.setOnFire();
-        sWorld.destroyBody(mFireParticle.mBody); /// FIXME memory leak        
+        sWorld.destroyBody(mFireParticle.mBody); /// FIXME memory leak
+        return true;
     }
 }

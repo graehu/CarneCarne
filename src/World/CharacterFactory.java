@@ -5,6 +5,7 @@
 package World;
 
 import Entities.AIEntity;
+import Level.FakeTile;
 import World.sWorld.BodyCategories;
 import java.util.HashMap;
 import org.jbox2d.collision.shapes.CircleShape;
@@ -15,8 +16,6 @@ import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.FixtureDef;
 import org.jbox2d.dynamics.World;
-import org.jbox2d.dynamics.joints.RevoluteJoint;
-import org.jbox2d.dynamics.joints.RevoluteJointDef;
 
 /**
  *
@@ -54,6 +53,7 @@ class CharacterFactory implements iPhysicsFactory {
         def.position = position;
         
         Body body = _world.createBody(def);
+        circleFixture.userData = new FakeTile(body);
         body.createFixture(circleFixture);
         
         def.fixedRotation = true;

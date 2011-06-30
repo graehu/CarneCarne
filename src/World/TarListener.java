@@ -5,7 +5,7 @@
 package World;
 
 import Entities.Entity;
-import Events.PlayerDeathEvent;
+import Events.EntityDeathEvent;
 import Events.sEvents;
 import Level.Tile;
 import World.sWorld.BodyCategories;
@@ -26,11 +26,11 @@ class TarListener implements iListener {
 
     public void beginContact(Contact _contact)
     {
-        if (_contact.m_fixtureA.m_filter.categoryBits == (1 << BodyCategories.eTar.ordinal()))
+        /*if (_contact.m_fixtureA.m_filter.categoryBits == (1 << BodyCategories.eTar.ordinal()))
         {
             if (((Tile)_contact.m_fixtureA.getUserData()).isOnFire())
             {
-                sEvents.triggerDelayedEvent(new PlayerDeathEvent(((Entity)_contact.m_fixtureB.m_body.m_userData)));
+                sEvents.triggerDelayedEvent(new EntityDeathEvent(((Entity)_contact.m_fixtureB.m_body.m_userData)));
             }
             else
             {
@@ -42,19 +42,19 @@ class TarListener implements iListener {
         {
             if (((Tile)_contact.m_fixtureB.getUserData()).isOnFire())
             {
-                sEvents.triggerDelayedEvent(new PlayerDeathEvent(((Entity)_contact.m_fixtureA.m_body.m_userData)));
+                sEvents.triggerDelayedEvent(new EntityDeathEvent(((Entity)_contact.m_fixtureA.m_body.m_userData)));
             }
             else
             {
                 ((Entity)_contact.m_fixtureA.m_body.m_userData).tar();  
                 ((Entity)_contact.m_fixtureA.m_body.getUserData()).canJump();
             }
-        }
+        }*/
     }
 
     public void endContact(Contact _contact)
     {
-        if (_contact.m_fixtureA.m_filter.categoryBits == (1 << BodyCategories.eTar.ordinal()))
+        /*if (_contact.m_fixtureA.m_filter.categoryBits == (1 << BodyCategories.eTar.ordinal()))
         {
             ((Entity)_contact.m_fixtureB.m_body.m_userData).untar();
             ((Entity)_contact.m_fixtureB.m_body.getUserData()).cantJump(); 
@@ -63,7 +63,7 @@ class TarListener implements iListener {
         {
             ((Entity)_contact.m_fixtureA.m_body.m_userData).untar();   
             ((Entity)_contact.m_fixtureA.m_body.getUserData()).cantJump();        
-        }
+        }*/
     }
 
     public void preSolve(Contact _contact, Manifold _manifold) {

@@ -55,7 +55,7 @@ public class BlockTile extends RootTile
         fixture.userData = _tile; /// FIXME make this body data instead
         if (_body.m_type.equals(BodyType.DYNAMIC))
         {
-            fixture.density = 1.0f;
+            fixture.density = 100.0f;
         }
         return _body.createFixture(fixture);
     }

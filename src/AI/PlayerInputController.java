@@ -13,7 +13,6 @@ import Events.KeyDownEvent;
 import Events.KeyUpEvent;
 import Events.MapClickEvent;
 import Events.MapClickReleaseEvent;
-import Events.MouseDragEvent;
 import Events.iEvent;
 import Events.iEventListener;
 import Events.sEvents;

@@ -5,12 +5,19 @@ import GUI.TWL.BasicTWLGameState;
 import GUI.TWL.TWLStateBasedGame;
 import Graphics.sGraphicsManager;
 import Input.sInput;
+import java.awt.FontFormatException;
+import java.io.IOException;
 import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.newdawn.slick.*;
 import States.Game.StateGame;
 import States.Menu.StateMenu;
 import States.Splash.StateSplash;
 import States.Title.StateTitle;
+import Utils.FontLoader;
+import java.io.BufferedInputStream;
+import org.newdawn.slick.util.ResourceLoader;
 
 public class Main extends TWLStateBasedGame
 {
@@ -65,7 +72,9 @@ public class Main extends TWLStateBasedGame
     BasicTWLGameState mSplashState, mTitleState, mGameState, mMenuState;
     
     @Override
-    public void initStatesList(GameContainer _gc) throws SlickException {   
+    public void initStatesList(GameContainer _gc) throws SlickException {  
+        
+        _gc.setDefaultFont(FontLoader.load("BIRTH OF A HERO"));
         //initialise static classes
         sGraphicsManager.init(InitApp.mChosenX, InitApp.mChosenY);
         sInput.init(_gc); 
