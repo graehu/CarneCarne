@@ -5,13 +5,14 @@
 package Entities;
 
 import Graphics.Skins.iSkin;
+import World.sWorld;
 import org.jbox2d.common.Vec2;
 
 /**
  *
  * @author G203947
  */
-public class Carrot  extends Entity
+public class Carrot  extends AIEntity
 {
     private float mMoveSpeed;
 
@@ -27,26 +28,8 @@ public class Carrot  extends Entity
     }
     public void update()
     {
-        mBody.applyLinearImpulse(new Vec2(0, -9.8f), new Vec2(0,0));
+        //mBody.applyLinearImpulse(new Vec2(0, -9.8f), new Vec2(0,0));
         //mController.update();
         //subUpdate();    
-    }
-    public void moveRight()
-    {
-        
-    }
-    public void moveLeft()
-    {
-        
-    }
-    public void moveUp()
-    {
-        
-    }
-    public void moveDown()
-    {
-        
-    }
-    
-        
+    } 
 }

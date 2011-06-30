@@ -2,17 +2,17 @@
  * Factory class that encapsulates the recycling of entities
  * deals in interfaces, internally handles entities.
  * Factory params:
- * static:      "ref" (data path e.g "character/1.tmx") - prefixes with "data"
+ * static:      "ref" (data path e.g "char") - prefixes with "assets", appends with .png
  *              "img" (an image for the sprite to use) //ignores "ref" if present
  *              --
- * animated:    "ref" (data path e.g "character/1") - prefixes with "data", appends with .png 
+ * animated:    "ref" (data path e.g "char") - prefixes with "data", appends with .png 
  *              "x1" - starting xPos (Integer)
  *              "y1" - starting yPos (Integer)
  *              "x2" - starting xPos (Integer)
  *              "y2" - starting yPos (Integer)
  *              "hScan" - horizontal animation? (boolean)
  *              "duration" - frame duration in ms (Integer)
- * character:   "ref" (data path e.g "character/1") - prefixes with "data", appends with .def
+ * character:   "ref" (data path e.g "char") - prefixes with "data", appends with .def
  *              "anims" (list of animations in the set)
  *              "duration"  - frame duration in ms (Integer)
  */

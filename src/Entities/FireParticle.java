@@ -23,8 +23,9 @@ public class FireParticle extends Entity
     {
         super(_skin);
         mVelocity = _velocity;
-        mParticles = sParticleManager.createSystem("ParticleFire", new Vec2(0, 0), 0);
         mTimer = 10000;
+        mParticles = sParticleManager.createSystem("ParticleFire", new Vec2(0, 0),-1);
+        mTimer = 100;
     }
     @Override
     public void update()

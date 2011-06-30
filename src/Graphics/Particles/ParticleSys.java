@@ -17,15 +17,15 @@ public class ParticleSys
 {
     protected float mLife;
     protected boolean mIsDead = false;
-    private boolean mCanDie = true;;
     protected ParticleSystem mSystem;
 
+    /*
+     * _lifetime: -ve denotes persistence, +ve is lifetime in seconds
+     */
     protected ParticleSys(ParticleSystem _system, float _lifeTime)
     {
         mSystem = _system;
         mLife = _lifeTime;
-        if(mLife == 0.0f)
-            mCanDie = false;
     }
 
     //accessor for mIsDead
@@ -37,7 +37,6 @@ public class ParticleSys
     public void kill()
     {
         mLife = 0.0f;
-        mCanDie = true;
     }
     
     //move emitters only
@@ -95,12 +94,16 @@ public class ParticleSys
     protected boolean update(int _delta)
     {
         mSystem.update(_delta);
-        mLife -= ((float)_delta)/1000.0f;
-        if(mLife >= 0.0f)
-        {//while still alive
+        if(mLife < 0.0f)
+        {//while persistant
             return true;
         }
-        else if(mCanDie)
+        else if(mLife > 0.0f)
+        {//while still alive
+            mLife -= Math.min(mLife,((float)_delta)/1000.0f);
+            return true;
+        }
+        else //if(mLife == 0.0f)
         {//end of life
             for(int i = 0; i < mSystem.getEmitterCount(); i++)
             {
@@ -123,6 +126,7 @@ public class ParticleSys
         {
             return true;
         }
+        
     }
 
     protected void render(float _x, float _y)

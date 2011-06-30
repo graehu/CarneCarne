@@ -13,7 +13,6 @@ import Events.KeyDownEvent;
 import Events.KeyUpEvent;
 import Events.MapClickEvent;
 import Events.MapClickReleaseEvent;
-import Events.MouseDragEvent;
 import Events.iEvent;
 import Events.iEventListener;
 import Events.sEvents;
@@ -234,6 +233,7 @@ public class PlayerInputController extends iAIController implements iEventListen
             RightStickEvent event = (RightStickEvent)_event;
             mPlayerDir = event.getDirection();
             mPlayerDir.normalize();
+            ((PlayerEntity)mEntity).mReticle.updateDirection(mPlayerDir);
             if(mTongueState.mIsTongueActive == false)
             {
                 look(mPlayerDir);
@@ -244,16 +244,7 @@ public class PlayerInputController extends iAIController implements iEventListen
             MouseMoveEvent event = (MouseMoveEvent)_event;
             mPlayerDir = event.getPhysicsPosition().sub(mEntity.mBody.getPosition().add(new Vec2(0.5f,0.5f))); //offset by half the width and height
             mPlayerDir.normalize();
-            if(mTongueState.mIsTongueActive == false)
-            {
-                look(mPlayerDir);
-            }    
-        }
-        else if (_event.getType().equals("MouseDragEvent"))
-        {
-            MouseDragEvent event = (MouseDragEvent)_event;
-            mPlayerDir = event.getPhysicsPosition().sub(mEntity.mBody.getPosition().add(new Vec2(0.5f,0.5f))); //offset by half the width and height
-            mPlayerDir.normalize();
+            ((PlayerEntity)mEntity).mReticle.setPhysPosition(event.getPhysicsPosition());
             if(mTongueState.mIsTongueActive == false)
             {
                 look(mPlayerDir);

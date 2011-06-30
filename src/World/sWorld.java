@@ -60,11 +60,14 @@ public class sWorld
     }
     public static void init()
     {
+        Vec2 s = sGraphicsManager.getTrueScreenDimensions();
         mWorld = new World(new Vec2(0,9.8f),true);   
         mWorld.setContactListener(new WorldContactListener());
         factories = new HashMap<String, iPhysicsFactory>();
         factories.put("TileFactory", new TileFactory());
-        factories.put("CharacterFactory", new CharacterFactory());
+        factories.put("PlayerFactory", new PlayerFactory());
+        factories.put("BoxCharFactory", new BoxCharFactory());
+        factories.put("CircleCharFactory", new CircleCharFactory());
         factories.put("NonEdibleTileFactory", new NonEdibleTileFactory());
         factories.put("SpatBlockFactory", new SpatBlockBodyFactory());
         factories.put("TileArrayFactory", new TileArrayFactory());
@@ -72,7 +75,8 @@ public class sWorld
         factories.put("SeeSawBodyFactory", new SeeSawBodyFactory());
         factories.put("MovingPlatformBodyFactory", new MovingPlatformBodyFactory());
         factories.put("FireParticleBody", new FireParticleBody());
-        mCamera = new FreeCamera( new Rectangle(0,0,sGraphicsManager.getTrueScreenDimensions().x, sGraphicsManager.getTrueScreenDimensions().y));        
+        mCamera = new FreeCamera( new Rectangle(0,0,s.x, s.y));        
+        resizeViewport(new Rectangle(0,0,s.x, s.y));
     }
     
     public static Body useFactory(String _factory, HashMap _parameters)

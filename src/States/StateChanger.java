@@ -38,7 +38,7 @@ public class StateChanger implements Runnable{
                 int sx = (int)sGraphicsManager.getTrueScreenDimensions().x;
                 int sy = (int)sGraphicsManager.getTrueScreenDimensions().y;
                 Image screenShot = new Image(sx, sy);
-                mSbg.getContainer().getGraphics().copyArea(screenShot, sx, sy);
+                mSbg.getContainer().getGraphics().copyArea(screenShot, 0, 0);
                 ((StateMenu)mSbg.getState(mID)).setScreenShot(screenShot);
             } catch (SlickException ex) {
                 Logger.getLogger(StateChanger.class.getName()).log(Level.SEVERE, null, ex);

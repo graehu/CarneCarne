@@ -22,9 +22,7 @@ public class AIEntity extends Entity {
 
     final static float root2 = (float) Math.sqrt(2);
     protected iAIController mController;
-    protected boolean mCanJump;
-    //protected boolean mAirBorn;
-    protected int mTurnThisFrame;
+    protected boolean mAllowRoll = false;
     protected int mJumpTimer;
     protected static int mJumpReload = 60; /// NOTE frame rate change
     protected float mMoveSpeed;
@@ -36,9 +34,7 @@ public class AIEntity extends Entity {
     {
         super(_skin);
         mAIEntityState = new AIEntityState(this);
-        mCanJump = false;
         mJumpTimer = 0;
-        mTurnThisFrame = mJumpReload;
         mMoveSpeed = 1;
     }
     public void update()
@@ -47,15 +43,17 @@ public class AIEntity extends Entity {
         Vec2 mv = mBody.getLinearVelocity();
         float mass = mBody.getMass();
         ContactEdge edge = mBody.m_contactList;
-        mCanJump = false;
         int mTar = 0;
         int mIce = 0;
         int mJumpContacts = 0;
+        mAllowRoll = false;
         while (edge != null)
         {
             Fixture other = edge.contact.m_fixtureA;
+            boolean AtoB = true;
             if (other.m_body == mBody)
             {
+                AtoB = false;
                 other = edge.contact.m_fixtureB;
             }
             //if (other.m_filter.categoryBits == (1 << sWorld.BodyCategories.eEdibleTiles.ordinal())||
@@ -85,17 +83,29 @@ public class AIEntity extends Entity {
                     }
                 }
                 Vec2 collisionNorm = edge.contact.m_manifold.localNormal;
+                if(AtoB == false)
+                {
+                    collisionNorm.negateLocal();
+                }
                 collisionNorm.normalize();
-                if(collisionNorm.y > 0.9) //up
+                if(collisionNorm.y > 1/root2) //up
                 {
                 }
-                else if(collisionNorm.y < - 1/root2) //down
+                else if(collisionNorm.y < - 0.9) //down
                 {
-                    mCanJump = true;
-                    mJumpContacts++;
+                    if(edge.contact.isTouching())
+                    {
+                        mJumpContacts++;
+                    }
                 }
-                else // horizontal
+                else if(collisionNorm.y < - 0.3 || collisionNorm.y > - 0.3)//slopes // horizontal
                 {
+                    if(edge.contact.isTouching())
+                    {
+                        mJumpContacts++; //allow jukmp on slopes
+                        mAllowRoll = true;
+                    }
+                    
                 }
             }
             edge = edge.next;
@@ -138,7 +148,16 @@ public class AIEntity extends Entity {
             }
             case eStanding:
             {
-                mBody.applyLinearImpulse(new Vec2(0.9f*value,0),mBody.getWorldCenter());
+                if(mAllowRoll)
+                {
+                    mBody.m_fixtureList.m_friction = 20;
+                    mBody.applyAngularImpulse(0.7f*value);
+                }
+                else
+                {
+                    mBody.m_fixtureList.m_friction = 5;
+                    mBody.applyLinearImpulse(new Vec2(1.1f*value,0),mBody.getWorldCenter());
+                }
                 break;
             }
             case eStandingOnTar:
@@ -157,72 +176,97 @@ public class AIEntity extends Entity {
                 break;
             }
         }
-        /*if(mIce > 0)
-        {
-            mBody.applyAngularImpulse(0.5f*value);
-        }
-        else if (mTar > 0)
-        {
-            mBody.applyLinearImpulse(new Vec2(0.3f*value,0),mBody.getWorldCenter());
-        }
-        else
-        {
-            if(mJumpContacts == 0)
-                mBody.applyLinearImpulse(new Vec2(0.1f*value,0), mBody.getWorldCenter());
-            else
-                mBody.applyLinearImpulse(new Vec2(0.9f*value,0),mBody.getWorldCenter());
-        }*/
-        mTurnThisFrame = 1000;
     }
     public void walkLeft()
     {
-        /*if(mIce > 0)
+        switch (mAIEntityState.getState())
         {
-            mBody.applyAngularImpulse(-0.5f);
-        }
-        else
-        {
-            if(mJumpContacts == 0)
+            case eFalling:
+            {
                 mBody.applyLinearImpulse(new Vec2(-0.1f,0), mBody.getWorldCenter());
-            else
-                mBody.applyLinearImpulse(new Vec2(-0.9f,0),mBody.getWorldCenter());
-        }*/
-        mTurnThisFrame = 1000;
+                break;
+            }
+            case eStanding:
+            {
+                if(mAllowRoll)
+                {
+                    mBody.m_fixtureList.m_friction = 20;
+                    mBody.applyAngularImpulse(-0.7f);
+                }
+                else
+                {
+                    mBody.m_fixtureList.m_friction = 5;
+                    mBody.applyLinearImpulse(new Vec2(-1.1f,0),mBody.getWorldCenter());
+                }
+                break;
+            }
+            case eStandingOnTar:
+            case eStillCoveredInTar:
+            {
+                mBody.applyLinearImpulse(new Vec2(-0.3f,0),mBody.getWorldCenter());
+                break;
+            }
+            case eIce:
+            {
+                mBody.applyAngularImpulse(-0.5f);
+                break;
+            }
+            case eDead:
+            {
+                break;
+            }
+        }
     }
     public void walkRight()
     {
-        /*if(mIce > 0)
+        switch (mAIEntityState.getState())
         {
-            mBody.applyAngularImpulse(0.5f);
+            case eFalling:
+            {
+                mBody.applyLinearImpulse(new Vec2(0.1f,0), mBody.getWorldCenter());
+                break;
+            }
+            case eStanding:
+            {
+                if(mAllowRoll)
+                {
+                    mBody.m_fixtureList.m_friction = 20;
+                    mBody.applyAngularImpulse(0.7f);
+                }
+                else
+                {
+                    mBody.m_fixtureList.m_friction = 5;
+                    mBody.applyLinearImpulse(new Vec2(1.1f,0),mBody.getWorldCenter());
+                }
+                break;
+            }
+            case eStandingOnTar:
+            case eStillCoveredInTar:
+            {
+                mBody.applyLinearImpulse(new Vec2(0.3f,0),mBody.getWorldCenter());
+                break;
+            }
+            case eIce:
+            {
+                mBody.applyAngularImpulse(0.5f);
+                break;
+            }
+            case eDead:
+            {
+                break;
+            }
         }
-        else
-        {
-        if(mJumpContacts == 0)
-        {
-            mBody.applyLinearImpulse(new Vec2(0.15f,0), mBody.getWorldCenter());
-        }
-        else
-            mBody.applyLinearImpulse(new Vec2(0.9f,0),mBody.getWorldCenter());
-        }*/
-        mTurnThisFrame = 1000;
     }
     public void jump()
     {
-        if (!mAIEntityState.getState().equals(AIEntityState.State.eFalling) && !mAIEntityState.getState().equals(AIEntityState.State.eJumping))
+        if (!mAIEntityState.getState().equals(AIEntityState.State.eFalling) && 
+            !mAIEntityState.getState().equals(AIEntityState.State.eJumping))
         {
-            mBody.applyLinearImpulse(new Vec2(0,-20.0f), mBody.getWorldCenter());
-            //limit horizontal velocity
-            mCanJump = false;
+            
+            mBody.applyLinearImpulse(new Vec2(0,-23.0f), mBody.getWorldCenter());
             mJumpTimer = mJumpReload;
             mAIEntityState.jump();
         }
-        /*if (mJumpContacts != 0 && mJumpTimer == 0)
-        {
-            mBody.applyLinearImpulse(new Vec2(0,-20.0f), mBody.getWorldCenter());
-            //limit horizontal velocity
-            mCanJump = false;
-            mJumpTimer = mJumpReload;
-        }*/
     }
     
     public void fly(Command _command)

@@ -89,6 +89,7 @@ public class PlayerFactory implements iEntityFactory {
                     {
                         //in the format: (prefix + compass direction, offset)
                         skin.setOffset(t[k] + p[j],                     v[k]);
+                        //skin.setOffset(t[k] + p[j] + p[j] +"b" +q[i],   v[k]);
                         skin.setOffset(t[k] + p[j] + "b"  +q[i],        v[k]);
                         skin.setOffset(t[k] + p[j] + p[j] +q[i],        v[k]);
                         skin.setOffset(t[k] + p[j] + q[i] +"b" +p[j],   v[k]);
@@ -105,7 +106,7 @@ public class PlayerFactory implements iEntityFactory {
             parameters.put("position", position);
             parameters.put("aIEntity", entity);
             parameters.put("category", sWorld.BodyCategories.ePlayer);
-            entity.mBody = sWorld.useFactory("CharacterFactory",parameters);
+            entity.mBody = sWorld.useFactory("PlayerFactory",parameters);
             PlayerInputController controller = new PlayerInputController(entity, players);
             entity.mController = controller;
             sWorld.addPlayer(entity.mBody);

@@ -24,7 +24,7 @@ public interface iSkin {
     abstract public void setSpeed(float _speed);
     
     //character methods
-    abstract void setRotation(String _animation,float _radians);
+    abstract void setRotation(String _animation, float _radians);
     abstract float startAnim(String _animation, boolean _isLooping, float _speed);
     abstract void stopAnim(String _animation);
     abstract void restart(String _animation);
