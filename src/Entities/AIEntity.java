@@ -22,7 +22,7 @@ public class AIEntity extends Entity {
 
     final static float root2 = (float) Math.sqrt(2);
     protected iAIController mController;
-    //protected boolean mAirBorn;
+    protected boolean mAllowRoll = false;
     protected int mJumpTimer;
     protected static int mJumpReload = 60; /// NOTE frame rate change
     protected float mMoveSpeed;
@@ -44,6 +44,7 @@ public class AIEntity extends Entity {
         int mTar = 0;
         int mIce = 0;
         int mJumpContacts = 0;
+        mAllowRoll = false;
         while (edge != null)
         {
             Fixture other = edge.contact.m_fixtureA;
@@ -88,16 +89,21 @@ public class AIEntity extends Entity {
                 if(collisionNorm.y > 1/root2) //up
                 {
                 }
-                else if(collisionNorm.y < - 1/root2) //down
+                else if(collisionNorm.y < - 0.9) //down
                 {
-                    
                     if(edge.contact.isTouching())
                     {
                         mJumpContacts++;
                     }
                 }
-                else // horizontal
+                else if(collisionNorm.y < - 0.3 || collisionNorm.y > - 0.3)//slopes // horizontal
                 {
+                    if(edge.contact.isTouching())
+                    {
+                        mJumpContacts++; //allow jukmp on slopes
+                        mAllowRoll = true;
+                    }
+                    
                 }
             }
             edge = edge.next;
@@ -140,7 +146,16 @@ public class AIEntity extends Entity {
             }
             case eStanding:
             {
-                mBody.applyLinearImpulse(new Vec2(0.9f*value,0),mBody.getWorldCenter());
+                if(mAllowRoll)
+                {
+                    mBody.m_fixtureList.m_friction = 20;
+                    mBody.applyAngularImpulse(0.7f*value);
+                }
+                else
+                {
+                    mBody.m_fixtureList.m_friction = 5;
+                    mBody.applyLinearImpulse(new Vec2(1.1f*value,0),mBody.getWorldCenter());
+                }
                 break;
             }
             case eStandingOnTar:
@@ -171,7 +186,16 @@ public class AIEntity extends Entity {
             }
             case eStanding:
             {
-                mBody.applyLinearImpulse(new Vec2(-0.9f,0),mBody.getWorldCenter());
+                if(mAllowRoll)
+                {
+                    mBody.m_fixtureList.m_friction = 20;
+                    mBody.applyAngularImpulse(-0.7f);
+                }
+                else
+                {
+                    mBody.m_fixtureList.m_friction = 5;
+                    mBody.applyLinearImpulse(new Vec2(-1.1f,0),mBody.getWorldCenter());
+                }
                 break;
             }
             case eStandingOnTar:
@@ -202,7 +226,16 @@ public class AIEntity extends Entity {
             }
             case eStanding:
             {
-                mBody.applyLinearImpulse(new Vec2(0.9f,0),mBody.getWorldCenter());
+                if(mAllowRoll)
+                {
+                    mBody.m_fixtureList.m_friction = 20;
+                    mBody.applyAngularImpulse(0.7f);
+                }
+                else
+                {
+                    mBody.m_fixtureList.m_friction = 5;
+                    mBody.applyLinearImpulse(new Vec2(1.1f,0),mBody.getWorldCenter());
+                }
                 break;
             }
             case eStandingOnTar:
@@ -227,7 +260,8 @@ public class AIEntity extends Entity {
         if (!mAIEntityState.getState().equals(AIEntityState.State.eFalling) && 
             !mAIEntityState.getState().equals(AIEntityState.State.eJumping))
         {
-            mBody.applyLinearImpulse(new Vec2(0,-20.0f), mBody.getWorldCenter());
+            
+            mBody.applyLinearImpulse(new Vec2(0,-23.0f), mBody.getWorldCenter());
             mJumpTimer = mJumpReload;
             mAIEntityState.jump();
         }
