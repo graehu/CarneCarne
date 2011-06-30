@@ -34,11 +34,21 @@ public class FlagProcessor
             {
                 int id = _tiledMap.getTileId(i, ii, layerIndex);
                 String spawn = _tiledMap.getTileProperty(id, "Spawn", "None");
-                if (spawn.equals("AI"))
+                if (spawn.equals("Broccoli"))
                 {
                     parameters.put("position",new Vec2(i,ii));
-                    //sEntityFactory.create("Zombie",parameters               
+                    sEntityFactory.create("Broccoli",parameters);
+                }
+                else if(spawn.equals("Carrot"))
+                {
+                    parameters.put("position",new Vec2(i,ii));
                     sEntityFactory.create("Carrot",parameters);
+                    
+                }
+                else if(spawn.equals("Pea"))
+                {
+                    parameters.put("position",new Vec2(i,ii));
+                    sEntityFactory.create("Pea",parameters);
                 }
                 else if (spawn.equals("Player"))
                 {

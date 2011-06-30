@@ -10,16 +10,16 @@ import org.jbox2d.common.Vec2;
 
 /**
  *
- * @author G203947
+ * @author g203947
  */
-public class Carrot  extends AIEntity
+public class Broccoli extends AIEntity
 {
     private float mMoveSpeed;
-
-    public Carrot(iSkin _skin) 
+    public Broccoli(iSkin _skin) 
     {
         super(_skin);
         mMoveSpeed = 1;
+        //mSkin.setIsLooping(false);
     }
     
     public void setMoveSpeed(float _moveSpeed)
@@ -31,5 +31,26 @@ public class Carrot  extends AIEntity
         //mBody.applyLinearImpulse(new Vec2(0, -9.8f), new Vec2(0,0));
         //mController.update();
         //subUpdate();    
-    } 
+    }
+    public void moveRight()
+    {
+        
+    }
+    public void moveLeft()
+    {
+        
+    }
+    public void moveUp()
+    {
+        
+    }
+    public void moveDown()
+    {
+        
+    }
+    /*public void render()
+    {
+        Vec2 pixelPosition = sWorld.translateToWorld(mBody.getPosition());
+        mSkin.render(pixelPosition.x,pixelPosition.y);
+    }*/
 }

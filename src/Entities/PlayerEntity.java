@@ -73,7 +73,7 @@ public class PlayerEntity extends AIEntity {
     { 
         mSkin.setRotation(mBodyType, mBody.getAngle()*(180/(float)Math.PI));
         super.render();
-        //mReticle.render();
+        mReticle.render();
     }
     
     public void changeBodyType(TileType _type)

@@ -64,7 +64,9 @@ public class sWorld
         mWorld.setContactListener(new WorldContactListener());
         factories = new HashMap<String, iPhysicsFactory>();
         factories.put("TileFactory", new TileFactory());
-        factories.put("CharacterFactory", new CharacterFactory());
+        factories.put("PlayerFactory", new PlayerFactory());
+        factories.put("BoxCharFactory", new BoxCharFactory());
+        factories.put("CircleCharFactory", new CircleCharFactory());
         factories.put("NonEdibleTileFactory", new NonEdibleTileFactory());
         factories.put("SpatBlockFactory", new SpatBlockBodyFactory());
         factories.put("TileArrayFactory", new TileArrayFactory());

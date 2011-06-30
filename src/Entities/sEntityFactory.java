@@ -22,8 +22,10 @@ public class sEntityFactory {
         mFactories = new HashMap();
         mFactories.put("Player", new PlayerFactory());
         mFactories.put("SpatBlock", new SpatBlockFactory());
-        mFactories.put("Zombie", new ZombieFactory());
+        mFactories.put("Zombie", new PeaFactory());
         mFactories.put("Carrot", new CarrotFactory());
+        mFactories.put("Broccoli", new BroccoliFactory());
+        mFactories.put("Pea", new PeaFactory());
         mFactories.put("CaveIn", new CaveInFactory());
         mFactories.put("CaveInTileFactory", new CaveInTileFactory());
         mFactories.put("SeeSaw", new SeeSawFactory());

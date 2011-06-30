@@ -4,6 +4,7 @@
  */
 package Entities;
 
+import AI.BroccoliController;
 import AI.CarrotController;
 import Events.PlayerCreatedEvent;
 import Events.sEvents;
@@ -18,29 +19,29 @@ import org.jbox2d.common.Vec2;
  *
  * @author Graham
  */
-class CarrotFactory implements iEntityFactory {
+public class BroccoliFactory implements iEntityFactory {
 
-    public CarrotFactory() {
+    public BroccoliFactory() {
     }
 
     public Entity useFactory(HashMap _parameters)
     {
         Vec2 position = (Vec2)_parameters.get("position");
+        //if (!used)
         HashMap animDef = new HashMap();
         animDef.put("ref", "ss_1");
-        animDef.put("anims", Arrays.asList("carrot_fly_ss"));
+        animDef.put("anims", Arrays.asList("broc_1"));
         iSkin skin = sSkinFactory.create("character", animDef);
-        skin.startAnim("carrot_fly_ss", true, 1.0f);
-        skin.setOffset("carrot_fly_ss", new Vec2(-30f*2,-16.55f));
-        ///FIXME the x offset isn't perfect.
-        AIEntity entity = new Carrot(skin);
+        skin.startAnim("broc_1", true, 1.0f);
+        skin.setOffset("broc_1", new Vec2(-46/2,-46));
+        AIEntity entity = new Broccoli(skin);
         HashMap parameters = new HashMap();
         parameters.put("position", position);
         parameters.put("aIEntity", entity);
         parameters.put("category", sWorld.BodyCategories.eEnemy);
-        entity.mBody = sWorld.useFactory("PlayerFactory",parameters);
+        entity.mBody = sWorld.useFactory("BoxCharFactory",parameters);
         
-        CarrotController controller = new CarrotController(entity);
+        BroccoliController controller = new BroccoliController(entity);
         entity.mController = controller;
         sEvents.triggerEvent(new PlayerCreatedEvent(entity));
         return entity;
