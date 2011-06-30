@@ -43,6 +43,7 @@ public class TongueStateMachine {
     //static members
     static Vec2 mUp = new Vec2(0,-1);
     static int tongueFiringTimeout = 10;
+    static int spitDelay = 10;
     static float tongueLength = 6.0f;
     static int idleAnimationTrigger = 1000;
     
@@ -606,6 +607,7 @@ public class TongueStateMachine {
                 mAIController.mEntity.mSkin.stopAnim("tng");
                 mIsTongueActive = false;
                 mCurrentStateTimer = setAnimation("SpittingBlock");
+                mCurrentStateTimer = Math.max(spitDelay, mCurrentStateTimer);
                 spitBlock();
                 break;
             }
