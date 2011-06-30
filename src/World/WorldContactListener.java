@@ -31,12 +31,17 @@ public class WorldContactListener implements ContactListener{
         for (int i = 0; i < BodyCategories.eBodyCategoriesMax.ordinal(); i++)
         {
             set(BodyCategories.eWater.ordinal(),i,new WaterListener());
-            set(BodyCategories.eTar.ordinal(),i,new TarListener());
+            set(BodyCategories.ePlayer.ordinal(),i,new HighImpulseListener());
+            //set(BodyCategories.eEnemy.ordinal(),i,new JumpListener());
         }
+        //set(BodyCategories.eTar.ordinal(),BodyCategories.eEnemy.ordinal(),new TarListener());
+        //set(BodyCategories.eTar.ordinal(),BodyCategories.ePlayer.ordinal(),new TarListener());
         set(BodyCategories.eTar.ordinal(),BodyCategories.eFire.ordinal(),new TarFireListener());
+        set(BodyCategories.eIce.ordinal(),BodyCategories.eFire.ordinal(),new TarFireListener());
         set(BodyCategories.eGum.ordinal(),BodyCategories.eEdibleTiles.ordinal(),new GumListener());
         set(BodyCategories.eGum.ordinal(),BodyCategories.eNonEdibleTiles.ordinal(),new GumListener());
         set(BodyCategories.ePlayer.ordinal(),BodyCategories.eSpikes.ordinal(),new DeathListener());
+        set(BodyCategories.ePlayer.ordinal(),BodyCategories.eFire.ordinal(),new DeathListener());
         set(BodyCategories.eCheckPoint.ordinal(), BodyCategories.ePlayer.ordinal(), new CheckPointListener());
     }
     private void set(int _x, int _y, iListener _reaction)
@@ -76,6 +81,10 @@ public class WorldContactListener implements ContactListener{
 
     public void postSolve(Contact _contact, ContactImpulse _impulse)
     {
+        int categories[] = new int[2];
+        categories[0] = getIndex(_contact.m_fixtureA.m_filter.categoryBits);
+        categories[1] = getIndex(_contact.m_fixtureB.m_filter.categoryBits);
+        reactions[categories[0]][categories[1]].postSolve(_contact, _impulse);
     }
     
 }

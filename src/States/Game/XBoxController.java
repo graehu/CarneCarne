@@ -24,14 +24,15 @@ import org.newdawn.slick.Input;
  * 3 - Y
  * 4 - L1
  * 5 - R1
- * 6 - Select
+ * 6 - Back
+ * 7 - Start
  * 8 - L3
  * 9 - R3
  * Thinking about sitting and mapping the rest of these? Get a job!
  */
 public class XBoxController
 {
-    static private float stickEpsilon = 0.1f; /// TWEAK
+    static private float stickEpsilon = 0.3f; /// TWEAK
     static private float shoulderButtonEpsilon = 0.3f;
     private boolean xAxisHit = false;
     private boolean mLeftShoulderButton = false, mRightShoulderButton = false;
@@ -56,10 +57,11 @@ public class XBoxController
         //get player direction
         Vec2 rightStick = new Vec2(_input.getAxisValue(mPlayer, 3),_input.getAxisValue(mPlayer, 2));
         
-        //handle ABXY buttons
-        if(_input.isButtonPressed(0, mPlayer)) //jump
-            sEvents.triggerEvent(new KeyDownEvent('w', mPlayer));
-        
+        //handle start and back buttons
+        if(_input.isButtonPressed(7, mPlayer)) //start
+        {
+            sEvents.triggerEvent(new KeyDownEvent('Q', 0)); //menu
+        }
         //handle shoulder buttons
         if(_input.isButtonPressed(5, mPlayer)) //tongue 
         {
@@ -71,15 +73,15 @@ public class XBoxController
             mRightShoulderButton = false;
             sEvents.triggerEvent(new MapClickReleaseEvent(rightStick,true, mPlayer));
         }
-        if(_input.isButtonPressed(4, mPlayer)) //spit
+        if(_input.isButtonPressed(4, mPlayer)) //jump
         {
-            sEvents.triggerEvent(new ShoulderButtonEvent(rightStick,false, mPlayer));
+            sEvents.triggerEvent(new KeyDownEvent('w', mPlayer));
             mLeftShoulderButton = true;
         }
         else if(mLeftShoulderButton)//on release
         {
             mLeftShoulderButton = false;
-            sEvents.triggerEvent(new MapClickReleaseEvent(rightStick,false, mPlayer)); 
+            
         }
         
         //handle shoulder triggers
@@ -101,11 +103,11 @@ public class XBoxController
         {
             if (shoulderButtons > shoulderButtonEpsilon) //right trigger
             {
-                changeState(TriggerState.eRightPressed, rightStick);
+                changeState(TriggerState.eLeftPressed, rightStick);
             }
             else if (shoulderButtons < -shoulderButtonEpsilon) //left trigger
             {
-                changeState(TriggerState.eLeftPressed, rightStick);
+                changeState(TriggerState.eRightPressed, rightStick);
             }
             else
             {
@@ -132,7 +134,7 @@ public class XBoxController
             {
                 if (_newState != TriggerState.eRightPressed)
                 {
-                   // sEvents.triggerEvent(new MapClickReleaseEvent(_rightStick,true, mPlayer)); //tongue
+                    sEvents.triggerEvent(new MapClickReleaseEvent(_rightStick,false, mPlayer)); //spit release
                 }
                 break;
             }
@@ -140,8 +142,7 @@ public class XBoxController
             {
                 if (_newState != TriggerState.eLeftPressed)
                 {
-                    sEvents.triggerEvent(new KeyDownEvent(' ', mPlayer)); //lay
-                   // sEvents.triggerEvent(new MapClickReleaseEvent(_rightStick,false, mPlayer)); //spit
+                    
                 }
                 break;
             }
@@ -155,12 +156,12 @@ public class XBoxController
             }
             case eRightPressed:
             {
-                //sEvents.triggerEvent(new ShoulderButtonEvent(_rightStick,true, mPlayer));
+                sEvents.triggerEvent(new ShoulderButtonEvent(_rightStick,false, mPlayer)); //spit
                 break;
             }
             case eLeftPressed:
             {
-                //sEvents.triggerEvent(new ShoulderButtonEvent(_rightStick,false, mPlayer));
+                sEvents.triggerEvent(new KeyDownEvent(' ', mPlayer)); //lay
                 break;
             }
             

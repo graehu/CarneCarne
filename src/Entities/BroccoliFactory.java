@@ -27,7 +27,6 @@ public class BroccoliFactory implements iEntityFactory {
     public Entity useFactory(HashMap _parameters)
     {
         Vec2 position = (Vec2)_parameters.get("position");
-        //if (!used)
         HashMap animDef = new HashMap();
         animDef.put("ref", "ss_1");
         animDef.put("anims", Arrays.asList("broc_1"));
@@ -43,7 +42,6 @@ public class BroccoliFactory implements iEntityFactory {
         
         BroccoliController controller = new BroccoliController(entity);
         entity.mController = controller;
-        sEvents.triggerEvent(new PlayerCreatedEvent(entity));
         return entity;
     }
     

@@ -42,7 +42,6 @@ class CarrotFactory implements iEntityFactory {
         
         CarrotController controller = new CarrotController(entity);
         entity.mController = controller;
-        sEvents.triggerEvent(new PlayerCreatedEvent(entity));
         return entity;
     }
     

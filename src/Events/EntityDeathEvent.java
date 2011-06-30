@@ -10,10 +10,10 @@ import Entities.Entity;
  *
  * @author alasdair
  */
-public class PlayerDeathEvent extends iEvent {
+public class EntityDeathEvent extends iEvent {
 
     private Entity mEntity;
-    public PlayerDeathEvent(Entity _entity)
+    public EntityDeathEvent(Entity _entity)
     {
         mEntity = _entity;
     }
@@ -29,8 +29,10 @@ public class PlayerDeathEvent extends iEvent {
         return "PlayerDeathEvent";
     }
     
-    public void process()
+    @Override
+    public boolean process()
     {
         mEntity.kill();
+        return true;
     }
 }

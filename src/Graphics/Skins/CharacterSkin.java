@@ -28,7 +28,7 @@ public class CharacterSkin implements iSkin
     {
         //load packed sprite sheet
         PackedSpriteSheet pss = new PackedSpriteSheet(_packedSpriteSheet, new Color(0,0,0));
-        
+
         //get spritesheets and create skins
         int i = 0;
         for(String string : _spriteSheets)

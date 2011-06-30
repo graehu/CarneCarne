@@ -4,7 +4,7 @@
  */
 package States.Title;
 
-import States.Init.OptionsGUI;
+import States.Init.InitGUI;
 import GUI.TWL.BasicTWLGameState;
 import de.matthiasmann.twl.ComboBox;
 import de.matthiasmann.twl.ToggleButton;

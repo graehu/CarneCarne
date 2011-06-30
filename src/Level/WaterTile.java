@@ -24,7 +24,7 @@ class WaterTile extends RootTile {
 
     public WaterTile(int _rootId, TileType _tileType)
     {
-        super(TileShape.eBlock, _rootId, _tileType, false, false, false, -1);
+        super(TileShape.eBlock, _rootId, _tileType, false, true, false, -1);
     }
 
     Body createPhysicsBody(int _xTile, int _yTile, HashMap _parameters)

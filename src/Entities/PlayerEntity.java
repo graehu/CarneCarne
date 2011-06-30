@@ -5,29 +5,36 @@
 package Entities;
 
 import Graphics.Skins.iSkin;
+import Graphics.sGraphicsManager;
 import HUD.Reticle;
 import Level.sLevel.TileType;
 import World.sWorld;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Fixture;
 import org.jbox2d.dynamics.joints.Joint;
+import org.newdawn.slick.geom.Rectangle;
 
 /**
  *
  * @author alasair
  */
-public class PlayerEntity extends AIEntity {
-
+public class PlayerEntity extends AIEntity
+{
     String mBodyType = "bdy";
     private Vec2 mCheckPoint;
     private Joint mDeathJoint;
     private Vec2 mDirection;
     public Reticle mReticle;
+    private Rectangle mViewPort;
     public PlayerEntity(iSkin _skin, Vec2 _checkPointPosition)
     {
         super(_skin);
         mCheckPoint = _checkPointPosition.clone();
         mReticle = new Reticle(this);
+    }
+    public void setClip(Rectangle _viewPort)
+    {
+        mViewPort = _viewPort;
     }
     public void placeCheckPoint(Vec2 _position)
     {
@@ -50,6 +57,7 @@ public class PlayerEntity extends AIEntity {
     {
         return (a < b + epsilon && a > b - epsilon);
     }
+    @Override
     protected void subUpdate()
     {
         mReticle.updateDirection(mDirection);
@@ -65,15 +73,17 @@ public class PlayerEntity extends AIEntity {
                     fixture.setSensor(false);
                     fixture = fixture.getNext();
                 }
+                mAIEntityState.unkill();
             }
         }
     }
 
     public void render()
-    { 
+    {
         mSkin.setRotation(mBodyType, mBody.getAngle()*(180/(float)Math.PI));
         super.render();
-        mReticle.render();
+        if (sGraphicsManager.getClip() == mViewPort)
+            mReticle.render();
     }
     
     public void changeBodyType(TileType _type)

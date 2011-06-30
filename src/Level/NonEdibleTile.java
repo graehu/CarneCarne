@@ -26,12 +26,6 @@ class NonEdibleTile extends RootTile
     {
         super(TileShape.eBlock, _id, _tileType, false, _anchor, false, 1);
     }
-    public Body createPhysicsBody(int _xTile, int _yTile, HashMap _parameters)
-    {
-        _parameters.put("position", new Vec2(_xTile,_yTile));
-        _parameters.put("TileType", mTileType);
-        return sWorld.useFactory("NonEdibleTileFactory",_parameters);
-    }
     @Override
     Fixture createPhysicsBody(int _xTile, int _yTile, Body _body, Tile _tile)
     {
@@ -40,9 +34,9 @@ class NonEdibleTile extends RootTile
         FixtureDef fixture = new FixtureDef();
         fixture.shape = shape;
         fixture.filter.groupIndex = mTileType.ordinal();
-        fixture.filter.categoryBits = (1 << BodyCategories.eNonEdibleTiles.ordinal());
+        fixture.filter.categoryBits = (1 << BodyCategories.eEdibleTiles.ordinal());
         fixture.filter.maskBits = Integer.MAX_VALUE;
-        fixture.density = 1.0f;
+        fixture.userData = _tile;
         if (mTileType.equals(TileType.eSpikes))
         {
             fixture.filter.categoryBits = (1 << BodyCategories.eSpikes.ordinal());
@@ -62,6 +56,6 @@ class NonEdibleTile extends RootTile
 
     boolean boundaryFrom(Direction _direction, TileType _tileType, MaterialEdges _materialEdges)
     {
-        return false;
+        return _materialEdges.check(_tileType, mTileType);
     }
 }

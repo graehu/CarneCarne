@@ -20,6 +20,8 @@ import org.newdawn.slick.state.StateBasedGame;
  */
 public class StateInit extends BasicTWLGameState {
 
+    InitGUI mInitGUI;
+    
     @Override
     public int getID() {
         return 0;
@@ -30,8 +32,8 @@ public class StateInit extends BasicTWLGameState {
         rootPane = null;
         super.enter(container, game);
         
-        OptionsGUI wid = new OptionsGUI((InitApp)game);
-        getRootPane().add(wid.getWidget());
+        mInitGUI = new InitGUI((InitApp)game);
+        getRootPane().add(mInitGUI.getWidget());
     }
 
     
@@ -46,6 +48,15 @@ public class StateInit extends BasicTWLGameState {
     }
 
     public void update(GameContainer _gc, StateBasedGame _sbg, int _i) throws SlickException {
+        if(mInitGUI.getIsFinished())
+        {
+            _gc.setForceExit(false);
+            _gc.exit();
+        }
+        else if(_sbg.closeRequested())
+        {
+            _gc.setForceExit(true);
+        }
     }
     
 }

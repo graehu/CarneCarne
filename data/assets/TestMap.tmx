@@ -13,7 +13,7 @@
   <image source="TileTar.png" width="256" height="512"/>
   <tile id="0">
    <properties>
-    <property name="Anchor" value="True"/>
+    <property name="Anchor" value="False"/>
     <property name="Flammable" value="True"/>
     <property name="Material" value="Tar"/>
     <property name="Regrows" value="False"/>
@@ -195,6 +195,7 @@
   <image source="TileBone1.png" width="256" height="256"/>
   <tile id="0">
    <properties>
+    <property name="Anchor" value="True"/>
     <property name="Material" value="Swingable"/>
     <property name="Type" value="Block"/>
    </properties>
@@ -204,6 +205,7 @@
   <image source="TileBone2.png" width="256" height="256"/>
   <tile id="0">
    <properties>
+    <property name="Anchor" value="True"/>
     <property name="Material" value="Swingable"/>
     <property name="Type" value="Block"/>
    </properties>
@@ -214,6 +216,7 @@
   <tile id="0">
    <properties>
     <property name="Material" value="Ice"/>
+    <property name="Regrows" value="False"/>
     <property name="Type" value="Block"/>
    </properties>
   </tile>

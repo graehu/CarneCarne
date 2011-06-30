@@ -8,6 +8,7 @@ import Entities.Entity;
 import Entities.sEntityFactory;
 import Graphics.Skins.TiledSkin;
 import Level.CaveInSearcher.TempTile;
+import Level.sLevel.TileType;
 import World.sWorld;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -98,7 +99,7 @@ public class CaveInTileGrid extends TileGrid
             parameters.put("img", image);
 
             /// Individual tiles
-            mTiles[_x][_y].createPhysicsBody(_x, _y, parameters, mBody);
+            mTiles[_x][_y].createPhysicsBody(parameters, mBody);
             Fixture fixture = mTiles[_x][_y].mFixture;
             //mLastBody = body;
             //parameters.put("Body", fixture);
@@ -115,13 +116,13 @@ public class CaveInTileGrid extends TileGrid
         }
     }
     boolean searching = false;
-    void caveInSearch(int _x, int _y)
+    void caveInSearch(int _x, int _y, TileType _tileType)
     {
         if (!searching)
         {
             searching = true;
             CaveInSearcher search = new CaveInSearcher(this, mTiledMap, mLayerIndex, mBody.getPosition(), mBody.getAngle());
-            search.destroy(_x, _y);
+            search.destroy(_x, _y, _tileType);
             sWorld.destroyBody(mBody);
             ((Entity)mBody.getUserData()).mBody = null;
             mBody.setUserData(null);

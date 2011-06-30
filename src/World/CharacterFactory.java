@@ -5,6 +5,7 @@
 package World;
 
 import Entities.AIEntity;
+import Level.FakeTile;
 import World.sWorld.BodyCategories;
 import java.util.HashMap;
 import org.jbox2d.collision.shapes.CircleShape;
@@ -15,8 +16,6 @@ import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.FixtureDef;
 import org.jbox2d.dynamics.World;
-import org.jbox2d.dynamics.joints.RevoluteJoint;
-import org.jbox2d.dynamics.joints.RevoluteJointDef;
 
 /**
  *
@@ -36,14 +35,14 @@ class CharacterFactory implements iPhysicsFactory {
         FixtureDef circleFixture = new FixtureDef();
         wheelShape.m_radius = 0.45f;
         circleFixture.density = 4;
-        circleFixture.friction = 50;
+        circleFixture.friction = 5;
         circleFixture.filter.categoryBits = (1 << category.ordinal());
         circleFixture.filter.maskBits = Integer.MAX_VALUE;
         circleFixture.shape = wheelShape;
         PolygonShape axelShape = new PolygonShape();
         FixtureDef axelFixture = new FixtureDef();
         axelShape.setAsBox(0.1f, 0.1f);
-        axelFixture.density = 0.001f;
+        axelFixture.density = 0.0001f;
         axelFixture.filter.categoryBits = (1 << category.ordinal());
         axelFixture.filter.maskBits = Integer.MAX_VALUE;
         axelFixture.filter.groupIndex = -100;
@@ -54,6 +53,7 @@ class CharacterFactory implements iPhysicsFactory {
         def.position = position;
         
         Body body = _world.createBody(def);
+        circleFixture.userData = new FakeTile(body);
         body.createFixture(circleFixture);
         
         def.fixedRotation = true;
@@ -61,15 +61,15 @@ class CharacterFactory implements iPhysicsFactory {
         Body axelBody = _world.createBody(def);
         body.createFixture(axelFixture);
         
-        RevoluteJointDef wheelJoint = new RevoluteJointDef();
-        wheelJoint.collideConnected = false;
-        wheelJoint.maxMotorTorque = 5000.0f;
-        wheelJoint.enableMotor = true;
-        wheelJoint.bodyA = body;
-        wheelJoint.bodyB = axelBody;
-        wheelJoint.collideConnected = false;
-        RevoluteJoint joint = (RevoluteJoint)_world.createJoint(wheelJoint);
-        entity.mJoint = joint;
+//        RevoluteJointDef wheelJoint = new RevoluteJointDef();
+//        wheelJoint.collideConnected = false;
+//        wheelJoint.maxMotorTorque = 1000.0f;
+//        wheelJoint.enableMotor = false;
+//        wheelJoint.bodyA = body;
+//        wheelJoint.bodyB = axelBody;
+//        wheelJoint.collideConnected = false;
+//        RevoluteJoint joint = (RevoluteJoint)_world.createJoint(wheelJoint);
+//        entity.mJoint = joint;
         return body;
     }
     

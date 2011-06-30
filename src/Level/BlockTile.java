@@ -49,13 +49,13 @@ public class BlockTile extends RootTile
         {
             fixture.filter.categoryBits = (1 << BodyCategories.eTar.ordinal());
             fixture.restitution = 0.0f;
-            fixture.friction = 1000.0f;
+            fixture.friction = 10f;
         }
         fixture.shape = shape;
         fixture.userData = _tile; /// FIXME make this body data instead
         if (_body.m_type.equals(BodyType.DYNAMIC))
         {
-            fixture.density = 1.0f;
+            fixture.density = 100.0f;
         }
         return _body.createFixture(fixture);
     }

@@ -13,8 +13,11 @@ import java.util.HashMap;
 import java.util.Set;
 import org.jbox2d.common.Vec2;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.ShapeFill;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
+import org.newdawn.slick.geom.Rectangle;
+import org.newdawn.slick.geom.Shape;
 
 /**
  *
@@ -76,6 +79,16 @@ public class sGraphicsManager {
         mAllowTransform = false;
         mGraphics.popTransform();
     }
+    private static Rectangle mClip;
+    public static void setClip(Rectangle _rect)
+    {
+        mGraphics.setClip(_rect);
+        mClip = _rect;
+    }
+    public static Rectangle getClip()
+    {
+        return mClip;
+    }
     public static void translate(float _x, float _y)
     {
         if(mAllowTransform)
@@ -89,6 +102,10 @@ public class sGraphicsManager {
             mGraphics.rotate(_x, _y, _angle);
         //else
             //throw new SlickException("Must call beginTrasform first");
+    }
+    public static void fill(Shape shape, ShapeFill fill)
+    {
+        mGraphics.fill(shape, fill);
     }
     public static void addSprite(iSprite _sprite)
     {
