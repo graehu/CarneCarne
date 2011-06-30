@@ -100,6 +100,12 @@ public class StateGame extends BasicTWLGameState implements iEventListener {
     {         
         super.enter(container, game);
 
+        //TEST: MANAGED SPRITE
+//        HashMap params = new HashMap();
+//        params.put("img", new Image("data/assets/splashbig.png"));
+//        params.put("pos", new Vec2(500,500));
+//        sSpriteFactory.create("simple", params);
+
         sSound.play("ambiance");
     }
     

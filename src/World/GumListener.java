@@ -26,19 +26,15 @@ class GumListener implements iListener {
     {
         if (_contact.m_fixtureA.m_filter.categoryBits == (1 << BodyCategories.eGum.ordinal()))
         {
-            int x = (int)(_contact.m_fixtureA.m_body.getPosition().x+0.0625f);
-            int y = (int)(_contact.m_fixtureA.m_body.getPosition().y+0.0625f);
             int rootId = ((SpatBlock)_contact.m_fixtureA.getBody().getUserData()).getRootId();
             Tile tile = (Tile)_contact.m_fixtureB.getUserData();
-            sEvents.triggerDelayedEvent(new GumLandEvent(x,y,_contact.m_fixtureA.m_body,rootId,tile));
+            sEvents.triggerDelayedEvent(new GumLandEvent(_contact.m_fixtureA.m_body,rootId,tile));
         }
         else
         {
-            int x = (int)(_contact.m_fixtureB.m_body.getPosition().x+0.0625f);
-            int y = (int)(_contact.m_fixtureB.m_body.getPosition().y+0.0625f);
             int rootId = ((SpatBlock)_contact.m_fixtureB.getBody().getUserData()).getRootId();
             Tile tile = (Tile)_contact.m_fixtureA.getUserData();
-            sEvents.triggerDelayedEvent(new GumLandEvent(x,y,_contact.m_fixtureB.m_body,rootId,tile));
+            sEvents.triggerDelayedEvent(new GumLandEvent(_contact.m_fixtureB.m_body,rootId,tile));
         }
     }
 

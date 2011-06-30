@@ -9,6 +9,7 @@ import Level.sLevel.TileType;
 import World.sWorld;
 import java.util.HashMap;
 import java.util.Stack;
+import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 
 /**
@@ -111,6 +112,10 @@ abstract public class TileGrid {
     {
         placeTileNoBody(_x, _y, _rootId);
         createPhysicsBody(_x, _y, mTiles[_x][_y]);
+    }
+    public void placeTile(Vec2 _worldPosition, int _rootId)
+    {
+        
     }
     void placeTileNoBody(int _x, int _y, int _rootId)
     {
