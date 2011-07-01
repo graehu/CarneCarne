@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package States.Race;
+package States.Game;
 
 import Entities.PlayerEntity;
 import Events.PlayerCreatedEvent;

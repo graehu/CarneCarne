@@ -20,7 +20,6 @@ import Input.sInput;
 import Level.sLevel;
 import States.StateChanger;
 import Sound.sSound;
-import States.Race.RaceMode;
 import World.sWorld;
 import org.jbox2d.common.Vec2;
 import org.newdawn.slick.GameContainer;
