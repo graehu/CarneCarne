@@ -35,7 +35,7 @@ public class FakeTile extends Tile
     @Override
     public void destroyFixture()
     {
-        ((Entity)mBody.getUserData()).kill();
+        //((Entity)mBody.getUserData()).kill();
     }
     public boolean damageTile()
     {

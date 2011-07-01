@@ -40,6 +40,8 @@ public class AIEntity extends Entity {
     public void update()
     {
         //apply gravity
+        Vec2 mv = mBody.getLinearVelocity();
+        float mass = mBody.getMass();
         ContactEdge edge = mBody.m_contactList;
         int mTar = 0;
         int mIce = 0;
