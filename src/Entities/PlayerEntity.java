@@ -28,16 +28,21 @@ public class PlayerEntity extends AIEntity
     public Reticle mReticle;
     private Rectangle mViewPort;
     private int mScore;
+    private int mRaceTimer;
     public PlayerEntity(iSkin _skin, CheckPointZone _spawnPoint)
     {
         super(_skin);
         mCheckPoint = _spawnPoint;
         mReticle = new Reticle(this);
-        mScore = 0;
+        mScore = mRaceTimer = 0;
     }
     public void setClip(Rectangle _viewPort)
     {
         mViewPort = _viewPort;
+    }
+    public CheckPointZone getCheckPoint()
+    {
+        return mCheckPoint;
     }
     public void placeCheckPoint(CheckPointZone _checkPoint)
     {
@@ -72,6 +77,10 @@ public class PlayerEntity extends AIEntity
     @Override
     protected void subUpdate()
     {
+        if (mCheckPoint.incrementRaceTimer())
+        {
+            mRaceTimer++;
+        }
         mReticle.update();
         if (mDeathJoint != null)
         {//when player is within half a tile of checkpoint destroy joint
@@ -97,7 +106,7 @@ public class PlayerEntity extends AIEntity
         if (sGraphicsManager.getClip() == mViewPort)
         {
             mReticle.render();
-            mCheckPoint.renderRaceState();
+            mCheckPoint.renderRaceState(mRaceTimer);
         }
     }
     
