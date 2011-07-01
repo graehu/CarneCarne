@@ -291,13 +291,13 @@ public class AIEntity extends Entity {
                 mBody.setLinearVelocity(new Vec2(-mMoveSpeed,-mMoveSpeed));
                 break;
             case eMoveBottomLeft:
-                mBody.setLinearVelocity(new Vec2(mMoveSpeed,-mMoveSpeed));
+                mBody.setLinearVelocity(new Vec2(-mMoveSpeed, mMoveSpeed));
                 break;
             case eMoveBottomRight:
                 mBody.setLinearVelocity(new Vec2(mMoveSpeed, mMoveSpeed));
                 break;
             case eMoveTopRight:
-                mBody.setLinearVelocity(new Vec2(-mMoveSpeed, mMoveSpeed));
+                mBody.setLinearVelocity(new Vec2(mMoveSpeed, -mMoveSpeed));
                 break;
         }
     }

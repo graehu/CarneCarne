@@ -35,14 +35,15 @@ public class CircleCharFactory  implements iPhysicsFactory
         circleFixture.filter.categoryBits = (1 << category.ordinal());
         circleFixture.filter.maskBits = Integer.MAX_VALUE;
         circleFixture.shape = wheelShape;
-        PolygonShape axelShape = new PolygonShape();
-        FixtureDef axelFixture = new FixtureDef();
-        axelShape.setAsBox(0.1f, 0.1f);
-        axelFixture.density = 0.001f;
-        axelFixture.filter.categoryBits = (1 << category.ordinal());
-        axelFixture.filter.maskBits = Integer.MAX_VALUE;
-        axelFixture.filter.groupIndex = -100;
-        axelFixture.shape = axelShape;
+        
+        //PolygonShape axelShape = new PolygonShape();
+        //FixtureDef axelFixture = new FixtureDef();
+        //axelShape.setAsBox(0.1f, 0.1f);
+        //axelFixture.density = 0.001f;
+        //axelFixture.filter.categoryBits = (1 << category.ordinal());
+        //axelFixture.filter.maskBits = Integer.MAX_VALUE;
+        //axelFixture.filter.groupIndex = -100;
+        //axelFixture.shape = axelShape;
         BodyDef def = new BodyDef();
         def.type = BodyType.DYNAMIC;
         def.userData = entity;
@@ -53,10 +54,10 @@ public class CircleCharFactory  implements iPhysicsFactory
         
         def.fixedRotation = true;
         def.userData = null;
-        Body axelBody = _world.createBody(def);
-        body.createFixture(axelFixture);
+        //Body axelBody = _world.createBody(def);
+        //body.createFixture(axelFixture);
         
-        RevoluteJointDef wheelJoint = new RevoluteJointDef();
+        /*RevoluteJointDef wheelJoint = new RevoluteJointDef();
         wheelJoint.collideConnected = false;
         wheelJoint.maxMotorTorque = 5000.0f;
         wheelJoint.enableMotor = true;
@@ -64,7 +65,7 @@ public class CircleCharFactory  implements iPhysicsFactory
         wheelJoint.bodyB = axelBody;
         wheelJoint.collideConnected = false;
         RevoluteJoint joint = (RevoluteJoint)_world.createJoint(wheelJoint);
-        entity.mJoint = joint;
+        entity.mJoint = joint;*/
         return body;
     }
     

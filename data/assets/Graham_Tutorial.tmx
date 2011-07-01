@@ -97,7 +97,7 @@
   <image source="TileMeatHole2.png" width="256" height="256"/>
   <tile id="0">
    <properties>
-    <property name="Material" value="Edible"/>
+    <property name="Material" value="Bouncy"/>
     <property name="Type" value="Block"/>
    </properties>
   </tile>
@@ -422,7 +422,7 @@
  </layer>
  <layer name="Level" width="100" height="100">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC+3bS07rMACFYTNkyB54CsRzBbzpUlgCS2AJzNkEAxbUXZBIVDW2QxzHrk+T/5fOqCFN+l21cKXu7hizyxj7d3Nov7nPg2YnA3bY7Cjy9RnzOs7R47i5z8+EneJRpLNEjwthj21+v7tsrvOq2fmAXTe7EfZYNFs6W6RfxqCWG3qe1ObmoR4exnRdeo7fJ4f+bE4Pe12vb989fkU+97cJ/4x9P/YxsdeScs05/zZQ84gx+Q6c59b4sx9/NP5Czx173Jw8+q4pdPyd8Wc//mT8hc4Te1wJi9W9pVbi303q7o0/+/Fn4y90ntjjSlhMyePB+LMffzH+QueJPS63Rfse/DYhD+X1tbLI7bE6Z83a59/7nXstb87c3N/Bc6wv1wKPerkW72bc8EgvtwUe6ZWwwCOtUhZT9nCPy3VfJS2m7FGi0hZ4xGdb4PH3sU17uBZT9wjda+w+jL+uz46cm4pH173lXmmLbfPou5dNrKTFNnjUet03ZeKeW9lDyWBKq/F5brcMLOfx6uGhFR5a4aEVHlq5Hq8Gj5qFPNp9VboePMIeOU3a8y4ij8Wj2yOXCR7x9XnkMMEjvhiPsSZ4xBfrMcak9v8B2VNviEfN37vm0lAPTMqW4oFJuVI92oW+h5SyIe/rfH6E1x4b+h5SyvBYN8Yj9D2klOGxboxH6HtIKcNj3RiPGn8XzM2D6oaHVnhohYdWeGiFh1Z4aIWHVnhohYdWeGiFh1Z4aIWHVnhohYdWeGiFh1Z4aIWHVnhohYdWeGiFh1Z4aIWHVnhohYdWeGiFh1Z4aIWHVnhohYdWeGiFh1Z4aIWHVnhohYdWeGiFh1Z4aIWHVnhohYdWeGiFh1Z4aOV6MMb8/QBGSXFeQJwAAA==
+   H4sIAAAAAAAAC+3bTVLbQBRF4WbIMHuAEIoUJGEFSfgJS2IJLCHzTFgCAxbkXSBX4XKnu4Wenrqta/mcqjuysCV/KWMn8fFRCMeMsQ93CJ1013na7XzEPnc7Mz4/U57HQ/T40l3nP8cu8GjSV6fHlbDHPr/efevO83u3yxH70e1a2OOh2yrZg/80RrXa0eN4OzQP9fAIoe/Ua7yfHPuzNT3i9T2/Q9f4Ynzs11D+mfh64mOs5+I555qfDdQ8LCavhfv5GfLFt9+GfKXHth63rx5P0YZ+xvpaUDr+V8gX334X8pXux3pcC4vNtXlr8efGu98hX3z7fchXuh/rcS0sluRxE/LFt/8J+Ur3Yz2utsX6NfhxQR7KG2pjUdtjc59ztn78T+9Lz+UxWVr6HrzGhkot8Jiv1CJ+7+MZHv5qW+Dhr4UFHr5aWSzZIz2u1nW1tFiyR4taW+BhL7bA4//bdu2RWizdo3St1v0N+fp+d9TcUjz6rq32Wlvsm8fQtexiLS32wWOu531XJul9K3soGSxpc/w+j1sVVvN49fDQCg+t8NAKD61K7+HwmK++99RzhUf/Z5xaPQf7/+3F4+PPnDXCw57l7wCmhoc9i8dUEzzsWT2mmDw3Wun8h6beGI8533cdSmM9MGmbxwOTdnk91it9D8mzMa/rU/89QT2vx/rY0veQPMNj2xSP0veQPMNj2xSP0veQPMNj2xSPmvOe79I9aN7w0AoPrfDQCg+t8NAKD63w0AoPrfDQCg+t8NAKD63w0AoPrfDQCg+t8NAKD63w0AoPrfDQCg+t8NAKD63w0AoPrfDQCg+t8NAKD63w0AoPrfDQCg+t8NAKD63w0AoPrfDQCg+t8NAKD63w0AoPrfDQCg+t8NAKD61SD8ZYvjcAcLojQJwAAA==
   </data>
  </layer>
  <layer name="Foreground" width="100" height="100">
@@ -435,9 +435,9 @@
    H4sIAAAAAAAAC+3BMQEAAADCoPVP7WULoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgBt5RKnmQJwAAA==
   </data>
  </layer>
- <layer name="Flags" width="100" height="100" visible="0">
+ <layer name="Flags" width="100" height="100">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC+3YuwkAIAwFQHUS13YPB7QXtBD8IHdN2vBelYQAcE5JaxPgFzXe3gAAeIFbBwAA3pH97AAA+JA/9H59xjK/b9TBrBu9AQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADMN1iL5xECcAAA=
+   H4sIAAAAAAAAC+3aQQEAIAjAQDQJrS1iQEsoPLxLsACLAACgyh7dBdy2ZncBAAAAAAAAAAAAAK+lDxgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADgOwdzn49xQJwAAA==
   </data>
  </layer>
 </map>

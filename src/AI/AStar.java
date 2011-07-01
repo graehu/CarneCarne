@@ -53,27 +53,42 @@ public class AStar implements iPathFinding
 
     public Command follow()
     {
-        if (mXTarget > mXStart)
+        if(!mPath.isEmpty())
         {
-                mCommand = Command.eMoveRight;
+            Vec2 target = mPath.peekFirst();
+            Vec2 pos  = mEntity.mBody.getPosition();
+
+            if((target.x+0.2 > pos.x && target.x-0.2 < pos.x) && (target.y+0.2 > pos.y && target.y-0.2 < pos.y))
+            {
+
+                mPath.removeFirst();
+            }
+            else if (target.x > pos.x && mYTarget == mYStart){mCommand = Command.eMoveRight;}
+            else if((target.x < pos.x)  && (target.y == pos.y)){mCommand = Command.eMoveLeft;}
+            else if((target.y > pos.y) && (target.x == pos.x)){mCommand = Command.eMoveDown;}
+            else if((target.y < pos.y) && (target.x == pos.x)){mCommand = Command.eMoveUp;}
+            else if((target.x > pos.x) && (target.y > pos.y)){mCommand = Command.eMoveBottomRight;}
+            else if((target.x < pos.x) && (target.y < pos.y)){mCommand = Command.eMoveTopLeft;}
+            else if((target.x > pos.x) && (target.y < pos.y)){mCommand = Command.eMoveTopRight;}
+            else if((target.x < pos.x) && (target.y > pos.y)){mCommand = Command.eMoveBottomLeft;}
+            else{mCommand = Command.eStandStill;}
         }
-        else if(mXTarget < mXStart)
-        {
-            mCommand = Command.eMoveLeft;
-        }    
         else
         {
             mCommand = Command.eStandStill;
         }
         
-        if((sLevel.getPathInfo(mXStart, mYStart) == PathInfo.eNotPassable || sLevel.getPathInfo(mXStart, mYStart+1) == PathInfo.eAir) &&  (mCommand != Command.eMoveRight))
+        //mPath.removeFirst();
+        
+        /*if((sLevel.getPathInfo(mXStart, mYStart) == PathInfo.eNotPassable || sLevel.getPathInfo(mXStart, mYStart+1) == PathInfo.eAir) &&  (mCommand != Command.eMoveRight))
         {
             mCommand = Command.eStandStill;
         }
         if((sLevel.getPathInfo(mXStart+1, mYStart) == PathInfo.eNotPassable || sLevel.getPathInfo(mXStart+1, mYStart+1) == PathInfo.eAir) && (mCommand != Command.eMoveLeft))
         {
             mCommand = Command.eStandStill;
-        }
+        }*/
+        
         return mCommand;
     }
     
@@ -212,16 +227,21 @@ public class AStar implements iPathFinding
         {
             return false;
 	}
+        if (workingNode.mX !=  targetNode.mX || workingNode.mY !=  targetNode.mY)
+        {
+            return false;
+        }
 		
-		while (true)
-                {
-                    if(workingNode.mX == startNode.mX && workingNode.mY == startNode.mY)
-                        break;
-                    mPath.addFirst(new Vec2(workingNode.mX, workingNode.mY));
-                    workingNode = workingNode.mParent;
-		}
-		mPath.push(new Vec2(mXStart, mYStart));
-                return true;
+        while (true)
+        {
+            if(workingNode.mX == startNode.mX && workingNode.mY == startNode.mY)
+                break;
+            mPath.addFirst(new Vec2(workingNode.mX, workingNode.mY));
+            workingNode = workingNode.mParent;
+        }
+        mPath.push(new Vec2(mXStart, mYStart));
+
+        return true;
     }
 
 }
