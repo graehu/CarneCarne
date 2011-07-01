@@ -7,6 +7,7 @@ package Level;
 import AI.sPathFinding;
 import Entities.Entity;
 import Entities.sEntityFactory;
+import Events.AreaEvents.CheckPointZone;
 import Events.AreaEvents.PlayerSpawnZone;
 import Events.AreaEvents.RaceEndZone;
 import Events.AreaEvents.RaceStartZone;
@@ -14,6 +15,7 @@ import Events.sEvents;
 import World.sWorld;
 import java.util.HashMap;
 import java.util.Stack;
+import java.util.Vector;
 import org.jbox2d.common.Vec2;
 import org.newdawn.slick.tiled.TiledMap;
 
@@ -31,6 +33,7 @@ public class FlagProcessor
     {
         eNoEvent,
         eRaceStartZone,
+        eRaceCheckPoint,
         eRaceEndZone,
         eAreaEventsMax
     }
@@ -64,6 +67,13 @@ public class FlagProcessor
             super (_x, _y, _x2, _y2, 0);
         }
     }
+    private class RaceCheckPointParameters extends CheckPoint
+    {
+        public RaceCheckPointParameters(int _x, int _y, int _x2, int _y2, int _number)
+        {
+            super (_x, _y, _x2, _y2, 0);
+        }
+    }
     private class RaceEndZoneParameters extends CheckPoint
     {
         public RaceEndZoneParameters(int _x, int _y, int _x2, int _y2)
@@ -72,6 +82,7 @@ public class FlagProcessor
         }
     }
     private Stack<PlayerSpawnPoint> spawnPoints;
+    private Vector<RaceCheckPointParameters> checkPoints;
     RaceStartZoneParameters raceStartZone;
     RaceEndZoneParameters raceEndZone;
     int mPlayers;
@@ -80,6 +91,7 @@ public class FlagProcessor
         raceStartZone = null;
         mPlayers = 0;
         spawnPoints = new Stack<PlayerSpawnPoint>();
+        checkPoints = new Vector<RaceCheckPointParameters>();
         lowestX = lowestY = Integer.MAX_VALUE;
         highestX = highestY = Integer.MIN_VALUE;
         int width = _tiledMap.getWidth();
@@ -90,6 +102,7 @@ public class FlagProcessor
         areaEvents = new AreaEvents[width][height];
         eventMap = new HashMap<String, AreaEvents>();
         eventMap.put("RaceStart", AreaEvents.eRaceStartZone);
+        eventMap.put("RaceCheckPoint", AreaEvents.eRaceCheckPoint);
         eventMap.put("RaceEnd", AreaEvents.eRaceEndZone);
         eventMap.put("None", AreaEvents.eNoEvent);
         for (int i = 0; i < width; i++)
@@ -109,14 +122,29 @@ public class FlagProcessor
                         {
                             //sEvents.addNewAreaEvent(new RaceStartZone(lowestX, lowestY, highestX, highestY, null));
                             if (raceStartZone == null)
-                            raceStartZone = new RaceStartZoneParameters(lowestX, lowestY, highestX, highestY);
+                                raceStartZone = new RaceStartZoneParameters(lowestX, lowestY, highestX, highestY);
+                            break;
+                        }
+                        case eRaceCheckPoint:
+                        {
+                            //sEvents.addNewAreaEvent(new RaceStartZone(lowestX, lowestY, highestX, highestY, null));
+                            int checkPointNumber = new Integer(_tiledMap.getTileProperty(id, "Number", "Too many fat chicks error"));
+                            if (checkPoints.size() <= checkPointNumber || checkPoints.get(checkPointNumber) == null)
+                            {
+                                RaceCheckPointParameters zone = new RaceCheckPointParameters(lowestX, lowestY, highestX, highestY, checkPointNumber);
+                                if (checkPoints.size() <= checkPointNumber)
+                                {
+                                    checkPoints.setSize(checkPointNumber+1);
+                                }
+                                checkPoints.add(checkPointNumber, zone);
+                            }
                             break;
                         }
                         case eRaceEndZone:
                         {
                             //sEvents.addNewAreaEvent(new RaceStartZone(lowestX, lowestY, highestX, highestY, null));
                             if (raceEndZone == null)
-                            raceEndZone = new RaceEndZoneParameters(lowestX, lowestY, highestX, highestY);
+                                raceEndZone = new RaceEndZoneParameters(lowestX, lowestY, highestX, highestY);
                             break;
                         }
                     }
@@ -178,13 +206,22 @@ public class FlagProcessor
         RaceStartZone startZone = null;
         if (raceEndZone != null)
         {
-            RaceEndZone zone = new RaceEndZone(raceEndZone.x, raceEndZone.y, raceEndZone.x2, raceEndZone.y2, 1);
+            CheckPointZone zone = new RaceEndZone(raceEndZone.x, raceEndZone.y, raceEndZone.x2, raceEndZone.y2, checkPoints.size()+1);
             sEvents.addNewAreaEvent(zone);
-            if (raceStartZone != null)
+            for (int i = checkPoints.size()-1; i >= 0; i--)
             {
-                startZone = new RaceStartZone(raceStartZone.x, raceStartZone.y, raceStartZone.x2, raceStartZone.y2, zone);
-                sEvents.addNewAreaEvent(startZone);
+                RaceCheckPointParameters params = checkPoints.get(i);
+                try
+                {
+                    zone = new CheckPointZone(params.x, params.y, params.x2, params.y2, i, zone);
+                }
+                catch (NullPointerException e)
+                {
+                    
+                }
             }
+            startZone = new RaceStartZone(raceStartZone.x, raceStartZone.y, raceStartZone.x2, raceStartZone.y2, zone, playerPositions.size());
+            sEvents.addNewAreaEvent(startZone);
         }
         while (!playerPositions.isEmpty())
         {
