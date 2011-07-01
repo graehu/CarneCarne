@@ -6,8 +6,8 @@ package Events.AreaEvents;
 
 import Entities.PlayerEntity;
 import Graphics.sGraphicsManager;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
@@ -15,27 +15,48 @@ import java.util.Set;
  */
 public class RaceStartZone extends CheckPointZone
 {
-    Set<PlayerEntity> players;
-    public RaceStartZone(int _x, int _y, int _x2, int _y2, CheckPointZone _nextCheckPoint)
+    Map<PlayerEntity, CheckPointZone> mPlayers;
+    int mNumPlayers;
+    boolean mRaceHasStarted;
+    public RaceStartZone(int _x, int _y, int _x2, int _y2, CheckPointZone _nextCheckPoint, int _numPlayers)
     {
         super(_x, _y, _x2, _y2, 0, _nextCheckPoint);
-        players = new HashSet<PlayerEntity>();
+        mPlayers = new HashMap<PlayerEntity, CheckPointZone>();
+        mNumPlayers = _numPlayers;
+        mRaceHasStarted = false;
     }
     @Override
     public void enter(PlayerEntity _entity) 
     {
-        players.add(_entity);
+        mPlayers.put(_entity, _entity.getCheckPoint());
         _entity.placeCheckPoint(this);
     }
     @Override
     public void leave(PlayerEntity _entity) 
     {
-        players.remove(_entity);
+        _entity.placeCheckPoint(mPlayers.get(_entity));
+        mPlayers.remove(_entity);
     }
-    
     @Override
-    public void renderRaceState()
+    public boolean incrementRaceTimer()
     {
-        sGraphicsManager.drawString("Run Forrest run! Time: " + mFrames/60.0f + " " + mCheckPointNumber + " checkpoints reached", 0f, 0);
+        if (mRaceHasStarted)
+        {
+            return true;
+        }
+        mRaceHasStarted = mPlayers.size() == mNumPlayers;
+        return mRaceHasStarted;
+    }
+    @Override
+    public void renderRaceState(int _raceTimer)
+    {
+        if (mRaceHasStarted)
+        {
+            super.renderRaceState(_raceTimer);
+        }
+        else
+        {
+            sGraphicsManager.drawString("Waiting for all players to be ready.", 0f, 0);
+        }
     }
 }

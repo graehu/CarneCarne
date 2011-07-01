@@ -44,6 +44,14 @@ public class BodyCamera extends iCamera implements iEventListener{
         sEvents.subscribeToEvent("CaveInEvent", this);
         
     }
+
+    @Override
+    public void resize(Rectangle _viewPort) 
+    {
+        super.resize(_viewPort);
+        ((PlayerEntity)mBody.getUserData()).setClip(_viewPort);
+    }
+    
     public Vec2 translateToWorld(Vec2 _physicsSpace)
     {
         Vec2 worldSpace = new Vec2(_physicsSpace.x*64.0f,_physicsSpace.y*64.0f);
@@ -108,7 +116,9 @@ public class BodyCamera extends iCamera implements iEventListener{
     protected void calculatePosition()
     {
         mPosition = mBody.getPosition();
-        Vec2 s = sGraphicsManager.getScreenDimensions();
+        Vec2 s = sGraphicsManager.getTrueScreenDimensions();
+        s.x = (mViewPort.getMaxX()- mViewPort.getX());
+        s.y = (mViewPort.getMaxY()- mViewPort.getY());
         mTranslation = new Vec2(( (s.x/2)/64.0f), ((s.y/2)/64.0f));
         if (mPosition.x < mTranslation.x)
         {
@@ -120,6 +130,7 @@ public class BodyCamera extends iCamera implements iEventListener{
         }        
         mTranslation = mTranslation.mul(64.0f);
         mTranslation = mTranslation.add(mShake);
+        sGraphicsManager.setScreenDimensions(s);
     }
 
     public void trigger(iEvent _event)

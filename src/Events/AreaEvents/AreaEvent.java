@@ -22,7 +22,8 @@ abstract public class AreaEvent extends Entity
         y = _y;
         x2 = _x2;
         y2 = _y2;
-        mBody = sWorld.createAreaEvent(_x, _y, _x2, _y2, this);
+        if (x != -1)
+            mBody = sWorld.createAreaEvent(_x, _y, _x2, _y2, this);
     }
     
     abstract public void enter(PlayerEntity _entity);
