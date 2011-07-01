@@ -93,14 +93,14 @@ public class AIEntity extends Entity {
                 }
                 else if(collisionNorm.y < - 0.9) //down
                 {
-                    if(edge.contact.isTouching())
+                    if(edge.contact.isTouching() && !other.isSensor())
                     {
                         mJumpContacts++;
                     }
                 }
                 else if(collisionNorm.y < - 0.3 || collisionNorm.y > - 0.3)//slopes // horizontal
                 {
-                    if(edge.contact.isTouching())
+                    if(edge.contact.isTouching() && !other.isSensor())
                     {
                         mJumpContacts++; //allow jukmp on slopes
                         mAllowRoll = true;

@@ -40,8 +40,9 @@ public class MouseMoveEvent extends iEvent {
     {
         return sWorld.translateToPhysics(position);
     }
-    public Vec2 getDeltaPhysicsPosition()
+    
+    public Vec2 getWorldPosition()
     {
-        return sWorld.translateToPhysics(position.sub(oldPosition));
+        return position;
     }
 }

@@ -22,7 +22,6 @@ public class Reticle {
     private Vec2 mCurrentDir = new Vec2(1,0);
     private float mOffset = 200;
     private float mDistance = 200;
-    private Vec2 mWorldPosition;
     public Reticle(AIEntity _player)
     {
         mPlayer = _player;
@@ -45,19 +44,17 @@ public class Reticle {
     {
         mCurrentDir = dir;
         mCurrentDir.normalize();
-        Vec2 wBodyPos = mPlayer.mBody.getPosition().mul(64);
         mDistance = mOffset;
     }
-    public void setPhysPosition(Vec2 _pos)
+    public void setWorldPosition(Vec2 _pos)
     {
-        Vec2 playerPixelPosition = mPlayer.mBody.getPosition().mul(64);
-        mCurrentDir = _pos.mul(64).sub(playerPixelPosition);
+        mCurrentDir = _pos.sub(sWorld.translateToWorld(mPlayer.mBody.getPosition()));
         mDistance = mCurrentDir.normalize();
         mDistance = Math.min(mDistance,mOffset);
     }
     public void render()
     {
-        Vec2 pixelPosition = sWorld.translateToWorld(new Vec2(0,0));
+        Vec2 pixelPosition = sWorld.getPixelTranslation();
         mReticleSprite.render(pixelPosition.x,pixelPosition.y);
     }
     
