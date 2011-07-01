@@ -10,7 +10,6 @@ import Events.PlayerCreatedEvent;
 import Events.iEvent;
 import Events.iEventListener;
 import Events.sEvents;
-import GUI.sGUI;
 import Graphics.Particles.sParticleManager;
 import GUI.TWL.BasicTWLGameState;
 import GUI.TWL.RootPane;
@@ -19,18 +18,15 @@ import Graphics.Skins.sSkinFactory;
 import Graphics.Sprites.sSpriteFactory;
 import Input.sInput;
 import Level.sLevel;
-import States.FullScreenChanger;
 import States.StateChanger;
 import Sound.sSound;
 import World.sWorld;
-import de.matthiasmann.twl.Button;
-import de.matthiasmann.twl.ScrollPane;
 import org.jbox2d.common.Vec2;
-import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
+import org.newdawn.slick.opengl.TextureImpl;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.BlobbyTransition;
 
@@ -82,15 +78,8 @@ public class StateGame extends BasicTWLGameState implements iEventListener {
     public void render(GameContainer _gc, StateBasedGame _sbg, Graphics _grphcs)
     {
         Vec2 s = sGraphicsManager.getScreenDimensions();
-
         mGameMode.render(_gc.getGraphics());
-        
-        //render particles
-        Vec2 worldTrans = sWorld.getPixelTranslation();
-        sParticleManager.render((int)worldTrans.x, (int)worldTrans.y, (int)s.x, (int)s.y, 0);
-        
-        //render managed sprites
-        sGraphicsManager.renderManagedSprites();
+        _grphcs.drawString("fucking work god damnit", 500, 500);
         
     }
 
@@ -130,9 +119,7 @@ public class StateGame extends BasicTWLGameState implements iEventListener {
     public void init(GameContainer _gc, StateBasedGame _sbg) throws SlickException {
         
         createRootPane();
-        sGraphicsManager.setGraphics(_gc.getGraphics());
         mGameMode = new PlayMode();
-        sEvents.init();
         
         //subscribe to events (must be done before further initialisation)
         sEvents.subscribeToEvent("PlayerCreatedEvent", this);
@@ -141,8 +128,6 @@ public class StateGame extends BasicTWLGameState implements iEventListener {
         sSkinFactory.init();
         sSpriteFactory.init();
         sWorld.init();
-        Vec2 s = sGraphicsManager.getTrueScreenDimensions();
-        sWorld.resizeViewport(new Rectangle(0,0,s.x, s.y));
         sLevel.init();
         
         //create state changers

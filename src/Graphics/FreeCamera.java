@@ -8,11 +8,17 @@ import Events.KeyDownEvent;
 import Events.iEvent;
 import Events.iEventListener;
 import Events.sEvents;
+import Graphics.Particles.sParticleManager;
 import Level.sLevel;
 import World.sWorld;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
+import org.newdawn.slick.Color;
+import org.newdawn.slick.ShapeFill;
+import org.newdawn.slick.fills.GradientFill;
 import org.newdawn.slick.geom.Rectangle;
+import org.newdawn.slick.geom.Vector2f;
+import org.newdawn.slick.opengl.SlickCallable;
 
 /**
  *
@@ -56,9 +62,18 @@ public class FreeCamera extends iCamera implements iEventListener
     }
     public void render()
     {
-        sLevel.renderBackground();
-        sWorld.render();
-        sLevel.renderForeground();
+        sGraphicsManager.beginTransform();
+            sGraphicsManager.translate(mViewPort.getX(),mViewPort.getY());
+            sGraphicsManager.setClip(mViewPort);
+            ShapeFill fill = new GradientFill(new Vector2f(0,0), new Color(159,111,89), new Vector2f(mViewPort.getMaxX(),mViewPort.getMaxY()), new Color(186, 160, 149), false);
+            Rectangle shape = new Rectangle(0,0, mViewPort.getWidth(),mViewPort.getHeight());
+            sGraphicsManager.fill(shape, fill);
+            sLevel.renderBackground();
+            sWorld.render();
+            sGraphicsManager.renderManagedSprites();
+            sParticleManager.render((int)getPixelTranslation().x, (int)getPixelTranslation().y, (int)mViewPort.getWidth(), (int)mViewPort.getHeight(),0);
+            sLevel.renderForeground();
+        sGraphicsManager.endTransform();       
     }
 
     public void trigger(iEvent _event) {

@@ -5,17 +5,20 @@
 
 package Graphics;
 
-import Graphics.Skins.iSkin;
+import Events.WindowResizeEvent;
+import Events.sEvents;
 import Graphics.Sprites.iSprite;
 import World.sWorld;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.jbox2d.common.Vec2;
-import org.newdawn.slick.Graphics;
+import org.lwjgl.LWJGLException;
+import org.lwjgl.opengl.Display;
+import org.lwjgl.opengl.DisplayMode;
+import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.ShapeFill;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.SpriteSheet;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Shape;
 
@@ -24,13 +27,16 @@ import org.newdawn.slick.geom.Shape;
  * @author aaron
  */
 public class sGraphicsManager {
-    //this class should manage the rendering of all objects 
-    //provide a function for skins to add themselves to the render lists which are sorted by spritesheet
 
-    protected static Vec2 mTrueScreenDimensions = new Vec2(0,0);
-    protected static Vec2 mScreenDimensions = mTrueScreenDimensions;
-    private static boolean mIsInit = false;
+    private static Vec2 mNativeScreenDimentions = new Vec2(0,0);
+    private static Vec2 mScreenDimensions = new Vec2(800,600);
+    private static Rectangle mClip;
     private static boolean mAllowTransform = false;
+    private static boolean mIsFullScreen = false;
+    private static DisplayMode mLastDisplayMode = null;
+    
+    private static ArrayList<iSprite> mManagedSprites = new ArrayList<iSprite>();
+    private static AppGameContainer mGameContainer;
     
     public static Vec2 getScreenDimensions()
     {
@@ -38,51 +44,40 @@ public class sGraphicsManager {
     }
     public static Vec2 getTrueScreenDimensions()
     {
-        return mTrueScreenDimensions.clone();
-    }
-    public static void setTrueScreenDimensions(Vec2 _screenDimensions)
-    {
-        mTrueScreenDimensions = _screenDimensions;
-    }
-        
+        return new Vec2(Display.getDisplayMode().getWidth(), Display.getDisplayMode().getHeight());
+    }        
     public static void setScreenDimensions(Vec2 _screenDimensions)
     {
         mScreenDimensions = _screenDimensions;
     }
-    
-
-    private static HashMap<String, SpriteSheet> mSpriteSheets = new HashMap<String, SpriteSheet>();
-    private static HashMap<String, Set<iSkin>> mRenderLists = new HashMap<String, Set<iSkin>>();
-    private static ArrayList<iSprite> mManagedSprites = new ArrayList<iSprite>();
-    private static Graphics mGraphics;
   
     private sGraphicsManager()
     {
     }
-    
-    static public void init(int _sx, int _sy) throws SlickException
+    public static void onResize()
     {
-        mTrueScreenDimensions.x = _sx;
-        mTrueScreenDimensions.y = _sy;
+        sEvents.triggerEvent(new WindowResizeEvent(new Vec2(Display.getDisplayMode().getWidth(), Display.getDisplayMode().getHeight())));
     }
-    public static void setGraphics(Graphics _graphics)
+    static public void init(AppGameContainer _gc) throws SlickException
     {
-        mGraphics = _graphics;
+        mGameContainer = _gc;
+        mLastDisplayMode = Display.getDisplayMode();
+        mNativeScreenDimentions.x = Display.getDesktopDisplayMode().getWidth();
+        mNativeScreenDimentions.y = Display.getDesktopDisplayMode().getHeight();
     }
     public static void beginTransform()
     {
         mAllowTransform = true;
-        mGraphics.pushTransform();
+        mGameContainer.getGraphics().pushTransform();
     }
     public static void endTransform()
     {
         mAllowTransform = false;
-        mGraphics.popTransform();
+        mGameContainer.getGraphics().popTransform();
     }
-    private static Rectangle mClip;
     public static void setClip(Rectangle _rect)
     {
-        mGraphics.setClip(_rect);
+        mGameContainer.getGraphics().setClip(_rect);
         mClip = _rect;
     }
     public static Rectangle getClip()
@@ -92,20 +87,16 @@ public class sGraphicsManager {
     public static void translate(float _x, float _y)
     {
         if(mAllowTransform)
-            mGraphics.translate(_x, _y);
-        //else
-            //throw new SlickException("Must call beginTrasform first");
+            mGameContainer.getGraphics().translate(_x, _y);
     }
     public static void rotate(float _x, float _y, float _angle)
     {
         if(mAllowTransform)
-            mGraphics.rotate(_x, _y, _angle);
-        //else
-            //throw new SlickException("Must call beginTrasform first");
+            mGameContainer.getGraphics().rotate(_x, _y, _angle);
     }
     public static void fill(Shape shape, ShapeFill fill)
     {
-        mGraphics.fill(shape, fill);
+        mGameContainer.getGraphics().fill(shape, fill);
     }
     public static void addSprite(iSprite _sprite)
     {
@@ -114,15 +105,44 @@ public class sGraphicsManager {
     
     public static void renderManagedSprites()
     {
-        Vec2 worldTrans = sWorld.translateToWorld(new Vec2(0,0));
+        Vec2 worldTrans = sWorld.getPixelTranslation();
         iSprite sprite;
         for(int i = 0; i < mManagedSprites.size(); i++)
         {
             sprite = mManagedSprites.get(i);
             sprite.render(worldTrans.x, worldTrans.y);
-            //skin.getIsDead
+            //FIXME: check is dead and remove
         }
     }
-
     
+    /*
+     * Draw string in current view port
+     * _x: X position in screen space 0.0f-1.0f
+     * _y: Y position in screen space 0.0f-1.0f
+     */
+    public static void drawString(String _str, float _x, float _y)
+    {
+        float xPos = (mScreenDimensions.x * _x);
+        float yPos = (mScreenDimensions.y * _y);
+        mGameContainer.getGraphics().drawString( _str,xPos, yPos);
+    }
+
+    public static void toggleFullscreen()
+    {
+        try 
+        {
+            mIsFullScreen = !mIsFullScreen;
+            if(mIsFullScreen)
+            {
+                mLastDisplayMode = Display.getDisplayMode();
+                mGameContainer.setDisplayMode((int)mNativeScreenDimentions.x, (int)mNativeScreenDimentions.y, true);
+            }
+            else
+            {
+                mGameContainer.setDisplayMode(mLastDisplayMode.getWidth(), mLastDisplayMode.getHeight(), false);
+            }
+        }
+        catch(SlickException ex){Logger.getLogger(sGraphicsManager.class.getName()).log(Level.SEVERE, null, ex);}
+        onResize();
+    }
 }

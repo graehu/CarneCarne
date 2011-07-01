@@ -61,6 +61,7 @@ public class PlayerFactory implements iEntityFactory {
             }
             //create final list in render order
             ArrayList<String> charAnims = new ArrayList(Arrays.asList("bdy", "edi", "gum", "wtr", "flt", "jly", "shn"));
+            charAnims.addAll(Arrays.asList("nnbe", "ssbe", "nnbw", "ssbw"));
             charAnims.addAll(face);
             charAnims.addAll(hat);
             charAnims.addAll(mouth);
@@ -89,7 +90,7 @@ public class PlayerFactory implements iEntityFactory {
                     {
                         //in the format: (prefix + compass direction, offset)
                         skin.setOffset(t[k] + p[j],                     v[k]);
-                        //skin.setOffset(t[k] + p[j] + p[j] +"b" +q[i],   v[k]);
+                        skin.setOffset("" + p[j] + p[j] +"b" +q[i],   new Vec2(-9,0)); //only for mouth for now
                         skin.setOffset(t[k] + p[j] + "b"  +q[i],        v[k]);
                         skin.setOffset(t[k] + p[j] + p[j] +q[i],        v[k]);
                         skin.setOffset(t[k] + p[j] + q[i] +"b" +p[j],   v[k]);

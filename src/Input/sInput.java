@@ -12,6 +12,7 @@ import Events.MouseMoveEvent;
 import Events.iEvent;
 import Events.iEventListener;
 import Events.sEvents;
+import Graphics.sGraphicsManager;
 import States.Game.XBoxController;
 import World.sWorld;
 import java.util.ArrayList;
@@ -54,6 +55,8 @@ public class sInput {
             sEvents.triggerEvent(new KeyDownEvent(' ', 0));
         if(input.isKeyDown(Input.KEY_ESCAPE))
             sEvents.triggerEvent(new KeyDownEvent('Q', 0));
+        if(input.isKeyDown(Input.KEY_F11))
+            sGraphicsManager.toggleFullscreen();
         
         //handle controller input
         int i = 0;

@@ -1,23 +1,17 @@
 
 package main;
 
+import Events.sEvents;
 import GUI.TWL.BasicTWLGameState;
 import GUI.TWL.TWLStateBasedGame;
 import Graphics.sGraphicsManager;
 import Input.sInput;
-import java.awt.FontFormatException;
-import java.io.IOException;
 import java.net.URL;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.newdawn.slick.*;
 import States.Game.StateGame;
 import States.Menu.StateMenu;
 import States.Splash.StateSplash;
 import States.Title.StateTitle;
-import Utils.FontLoader;
-import java.io.BufferedInputStream;
-import org.newdawn.slick.util.ResourceLoader;
 
 public class Main extends TWLStateBasedGame
 {
@@ -37,21 +31,21 @@ public class Main extends TWLStateBasedGame
         nativeLibLoaderJinput.setupPath();
         try
         {
-            InitApp initApp = new InitApp();
-            AppGameContainer init = new AppGameContainer(initApp);
-            init.setDisplayMode(800, 600, false);
-            init.setVSync(true);
-            init.setForceExit(false);
-            //init.start();
-            init.destroy();
+//            InitApp initApp = new InitApp();
+//            AppGameContainer init = new AppGameContainer(initApp);
+//            init.setDisplayMode(800, 600, false);
+//            init.setVSync(true);
+//            init.setForceExit(false);
+//            init.start();
+//            init.destroy();
+//            init = null;
             
             AppGameContainer app = new AppGameContainer(new Main());
             //app.setMouseGrabbed(true);
-            app.setDisplayMode(InitApp.mChosenX, InitApp.mChosenY, false);
+            app.setDisplayMode(800, 600, false);
             app.setVSync(true);
             app.setTargetFrameRate(60);
             app.setMouseGrabbed(true);
-            
             app.start();
             
         }
@@ -73,11 +67,10 @@ public class Main extends TWLStateBasedGame
     
     @Override
     public void initStatesList(GameContainer _gc) throws SlickException {  
-        
-        _gc.setDefaultFont(FontLoader.load("BIRTH OF A HERO"));
-        //initialise static classes
-        sGraphicsManager.init(InitApp.mChosenX, InitApp.mChosenY);
+        //_gc.setDefaultFont(sFontLoader.createFont("default"));                
+        sGraphicsManager.init((AppGameContainer)_gc);
         sInput.init(_gc); 
+        sEvents.init();
         //Splash: state1
         mSplashState = new StateSplash();
         addState(mSplashState);

@@ -21,6 +21,7 @@ import Level.Tile;
 import World.sWorld;
 import java.util.HashMap;
 import org.jbox2d.common.Vec2;
+import org.lwjgl.opengl.Display;
 
 /**
  *
@@ -294,7 +295,9 @@ public class PlayerInputController extends iAIController implements iEventListen
         {
             if(angle < halfSeg)
                 mFaceDirAnim = "n";
-            else if(angle >= halfSeg && angle < 2*halfSeg)
+            else if(angle >= halfSeg && angle < 1.5*halfSeg)
+                mFaceDirAnim = "nnbe";
+            else if(angle >= 1.5*halfSeg && angle < 2*halfSeg)
                 mFaceDirAnim = "nbe";
             else if(angle >= 2*halfSeg && angle < 3*halfSeg)
                 mFaceDirAnim = "nne";
@@ -324,14 +327,18 @@ public class PlayerInputController extends iAIController implements iEventListen
                 mFaceDirAnim = "sse";
             else if(angle >= 15*halfSeg && angle < 16*halfSeg)
                 mFaceDirAnim = "sbe";
-            else if(angle >= 16*halfSeg && angle < 17*halfSeg)
+            else if(angle >= 16*halfSeg && angle <16.5*halfSeg)
+                mFaceDirAnim = "ssbe";
+            else if(angle >= 16.5*halfSeg && angle < 17*halfSeg)
                 mFaceDirAnim = "s";
         }
         else //angle < 0
         {
             if(angle < 17*halfSeg)
                 mFaceDirAnim = "s";
-            else if(angle >= 17*halfSeg && angle < 18*halfSeg)
+            else if(angle >= 17*halfSeg && angle <17.5*halfSeg)
+                mFaceDirAnim = "ssbw";
+            else if(angle >= 17.5*halfSeg && angle < 18*halfSeg)
                 mFaceDirAnim = "sbw";
             else if(angle >= 18*halfSeg && angle < 19*halfSeg)
                 mFaceDirAnim = "ssw";
@@ -359,8 +366,10 @@ public class PlayerInputController extends iAIController implements iEventListen
                 mFaceDirAnim = "nwbn";
             else if(angle >= 30*halfSeg && angle < 31*halfSeg)
                 mFaceDirAnim = "nnw";
-            else if(angle >= 31*halfSeg && angle < 32*halfSeg)
+            else if(angle >= 31*halfSeg && angle < 31.5*halfSeg)
                 mFaceDirAnim = "nbw";
+            else if(angle >= 31.5*halfSeg && angle <32*halfSeg)
+                mFaceDirAnim = "nnbw";
         }
     }
 }

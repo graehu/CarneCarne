@@ -6,6 +6,8 @@ package World;
 
 import Entities.Entity;
 import Events.TileDestroyedEvent;
+import Events.iEvent;
+import Events.iEventListener;
 import Events.sEvents;
 import Graphics.FreeCamera;
 import Graphics.iCamera;
@@ -25,7 +27,6 @@ import org.jbox2d.dynamics.joints.Joint;
 import org.jbox2d.dynamics.joints.PrismaticJointDef;
 import org.jbox2d.structs.collision.RayCastInput;
 import org.jbox2d.structs.collision.RayCastOutput;
-import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
 /**
  *
@@ -36,7 +37,21 @@ public class sWorld
     private static World mWorld;
     private static iCamera mCamera;
     private static HashMap<String,iPhysicsFactory> factories;
-
+    private static ResizeListener mResizeListener;
+    static class ResizeListener implements iEventListener
+    {
+        ResizeListener()
+        {
+            sEvents.subscribeToEvent("WindowResizeEvent", this);
+        }
+        public void trigger(iEvent _event) {
+            if(_event.getType().equals("WindowResizeEvent"))
+            {
+                Vec2 s = sGraphicsManager.getTrueScreenDimensions();
+                sWorld.resizeViewport(new Rectangle(0,0,s.x, s.y));
+            }
+        }
+    }
 
     public enum BodyCategories
     {
@@ -76,7 +91,8 @@ public class sWorld
         factories.put("MovingPlatformBodyFactory", new MovingPlatformBodyFactory());
         factories.put("FireParticleBody", new FireParticleBody());
         mCamera = new FreeCamera( new Rectangle(0,0,s.x, s.y));        
-        resizeViewport(new Rectangle(0,0,s.x, s.y));
+        resizeViewport(new Rectangle(0,0,s.x, s.y));    
+        mResizeListener = new ResizeListener();
     }
     
     public static Body useFactory(String _factory, HashMap _parameters)

@@ -5,6 +5,7 @@
 package States.Init;
 
 import GUI.TWL.BasicTWLGameState;
+import Utils.sFontLoader;
 import main.InitApp;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -42,9 +43,10 @@ public class StateInit extends BasicTWLGameState {
     }
 
     public void render(GameContainer _gc, StateBasedGame _sbg, Graphics _grphcs) throws SlickException {
-        TextureImpl.bindNone();
-        TextureImpl.unbind();
-        Renderer.get().glEnable(SGL.GL_TEXTURE_2D);
+        
+        //TextureImpl.bindNone();
+        //TextureImpl.unbind();
+        //Renderer.get().glEnable(SGL.GL_TEXTURE_2D);
     }
 
     public void update(GameContainer _gc, StateBasedGame _sbg, int _i) throws SlickException {
