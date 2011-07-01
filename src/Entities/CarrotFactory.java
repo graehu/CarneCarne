@@ -28,17 +28,17 @@ class CarrotFactory implements iEntityFactory {
         Vec2 position = (Vec2)_parameters.get("position");
         HashMap animDef = new HashMap();
         animDef.put("ref", "ss_1");
-        animDef.put("anims", Arrays.asList("carrot_fly_ss"));
+        animDef.put("anims", Arrays.asList("car_fly"));
         iSkin skin = sSkinFactory.create("character", animDef);
-        skin.startAnim("carrot_fly_ss", true, 1.0f);
-        skin.setOffset("carrot_fly_ss", new Vec2(-30f*2,-16.55f));
+        skin.startAnim("car_fly", true, 1.0f);
+        skin.setOffset("car_fly", new Vec2(-30f*2,-16.55f));
         ///FIXME the x offset isn't perfect.
         AIEntity entity = new Carrot(skin);
         HashMap parameters = new HashMap();
         parameters.put("position", position);
         parameters.put("aIEntity", entity);
         parameters.put("category", sWorld.BodyCategories.eEnemy);
-        entity.mBody = sWorld.useFactory("PlayerFactory",parameters);
+        entity.mBody = sWorld.useFactory("BoxCharFactory",parameters);
         
         CarrotController controller = new CarrotController(entity);
         entity.mController = controller;

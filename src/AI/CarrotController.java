@@ -28,11 +28,12 @@ public class CarrotController extends iAIController
         mTarget = sPathFinding.getPlayer();
         int x = (int)(mEntity.mBody.getPosition().x);
         int y = (int)(mEntity.mBody.getPosition().y);
-        if(mTargetY != (int)(mTarget.mBody.getPosition().y) || mTargetY != (int)(mTarget.mBody.getPosition().y))
+        
+        if(mTargetY != (int)(mTarget.mBody.getPosition().y) || mTargetX != (int)(mTarget.mBody.getPosition().x))
         {
             mTargetX = (int)(mTarget.mBody.getPosition().x);
             mTargetY = (int)(mTarget.mBody.getPosition().y);
-            mPathFinding.updatePath(x, y, mTargetX, mTargetY+4);
+            mPathFinding.updatePath(x, y, mTargetX, mTargetY-4);
         }
         
         
