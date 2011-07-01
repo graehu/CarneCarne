@@ -27,14 +27,14 @@ public class PlayerEntity extends AIEntity
     private Vec2 mDirection;
     public Reticle mReticle;
     private Rectangle mViewPort;
-    private int mScore;
     private int mRaceTimer;
+    private int mDeaths;
     public PlayerEntity(iSkin _skin, CheckPointZone _spawnPoint)
     {
         super(_skin);
         mCheckPoint = _spawnPoint;
         mReticle = new Reticle(this);
-        mScore = mRaceTimer = 0;
+        mDeaths = mRaceTimer = 0;
     }
     public void setClip(Rectangle _viewPort)
     {
@@ -51,15 +51,16 @@ public class PlayerEntity extends AIEntity
             mCheckPoint = _checkPoint;
         }
     }
-    public int getScore()
+    /*public int getScore()
     {
         return mScore;
-    }
+    }*/
     @Override
     public void kill()
     {
         if (mDeathJoint == null)
         {
+            mDeaths++;
             Fixture fixture = mBody.getFixtureList();
             while (fixture != null)
             {
@@ -107,6 +108,7 @@ public class PlayerEntity extends AIEntity
         {
             mReticle.render();
             mCheckPoint.renderRaceState(mRaceTimer);
+            sGraphicsManager.drawString("You have died " + mDeaths + " times", 0f, 0.1f);
         }
     }
     

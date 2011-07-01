@@ -5,6 +5,7 @@
 package Level;
 
 import Level.MelonSkinTile.SkinDirection;
+import Level.Tile.Direction;
 import java.util.ArrayList;
 import java.util.HashMap;
 import org.newdawn.slick.tiled.TiledMap;
@@ -42,6 +43,12 @@ public class RootTileList {
         directionMap.put("DownRight", SkinDirection.eDownRight);
         directionMap.put("UpLeft", SkinDirection.eUpLeft);
         directionMap.put("UpRight", SkinDirection.eUpRight);
+        
+        HashMap<String, Direction> fromDirection = new HashMap<String, Direction>();
+        fromDirection.put("Left", Direction.eFromRight);
+        fromDirection.put("Up", Direction.eFromDown);
+        fromDirection.put("Right", Direction.eFromLeft);
+        fromDirection.put("Down", Direction.eFromUp);
         int idsSize = 0;
         for (int i = 0; i < _tiledMap.getTileSetCount(); i++)
         {
@@ -55,14 +62,13 @@ public class RootTileList {
             String shape = _tiledMap.getTileProperty(i, "Type", "None");
             String typeString = _tiledMap.getTileProperty(i, "Material", "Edible");
             int maxHealth = new Integer(_tiledMap.getTileProperty(i, "MaxHealth", "1")).intValue();
+            boolean regrows = Boolean.valueOf(_tiledMap.getTileProperty(i,"Regrows","true")).booleanValue();
+            boolean anchor = Boolean.valueOf(_tiledMap.getTileProperty(i, "Anchor", "false")).booleanValue();
+            boolean isFlammable = Boolean.valueOf(_tiledMap.getTileProperty(i, "Flammable", "false")).booleanValue();
             sLevel.TileType type = typeMap.get(typeString);
             int assertion = type.ordinal();
             if (shape.equals("Block"))
             {
-                boolean regrows = Boolean.valueOf(_tiledMap.getTileProperty(i,"Regrows","true")).booleanValue();
-                boolean anchor = Boolean.valueOf(_tiledMap.getTileProperty(i, "Anchor", "false")).booleanValue();
-                String flammableString = _tiledMap.getTileProperty(i, "Flammable", "false");
-                boolean isFlammable = Boolean.valueOf(flammableString).booleanValue();
                 int size = (isFlammable) ? 32 : 16;
                 for (int rootId = i; i < rootId + 16; i++)
                 {
@@ -82,7 +88,6 @@ public class RootTileList {
             }
             else if (shape.equals("NonEdible"))
             {
-                boolean anchor = Boolean.valueOf(_tiledMap.getTileProperty(i, "Anchor", "true")).booleanValue();
                 mRootTiles.add(new NonEdibleTile(i, type, anchor));
                 i++;
             }
@@ -100,6 +105,22 @@ public class RootTileList {
                     String directionString = _tiledMap.getTileProperty(i, "Direction", "Right");
                     SkinDirection direction = directionMap.get(directionString);
                     mRootTiles.add(new MelonSkinTile(i, type, direction, maxHealth));
+                }
+            }
+            else if (shape.equals("Edge"))
+            {
+                Direction direction = fromDirection.get(_tiledMap.getTileProperty(i, "Direction", "Down"));
+                for (int rootId = i; i < rootId + 2; i++)
+                {
+                    mRootTiles.add(new EdgeTile(i, type, direction, regrows, anchor, isFlammable, maxHealth));
+                }
+            }
+            else if (shape.equals("Line"))
+            {
+                Direction direction = fromDirection.get(_tiledMap.getTileProperty(i, "Direction", "Down"));
+                for (int rootId = i; i < rootId + 4; i++)
+                {
+                    mRootTiles.add(new LineTile(i, type, direction, regrows, anchor, isFlammable, maxHealth));
                 }
             }
             else
