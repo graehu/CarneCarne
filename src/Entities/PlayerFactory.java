@@ -5,6 +5,7 @@
 package Entities;
 
 import AI.PlayerInputController;
+import Events.AreaEvents.CheckPointZone;
 import Events.PlayerCreatedEvent;
 import Events.sEvents;
 import Graphics.Skins.iSkin;
@@ -31,6 +32,7 @@ public class PlayerFactory implements iEntityFactory {
     {
         /// NOTE maybe put a event trigger in here
         Vec2 position = (Vec2)_parameters.get("position");
+        CheckPointZone checkPoint = (CheckPointZone)_parameters.get("checkPoint");
         //if (!used)
         {
             used = true;
@@ -102,7 +104,7 @@ public class PlayerFactory implements iEntityFactory {
                     }
                 }
             }
-            AIEntity entity = new PlayerEntity(skin, position);
+            PlayerEntity entity = new PlayerEntity(skin, checkPoint);
             HashMap parameters = new HashMap();
             parameters.put("position", position);
             parameters.put("aIEntity", entity);

@@ -19,10 +19,10 @@ import org.jbox2d.dynamics.contacts.Contact;
  *
  * @author alasdair
  */
-class TarFireListener implements iListener
+class FireImpactListener implements iListener
 {
 
-    public TarFireListener()
+    public FireImpactListener()
     {
     }
 
@@ -49,5 +49,4 @@ class TarFireListener implements iListener
 
     public void postSolve(Contact _contact, ContactImpulse _impulse) {
     }
-    
 }

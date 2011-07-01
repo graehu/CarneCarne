@@ -4,6 +4,7 @@
  */
 package Entities;
 
+import Events.AreaEvents.CheckPointZone;
 import Graphics.Skins.iSkin;
 import Graphics.sGraphicsManager;
 import HUD.Reticle;
@@ -21,25 +22,35 @@ import org.newdawn.slick.geom.Rectangle;
 public class PlayerEntity extends AIEntity
 {
     String mBodyType = "bdy";
-    private Vec2 mCheckPoint;
+    private CheckPointZone mCheckPoint;
     private Joint mDeathJoint;
     private Vec2 mDirection;
     public Reticle mReticle;
     private Rectangle mViewPort;
-    public PlayerEntity(iSkin _skin, Vec2 _checkPointPosition)
+    private int mScore;
+    public PlayerEntity(iSkin _skin, CheckPointZone _spawnPoint)
     {
         super(_skin);
-        mCheckPoint = _checkPointPosition.clone();
+        mCheckPoint = _spawnPoint;
         mReticle = new Reticle(this);
+        mScore = 0;
     }
     public void setClip(Rectangle _viewPort)
     {
         mViewPort = _viewPort;
     }
-    public void placeCheckPoint(Vec2 _position)
+    public void placeCheckPoint(CheckPointZone _checkPoint)
     {
-        mCheckPoint = _position.clone();
+        if (_checkPoint.getCheckpointNumber() > mCheckPoint.getCheckpointNumber())
+        {
+            mCheckPoint = _checkPoint;
+        }
     }
+    public int getScore()
+    {
+        return mScore;
+    }
+    @Override
     public void kill()
     {
         if (mDeathJoint == null)
@@ -50,7 +61,8 @@ public class PlayerEntity extends AIEntity
                 fixture.setSensor(true);
                 fixture = fixture.getNext();
             }
-            mDeathJoint = sWorld.createMouseJoint(mCheckPoint, mBody);
+            mDeathJoint = sWorld.createMouseJoint(mCheckPoint.getPosition(), mBody);
+            mAIEntityState.kill();
         }
     }
     boolean compareFloat(float a, float b, float epsilon)
@@ -63,7 +75,7 @@ public class PlayerEntity extends AIEntity
         mReticle.update();
         if (mDeathJoint != null)
         {//when player is within half a tile of checkpoint destroy joint
-            if (compareFloat(mBody.getPosition().x, mCheckPoint.x, 0.5f) && compareFloat(mBody.getPosition().y, mCheckPoint.y, 0.5f))
+            if (compareFloat(mBody.getPosition().x, mCheckPoint.getPosition().x, 0.5f) && compareFloat(mBody.getPosition().y, mCheckPoint.getPosition().y, 0.5f))
             {
                 sWorld.destroyMouseJoint(mDeathJoint);
                 mDeathJoint = null;
@@ -83,7 +95,10 @@ public class PlayerEntity extends AIEntity
         mSkin.setRotation(mBodyType, mBody.getAngle()*(180/(float)Math.PI));
         super.render();
         if (sGraphicsManager.getClip() == mViewPort)
+        {
             mReticle.render();
+            mCheckPoint.renderRaceState();
+        }
     }
     
     public void changeBodyType(TileType _type)

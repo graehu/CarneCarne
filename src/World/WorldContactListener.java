@@ -30,18 +30,23 @@ public class WorldContactListener implements ContactListener{
         }
         iListener waterListener = new WaterListener();
         iListener highImpulse = new HighImpulseListener();
+        iListener fireImpactListener = new FireImpactListener();
         for (int i = 0; i < BodyCategories.eBodyCategoriesMax.ordinal(); i++)
         {
             set(BodyCategories.eWater.ordinal(),i,waterListener);
             set(BodyCategories.ePlayer.ordinal(),i,highImpulse);
         }
-        iListener tarFireListener = new TarFireListener();
         iListener gumListener = new GumListener();
         iListener deathListener = new DeathListener();
         //set(BodyCategories.eTar.ordinal(),BodyCategories.eEnemy.ordinal(),new TarListener());
         //set(BodyCategories.eTar.ordinal(),BodyCategories.ePlayer.ordinal(),new TarListener());
-        set(BodyCategories.eTar.ordinal(),BodyCategories.eFire.ordinal(),tarFireListener);
-        set(BodyCategories.eIce.ordinal(),BodyCategories.eFire.ordinal(),tarFireListener);
+        set(BodyCategories.eEdibleTiles.ordinal(),BodyCategories.eFire.ordinal(),fireImpactListener);
+        set(BodyCategories.eNonEdibleTiles.ordinal(),BodyCategories.eFire.ordinal(),fireImpactListener);
+        set(BodyCategories.eWater.ordinal(),BodyCategories.eFire.ordinal(),fireImpactListener);
+        set(BodyCategories.eIce.ordinal(),BodyCategories.eFire.ordinal(),fireImpactListener);
+        set(BodyCategories.eGum.ordinal(),BodyCategories.eFire.ordinal(),fireImpactListener);
+        set(BodyCategories.eTar.ordinal(),BodyCategories.eFire.ordinal(),fireImpactListener);
+        
         set(BodyCategories.eGum.ordinal(),BodyCategories.eEdibleTiles.ordinal(),gumListener);
         set(BodyCategories.eGum.ordinal(),BodyCategories.eNonEdibleTiles.ordinal(),gumListener);
         set(BodyCategories.ePlayer.ordinal(),BodyCategories.eSpikes.ordinal(),deathListener);

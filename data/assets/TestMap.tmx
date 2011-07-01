@@ -352,6 +352,16 @@
  </tileset>
  <tileset firstgid="563" name="SpriteSign" tilewidth="64" tileheight="64">
   <image source="SpriteSign.png" width="256" height="1536"/>
+  <tile id="0">
+   <properties>
+    <property name="Event" value="RaceStart"/>
+   </properties>
+  </tile>
+  <tile id="2">
+   <properties>
+    <property name="Event" value="RaceEnd"/>
+   </properties>
+  </tile>
  </tileset>
  <tileset firstgid="659" name="TilePlaceAnimation" tilewidth="64" tileheight="64">
   <image source="TilePlaceAnimation.png" width="256" height="64"/>
@@ -395,7 +405,7 @@
  </layer>
  <layer name="Level" width="100" height="100">
   <data encoding="base64" compression="gzip">
-   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
+   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
   </data>
  </layer>
  <layer name="Foreground" width="100" height="100">
@@ -410,7 +420,7 @@
  </layer>
  <layer name="Flags" width="100" height="100">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC+3ZsQqDMBiF0djNt3CwVrCg1ad174P6gw6OTk2w58DdA18gQ1ICuIe2SukZ62KvKvdp6KPB99igR3bvU49Rj+ymaPCJzbFFD/5Y4/4XQwvgDqbHPgC4avVuAAAAAACH2r95UfQoix5l0QMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA4Lc2y5b1MECcAAA=
+   H4sIAAAAAAAAC+3SQQqAIBBAUXXXLTpCEN3/aiEStQtSVOg9GHAhLuYbAgAAQH9rvM97KsN4uUtNjyOVYQ568Deb/w4AAAAAAMAHS3y/Qz+teujaRos95jf0aKN2j1cLPcZ7ttADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOZ1Aq4qfXxAnAAA
   </data>
  </layer>
 </map>

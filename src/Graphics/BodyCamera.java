@@ -98,7 +98,6 @@ public class BodyCamera extends iCamera implements iEventListener{
             sGraphicsManager.renderManagedSprites();
             sParticleManager.render((int)getPixelTranslation().x, (int)getPixelTranslation().y, (int)mViewPort.getWidth(), (int)mViewPort.getHeight(),0);
             sLevel.renderForeground();
-            sGraphicsManager.drawString("fuuuuuuuuuuuuu", 0, 0);
         sGraphicsManager.endTransform();      
     }
     

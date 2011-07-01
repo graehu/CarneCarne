@@ -5,6 +5,7 @@
 package World;
 
 import Entities.Entity;
+import Events.AreaEvents.AreaEvent;
 import Events.TileDestroyedEvent;
 import Events.iEvent;
 import Events.iEventListener;
@@ -16,10 +17,12 @@ import Level.Tile;
 import Level.sLevel.TileType;
 import java.util.HashMap;
 import org.jbox2d.callbacks.RayCastCallback;
+import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.Fixture;
+import org.jbox2d.dynamics.FixtureDef;
 import org.jbox2d.dynamics.World;
 import org.jbox2d.dynamics.joints.DistanceJoint;
 import org.jbox2d.dynamics.joints.DistanceJointDef;
@@ -52,6 +55,7 @@ public class sWorld
             }
         }
     }
+
 
     public enum BodyCategories
     {
@@ -256,6 +260,21 @@ public class sWorld
         def.frequencyHz = 30.0f;
         def.dampingRatio = 1.0f; /// Reduce these to make his tongue springy
         return (DistanceJoint)mWorld.createJoint(def);
+    }
+    public static Body createAreaEvent(int _x, int _y, int _x2, int _y2, AreaEvent _event)
+    {
+        BodyDef def = new BodyDef();
+        def.position = new Vec2(_x+0.5f, _y+0.5f);
+        def.userData = _event;
+        FixtureDef fixture = new FixtureDef();
+        fixture.filter.categoryBits = (1 << BodyCategories.eCheckPoint.ordinal());
+        PolygonShape shape = new PolygonShape();
+        shape.setAsBox(((float)_x2+1-_x)*0.5f, ((float)_y2+1-_y)*0.5f);
+        fixture.shape = shape;
+        fixture.isSensor = true;
+        Body body = mWorld.createBody(def);
+        body.createFixture(fixture);
+        return body;
     }
     public static void destroyBody(Body _body)
     {

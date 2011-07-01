@@ -18,8 +18,8 @@ import org.newdawn.slick.SlickException;
 public class InitApp extends TWLStateBasedGame{
     
     private BasicTWLGameState mInitState;
-    static protected int mChosenX = 800;
-    static protected int mChosenY = 600;
+    static protected int mChosenX = 1680;
+    static protected int mChosenY = 1050;
     
     public void setChosenResolution(int _x, int _y)
     {

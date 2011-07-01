@@ -12,7 +12,7 @@ import java.lang.String;
  * @author Graham
  */
 
-class InAreaEvent extends iEvent
+public class InAreaEvent extends iEvent
 {
     InAreaEvent(String _ID, Vec2 _position, Vec2 _dimension)
     {

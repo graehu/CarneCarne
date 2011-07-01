@@ -4,6 +4,7 @@
  */
 package Events;
 
+import Events.AreaEvents.AreaEvent;
 import java.util.Collection;
 import java.util.Hashtable;
 import java.util.Iterator;
@@ -16,16 +17,18 @@ import main.sLog;
  */
 public class sEvents {
     
-    private static Hashtable mTable;
-    private static Collection<iEvent> delayedEvents;
+    private static Hashtable mTable = new Hashtable();
+    private static Collection<iEvent> delayedEvents = new LinkedList<iEvent>();
+
+    public static void addNewAreaEvent(AreaEvent _areaEvent)
+    {
+    }
     private sEvents()
     {
         
     }
     public static void init()
     {
-        mTable = new Hashtable();
-        delayedEvents = new LinkedList<iEvent>();
     }
     
     public static void subscribeToEvent(String _eventName, iEventListener _listener)

@@ -30,16 +30,7 @@ public class Main extends TWLStateBasedGame
         nativeLibLoaderJinput.init();
         nativeLibLoaderJinput.setupPath();
         try
-        {
-//            InitApp initApp = new InitApp();
-//            AppGameContainer init = new AppGameContainer(initApp);
-//            init.setDisplayMode(800, 600, false);
-//            init.setVSync(true);
-//            init.setForceExit(false);
-//            init.start();
-//            init.destroy();
-//            init = null;
-            
+        {            
             AppGameContainer app = new AppGameContainer(new Main());
             //app.setMouseGrabbed(true);
             app.setDisplayMode(800, 600, false);
@@ -47,7 +38,6 @@ public class Main extends TWLStateBasedGame
             app.setTargetFrameRate(60);
             app.setMouseGrabbed(true);
             app.start();
-            
         }
         catch(SlickException e)
         {

@@ -4,7 +4,7 @@
  */
 package Events;
 
-import Entities.Entity;
+import Entities.PlayerEntity;
 
 /**
  *
@@ -12,9 +12,9 @@ import Entities.Entity;
  */
 public class PlayerCreatedEvent extends iEvent {
     
-    Entity mEntity;
+    PlayerEntity mEntity;
     int mPlayerID;
-    public PlayerCreatedEvent(Entity _entity, int _playerID)
+    public PlayerCreatedEvent(PlayerEntity _entity, int _playerID)
     {
         mEntity = _entity;
         mPlayerID = _playerID;
@@ -22,6 +22,10 @@ public class PlayerCreatedEvent extends iEvent {
     public String getName()
     {
         return getType();
+    }
+    public PlayerEntity getPlayer()
+    {
+        return mEntity;
     }
     public String getType()
     {
