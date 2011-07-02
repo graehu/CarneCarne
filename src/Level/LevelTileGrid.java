@@ -46,7 +46,7 @@ public final class LevelTileGrid extends TileGrid
     }
     void caveInSearch(int _x, int _y, TileType _tileType)
     {
-        CaveInSearcher search = new CaveInSearcher(this, tiledMap, layerIndex, new Vec2(0,0), 0);
+        CaveInSearcher search = new CaveInSearcher(this, tiledMap, layerIndex, mBody);
         search.destroy(_x, _y, _tileType);
     }
 }
