@@ -7,7 +7,6 @@ package HUD;
 import Entities.AIEntity;
 import Graphics.Sprites.iSprite;
 import Graphics.Sprites.sSpriteFactory;
-import Input.sInput;
 import World.sWorld;
 import java.util.HashMap;
 import org.jbox2d.common.Vec2;
@@ -20,6 +19,7 @@ public class Reticle {
     private iSprite mReticleSprite = null;
     private AIEntity mPlayer = null;
     private Vec2 mCurrentDir = new Vec2(1,0);
+    private Vec2 mLastPosition = new Vec2(0,0);
     private float mOffset = 200;
     private float mDistance = 200;
     public Reticle(AIEntity _player)
@@ -28,6 +28,7 @@ public class Reticle {
         HashMap params = new HashMap();
         params.put("ref", "CrossHair2");
         mReticleSprite = sSpriteFactory.create("simple", params, false);
+        //mLastPosition = 
     }
     public void update()
     {
@@ -48,7 +49,7 @@ public class Reticle {
     }
     public void setWorldPosition(Vec2 _pos)
     {
-        mCurrentDir = _pos.sub(sWorld.translateToWorld(mPlayer.mBody.getPosition()));
+        mCurrentDir = _pos.sub(sWorld.translateToWorld(mPlayer.mBody.getPosition())).sub(new Vec2(32,32));
         mDistance = mCurrentDir.normalize();
         mDistance = Math.min(mDistance,mOffset);
     }

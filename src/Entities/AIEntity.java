@@ -24,6 +24,7 @@ public class AIEntity extends Entity {
     protected iAIController mController;
     protected boolean mAllowRoll = false;
     protected int mJumpTimer;
+    protected int mJumpContacts;
     protected static int mJumpReload = 60; /// NOTE frame rate change
     protected float mMoveSpeed;
     protected Command mCommand;
@@ -45,7 +46,7 @@ public class AIEntity extends Entity {
         ContactEdge edge = mBody.m_contactList;
         int mTar = 0;
         int mIce = 0;
-        int mJumpContacts = 0;
+        mJumpContacts = 0;
         mAllowRoll = false;
         while (edge != null)
         {
@@ -83,6 +84,9 @@ public class AIEntity extends Entity {
                     }
                 }
                 Vec2 collisionNorm = edge.contact.m_manifold.localNormal;
+                float rot = other.getBody().getTransform().getAngle();
+                collisionNorm.x = (float) (collisionNorm.x*Math.cos(rot) - collisionNorm.y*Math.sin(rot));
+                collisionNorm.y = (float) (collisionNorm.x*Math.sin(rot) + collisionNorm.y*Math.cos(rot));
                 if(AtoB == false)
                 {
                     collisionNorm.negateLocal();
@@ -98,11 +102,11 @@ public class AIEntity extends Entity {
                         mJumpContacts++;
                     }
                 }
-                else if(collisionNorm.y < - 0.3 || collisionNorm.y > - 0.3)//slopes // horizontal
+                else if(collisionNorm.y < - 0.3 || collisionNorm.y > 0.3)//slopes // horizontal
                 {
                     if(edge.contact.isTouching() && !other.isSensor())
                     {
-                        mJumpContacts++; //allow jukmp on slopes
+                        mJumpContacts++; //allow jump on slopes
                         mAllowRoll = true;
                     }
                     
@@ -260,7 +264,8 @@ public class AIEntity extends Entity {
     public void jump()
     {
         if (!mAIEntityState.getState().equals(AIEntityState.State.eFalling) && 
-            !mAIEntityState.getState().equals(AIEntityState.State.eJumping))
+            !mAIEntityState.getState().equals(AIEntityState.State.eJumping) &&
+            mJumpContacts != 0)
         {
             
             mBody.applyLinearImpulse(new Vec2(0,-23.0f), mBody.getWorldCenter());

@@ -4,39 +4,33 @@
  */
 package States.Title;
 
-import States.Init.InitGUI;
-import GUI.TWL.BasicTWLGameState;
-import de.matthiasmann.twl.ComboBox;
 import de.matthiasmann.twl.ToggleButton;
 import de.matthiasmann.twl.model.BooleanModel;
-import de.matthiasmann.twl.model.ListModel;
 import de.matthiasmann.twl.model.SimpleBooleanModel;
-import de.matthiasmann.twl.model.SimpleChangableListModel;
-import java.util.ArrayList;
-import java.util.Arrays;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 /**
  *
  * @author a203945
  */
-public class StateTitle extends BasicTWLGameState{
+public class StateTitle extends BasicGameState{
 
-    @Override
+   // @Override
     public int getID() {
        return 2;
     }
     BooleanModel mFullScreen = new SimpleBooleanModel();
     public void init(final GameContainer _gc, final StateBasedGame _sbg) throws SlickException {
-        createRootPane();
+        //createRootPane();
         // create and add our button, the position and size is done in layoutRootPane()
         ToggleButton fullScreenToggle = new ToggleButton(mFullScreen);
         fullScreenToggle.setPosition(500,500);
         fullScreenToggle.adjustSize();
-        getRootPane().add(fullScreenToggle);
+        //getRootPane().add(fullScreenToggle);
        
         
         

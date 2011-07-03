@@ -46,7 +46,7 @@ public class NativeLibLoader {
             if(osName.startsWith((String)OSNames.toArray()[i]))
             {
                 //supported OS, set lib path
-                String libDir = curDir + "/lib/" + libPaths.get(i);
+                String libDir = curDir + libPaths.get(i);
                 String oldDir = System.setProperty(sysProp, libDir);
                 //URL temp = Thread.currentThread().getContextClassLoader().getResource(libPaths.get(i));
                 //String oldDir = System.setProperty(sysProp, temp.toString());
@@ -73,6 +73,7 @@ public class NativeLibLoader {
         String output = "";
         //try{
             output = System.getProperty("user.dir");
+            output = NativeLibLoader.class.getProtectionDomain().getCodeSource().getLocation().getPath();
             //output = new File(this.getClass().getProtectionDomain().getCodeSource().getLocation().toURI()).getParent();
         //}
 //        catch(URISyntaxException URIe){

@@ -37,7 +37,7 @@ public class BlockTile extends RootTile
         fixture.filter.maskBits = Integer.MAX_VALUE;
         if (mTileType.equals(TileType.eIce))
         {
-            fixture.friction = 0.001f;
+            fixture.friction = 0.01f;
             fixture.filter.categoryBits = (1 << BodyCategories.eIce.ordinal());
             fixture.filter.maskBits = Integer.MAX_VALUE;
         }

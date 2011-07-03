@@ -11,8 +11,8 @@
         <data xmlns="http://www.netbeans.org/ns/j2se-project/3">
             <name>CarneCarne</name>
             <source-roots>
-                <root id="src.data.dir" name="Data Packages"/>
                 <root id="src.dir"/>
+                <root id="src.data.dir" name="Data Packages"/>
             </source-roots>
             <test-roots>
                 <root id="test.src.dir"/>

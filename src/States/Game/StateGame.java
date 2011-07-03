@@ -11,8 +11,6 @@ import Events.iEvent;
 import Events.iEventListener;
 import Events.sEvents;
 import Graphics.Particles.sParticleManager;
-import GUI.TWL.BasicTWLGameState;
-import GUI.TWL.RootPane;
 import Graphics.sGraphicsManager;
 import Graphics.Skins.sSkinFactory;
 import Graphics.Sprites.sSpriteFactory;
@@ -25,8 +23,7 @@ import org.jbox2d.common.Vec2;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.geom.Rectangle;
-import org.newdawn.slick.opengl.TextureImpl;
+import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.BlobbyTransition;
 
@@ -34,7 +31,7 @@ import org.newdawn.slick.state.transition.BlobbyTransition;
  *
  * @author a203945
  */
-public class StateGame extends BasicTWLGameState implements iEventListener {
+public class StateGame extends BasicGameState implements iEventListener {
 
     private iGameMode mGameMode; 
     StateChanger mChangeToMenu;
@@ -105,26 +102,26 @@ public class StateGame extends BasicTWLGameState implements iEventListener {
         super.leave(container, game);
     }
     
-    @Override
-    protected RootPane createRootPane() {
-        // don't call getRootPane() in this method !!
-        RootPane myRootPane = super.createRootPane();
-        
-        // specify a theme name instead of the default "state"+getID()
-        myRootPane.setTheme("mainMenu");
-    
-        // return the root pane so that it is available for getRootPane()
-        return myRootPane;
-    }
-
-    @Override
-    //this is where we can layout the elements of the UI
-    protected void layoutRootPane() {        
-    } 
+//    @Override
+//    protected RootPane createRootPane() {
+//        // don't call getRootPane() in this method !!
+//        RootPane myRootPane = super.createRootPane();
+//        
+//        // specify a theme name instead of the default "state"+getID()
+//        myRootPane.setTheme("mainMenu");
+//    
+//        // return the root pane so that it is available for getRootPane()
+//        return myRootPane;
+//    }
+//
+//    @Override
+//    //this is where we can layout the elements of the UI
+//    protected void layoutRootPane() {        
+//    } 
     
     public void init(GameContainer _gc, StateBasedGame _sbg) throws SlickException {
         
-        createRootPane();
+        //createRootPane();
         mGameMode = new PlayMode();
         RaceMode mode = new RaceMode();
         mode.init();

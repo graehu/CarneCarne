@@ -325,12 +325,10 @@ public class PlayerInputController extends iAIController implements iEventListen
                 mFaceDirAnim = "sebs";
             else if(angle >= 14*halfSeg && angle < 15*halfSeg)
                 mFaceDirAnim = "sse";
-            else if(angle >= 15*halfSeg && angle < 16*halfSeg)
+            else if(angle >= 15*halfSeg && angle < 15.5*halfSeg)
                 mFaceDirAnim = "sbe";
-            else if(angle >= 16*halfSeg && angle <16.5*halfSeg)
+            else if(angle >= 15.5*halfSeg && angle <16*halfSeg)
                 mFaceDirAnim = "ssbe";
-            else if(angle >= 16.5*halfSeg && angle < 17*halfSeg)
-                mFaceDirAnim = "s";
         }
         else //angle < 0
         {

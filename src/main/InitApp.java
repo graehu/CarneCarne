@@ -41,8 +41,8 @@ public class InitApp extends TWLStateBasedGame{
     
     @Override
     public void initStatesList(GameContainer gc) throws SlickException {
-        mInitState = new StateInit();
-        addState(mInitState);
+        //mInitState = new StateInit();
+        //addState(mInitState);
     }
     
 }
