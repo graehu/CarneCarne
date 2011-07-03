@@ -5,13 +5,18 @@
 package Events.AreaEvents;
 
 import Entities.PlayerEntity;
+import Events.RaceResetEvent;
+import Events.RaceWonEvent;
+import Events.iEvent;
+import Events.iEventListener;
+import Events.sEvents;
 import Graphics.sGraphicsManager;
 
 /**
  *
  * @author alasdair
  */
-public class RaceEndZone extends CheckPointZone
+public class RaceEndZone extends CheckPointZone implements iEventListener
 {
     private PlayerEntity mWinner;
     private int mFinishedPlayers = 0;
@@ -19,6 +24,7 @@ public class RaceEndZone extends CheckPointZone
     {
         super(_x, _y, _x2, _y2, _numCheckPoints, null);
         mWinner = null;
+        sEvents.subscribeToEvent("RaceResetEvent", this);
     }
     @Override
     public void renderRaceState(int _raceTimer)
@@ -33,6 +39,7 @@ public class RaceEndZone extends CheckPointZone
         {
             _entity.placeCheckPoint(this);
             mWinner = _entity;
+            sEvents.triggerEvent(new RaceWonEvent(mWinner));
         }
         else
         {
@@ -43,5 +50,11 @@ public class RaceEndZone extends CheckPointZone
     public boolean incrementRaceTimer()
     {
         return false;
+    }
+
+    public void trigger(iEvent _event)
+    {
+        RaceResetEvent event = (RaceResetEvent)_event;
+        mWinner = null;
     }
 }

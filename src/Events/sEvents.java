@@ -17,7 +17,7 @@ import main.sLog;
  */
 public class sEvents {
     
-    private static Hashtable mTable = new Hashtable();
+    private static Hashtable<String,LinkedList<iEventListener>> mTable = new Hashtable<String,LinkedList<iEventListener>>();
     private static Collection<iEvent> delayedEvents = new LinkedList<iEvent>();
 
     public static void addNewAreaEvent(AreaEvent _areaEvent)
@@ -33,19 +33,25 @@ public class sEvents {
     
     public static void subscribeToEvent(String _eventName, iEventListener _listener)
     {
-        iEventListener oldListener = (iEventListener)mTable.put(_eventName, _listener);
-        if (oldListener != null)
+        if (mTable.get(_eventName) == null)
         {
-            sLog.error("Already has a listener, implement this class with a secondary container inside the Hashtable if you want multiple listeners");
+            LinkedList<iEventListener> list = new LinkedList<iEventListener>();
+            list.add(_listener);
+            mTable.put(_eventName, list);
+        }
+        else
+        {
+            mTable.get(_eventName).add(_listener);
         }
     }
-    public static void unsubscribeToEvent(String _eventName, iEventListener _listener) throws Throwable
+    public static void unsubscribeToEvent(String _eventName, iEventListener _listener)
     {
-        iEventListener removed = (iEventListener)mTable.remove(_eventName);
+        assert(false);
+        /*iEventListener removed = (iEventListener)mTable.remove(_eventName);
         if (removed != _listener)
         {
             sLog.error("Listener was not registered");
-        }
+        }*/
     }
     public static void triggerDelayedEvent(iEvent _event)
     {
@@ -60,10 +66,11 @@ public class sEvents {
         while(i.hasNext())
         {
             iEvent event = i.next();
-            iEventListener listener = (iEventListener)mTable.get(event.getName());
-            if (listener != null)
+            LinkedList<iEventListener> list = mTable.get(event.getName());
+            if (list != null)
             {
-                listener.trigger(event);
+                for (iEventListener listener: list)
+                    listener.trigger(event);
             }
             if (event.process())
             {
@@ -78,10 +85,11 @@ public class sEvents {
     }
     public static void triggerEvent(iEvent _event)
     {
-        iEventListener listener = (iEventListener)mTable.get(_event.getName());
-        if (listener != null)
+        LinkedList<iEventListener> list = mTable.get(_event.getName());
+        if (list != null)
         {
-            listener.trigger(_event);
+            for (iEventListener listener: list)
+                listener.trigger(_event);
         }
         _event.process();
     }

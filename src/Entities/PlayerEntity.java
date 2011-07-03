@@ -4,6 +4,7 @@
  */
 package Entities;
 
+import Entities.AIEntityState.State;
 import Events.AreaEvents.CheckPointZone;
 import Graphics.Skins.iSkin;
 import Graphics.sGraphicsManager;
@@ -22,6 +23,7 @@ import org.newdawn.slick.geom.Rectangle;
 public class PlayerEntity extends AIEntity
 {
     String mBodyType = "bdy";
+    private CheckPointZone mOriginalSpawnPoint;
     private CheckPointZone mCheckPoint;
     private Joint mDeathJoint;
     private Vec2 mDirection;
@@ -32,7 +34,7 @@ public class PlayerEntity extends AIEntity
     public PlayerEntity(iSkin _skin, CheckPointZone _spawnPoint)
     {
         super(_skin);
-        mCheckPoint = _spawnPoint;
+        mOriginalSpawnPoint = mCheckPoint = _spawnPoint;
         mReticle = new Reticle(this);
         mDeaths = mRaceTimer = 0;
     }
@@ -44,11 +46,33 @@ public class PlayerEntity extends AIEntity
     {
         return mCheckPoint;
     }
+    public void resetRace()
+    {
+        mCheckPoint = mOriginalSpawnPoint;
+        mRaceTimer = 0;
+        int deaths = mDeaths;
+        kill();
+        mDeaths = deaths;
+    }
+    public void getToStartingZone()
+    {
+        mCheckPoint = mOriginalSpawnPoint;
+    }
     public void placeCheckPoint(CheckPointZone _checkPoint)
     {
-        if (_checkPoint.getCheckpointNumber() > mCheckPoint.getCheckpointNumber())
+        if (mDeathJoint == null)
         {
-            mCheckPoint = _checkPoint;
+            if (mCheckPoint == mOriginalSpawnPoint)
+            {
+                if (_checkPoint.getCheckpointNumber() == mCheckPoint.getCheckpointNumber()+1)
+                {
+                    mCheckPoint = _checkPoint;
+                }
+            }
+            else if (_checkPoint.getCheckpointNumber() > mCheckPoint.getCheckpointNumber())
+            {
+                mCheckPoint = _checkPoint;
+            }
         }
     }
     /*public int getScore()
@@ -98,6 +122,10 @@ public class PlayerEntity extends AIEntity
                 mAIEntityState.unkill();
             }
         }
+        else if (mAIEntityState.getState().equals(State.eSwimming))
+        {
+            buoyancy();
+        }
     }
 
     public void render()
@@ -143,5 +171,10 @@ public class PlayerEntity extends AIEntity
     public void setDirection(Vec2 _dir)
     {
         mDirection = _dir;
+    }
+
+    public int getRaceTimer()
+    {
+        return mRaceTimer;
     }
 }

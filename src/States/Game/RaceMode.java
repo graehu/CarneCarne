@@ -6,11 +6,11 @@ package States.Game;
 
 import Entities.PlayerEntity;
 import Events.PlayerCreatedEvent;
+import Events.RaceResetEvent;
 import Events.iEvent;
 import Events.iEventListener;
 import Events.sEvents;
 import Level.sLevel;
-import States.Game.iGameMode;
 import World.sWorld;
 import java.util.Collection;
 import java.util.LinkedList;
@@ -22,19 +22,27 @@ import org.newdawn.slick.Graphics;
  */
 public class RaceMode implements iGameMode, iEventListener
 {
+    RaceState mRaceState;
     Collection<PlayerEntity> players = new LinkedList<PlayerEntity>();
     int mTimer;
     public RaceMode()
     {
         mTimer = 0;
-    }
-    public void init()
-    {
-        sEvents.subscribeToEvent("PlayerCreatedEvent", this);
+        mRaceState = new RaceState();
+        try
+        {
+            sEvents.subscribeToEvent("PlayerCreatedEvent", this);
+            sEvents.subscribeToEvent("RaceResetEvent", this);
+        }
+        finally
+        {
+            sEvents.unsubscribeToEvent("PlayerCreatedEvent", this);
+        }
     }
     public void update(float _time)
     {
         mTimer++;
+        mRaceState.update();
         sLevel.update();
         sWorld.update(_time);
         sEvents.processEvents();
@@ -46,7 +54,18 @@ public class RaceMode implements iGameMode, iEventListener
 
     public void trigger(iEvent _event)
     {
-        PlayerCreatedEvent event = (PlayerCreatedEvent)_event;
-        players.add(event.getPlayer());
+        if (_event.getName().equals("PlayerCreatedEvent"))
+        {
+            PlayerCreatedEvent event = (PlayerCreatedEvent)_event;
+            players.add(event.getPlayer());
+        }
+        else if (_event.getName().equals("RaceResetEvent"))
+        {
+            RaceResetEvent event = (RaceResetEvent)_event;
+            for (PlayerEntity entity: players)
+            {
+                entity.resetRace();
+            }
+        }
     }
 }

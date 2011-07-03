@@ -5,6 +5,10 @@
 package Events.AreaEvents;
 
 import Entities.PlayerEntity;
+import Events.RaceResetEvent;
+import Events.iEvent;
+import Events.iEventListener;
+import Events.sEvents;
 import Graphics.sGraphicsManager;
 import java.util.HashMap;
 import java.util.Map;
@@ -13,7 +17,7 @@ import java.util.Map;
  *
  * @author alasdair
  */
-public class RaceStartZone extends CheckPointZone
+public class RaceStartZone extends CheckPointZone implements iEventListener
 {
     Map<PlayerEntity, CheckPointZone> mPlayers;
     int mNumPlayers;
@@ -24,17 +28,21 @@ public class RaceStartZone extends CheckPointZone
         mPlayers = new HashMap<PlayerEntity, CheckPointZone>();
         mNumPlayers = _numPlayers;
         mRaceHasStarted = false;
+        sEvents.subscribeToEvent("RaceResetEvent", this);
     }
     @Override
     public void enter(PlayerEntity _entity) 
     {
+        assert(_entity.getCheckPoint() != this);
         mPlayers.put(_entity, _entity.getCheckPoint());
         _entity.placeCheckPoint(this);
     }
     @Override
     public void leave(PlayerEntity _entity) 
     {
-        _entity.placeCheckPoint(mPlayers.get(_entity));
+        //_entity.placeCheckPoint(mPlayers.get(_entity));
+        if (!mRaceHasStarted)
+            _entity.getToStartingZone();
         mPlayers.remove(_entity);
     }
     @Override
@@ -58,5 +66,11 @@ public class RaceStartZone extends CheckPointZone
         {
             sGraphicsManager.drawString("Waiting for all players to be ready.", 0f, 0);
         }
+    }
+
+    public void trigger(iEvent _event)
+    {
+        RaceResetEvent event = (RaceResetEvent)_event;
+        mRaceHasStarted = false;
     }
 }

@@ -8,7 +8,6 @@ import org.jbox2d.dynamics.Body;
 import Graphics.Skins.iSkin;
 import World.sWorld;
 import org.jbox2d.common.Vec2;
-import org.newdawn.slick.SlickException;
 /**
  *
  * @author alasdair

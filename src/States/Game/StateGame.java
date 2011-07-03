@@ -25,8 +25,6 @@ import org.jbox2d.common.Vec2;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.geom.Rectangle;
-import org.newdawn.slick.opengl.TextureImpl;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.BlobbyTransition;
 
@@ -36,6 +34,16 @@ import org.newdawn.slick.state.transition.BlobbyTransition;
  */
 public class StateGame extends BasicTWLGameState implements iEventListener {
 
+    public enum GameType
+    {
+        eRaceGame,
+        eGameTypesMax
+    }
+    private GameType mGameType;
+    GameType getGameType()
+    {
+        return mGameType;
+    }
     private iGameMode mGameMode; 
     StateChanger mChangeToMenu;
     static private int mPlayers;
@@ -125,10 +133,9 @@ public class StateGame extends BasicTWLGameState implements iEventListener {
     public void init(GameContainer _gc, StateBasedGame _sbg) throws SlickException {
         
         createRootPane();
-        mGameMode = new PlayMode();
-        RaceMode mode = new RaceMode();
-        mode.init();
-        mGameMode = mode;
+        mGameType = GameType.eRaceGame;
+        mGameMode = new RaceMode();
+        //mGameMode.init();
         
         //subscribe to events (must be done before further initialisation)
         sEvents.subscribeToEvent("PlayerCreatedEvent", this);

@@ -16,6 +16,7 @@ class AIEntityState
     {
         eFalling,
         eStanding,
+        eSwimming,
         eStandingOnTar,
         eStillCoveredInTar,
         eIce,
@@ -25,6 +26,7 @@ class AIEntityState
     }
     private State mState;
     private int mTarCount, mIceCount, mContactCount;
+    private int mWaterHeight;
     private int mTimer;
     private AIEntity mEntity;
     
@@ -32,7 +34,7 @@ class AIEntityState
     {
         mEntity = _entity;
         mState = State.eFalling;
-        mTarCount = mIceCount = mContactCount = mTimer = 0;
+        mTarCount = mIceCount = mWaterHeight = mContactCount = mTimer = 0;
     }
     
     State getState()
@@ -40,10 +42,11 @@ class AIEntityState
         return mState;
     }
     
-    void update(int _tarCount, int _iceCount, int _contactCount)
+    void update(int _tarCount, int _iceCount, int _waterCount, int _contactCount)
     {
         mTarCount = _tarCount;
         mIceCount = _iceCount;
+        mWaterHeight = _waterCount;
         mContactCount = _contactCount;
         mTimer++;
         update();
@@ -62,6 +65,10 @@ class AIEntityState
     {
         changeState(State.eJumping);
         mTimer = 0;
+    }
+    public int getWaterHeight()
+    {
+        return mWaterHeight;
     }
     
     private void update()
@@ -93,7 +100,11 @@ class AIEntityState
             }
             case eStanding:
             {
-                if (mTarCount != 0)
+                if (mWaterHeight != 0)
+                {
+                    changeState(State.eSwimming);
+                }
+                else if (mTarCount != 0)
                 {
                     changeState(State.eStandingOnTar);
                 }
@@ -103,12 +114,25 @@ class AIEntityState
                 }
                 break;
             }
+            case eSwimming:
+            {
+                if (mWaterHeight == 0)
+                {
+                    changeState(State.eFalling);
+                    update();
+                }
+                break;
+            }
             case eStandingOnTar:
             {
                 if (mTarCount == 0)
                 {
                     changeState(State.eStillCoveredInTar);
                     mTimer = 0;
+                }
+                else if (mWaterHeight != 0)
+                {
+                    changeState(State.eSwimming);
                 }
                 break;
             }
@@ -134,6 +158,10 @@ class AIEntityState
                 {
                     changeState(State.eFalling);
                     update();
+                }
+                else if (mWaterHeight != 0)
+                {
+                    changeState(State.eSwimming);
                 }
                 else if (mTarCount != 0)
                 {

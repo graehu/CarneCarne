@@ -66,7 +66,7 @@ public class RootTileList {
             boolean anchor = Boolean.valueOf(_tiledMap.getTileProperty(i, "Anchor", "false")).booleanValue();
             boolean isFlammable = Boolean.valueOf(_tiledMap.getTileProperty(i, "Flammable", "false")).booleanValue();
             sLevel.TileType type = typeMap.get(typeString);
-            int assertion = type.ordinal();
+            int assertion    = type.ordinal();
             if (shape.equals("Block"))
             {
                 int size = (isFlammable) ? 32 : 16;

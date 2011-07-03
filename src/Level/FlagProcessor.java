@@ -5,12 +5,13 @@
 package Level;
 
 import AI.sPathFinding;
-import Entities.Entity;
+import Entities.PlayerEntity;
 import Entities.sEntityFactory;
 import Events.AreaEvents.CheckPointZone;
 import Events.AreaEvents.PlayerSpawnZone;
 import Events.AreaEvents.RaceEndZone;
 import Events.AreaEvents.RaceStartZone;
+import Events.PlayerCreatedEvent;
 import Events.sEvents;
 import World.sWorld;
 import java.util.HashMap;
@@ -46,8 +47,8 @@ public class FlagProcessor
         {
             x = _x;
             y = _y;
-            x2 = _x2;
-            y2 = _y2;
+            x2 = _x2 + 1;
+            y2 = _y2 + 1;
             mNumber = _number;
         }
     }
@@ -229,8 +230,9 @@ public class FlagProcessor
             parameters.put("position", position);
             parameters.put("playerNumber", --mPlayers);
             parameters.put("checkPoint", new PlayerSpawnZone((int)position.x, (int)position.y, (int)position.x+1, (int)position.y+1, startZone));
-            Entity player = sEntityFactory.create("Player",parameters);
+            PlayerEntity player = (PlayerEntity)sEntityFactory.create("Player",parameters);
             sPathFinding.addPlayer(player);
+            sEvents.triggerEvent(new PlayerCreatedEvent(player,mPlayers));
         }
     }
     private class Tile

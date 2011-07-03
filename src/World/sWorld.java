@@ -287,7 +287,7 @@ public class sWorld
     public static void destroyMouseJoint(Joint _joint)
     {
         mWorld.destroyJoint(_joint);
-        mWorld.destroyBody(groundBody);
+        //mWorld.destroyBody(groundBody);
     }
     public static void addPlayer(Body _body)
     {

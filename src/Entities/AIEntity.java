@@ -6,6 +6,7 @@ package Entities;
 
 import AI.iAIController;
 import AI.iPathFinding.Command;
+import Entities.AIEntityState.State;
 import Graphics.Skins.iSkin;
 import Level.Tile;
 import Level.sLevel.TileType;
@@ -45,6 +46,7 @@ public class AIEntity extends Entity {
         ContactEdge edge = mBody.m_contactList;
         int mTar = 0;
         int mIce = 0;
+        int mWater = 0;
         int mJumpContacts = 0;
         mAllowRoll = false;
         while (edge != null)
@@ -78,6 +80,11 @@ public class AIEntity extends Entity {
                                 mTar++;
                             }
                             break;
+                        case eWater:
+                        {
+                            mWater = ((Tile)other.getUserData()).getWaterHeight();
+                            break;
+                        }
                         default:
                             break;
                     }
@@ -110,7 +117,7 @@ public class AIEntity extends Entity {
             }
             edge = edge.next;
         }
-        mAIEntityState.update(mTar, mIce, mJumpContacts);
+        mAIEntityState.update(mTar, mIce, mWater, mJumpContacts);
         mBody.applyLinearImpulse(new Vec2(0,0.1f*mBody.getMass()), mBody.getWorldCenter());
         if (mWaterTiles != 0)
         {
@@ -135,7 +142,16 @@ public class AIEntity extends Entity {
     }
     protected void subUpdate()
     {
-        
+        if (mAIEntityState.getState().equals(State.eSwimming))
+        {
+            buoyancy();
+        }
+    }
+    protected void buoyancy()
+    {
+        float waterHeight = mAIEntityState.getWaterHeight();
+        waterHeight = mBody.getPosition().y + 1 - waterHeight;
+        mBody.applyLinearImpulse(new Vec2(0, -waterHeight), mBody.getWorldCenter());
     }
     public void walk(float value)
     {
@@ -169,6 +185,10 @@ public class AIEntity extends Entity {
             case eIce:
             {
                 mBody.applyAngularImpulse(0.5f*value);
+                break;
+            }
+            case eSwimming:
+            {
                 break;
             }
             case eDead:
