@@ -30,18 +30,22 @@ public class CaveInTileGrid extends TileGrid
     private int mLayerIndex;
     Vec2 mPosition;
     float mAngle;
-    public CaveInTileGrid(RootTileList _rootTiles, TiledMap _tiledMap, int _xTrans, int _yTrans, int _width, int _height, int _layerIndex, Vec2 _position, float _angle)
+    Vec2 mLinearVelocity;
+    float mAngularVelocity;
+    public CaveInTileGrid(RootTileList _rootTiles, TiledMap _tiledMap, int _xTrans, int _yTrans, int _width, int _height, int _layerIndex, Vec2 _position, float _angle, Vec2 _linearVelocity, float _angularVelocity)
     {
         super(_rootTiles, _width, _height);
         mPosition = _position;
         mAngle = _angle;
+        mLinearVelocity = _linearVelocity;
+        mAngularVelocity = _angularVelocity;
         mXTrans = _xTrans;
         mYTrans = _yTrans;
         ids = new int[_width][_height];
         mTiledMap = _tiledMap;
         mLayerIndex = _layerIndex;
     }
-    
+
     public void setTempId(int _x, int _y, int _id)
     {
         ids[_x-mXTrans][_y-mYTrans] = _id;
@@ -57,7 +61,10 @@ public class CaveInTileGrid extends TileGrid
         HashMap<String, Object> parameters = new HashMap<String, Object>();
         parameters.put("isDynamic", true);
         parameters.put("position", new Vec2(mXTrans, mYTrans).add(mPosition));
+        parameters.put("position", mPosition);
         parameters.put("angle", mAngle);
+        parameters.put("linearVelocity", mLinearVelocity);
+        parameters.put("angularVelocity", mAngularVelocity);
         init(parameters);
         parameters = new HashMap<String, Object>();
         parameters.put("tiles", tiles);
@@ -65,6 +72,8 @@ public class CaveInTileGrid extends TileGrid
         parameters.put("width",ids.length);
         parameters.put("height",ids[0].length);
         mBody.setUserData(sEntityFactory.create("CaveIn", parameters));
+        mBody.setLinearVelocity(mLinearVelocity);
+        mBody.setAngularVelocity(mAngularVelocity);
     }
     @Override
     int getTileId(int _x, int _y)
@@ -121,7 +130,7 @@ public class CaveInTileGrid extends TileGrid
         if (!searching)
         {
             searching = true;
-            CaveInSearcher search = new CaveInSearcher(this, mTiledMap, mLayerIndex, mBody.getPosition(), mBody.getAngle());
+            CaveInSearcher search = new CaveInSearcher(this, mTiledMap, mLayerIndex, mBody);
             search.destroy(_x, _y, _tileType);
             sWorld.destroyBody(mBody);
             ((Entity)mBody.getUserData()).mBody = null;

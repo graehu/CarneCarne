@@ -34,12 +34,10 @@ public class CaveInSearcher {
     }
     Checked mChecked[][];
     int lowestX, lowestY, highestX, highestY;
-    Vec2 mOffset;
-    float mAngle;
-    public CaveInSearcher(TileGrid _tileGrid, TiledMap _tiledMap, int _layerIndex, Vec2 _offset, float _angle)
+    Body mBody;
+    public CaveInSearcher(TileGrid _tileGrid, TiledMap _tiledMap, int _layerIndex, Body _body)
     {
-        mOffset = _offset;
-        mAngle = _angle;
+        mBody = _body;
         lowestX = lowestY = Integer.MAX_VALUE;
         highestX = highestY = Integer.MIN_VALUE;
         mTileGrid = _tileGrid;
@@ -194,7 +192,10 @@ public class CaveInSearcher {
         {
             /// Individual tiles
             /// One tile
-            CaveInTileGrid newTileGrid = new CaveInTileGrid(mTileGrid.rootTiles, mTiledMap, lowestX, lowestY, 1+highestX-lowestX, 1+highestY-lowestY, mLayerIndex, mOffset, mAngle);
+            Vec2 position = mBody.getWorldPoint(new Vec2(lowestX, lowestY));
+            Vec2 linearVelocity = mBody.getLinearVelocityFromLocalPoint(new Vec2(lowestX, lowestY));
+            float angularVelocity = mBody.getAngularVelocity();
+            CaveInTileGrid newTileGrid = new CaveInTileGrid(mTileGrid.rootTiles, mTiledMap, lowestX, lowestY, 1+highestX-lowestX, 1+highestY-lowestY, mLayerIndex, position, mBody.getAngle(), linearVelocity, angularVelocity);
             sEvents.triggerDelayedEvent(new CaveInEvent(newTileGrid, tiles.size()));
             newTileGrid.finish(tiles);
             tiles = new ArrayList<TempTile>();
