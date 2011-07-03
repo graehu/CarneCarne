@@ -90,6 +90,9 @@ public class AIEntity extends Entity {
                     }
                 }
                 Vec2 collisionNorm = edge.contact.m_manifold.localNormal;
+                float rot = other.getBody().getTransform().getAngle();
+                collisionNorm.x = (float) (collisionNorm.x*Math.cos(rot) - collisionNorm.y*Math.sin(rot));
+                collisionNorm.y = (float) (collisionNorm.x*Math.sin(rot) + collisionNorm.y*Math.cos(rot));
                 if(AtoB == false)
                 {
                     collisionNorm.negateLocal();
@@ -105,11 +108,11 @@ public class AIEntity extends Entity {
                         mJumpContacts++;
                     }
                 }
-                else if(collisionNorm.y < - 0.3 || collisionNorm.y > - 0.3)//slopes // horizontal
+                else if(collisionNorm.y < - 0.3 || collisionNorm.y > 0.3)//slopes // horizontal
                 {
                     if(edge.contact.isTouching() && !other.isSensor())
                     {
-                        mJumpContacts++; //allow jukmp on slopes
+                        mJumpContacts++; //allow jump on slopes
                         mAllowRoll = true;
                     }
                     

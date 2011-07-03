@@ -39,10 +39,10 @@ public class PlayerFactory implements iEntityFactory {
             
             //declare face animation names
             ArrayList<String> face = 
-                    new ArrayList(Arrays.asList("n","nbe","nne","nebn","ne","nebe","ene","ebn",
-                                                "e","ebs","ese","sebe","se","sebs","sse","sbe", 
-                                                "s","sbw","ssw","swbs","sw","swbw","wsw","wbs", 
-                                                "w","wbn","wnw","nwbw","nw","nwbn","nnw","nbw"));
+                    new ArrayList(Arrays.asList("n","nbe","nne","nebn","ne","nebe","ene","ebn", "nnbe",
+                                                "e","ebs","ese","sebe","se","sebs","sse","sbe", "ssbe",
+                                                "s","sbw","ssw","swbs","sw","swbw","wsw","wbs", "ssbw",
+                                                "w","wbn","wnw","nwbw","nw","nwbn","nnw","nbw", "nnbw"));
             //derive hat names from face
             ArrayList<String> hat = (ArrayList<String>)face.clone();
             for(int i = 0; i < hat.size(); i++)
@@ -81,7 +81,7 @@ public class PlayerFactory implements iEntityFactory {
             
             //offsets for sprites bigger than 64x64
             String[] t = {"","h","m","mh"};                          //prefixes
-            Vec2[] v = {new Vec2(-9,0), new Vec2(-24,-28), new Vec2(-9,0), new Vec2(-29,-33)}; //offsets relative to above
+            Vec2[] v = {new Vec2(-9,0), new Vec2(-29,-33), new Vec2(-9,0), new Vec2(-29,-33)}; //offsets relative to above
             String[] p = {"n","s"};     //north and south
             String[] q = {"e","w"};     //east and west
             for(int k = 0; k < 4; k++)
@@ -92,7 +92,7 @@ public class PlayerFactory implements iEntityFactory {
                     {
                         //in the format: (prefix + compass direction, offset)
                         skin.setOffset(t[k] + p[j],                     v[k]);
-                        skin.setOffset("" + p[j] + p[j] +"b" +q[i],   new Vec2(-9,0)); //only for mouth for now
+                        skin.setOffset(t[k] + p[j] + p[j] +"b" +q[i],   v[k]); //extra about poles
                         skin.setOffset(t[k] + p[j] + "b"  +q[i],        v[k]);
                         skin.setOffset(t[k] + p[j] + p[j] +q[i],        v[k]);
                         skin.setOffset(t[k] + p[j] + q[i] +"b" +p[j],   v[k]);

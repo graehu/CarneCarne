@@ -4,6 +4,7 @@
  */
 package Entities;
 
+import AI.SimplePlatformController;
 import AI.StupidPlatformController;
 import AI.iPlatformController;
 import Graphics.Skins.iSkin;
@@ -37,7 +38,11 @@ class MovingPlatformFactory implements iEntityFactory
         {
             controller = new StupidPlatformController();
         }
-        MovingPlatform entity = new MovingPlatform(skin, controller);
+        else if(platformType.equals("SimplePlatform"))
+        {
+            controller = new SimplePlatformController();
+        }
+        MovingPlatform entity = new MovingPlatform(skin, controller, dimensions);
         _parameters.put("userData", entity);
         Body body = sWorld.useFactory("MovingPlatformBodyFactory", _parameters);
         entity.mBody = body;

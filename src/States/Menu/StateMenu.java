@@ -6,14 +6,13 @@ package States.Menu;
 
 import Events.iEvent;
 import Events.iEventListener;
-import Events.sEvents;
-import GUI.TWL.BasicTWLGameState;
 import States.StateChanger;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.BlobbyTransition;
 
@@ -21,11 +20,11 @@ import org.newdawn.slick.state.transition.BlobbyTransition;
  *
  * @author a203945
  */
-public class StateMenu extends BasicTWLGameState implements iEventListener{
+public class StateMenu extends BasicGameState implements iEventListener{
     Image mScreenShot;
     StateChanger mChangeToGame = null;
     int mPlayer = 0;
-    @Override
+    //@Override
     public int getID() {
         return 4;
     }

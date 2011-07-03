@@ -5,15 +5,15 @@
 package States.Splash;
 
 
-import GUI.TWL.BasicTWLGameState;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
-public class StateSplash extends BasicTWLGameState{
+public class StateSplash extends BasicGameState{
 
-    @Override
+    //@Override
     public int getID() {
         return 1;
     }

@@ -32,9 +32,18 @@ class SpatBlockBodyFactory implements iPhysicsFactory {
         Entity entity = (Entity)_parameters.get("entity");
         sLevel.TileType tileType = (sLevel.TileType)_parameters.get("tileType");
         CircleShape shape = new CircleShape();
-        shape.m_radius = 0.125f;
+        if(tileType.equals(tileType.eMelonFlesh)) //FIXME: seperate class??
+        {
+            shape.m_radius = 0.0625f;
+        }
+        else
+        {
+            shape.m_radius = 0.125f;
+        }
         FixtureDef fixture = new FixtureDef();
         fixture.shape = shape;
+        fixture.friction = 5;
+        fixture.restitution = 0.5f;
         fixture.filter.groupIndex = tileType.ordinal();
         fixture.filter.categoryBits = (1 << BodyCategories.eSpatTiles.ordinal());
         fixture.filter.maskBits = Integer.MAX_VALUE ^ 

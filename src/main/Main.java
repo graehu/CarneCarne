@@ -2,18 +2,17 @@
 package main;
 
 import Events.sEvents;
-import GUI.TWL.BasicTWLGameState;
-import GUI.TWL.TWLStateBasedGame;
 import Graphics.sGraphicsManager;
 import Input.sInput;
-import java.net.URL;
 import org.newdawn.slick.*;
 import States.Game.StateGame;
 import States.Menu.StateMenu;
 import States.Splash.StateSplash;
 import States.Title.StateTitle;
+import org.newdawn.slick.state.BasicGameState;
+import org.newdawn.slick.state.StateBasedGame;
 
-public class Main extends TWLStateBasedGame
+public class Main extends StateBasedGame
 {
     public Main()
     {
@@ -25,10 +24,10 @@ public class Main extends TWLStateBasedGame
         //-Djava.library.path=lib/natives-win32
         NativeLibLoader nativeLibLoader = new NativeLibLoader("org.lwjgl.librarypath");
         nativeLibLoader.init();
-        nativeLibLoader.setupPath();
+        //nativeLibLoader.setupPath();
         NativeLibLoader nativeLibLoaderJinput = new NativeLibLoader("net.java.games.input.librarypath");
         nativeLibLoaderJinput.init();
-        nativeLibLoaderJinput.setupPath();
+        //nativeLibLoaderJinput.setupPath();
         try
         {            
             AppGameContainer app = new AppGameContainer(new Main());
@@ -46,14 +45,14 @@ public class Main extends TWLStateBasedGame
     }
     
 
-    @Override
-    protected URL getThemeURL() {
-        //boolean does = ResourceLoader.resourceExists("data/ui/simple.xml");
-        URL magic = Thread.currentThread().getContextClassLoader().getResource("ui/simple.xml");
-        return magic;
-    }
+//    @Override
+//    protected URL getThemeURL() {
+//        //boolean does = ResourceLoader.resourceExists("data/ui/simple.xml");
+//        URL magic = Thread.currentThread().getContextClassLoader().getResource("ui/simple.xml");
+//        return magic;
+//    }
 
-    BasicTWLGameState mSplashState, mTitleState, mGameState, mMenuState;
+    BasicGameState mSplashState, mTitleState, mGameState, mMenuState;
     
     @Override
     public void initStatesList(GameContainer _gc) throws SlickException {  
