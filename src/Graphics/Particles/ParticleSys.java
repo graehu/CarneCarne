@@ -7,6 +7,7 @@
 package Graphics.Particles;
 
 import org.newdawn.slick.particles.ConfigurableEmitter;
+import org.newdawn.slick.particles.ParticleEmitter;
 import org.newdawn.slick.particles.ParticleSystem;
 
 /**
@@ -40,7 +41,7 @@ public class ParticleSys
     }
     
     //move emitters only
-    public void moveTo(float _x, float _y)
+    public void moveEmittersTo(float _x, float _y)
     {
         float deltaX = mSystem.getPositionX() - _x;
         float deltaY = mSystem.getPositionY() - _y;
@@ -52,7 +53,7 @@ public class ParticleSys
     }
     
     //move emitters only
-    public void moveBy(float _dx, float _dy)
+    public void moveEmittersBy(float _dx, float _dy)
     {
         float newX = mSystem.getPositionX() + _dx;
         float newY = mSystem.getPositionY() + _dy;
@@ -63,27 +64,30 @@ public class ParticleSys
         mSystem.setPosition(newX, newY);
     }
     
-    public void setWind(ConfigurableEmitter.Value _value)
+    public void setWind(float _windFactor)
     {
         for(int i = 0; i < mSystem.getEmitterCount(); i++)
         {
-            ((ConfigurableEmitter)mSystem.getEmitter(i)).windFactor = _value;
+            ConfigurableEmitter emitter = ((ConfigurableEmitter)mSystem.getEmitter(i));
+            ((ConfigurableEmitter.SimpleValue)emitter.windFactor).setValue(_windFactor);
         }
     }
     
-    public void setGravity(ConfigurableEmitter.Value _value)
+    public void setGravity(float _gravityFactor)
     {
         for(int i = 0; i < mSystem.getEmitterCount(); i++)
         {
-            ((ConfigurableEmitter)mSystem.getEmitter(i)).gravityFactor = _value;
+            ConfigurableEmitter emitter = ((ConfigurableEmitter)mSystem.getEmitter(i));
+            ((ConfigurableEmitter.SimpleValue)emitter.gravityFactor).setValue(_gravityFactor);
         }
     }
     
-    public void setAngularOffset(ConfigurableEmitter.Value _value)
+    public void setAngularOffset(float _degrees)
     {
         for(int i = 0; i < mSystem.getEmitterCount(); i++)
         {
-            ((ConfigurableEmitter)mSystem.getEmitter(i)).angularOffset = _value;
+            ConfigurableEmitter emitter = ((ConfigurableEmitter)mSystem.getEmitter(i));
+            ((ConfigurableEmitter.SimpleValue)emitter.angularOffset).setValue(_degrees);
         }
     }
 

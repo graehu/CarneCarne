@@ -10,6 +10,7 @@ import Events.PlayerCreatedEvent;
 import Events.iEvent;
 import Events.iEventListener;
 import Events.sEvents;
+import Graphics.Particles.ParticleSys;
 import Graphics.Particles.sParticleManager;
 import Graphics.sGraphicsManager;
 import Graphics.Skins.sSkinFactory;
@@ -73,11 +74,13 @@ public class StateGame extends BasicGameState implements iEventListener {
     {
         return 3;
     }
-    
+    float bob = 0;
     public void update(GameContainer _gc, StateBasedGame _sbg, int _delta) throws SlickException 
     {
+        bob += 0.5f;
         sInput.update(_delta);
         mGameMode.update(_delta);
+        mysys.setAngularOffset(bob);
         //update particles
         sParticleManager.update(_delta);
     }
@@ -87,15 +90,13 @@ public class StateGame extends BasicGameState implements iEventListener {
         Vec2 s = sGraphicsManager.getScreenDimensions();
         mGameMode.render(_gc.getGraphics());
         _grphcs.drawString("fucking work god damnit", 500, 500);
-        
     }
-
+    ParticleSys mysys;
     @Override
     //callback for when the game enters this state
     public void enter(GameContainer container, StateBasedGame game) throws SlickException 
     {         
         super.enter(container, game);
-
         //TEST: MANAGED SPRITE
 //        HashMap params = new HashMap();
 //        params.put("img", new Image("data/assets/splashbig.png"));

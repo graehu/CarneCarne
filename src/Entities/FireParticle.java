@@ -42,7 +42,7 @@ public class FireParticle extends Entity
     {
         Vec2 pixelPosition = sWorld.translateToWorld(mBody.getPosition().add(new Vec2(0.0f,0.0f))); /// FIXME
         Vec2 particlePosition = mBody.getPosition().add(new Vec2(0.5f,0.5f)).mul(64f);
-        mParticles.moveTo(particlePosition.x, particlePosition.y);
+        mParticles.moveEmittersTo(particlePosition.x, particlePosition.y);
         mSkin.render(pixelPosition.x,pixelPosition.y);
         mSkin.setRotation(mBody.getAngle()*(180/(float)Math.PI));
     }
