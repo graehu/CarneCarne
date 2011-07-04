@@ -4,7 +4,6 @@
  */
 package World;
 
-import Entities.Entity;
 import Events.TarFireEvent;
 import Entities.FireParticle;
 import Events.EntityDeathEvent;
