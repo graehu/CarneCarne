@@ -35,7 +35,7 @@ public class Main extends StateBasedGame
             app.setDisplayMode(800, 600, false);
             app.setVSync(true);
             app.setTargetFrameRate(60);
-            app.setMouseGrabbed(true);
+            //app.setMouseGrabbed(true);
             app.start();
         }
         catch(SlickException e)
@@ -75,7 +75,7 @@ public class Main extends StateBasedGame
         
         //FIXME: should start on splash
         //enterState(2, null, new BlobbyTransition(new Color(0,0,0)));
-        enterState(3, null, null);
+        enterState(2, null, null);
     }
 
     

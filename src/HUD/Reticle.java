@@ -7,6 +7,8 @@ package HUD;
 import Entities.AIEntity;
 import Graphics.Sprites.iSprite;
 import Graphics.Sprites.sSpriteFactory;
+import Graphics.sGraphicsManager;
+import Input.sInput;
 import World.sWorld;
 import java.util.HashMap;
 import org.jbox2d.common.Vec2;
@@ -51,7 +53,12 @@ public class Reticle {
     {
         mCurrentDir = _pos.sub(sWorld.translateToWorld(mPlayer.mBody.getPosition())).sub(new Vec2(32,32));
         mDistance = mCurrentDir.normalize();
+        if(mDistance > mOffset)
+        {
+            //sInput.setCursorPos(mLastPosition);
+        }
         mDistance = Math.min(mDistance,mOffset);
+        mLastPosition = sInput.getAbsCursorPos();
     }
     public void render()
     {

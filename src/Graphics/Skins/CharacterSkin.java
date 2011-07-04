@@ -54,11 +54,6 @@ public class CharacterSkin implements iSkin
         {
             throw new SlickException("No animations declared");
         }
-        //else use first in the list
-        else
-        {
-            startAnim(_spriteSheets.get(0), true, 1.0f);
-        }
     }
     public void render(float _x, float _y)
     {
