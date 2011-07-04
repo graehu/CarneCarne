@@ -6,9 +6,7 @@ package Level;
 
 import Level.Tile.Direction;
 import Level.sLevel.TileType;
-import World.sWorld;
 import World.sWorld.BodyCategories;
-import java.util.HashMap;
 import java.util.Stack;
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Vec2;
@@ -22,9 +20,10 @@ import org.jbox2d.dynamics.FixtureDef;
  */
 class NonEdibleTile extends RootTile
 {
+    static final String constMaterial = "Meat";
     public NonEdibleTile(int _id, sLevel.TileType _tileType, boolean _anchor)
     {
-        super(TileShape.eBlock, _id, _tileType, false, _anchor, false, 1);
+        super(TileShape.eBlock, _id, _tileType, constMaterial, false, _anchor, false, 1);
     }
     @Override
     Fixture createPhysicsBody(int _xTile, int _yTile, Body _body, Tile _tile)

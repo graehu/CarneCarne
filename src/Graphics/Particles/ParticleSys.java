@@ -6,6 +6,7 @@
 
 package Graphics.Particles;
 
+import java.util.Arrays;
 import org.newdawn.slick.particles.ConfigurableEmitter;
 import org.newdawn.slick.particles.ParticleSystem;
 

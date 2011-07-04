@@ -24,13 +24,17 @@ abstract class RootTile
     sLevel.TileType mTileType;
     int mMaxHealth;
     boolean mIsFlammable;
-    public RootTile(TileShape _shape, int _id, sLevel.TileType _tileType, boolean _regrows, boolean _anchor, boolean _isFlammable, int _maxHealth)
+    String mAnimationsName;
+    RootTile mNext;
+    public RootTile(TileShape _shape, int _id, sLevel.TileType _tileType, String _animationsName, boolean _regrows, boolean _anchor, boolean _isFlammable, int _maxHealth)
     {
         mShape = _shape;
         mId = _id;
         mTileType = _tileType;
+        mAnimationsName = _animationsName;
         mRegrows = _regrows;
         mAnchor = _anchor;
+        mNext = null;
         mIsFlammable = _isFlammable;
         mMaxHealth = _maxHealth;
     }
@@ -42,6 +46,15 @@ abstract class RootTile
         mSlopeType = _slopeType;
         mRegrows = true;
         mMaxHealth = _maxHealth;
+    }
+    
+    public RootTile getNext()
+    {
+        return mNext;
+    }
+    public void setNext(RootTile _next)
+    {
+        mNext = _next;
     }
 
     abstract boolean boundaryFrom(Direction _direction, TileType _tileType, MaterialEdges _materialEdges);

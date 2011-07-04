@@ -9,10 +9,12 @@ import Events.TarFireEvent;
 import Entities.FireParticle;
 import Events.EntityDeathEvent;
 import Events.sEvents;
+import Graphics.Particles.sParticleManager;
 import Level.Tile;
 import World.sWorld.BodyCategories;
 import org.jbox2d.callbacks.ContactImpulse;
 import org.jbox2d.collision.Manifold;
+import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.contacts.Contact;
 
 /**
@@ -30,13 +32,19 @@ class FireImpactListener implements iListener
     {
         if (_contact.m_fixtureA.m_filter.categoryBits != (1 << BodyCategories.eFire.ordinal()))
         {
-            sEvents.triggerDelayedEvent(new TarFireEvent((Tile)_contact.m_fixtureA.getUserData(),(FireParticle)_contact.m_fixtureB.m_body.getUserData()));
-            sEvents.triggerDelayedEvent(new EntityDeathEvent((Entity)_contact.m_fixtureB.m_body.getUserData()));
+            FireParticle particle = (FireParticle)_contact.m_fixtureB.m_body.getUserData();
+            Tile tile = (Tile)_contact.m_fixtureA.getUserData();
+            sEvents.triggerDelayedEvent(new TarFireEvent(tile,particle));
+            sParticleManager.createSystem(tile.getAnimationsName() + "FireHit", particle.mBody.getPosition().add(new Vec2(0.5f,0.5f)).mul(64.0f), 120);
+            sEvents.triggerDelayedEvent(new EntityDeathEvent(particle));
         }
         else 
         {
-            sEvents.triggerDelayedEvent(new TarFireEvent((Tile)_contact.m_fixtureB.getUserData(),(FireParticle)_contact.m_fixtureA.m_body.getUserData())); 
-            sEvents.triggerDelayedEvent(new EntityDeathEvent((Entity)_contact.m_fixtureA.m_body.getUserData()));       
+            FireParticle particle = (FireParticle)_contact.m_fixtureA.m_body.getUserData();
+            Tile tile = (Tile)_contact.m_fixtureB.getUserData();
+            sEvents.triggerDelayedEvent(new TarFireEvent(tile,particle));
+            sParticleManager.createSystem(tile.getAnimationsName() + "FireHit", particle.mBody.getPosition().mul(64.0f), 120);
+            sEvents.triggerDelayedEvent(new EntityDeathEvent(particle));       
         }
     }
 

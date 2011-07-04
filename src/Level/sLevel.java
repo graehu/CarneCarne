@@ -72,7 +72,7 @@ public class sLevel {
     }
     public static void init() throws SlickException
     {
-        mTiledMap = new AnimatedTiledMap("assets/AaronTestMap.tmx");
+        mTiledMap = new AnimatedTiledMap("assets/DeekTestMap.tmx"); /// FUCK YOU SIR MY MAPS ARE AWESUMz
         //mTiledMap = new AnimatedTiledMap("assets/DeekTestMap.tmx");
         //mTiledMap = new AnimatedTiledMap("assets/Graham_Tutorial.tmx");
         mTiledMap.initAnimationlayer("assets/TileAnimation.def");

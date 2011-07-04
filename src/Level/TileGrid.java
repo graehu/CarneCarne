@@ -121,6 +121,7 @@ abstract public class TileGrid {
     {
         mTiles[_x][_y].mId = _rootId;
         mTiles[_x][_y].mRootId = rootTiles.get(_rootId);
+        mTiles[_x][_y].mHealth = rootTiles.get(_rootId).mMaxHealth;
         int x;
         int y;
         Stack<Integer> stack = new Stack<Integer>();

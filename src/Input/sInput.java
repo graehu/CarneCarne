@@ -7,10 +7,7 @@ package Input;
 import Events.KeyDownEvent;
 import Events.MapClickEvent;
 import Events.MapClickReleaseEvent;
-import Events.MouseDragEvent;
 import Events.MouseMoveEvent;
-import Events.iEvent;
-import Events.iEventListener;
 import Events.sEvents;
 import Graphics.sGraphicsManager;
 import States.Game.XBoxController;
@@ -19,7 +16,6 @@ import java.util.ArrayList;
 import org.jbox2d.common.Vec2;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Input;
-import org.newdawn.slick.MouseListener;
 
 /**
  *
@@ -29,7 +25,7 @@ public class sInput {
     private sInput() {}
     static private GameContainer mGameContainer = null; 
     static private int mPlayerCount;
-    //static private ArrayList<XBoxController> xBoxControllers = new ArrayList<XBoxController>();
+    static private ArrayList<XBoxController> xBoxControllers = new ArrayList<XBoxController>();
     static MouseStateMachine mMouseStateMachine;
     public static void init(GameContainer _gc)
     {
@@ -59,29 +55,29 @@ public class sInput {
             sGraphicsManager.toggleFullscreen();
         
         //handle controller input
-//        int i = 0;
-//        mPlayerCount = input.getControllerCount();
-//        try
-//        {
-//            for (i = 0; i < xBoxControllers.size(); i++)
-//            {
-//                xBoxControllers.get(i).update(input);
-//            }
-//            while (true)
-//            {
-//                xBoxControllers.add(new XBoxController(i));
-//                xBoxControllers.get(i).update(input);
-//                i++;
-//            }
-//        }
-//        catch (ArrayIndexOutOfBoundsException e)
-//        {
-//            mPlayerCount = i;
-//            if (mPlayerCount == 0)
-//            {
-//                mPlayerCount = 1;
-//            }
-//        }
+        int i = 0;
+        mPlayerCount = input.getControllerCount();
+        try
+        {
+            for (i = 0; i < xBoxControllers.size(); i++)
+            {
+                xBoxControllers.get(i).update(input);
+            }
+            while (true)
+            {
+                xBoxControllers.add(new XBoxController(i));
+                xBoxControllers.get(i).update(input);
+                i++;
+            }
+        }
+        catch (ArrayIndexOutOfBoundsException e)
+        {
+            mPlayerCount = i;
+            if (mPlayerCount == 0)
+            {
+                mPlayerCount = 1;
+            }
+        }
     }
     public static void setCursorPos(Vec2 _pos)
     {

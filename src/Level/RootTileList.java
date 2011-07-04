@@ -56,71 +56,87 @@ public class RootTileList {
         }
         mRootTiles = new ArrayList<RootTile>();
         mRootTiles.add(new EmptyTile());
-        int slopeCounter = 0;
         for (int i = 1; i < idsSize;)
         {
             String shape = _tiledMap.getTileProperty(i, "Type", "None");
             String typeString = _tiledMap.getTileProperty(i, "Material", "Edible");
             int maxHealth = new Integer(_tiledMap.getTileProperty(i, "MaxHealth", "1")).intValue();
+            String animationsName = _tiledMap.getTileProperty(i, "Animationsname", "Meat");
             boolean regrows = Boolean.valueOf(_tiledMap.getTileProperty(i,"Regrows","true")).booleanValue();
             boolean anchor = Boolean.valueOf(_tiledMap.getTileProperty(i, "Anchor", "false")).booleanValue();
             boolean isFlammable = Boolean.valueOf(_tiledMap.getTileProperty(i, "Flammable", "false")).booleanValue();
             sLevel.TileType type = typeMap.get(typeString);
-            int assertion    = type.ordinal();
-            if (shape.equals("Block"))
+            int assertion = type.ordinal();
+            assertion = 0xB00B135;
+            if (!shape.equals("None"))
             {
-                int size = (isFlammable) ? 32 : 16;
-                for (int rootId = i; i < rootId + 16; i++)
+                if (shape.equals("Block"))
                 {
-                    mRootTiles.add(new BlockTile(rootId, type, regrows, anchor, isFlammable, maxHealth));
+                    RootTile tile = new BlockTile(i, type, animationsName, regrows, anchor, isFlammable, maxHealth);
+                    for (int rootId = i + 16; i < rootId; i++)
+                    {
+                        mRootTiles.add(tile);
+                    }
+                    while (maxHealth > 1)
+                    {
+                        maxHealth--;
+                        RootTile tile2 = new BlockTile(i, type, animationsName, regrows, anchor, false, maxHealth);
+                        tile.setNext(tile2);
+                        tile2.setNext(tile);
+                        for (int rootId = i + 16; i < rootId; i++)
+                        {
+                            mRootTiles.add(tile2);
+                        }
+                        tile = tile2;
+                    }
                 }
-            }
-            else if (shape.equals("Slope"))
-            {
-                for (int rootId = i; i < rootId + 4; i++)
-                    mRootTiles.add(new RightDownSlope(i,type, maxHealth)); 
-                for (int rootId = i; i < rootId + 4; i++)
-                    mRootTiles.add(new LeftDownSlope(i,type, maxHealth)); 
-                for (int rootId = i; i < rootId + 4; i++)
-                    mRootTiles.add(new LeftUpSlope(i,type, maxHealth)); 
-                for (int rootId = i; i < rootId + 4; i++)
-                    mRootTiles.add(new RightUpSlope(i,type, maxHealth));
-            }
-            else if (shape.equals("NonEdible"))
-            {
-                mRootTiles.add(new NonEdibleTile(i, type, anchor));
-                i++;
-            }
-            else if (shape.equals("Water"))
-            {
-                for (int rootId = i; i < rootId + 4; i++)
+                else if (shape.equals("Slope"))
                 {
-                    mRootTiles.add(new WaterTile(rootId, type));
-                }                
-            }
-            else if (shape.equals("MelonSkin"))
-            {
-                for (int rootId = i; i < rootId + 16; i++)
-                {
-                    String directionString = _tiledMap.getTileProperty(i, "Direction", "Right");
-                    SkinDirection direction = directionMap.get(directionString);
-                    mRootTiles.add(new MelonSkinTile(i, type, direction, maxHealth));
+                    for (int rootId = i; i < rootId + 4; i++)
+                        mRootTiles.add(new RightDownSlope(i,type, maxHealth)); 
+                    for (int rootId = i; i < rootId + 4; i++)
+                        mRootTiles.add(new LeftDownSlope(i,type, maxHealth)); 
+                    for (int rootId = i; i < rootId + 4; i++)
+                        mRootTiles.add(new LeftUpSlope(i,type, maxHealth)); 
+                    for (int rootId = i; i < rootId + 4; i++)
+                        mRootTiles.add(new RightUpSlope(i,type, maxHealth));
                 }
-            }
-            else if (shape.equals("Edge"))
-            {
-                Direction direction = fromDirection.get(_tiledMap.getTileProperty(i, "Direction", "Down"));
-                for (int rootId = i; i < rootId + 2; i++)
+                else if (shape.equals("NonEdible"))
                 {
-                    mRootTiles.add(new EdgeTile(i, type, direction, regrows, anchor, isFlammable, maxHealth));
+                    mRootTiles.add(new NonEdibleTile(i, type, anchor));
+                    i++;
                 }
-            }
-            else if (shape.equals("Line"))
-            {
-                Direction direction = fromDirection.get(_tiledMap.getTileProperty(i, "Direction", "Down"));
-                for (int rootId = i; i < rootId + 4; i++)
+                else if (shape.equals("Water"))
                 {
-                    mRootTiles.add(new LineTile(i, type, direction, regrows, anchor, isFlammable, maxHealth));
+                    for (int rootId = i; i < rootId + 4; i++)
+                    {
+                        mRootTiles.add(new WaterTile(rootId, type));
+                    }                
+                }
+                else if (shape.equals("MelonSkin"))
+                {
+                    for (int rootId = i; i < rootId + 16; i++)
+                    {
+                        String directionString = _tiledMap.getTileProperty(i, "Direction", "Right");
+                        SkinDirection direction = directionMap.get(directionString);
+                        mRootTiles.add(new MelonSkinTile(i, type, direction, maxHealth));
+                    }
+                }
+                else if (shape.equals("Edge"))
+                {
+                    Direction direction = fromDirection.get(_tiledMap.getTileProperty(i, "Direction", "Down"));
+                    for (int rootId = i; i < rootId + 2; i++)
+                    {
+                        mRootTiles.add(new EdgeTile(i, type, direction, animationsName, regrows, anchor, isFlammable, maxHealth));
+                    }
+                }
+                else if (shape.equals("Line"))
+                {
+                    Direction direction = fromDirection.get(_tiledMap.getTileProperty(i, "Direction", "Down"));
+                    for (int rootId = i; i < rootId + 4; i++)
+                    {
+                        mRootTiles.add(new LineTile(i, type, direction, animationsName, regrows, anchor, isFlammable, maxHealth));
+                    }
                 }
             }
             else

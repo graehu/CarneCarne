@@ -5,8 +5,8 @@ TileAnimation.png
 	0
 	1600
 	128
-	25
-	2
+	0
+	0
 	0
 	0
 }
@@ -16,7 +16,40 @@ TileAnimation.png
 	128
 	1728
 	64
-	27
+	0
+	0
+	0
+	0
+}
+{
+	IceAnimation
+	0
+	192
+	1088
+	64
+	17
+	1
+	0
+	0
+}
+{
+	MeatGrowBack
+	1088
+	192
+	640
+	64
+	10
+	1
+	0
+	0
+}
+{
+	BoneGrowBack
+	0
+	256
+	640
+	64
+	10
 	1
 	0
 	0
