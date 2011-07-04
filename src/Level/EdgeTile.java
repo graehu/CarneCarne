@@ -14,9 +14,9 @@ import java.util.Stack;
 public class EdgeTile extends BlockTile
 {
     Direction mDirection;
-    EdgeTile(int _id, sLevel.TileType _tileType, Direction _direction, boolean _regrows, boolean _anchor, boolean _isFlammable, int _maxHealth)
+    EdgeTile(int _id, sLevel.TileType _tileType, Direction _direction, String _animationsName, boolean _regrows, boolean _anchor, boolean _isFlammable, int _maxHealth)
     {
-        super(_id, _tileType, _regrows, _anchor, _isFlammable, _maxHealth, TileShape.eEdge);
+        super(_id, _tileType, _animationsName, _regrows, _anchor, _isFlammable, _maxHealth, TileShape.eEdge);
         mDirection = _direction;
     }
 

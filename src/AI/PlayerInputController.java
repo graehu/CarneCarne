@@ -21,7 +21,6 @@ import Level.Tile;
 import World.sWorld;
 import java.util.HashMap;
 import org.jbox2d.common.Vec2;
-import org.lwjgl.opengl.Display;
 
 /**
  *
@@ -162,7 +161,7 @@ public class PlayerInputController extends iAIController implements iEventListen
     {
         HashMap parameters = new HashMap();
         //intialise velocity relative to carne's
-        parameters.put("velocity", mPlayerDir.mul(10.0f).add(mEntity.mBody.getLinearVelocityFromLocalPoint(new Vec2(0,0))));
+        parameters.put("velocity", mPlayerDir.mul(20.0f));
         parameters.put("position", mEntity.mBody.getPosition().add(mPlayerDir));
         sEntityFactory.create("FireParticle", parameters);
     }

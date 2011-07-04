@@ -74,13 +74,11 @@ public class StateGame extends BasicGameState implements iEventListener {
     {
         return 3;
     }
-    float bob = 0;
+
     public void update(GameContainer _gc, StateBasedGame _sbg, int _delta) throws SlickException 
     {
-        bob += 0.5f;
         sInput.update(_delta);
         mGameMode.update(_delta);
-        mysys.setAngularOffset(bob);
         //update particles
         sParticleManager.update(_delta);
     }
@@ -91,7 +89,6 @@ public class StateGame extends BasicGameState implements iEventListener {
         mGameMode.render(_gc.getGraphics());
         _grphcs.drawString("fucking work god damnit", 500, 500);
     }
-    ParticleSys mysys;
     @Override
     //callback for when the game enters this state
     public void enter(GameContainer container, StateBasedGame game) throws SlickException 
