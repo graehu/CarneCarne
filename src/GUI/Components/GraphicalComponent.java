@@ -1,0 +1,48 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package GUI.Components;
+
+import java.util.Iterator;
+import org.newdawn.slick.Color;
+import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
+import org.newdawn.slick.SlickException;
+import org.newdawn.slick.geom.Vector2f;
+import org.newdawn.slick.gui.GUIContext;
+
+/**
+ *
+ * @author a203945
+ */
+public class GraphicalComponent extends iComponent{
+    
+    public GraphicalComponent(GUIContext _context, iComponent _parent, Vector2f _position, Vector2f _dimensions) {
+        super(_context, _parent);
+        setDimensions(_dimensions);
+        setLocalTranslation(_position);
+    }
+    public GraphicalComponent(GUIContext _context) {
+        super(_context, null);
+    }
+    
+    public iComponentEffectLayer mEffectLayer = new iComponentEffectLayer(this);
+    protected Image mImage = null;
+    protected Color mColor = Color.pink;
+    
+    @Override
+    public boolean update(int _delta) {
+        mEffectLayer.update(_delta);
+        return true;
+    }
+
+    @Override
+    protected void renderSelf(GUIContext guic, Graphics grphcs, Vector2f _globalPos) throws SlickException {
+        
+        if(mEffectLayer != null)
+            mEffectLayer.render((int)_globalPos.x, (int)_globalPos.y);
+
+        grphcs.drawRect(_globalPos.x, _globalPos.y, getWidth(), getHeight());
+    }   
+}

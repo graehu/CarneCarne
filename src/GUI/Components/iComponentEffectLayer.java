@@ -20,11 +20,11 @@ public class iComponentEffectLayer {
     iComponent mComponent;
     ArrayDeque<iComponentEffect> mEffects = new ArrayDeque<iComponentEffect>();
     
-    void render(int _x, int _y, float _rotation)
+    void render(int _x, int _y)
     {
         for(iComponentEffect effect : mEffects)
         {
-            effect.render(_x, _y, _rotation);
+            effect.render(_x, _y);
         }
     }
     void update(int _delta)

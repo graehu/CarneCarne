@@ -4,7 +4,7 @@
  */
 package States.Title;
 
-import GUI.Components.SelectableComponent;
+import GUI.Components.GraphicalComponent;
 import GUI.Components.iComponent;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
@@ -25,10 +25,16 @@ public class StateTitle extends BasicGameState{
     public int getID() {
        return 2;
     }
-    iComponent comp;
+    iComponent comp, bob, joe;
     public void init(final GameContainer _gc, final StateBasedGame _sbg) throws SlickException {
-        comp = new SelectableComponent(_gc, null, new Vector2f(200,200), new Vector2f(200, 200));
-        comp.addChild(new SelectableComponent(_gc, null, new Vector2f(50,50), new Vector2f(50, 50)));
+        comp = new GraphicalComponent(_gc, null, new Vector2f(200,200), new Vector2f(200, 200));
+        bob = new GraphicalComponent(_gc, null, new Vector2f(50,50), new Vector2f(50, 50));
+        joe = new GraphicalComponent(_gc, null, new Vector2f(10,10), new Vector2f(10, 10));
+        
+        comp.addChild(bob);
+        bob.addChild(joe);
+        
+        
         //comp.setLocalRotation(60);
     }
     
@@ -38,6 +44,8 @@ public class StateTitle extends BasicGameState{
 
     public void update(GameContainer _gc, StateBasedGame _sbg, int _i) throws SlickException {
         comp.setLocalRotation(comp.getLocalRotation()+0.5f);
+        bob.setLocalRotation(bob.getLocalRotation()+0.5f);
+        joe.setLocalRotation(joe.getLocalRotation()+0.5f);
     }
     
 }

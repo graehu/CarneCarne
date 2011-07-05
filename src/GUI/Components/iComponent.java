@@ -3,9 +3,9 @@ package GUI.Components;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.geom.Transform;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.gui.AbstractComponent;
 import org.newdawn.slick.gui.GUIContext;
@@ -22,30 +22,64 @@ public abstract class iComponent extends AbstractComponent {
         
         //initialise member variables
         mParent = _parent;
-        mEffectLayer = new iComponentEffectLayer(this);
-        mChildren = new ArrayList<iComponent>();
-        mRotation = 0.0f;
-        mTranslation = new Vector2f(0,0);
-        mDimensions = new Vector2f(0,0);
-        mIsDestroyed = false;
     }
     
-    public iComponentEffectLayer mEffectLayer;
     private iComponent mParent;
-    private ArrayList<iComponent> mChildren;
-    private float mRotation;
-    private Vector2f mTranslation;
-    private Vector2f mDimensions;
-    private boolean mIsDestroyed;
-    
-    abstract boolean update(int _delta);
-    public void render(GUIContext guic, Graphics grphcs) throws SlickException
+    private ArrayList<iComponent> mChildren = new ArrayList<iComponent>();
+    private float mRotation = 0.0f;
+    private Vector2f mTranslation = new Vector2f(0,0);
+    private Vector2f mDimensions = new Vector2f(0,0);
+    private boolean mIsDestroyed = false;
+    private boolean mIsVisible = true;
+    private Color mColor = Color.pink;
+
+    public abstract boolean update(int _delta);
+    public final void render(GUIContext guic, Graphics grphcs) throws SlickException
     {
-        if(mEffectLayer != null)
+        //render only if root
+        if(mParent == null)
         {
-            Vector2f trans = getGlobalTranslation();
-            mEffectLayer.render((int)trans.x, (int)trans.y, getGlobalRotation());
+            float rot = getLocalRotation();
+            Vector2f trans = getLocalTranslation();
+            float centerX = trans.x + (getWidth() * 0.5f);
+            float centerY = trans.y + (getHeight() * 0.5f);
+
+            grphcs.rotate(centerX, centerY, rot);
+
+                //start render chain
+                renderInternal(guic, grphcs, new Vector2f(0,0));
+
+            grphcs.rotate(centerX, centerY, -rot);
         }
+    }
+    private void renderInternal(GUIContext guic, Graphics grphcs, Vector2f _globalPos) throws SlickException
+    {
+        float rot = getLocalRotation();
+        Vector2f trans = getLocalTranslation().add(_globalPos);
+        float centerX = trans.x + (getWidth() * 0.5f);
+        float centerY = trans.y + (getHeight() * 0.5f);
+
+        grphcs.rotate(centerX, centerY, rot);
+        {
+            if(mIsVisible)
+            {
+                grphcs.setColor(mColor);
+                renderSelf(guic, grphcs, trans);
+            }
+
+            //render children
+            Iterator<iComponent> itr = getChildIterator();
+            while(itr.hasNext())
+            {
+                iComponent child = itr.next();
+                child.renderInternal(guic, grphcs, trans);
+            }
+        }
+        grphcs.rotate(centerX, centerY, -rot);
+    }
+    protected void renderSelf(GUIContext guic, Graphics grphcs, Vector2f _globalPos) throws SlickException
+    {
+        grphcs.drawRect(_globalPos.x, _globalPos.y, getWidth(), getHeight());
     }
     
     public final float getGlobalRotation()
@@ -83,6 +117,7 @@ public abstract class iComponent extends AbstractComponent {
         mDimensions.x = _dimensions.x;
         mDimensions.y = _dimensions.y;
     }
+    public final boolean isRoot(){return mParent == null;}
     public final boolean setParent(iComponent _parent)
     {
         if(mParent == null)
@@ -92,6 +127,9 @@ public abstract class iComponent extends AbstractComponent {
         }
         else return false;
     }
+    public final void setColor(Color _color){mColor =  _color;}
+    public final boolean isVisible(){return mIsVisible;}
+    public final void setIsVisible(boolean _isVisible){mIsVisible = _isVisible;}
     //returns false if child already has a parent
     public final boolean addChild(iComponent _child)
     {

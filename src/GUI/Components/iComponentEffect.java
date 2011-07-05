@@ -10,6 +10,6 @@ package GUI.Components;
  */
 public interface iComponentEffect {
     
-    void render(int _x, int _y, float _rotation);
+    void render(int _x, int _y);
     void update(int _delta);
 }
