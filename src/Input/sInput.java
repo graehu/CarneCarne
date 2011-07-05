@@ -7,10 +7,7 @@ package Input;
 import Events.KeyDownEvent;
 import Events.MapClickEvent;
 import Events.MapClickReleaseEvent;
-import Events.MouseDragEvent;
 import Events.MouseMoveEvent;
-import Events.iEvent;
-import Events.iEventListener;
 import Events.sEvents;
 import Graphics.sGraphicsManager;
 import States.Game.XBoxController;
@@ -19,7 +16,6 @@ import java.util.ArrayList;
 import org.jbox2d.common.Vec2;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Input;
-import org.newdawn.slick.MouseListener;
 
 /**
  *

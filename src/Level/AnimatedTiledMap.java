@@ -10,7 +10,6 @@
 
 package Level;
 
-import java.util.ArrayList;
 import java.util.Random;
 import org.jbox2d.common.Vec2;
 import org.newdawn.slick.Animation;
@@ -24,20 +23,32 @@ import org.newdawn.slick.tiled.TiledMap;
  */
 public class AnimatedTiledMap extends TiledMap{
     
-    private ArrayList<Animation> mAnimatedObjects;
-    private ArrayList<Vec2> mAnimationOffsets;
-    private PackedSpriteSheet mTileMapAnimations;
+    class AnimatedTile
+    {
+        AnimatedTile(Animation _anim, Vec2 _pos)
+        {
+            mAnimation = _anim;
+            mPosition = _pos;
+        }
+        
+        private Animation mAnimation = null;
+        private Vec2 mPosition = null;
+        
+        void render(float worldTransX, float worldTransY)
+        {
+            mAnimation.draw(mPosition.x*64.0f + worldTransX, mPosition.y*64.0f + worldTransY);
+        }
+    }
+    
+    private AnimatedTile[][] mAnimatedLayer = null;
+    private PackedSpriteSheet mTileMapAnimations = null;
     private boolean mIsLoaded = false;
+    private Random mRand = new Random();
     
     AnimatedTiledMap(String mMapRef) throws SlickException
     {
         //construct parent
-        super(mMapRef);
-        
-        //initialise member variables
-        mAnimatedObjects = new ArrayList<Animation>();
-        mAnimationOffsets = new ArrayList<Vec2>();
-        
+        super(mMapRef);        
     }
     
     public void initAnimationlayer(String _packedAnimSheetRef) throws SlickException
@@ -46,7 +57,7 @@ public class AnimatedTiledMap extends TiledMap{
         {
             mIsLoaded = true;
             
-            Random rand = new Random();
+            mAnimatedLayer = new AnimatedTile[getWidth()][getHeight()];
             
             //load packed sprite sheet
             mTileMapAnimations = new PackedSpriteSheet(_packedAnimSheetRef);
@@ -83,7 +94,7 @@ public class AnimatedTiledMap extends TiledMap{
                         continue;
                     int maxTimeOffset = Integer.parseInt(property);
                     
-                    property = getTileProperty(tileID, "randomiseSpeed", null);
+                    property = getTileProperty(tileID, "randomiseSpeed", "false");
                     boolean isRandSpeed = Boolean.parseBoolean(property);
 
                     //no fail - create animation
@@ -92,21 +103,47 @@ public class AnimatedTiledMap extends TiledMap{
                     
                     //ofset start of animation
                     if(maxTimeOffset > 0)
-                        anim.update(rand.nextInt(maxTimeOffset));
+                        anim.update(mRand.nextInt(maxTimeOffset));
                     
                     //randomise speed slightly
                     if(isRandSpeed)
                     {
-                        float randSpeed = rand.nextFloat()%1.25f;
+                        float randSpeed = mRand.nextFloat()%1.25f;
                         anim.setSpeed(Math.max(0.75f, randSpeed));
                     }
                     
-                    mAnimationOffsets.add(new Vec2( x * 64,
-                                                    y * 64));
-                    mAnimatedObjects.add(anim);
+                    mAnimatedLayer[x][y] = new AnimatedTile(anim, new Vec2(x,y));
                 }
             }
         }
+    }
+    void createAnimatedTile(int _xPos, int _yPos, String _ref)
+    {
+        createAnimatedTile(_xPos, _yPos, _ref, 41, 0, false);
+    }
+    void createAnimatedTile(int _xPos, int _yPos, String _ref, int _duration, int _maxTimeOffset, boolean _isRandSpeed)
+    {
+        //no fail - create animation
+        SpriteSheet sheet = mTileMapAnimations.getSpriteSheet(_ref);
+        Animation anim = new Animation(sheet,_duration);
+
+        //ofset start of animation
+        if(_maxTimeOffset > 0)
+            anim.update(mRand.nextInt(_maxTimeOffset));
+
+        //randomise speed slightly
+        if(_isRandSpeed)
+        {
+            float randSpeed = mRand.nextFloat()%1.25f;
+            anim.setSpeed(Math.max(0.75f, randSpeed));
+        }
+
+        mAnimatedLayer[_xPos][_yPos] = new AnimatedTile(anim, new Vec2(_xPos,_yPos));
+    }
+    
+    void destroyAnimatedTile(int _xPos, int _yPos)
+    {
+        mAnimatedLayer[_xPos][_yPos] = null;
     }
     
      /*
@@ -115,22 +152,18 @@ public class AnimatedTiledMap extends TiledMap{
      * _width:  width of screen (pixels)
      * _height: height of screen (pixels)
      */
-    public void renderAnimatedLayer(float _x, float _y, float _width, float _height)
+    public void renderAnimatedLayer(float _x, float _y, int _startX, int _startY, int _width, int _height)
     {
         //assumes lists of equal length
-        Animation anim;
-        Vec2 offset;
-        for(int i = 0; i < mAnimatedObjects.size(); i++)
+        int endX = _startX + _width;
+        int endY = _startY + _height;
+        for(int i = _startX; i < endX; i++)
         {
-            anim = mAnimatedObjects.get(i);
-            offset = mAnimationOffsets.get(i);
-            
-            float xPos = offset.x + _x;
-            float yPos = offset.y + _y;
-            
-            if( xPos > -anim.getWidth() && xPos < _width &&
-                yPos > -anim.getHeight() && yPos < _height)
-                anim.draw(_x + offset.x, _y + offset.y);
+            for(int j = _startY; j < endY; j++)
+            {
+                if(mAnimatedLayer[i][j] != null)
+                    mAnimatedLayer[i][j].render(_x, _y);
+            }
         }
     }
 }

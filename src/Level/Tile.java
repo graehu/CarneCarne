@@ -4,6 +4,7 @@
  */
 package Level;
 
+import Graphics.Particles.sParticleManager;
 import Level.sLevel.TileType;
 import java.util.HashMap;
 import java.util.Stack;
@@ -41,8 +42,21 @@ public class Tile
     {
         return mRootId.mTileType;
     }
+    public String getAnimationsName()
+    {
+        return mRootId.mAnimationsName;
+    }
     public void setOnFire()
     {
+        /*try
+        {
+            if (mRootId.mAnimationsName != null)
+                sParticleManager.createSystem(mRootId.mAnimationsName + "FireHit", mTileGrid.mBody.getWorldPoint(new Vec2(mXTile,mYTile)).mul(64.0f), 120);
+        }
+        catch (NullPointerException e) /// FIXME lol jk this is working PERFECTLY
+        {
+            /// Booo
+        }*/
         if (!isOnFire)
         {
             isOnFire = true;
@@ -68,11 +82,13 @@ public class Tile
     {
         if (mHealth > 1)
         {
-            mId += 16;
+            mRootId = mRootId.getNext();
+            //mId += 16;
             mHealth--;
             //mRootId = rootTiles.get(tile.mId);
             Stack<Integer> stack = new Stack<Integer>();
             mTileGrid.mTiles[mXTile][mYTile].checkEdges(stack, mTileGrid);
+            sParticleManager.createSystem(mRootId.mAnimationsName + "DamageParticle", mTileGrid.mBody.getWorldPoint(new Vec2(mXTile,mYTile)).mul(64.0f), 120);
             while (!stack.empty())
             {
                 int id = stack.pop();

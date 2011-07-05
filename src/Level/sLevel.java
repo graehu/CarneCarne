@@ -72,7 +72,8 @@ public class sLevel {
     }
     public static void init() throws SlickException
     {
-        mTiledMap = new AnimatedTiledMap("assets/DeekTestMap.tmx");
+        mTiledMap = new AnimatedTiledMap("assets/DeekTestMap.tmx"); /// FUCK YOU SIR MY MAPS ARE AWESUMz
+        //mTiledMap = new AnimatedTiledMap("assets/DeekTestMap.tmx");
         //mTiledMap = new AnimatedTiledMap("assets/Graham_Tutorial.tmx");
         mTiledMap.initAnimationlayer("assets/TileAnimation.def");
         mLevelEditor = new LevelEditor(mTiledMap);
@@ -108,7 +109,9 @@ public class sLevel {
             transY = transY % 64;
             mTiledMap.render(transX,transY, xStart,yStart, xTiles,yTiles, i, false);
         }
-        mTiledMap.renderAnimatedLayer(translation.x,translation.y,s.x,s.y);
+        int xStart = -(int)(translation.x/64.0f);
+        int yStart = -(int)(translation.y/64.0f);
+        mTiledMap.renderAnimatedLayer(translation.x,translation.y,xStart,yStart,xTiles,yTiles);
     }
     public static void renderForeground()
     {

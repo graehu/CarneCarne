@@ -7,8 +7,8 @@
 <!-- the Compile on Save feature is turned off for the project. -->
 <!-- You can turn off the Compile on Save (or Deploy on Save) setting -->
 <!-- in the project's Project Properties dialog box.-->
-<project name="SlickTestbed" default="default" basedir=".">
-    <description>Builds, tests, and runs the project SlickTestbed.</description>
+<project name="CarneCarne" default="default" basedir=".">
+    <description>Builds, tests, and runs the project CarneCarne.</description>
     <import file="nbproject/build-impl.xml"/>
 	
 	<property name="src.dir" value="src" />
@@ -37,7 +37,15 @@
             <fileset dir="${lib.dir}" />
         </copy>
 		<delete dir="${dist.dir}/lib/natives" />
+		<delete dir="${dist.dir}/assets" />
 	</target>
+	
+	<target name="-post-clean">
+		<taskdef name="digest" classname="com.threerings.getdown.tools.DigesterTask"
+         classpath="${lib.dir}/getdown-tools.jar"/>
+		<digest appdir="${dist.dir}"/>
+	</target>
+		
     <!--
 
     There exist several targets which are by default empty and which can be 

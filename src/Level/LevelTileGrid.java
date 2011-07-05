@@ -15,12 +15,12 @@ import org.newdawn.slick.tiled.TiledMap;
  */
 public final class LevelTileGrid extends TileGrid
 {
-    private TiledMap tiledMap;
+    AnimatedTiledMap tiledMap;
     private int layerIndex;
     public LevelTileGrid(TiledMap _tiledMap, RootTileList _rootTiles, int _layerIndex)
     {
         super(_rootTiles, _tiledMap.getWidth(), _tiledMap.getHeight());
-        tiledMap = _tiledMap;
+        tiledMap = (AnimatedTiledMap)_tiledMap;
         layerIndex = _layerIndex;
         HashMap parameters = new HashMap();
         parameters.put("isDynamic", false);
