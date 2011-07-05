@@ -1,0 +1,15 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package GUI.Components;
+
+/**
+ *
+ * @author a203945
+ */
+public interface iComponentEffect {
+    
+    void render(int _x, int _y, float _rotation);
+    void update(int _delta);
+}
