@@ -32,8 +32,8 @@ abstract public class TileGrid {
     public TileGrid(RootTileList _rootTiles, int _width, int _height)
     {
         rootTiles = _rootTiles;
-        mTileFire = new TileFire(this);
         mTiles = new Tile[_width][_height];
+        mTileFire = new TileFire(this);
         mWidth = _width;
         mHeight = _height;
     }

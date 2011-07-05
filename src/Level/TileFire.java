@@ -4,8 +4,10 @@
  */
 package Level;
 
+import Graphics.Particles.sParticleManager;
 import java.util.LinkedList;
 import java.util.Queue;
+import org.jbox2d.common.Vec2;
 
 /**
  *
@@ -37,6 +39,7 @@ class TileFire
     void addTile(Tile _tile)
     {
         burningTiles.add(new BurningTile(_tile, mFrames + burnTime));
+        sParticleManager.createSystem("TarBurn", new Vec2(_tile.mXTile,_tile.mYTile).mul(64).add(new Vec2(32,32)), 180/60.0f);
     }
     void update()
     {

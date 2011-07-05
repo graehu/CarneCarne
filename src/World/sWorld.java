@@ -202,22 +202,15 @@ public class sWorld
             switch (tileType)
             {
                 case eSwingable:
-                {
-                    if (tile.damageTile())
-                    {
-                        //tile.getTileGrid().destroyTile((int)callback.getFixture()..getPosition().x, (int)callback.getFixture().m_body.getPosition().y);
-                        sEvents.triggerEvent(new TileDestroyedEvent((int)callback.getFixture().m_body.getPosition().x, (int)callback.getFixture().m_body.getPosition().y));
-                        tile.destroyFixture();
-                    }
-                    break;
-                }
                 case eEdible:
                 case eIce:
                 case eMelonSkin:
                 {
-                    //tile.getTileGrid().destroyTile((int)callback.getFixture().m_body.getPosition().x, (int)callback.getFixture().m_body.getPosition().y);
-                    sEvents.triggerEvent(new TileDestroyedEvent((int)callback.getFixture().m_body.getPosition().x, (int)callback.getFixture().m_body.getPosition().y));
-                    tile.destroyFixture();
+                    if (tile.damageTile())
+                    {
+                        sEvents.triggerEvent(new TileDestroyedEvent((int)callback.getFixture().m_body.getPosition().x, (int)callback.getFixture().m_body.getPosition().y));
+                        tile.destroyFixture();
+                    }
                     break;
                 }
                 case eEmpty:
@@ -227,7 +220,7 @@ public class sWorld
                 }
             }
         }
-        return true;        
+        return true;
     }
     static Body groundBody = null;
     public static Joint createMouseJoint(Vec2 _targetPosition, Body _body)

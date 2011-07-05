@@ -204,7 +204,7 @@ public class TongueStateMachine {
                     }
                     else if (mTile.getTileType().equals(TileType.eChilli))
                     {
-                        mAmmoLeft = 50;
+                        mAmmoLeft = 4;
                     }
                     else
                     {

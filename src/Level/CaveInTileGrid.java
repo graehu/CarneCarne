@@ -108,8 +108,11 @@ public class CaveInTileGrid extends TileGrid
             parameters.put("img", image);
 
             /// Individual tiles
-            mTiles[_x][_y].createPhysicsBody(parameters, mBody);
-            Fixture fixture = mTiles[_x][_y].mFixture;
+            if (mBody != null)
+            {
+                mTiles[_x][_y].createPhysicsBody(parameters, mBody);
+                Fixture fixture = mTiles[_x][_y].mFixture;
+            }
             //mLastBody = body;
             //parameters.put("Body", fixture);
             //sEntityFactory.create("CaveInTileFactory", parameters);

@@ -125,17 +125,25 @@ public class RootTileList {
                 else if (shape.equals("Edge"))
                 {
                     Direction direction = fromDirection.get(_tiledMap.getTileProperty(i, "Direction", "Down"));
-                    for (int rootId = i; i < rootId + 2; i++)
+                    int size = Integer.valueOf(_tiledMap.getTileProperty(i, "Size", "1"));
+                    for (int ii = 0; ii < size; ii++)
                     {
-                        mRootTiles.add(new EdgeTile(i, type, direction, animationsName, regrows, anchor, isFlammable, maxHealth));
+                        for (int rootId = i; i < rootId + 2; i++)
+                        {
+                            mRootTiles.add(new EdgeTile(i, type, direction, animationsName, regrows, anchor, isFlammable, maxHealth));
+                        }
                     }
                 }
                 else if (shape.equals("Line"))
                 {
                     Direction direction = fromDirection.get(_tiledMap.getTileProperty(i, "Direction", "Down"));
-                    for (int rootId = i; i < rootId + 4; i++)
+                    int size = Integer.valueOf(_tiledMap.getTileProperty(i, "Size", "1"));
+                    for (int ii = 0; ii < size; ii++)
                     {
-                        mRootTiles.add(new LineTile(i, type, direction, animationsName, regrows, anchor, isFlammable, maxHealth));
+                        for (int rootId = i; i < rootId + 4; i++)
+                        {
+                            mRootTiles.add(new LineTile(i, type, direction, animationsName, regrows, anchor, isFlammable, maxHealth));
+                        }
                     }
                 }
             }

@@ -36,6 +36,10 @@ public class sParticleManager {
      */
     public static ParticleSys createSystem(String _ref, Vec2 _position, float _lifeTime)
     {
+        return createSystemImplementation(_ref, _position, _lifeTime, true);
+    }
+    private static ParticleSys createSystemImplementation(String _ref, Vec2 _position, float _lifeTime, boolean _dive)
+    {
         ParticleSystem system = null;
         if(mLoadedSystems.containsKey(_ref))
         {//already loaded
@@ -43,8 +47,25 @@ public class sParticleManager {
         }
         else
         {//create new
-            try {system = ParticleIO.loadConfiguredSystem("particleSystems/" + _ref + ".xml");} 
-            catch (IOException ex) {Logger.getLogger(sParticleManager.class.getName()).log(Level.SEVERE, null, ex);}
+            try
+            {
+                system = ParticleIO.loadConfiguredSystem("particleSystems/" + _ref + ".xml");
+            } 
+            catch (Throwable ex)
+            {
+                if (_dive)
+                {
+                    system = createSystemImplementation(_ref + "1", _position, _lifeTime, false).mSystem;
+                    ParticleSystem system2 = createSystemImplementation(_ref + "2", _position, _lifeTime, false).mSystem;
+                    ParticleSys p = new DoubleParticleSys(system, system2, _lifeTime);
+                    mInstancedSystems.add(p);
+                    return p;
+                }
+                else
+                {
+                    Logger.getLogger(sParticleManager.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
             mLoadedSystems.put(_ref, system);
         }
         //clone and initialise new system
@@ -54,15 +75,20 @@ public class sParticleManager {
         }
         catch (SlickException e)
         {
-            
+            /// Probably want to do this, it'll lead to more predictable errors
+            system = null;
         }
         system.setPosition(_position.x, _position.y);
         //Create wrapper for system and instance it
         ParticleSys p = new ParticleSys(system, _lifeTime);
-        mInstancedSystems.add(p);
+        if (_dive)
+        {
+            mInstancedSystems.add(p);
+        }
         
-        return p;
+        return p;        
     }
+        
     
     /*
      * _delta: time step in milliseconds
