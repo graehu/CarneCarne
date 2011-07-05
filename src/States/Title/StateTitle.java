@@ -5,14 +5,10 @@
 package States.Title;
 
 import GUI.Components.GraphicalComponent;
-import GUI.Components.iComponent;
-import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
-import org.newdawn.slick.gui.MouseOverArea;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -25,7 +21,7 @@ public class StateTitle extends BasicGameState{
     public int getID() {
        return 2;
     }
-    iComponent comp, bob, joe;
+    GraphicalComponent comp, bob, joe;
     public void init(final GameContainer _gc, final StateBasedGame _sbg) throws SlickException {
         comp = new GraphicalComponent(_gc, null, new Vector2f(200,200), new Vector2f(200, 200));
         bob = new GraphicalComponent(_gc, null, new Vector2f(50,50), new Vector2f(50, 50));
@@ -34,15 +30,17 @@ public class StateTitle extends BasicGameState{
         comp.addChild(bob);
         bob.addChild(joe);
         
-        
-        //comp.setLocalRotation(60);
+        comp.setImage("assets/pea.png");
+        bob.setImage("assets/pea.png");
+        joe.setImage("assets/seesaw.png");
     }
     
     public void render(GameContainer _gc, StateBasedGame _sbg, Graphics _grphcs) throws SlickException {
-        comp.render(_gc, _grphcs);
+        comp.render(_gc, _grphcs, true);
     }
 
     public void update(GameContainer _gc, StateBasedGame _sbg, int _i) throws SlickException {
+        comp.update(_i);
         comp.setLocalRotation(comp.getLocalRotation()+0.5f);
         bob.setLocalRotation(bob.getLocalRotation()+0.5f);
         joe.setLocalRotation(joe.getLocalRotation()+0.5f);

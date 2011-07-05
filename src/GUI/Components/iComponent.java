@@ -6,6 +6,9 @@ import java.util.Iterator;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.geom.Rectangle;
+import org.newdawn.slick.geom.Shape;
+import org.newdawn.slick.geom.Transform;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.gui.AbstractComponent;
 import org.newdawn.slick.gui.GUIContext;
@@ -24,38 +27,73 @@ public abstract class iComponent extends AbstractComponent {
         mParent = _parent;
     }
     
-    private iComponent mParent;
+    private iComponent  mParent;
     private ArrayList<iComponent> mChildren = new ArrayList<iComponent>();
-    private float mRotation = 0.0f;
-    private Vector2f mTranslation = new Vector2f(0,0);
-    private Vector2f mDimensions = new Vector2f(0,0);
-    private boolean mIsDestroyed = false;
-    private boolean mIsVisible = true;
-    private Color mColor = Color.pink;
+    private Vector2f    mDimensions = new Vector2f(0,0);
+    private float       mLocalRotation = 0.0f;
+    private Vector2f    mLocalTranslation = new Vector2f(0,0);
+    private float       mGlobalRotation = 0.0f;
+    private Vector2f    mGlobalTranslation = new Vector2f(0,0);
+    private Transform   mGlobalTransform = Transform.createTranslateTransform(0, 0);
+    private boolean     mIsDestroyed = false;
+    private boolean     mIsVisible = true;
+    private Color       mColor = Color.pink;
+    private Shape       mShape = new Rectangle(0, 0, 1, 1);
 
-    public abstract boolean update(int _delta);
+    /*
+     * -------primary functions-----------
+     */
+    public final boolean update(int _delta)
+    {
+        if(mParent == null)
+        {
+            updateInternal(_delta);
+        }
+        return false;
+    }
+    private boolean updateInternal(int _delta)
+    {
+        mGlobalRotation = calcGlobalRotation();
+        mGlobalTranslation = calcGlobalTranslation();
+        mGlobalTransform = calcGlobalTransform();
+
+        mShape = new Rectangle(0,0,getWidth(),getHeight());
+        mShape = mShape.transform(getGlobalTransform());
+        
+        updateSelf(_delta);
+        
+        //update children
+        Iterator<iComponent> itr = getChildIterator();
+        while(itr.hasNext())
+        {
+            iComponent child = itr.next();
+            child.updateInternal(_delta);
+        }
+
+        return true;
+    }
+    protected abstract boolean updateSelf(int _delta);
     public final void render(GUIContext guic, Graphics grphcs) throws SlickException
+    {
+        render(guic, grphcs, false);
+    }
+    public final void render(GUIContext guic, Graphics grphcs, boolean _debug) throws SlickException
     {
         //render only if root
         if(mParent == null)
         {
-            float rot = getLocalRotation();
-            Vector2f trans = getLocalTranslation();
-            float centerX = trans.x + (getWidth() * 0.5f);
-            float centerY = trans.y + (getHeight() * 0.5f);
-
-            grphcs.rotate(centerX, centerY, rot);
-
-                //start render chain
-                renderInternal(guic, grphcs, new Vector2f(0,0));
-
-            grphcs.rotate(centerX, centerY, -rot);
+            //start render chain
+            renderInternal(guic, grphcs, new Vector2f(0,0));
+            if(_debug)
+                renderInternalDebug(grphcs);
         }
     }
     private void renderInternal(GUIContext guic, Graphics grphcs, Vector2f _globalPos) throws SlickException
     {
-        float rot = getLocalRotation();
+        grphcs.setColor(mColor);
+        
         Vector2f trans = getLocalTranslation().add(_globalPos);
+        float rot = getLocalRotation();
         float centerX = trans.x + (getWidth() * 0.5f);
         float centerY = trans.y + (getHeight() * 0.5f);
 
@@ -77,39 +115,71 @@ public abstract class iComponent extends AbstractComponent {
         }
         grphcs.rotate(centerX, centerY, -rot);
     }
-    protected void renderSelf(GUIContext guic, Graphics grphcs, Vector2f _globalPos) throws SlickException
+    private final void renderInternalDebug(Graphics _graphics)
     {
-        grphcs.drawRect(_globalPos.x, _globalPos.y, getWidth(), getHeight());
+        _graphics.setColor(Color.white);
+        _graphics.draw(getShape());
+        
+        //render children
+        Iterator<iComponent> itr = getChildIterator();
+        while(itr.hasNext())
+        {
+            iComponent child = itr.next();
+            child.renderInternalDebug(_graphics);
+        }
     }
+    protected abstract void renderSelf(GUIContext guic, Graphics grphcs, Vector2f _globalPos) throws SlickException;
     
-    public final float getGlobalRotation()
+    /*
+     * ----------various getters and setters-------------
+     */
+    //returns shape translated in global space
+    public final Shape getShape(){return mShape;}
+    public final Transform getGlobalTransform(){return mGlobalTransform;}
+    private final Transform calcGlobalTransform()
     {
-        float rotation = mRotation;
+        float rot = getLocalRotation() / (float)(180.0f/Math.PI);
+        Vector2f trans = getLocalTranslation();
+        float centerX = trans.x + (getWidth() * 0.5f);
+        float centerY = trans.y + (getHeight() * 0.5f);
+        Transform transform = Transform.createRotateTransform(rot, centerX, centerY);
+        transform = transform.concatenate(Transform.createTranslateTransform(getX(), getY()));
+        if(mParent != null)
+        {
+            transform = mParent.getGlobalTransform().concatenate(transform);
+        }
+        return transform;
+    }
+    public final float getGlobalRotation(){return mGlobalRotation;}
+    private final float calcGlobalRotation()
+    {
+        float rotation = mLocalRotation;
         if(mParent != null)
         {
             rotation += mParent.getGlobalRotation();
         }
         return rotation;
     }
-    public final Vector2f getGlobalTranslation()
+    public final Vector2f getGlobalTranslation(){return mGlobalTranslation;}
+    private final Vector2f calcGlobalTranslation()
     {
-        Vector2f translation = mTranslation.copy();
+        Vector2f translation = mLocalTranslation.copy();
         if(mParent != null)
         {
             translation = translation.add(mParent.getGlobalTranslation());
         }
         return translation;
     }
-    public final float getLocalRotation(){return mRotation;}
+    public final float getLocalRotation(){return mLocalRotation;}
     public final void setLocalRotation(float _degrees)
     {
-        mRotation =_degrees;
+        mLocalRotation =_degrees;
     }
-    public final Vector2f getLocalTranslation(){return mTranslation.copy();}
+    public final Vector2f getLocalTranslation(){return mLocalTranslation.copy();}
     public final void setLocalTranslation(Vector2f _position)
     {
-        mTranslation.x = _position.x;
-        mTranslation.y = _position.y;
+        mLocalTranslation.x = _position.x;
+        mLocalTranslation.y = _position.y;
     }
     public final Vector2f getDimensions(){return mDimensions.copy();}
     public final void setDimensions(Vector2f _dimensions)
@@ -130,6 +200,10 @@ public abstract class iComponent extends AbstractComponent {
     public final void setColor(Color _color){mColor =  _color;}
     public final boolean isVisible(){return mIsVisible;}
     public final void setIsVisible(boolean _isVisible){mIsVisible = _isVisible;}
+    
+    /*
+     * --------methods for child control :P-----------
+     */
     //returns false if child already has a parent
     public final boolean addChild(iComponent _child)
     {
@@ -150,7 +224,7 @@ public abstract class iComponent extends AbstractComponent {
     }
     
     /*
-     * methods for destruction
+     * -------methods for destruction----------
      */
     public final boolean isDestroyed()
     {
@@ -176,23 +250,23 @@ public abstract class iComponent extends AbstractComponent {
         mParent = null;
         
     }
-     
+
     /*
-     * Overrides for AbstractComponent
+     * ------------Overrides for AbstractComponent------------
      */
     @Override
     public void setLocation(int _x, int _y) {
-        if(mTranslation == null) //required due to call in parent's constructor
-            mTranslation = new Vector2f(0,0);
+        if(mLocalTranslation == null) //required due to call in parent's constructor
+            mLocalTranslation = new Vector2f(0,0);
         setLocalTranslation(new Vector2f(_x,_y));
     }
     @Override
     public int getX() {
-        return (int)mTranslation.x;
+        return (int)mLocalTranslation.x;
     }
     @Override
     public int getY() {
-        return (int)mTranslation.y;
+        return (int)mLocalTranslation.y;
     }
     @Override
     public int getWidth() {

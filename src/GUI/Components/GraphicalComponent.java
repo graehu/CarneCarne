@@ -4,8 +4,8 @@
  */
 package GUI.Components;
 
-import java.util.Iterator;
-import org.newdawn.slick.Color;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
@@ -29,20 +29,30 @@ public class GraphicalComponent extends iComponent{
     
     public iComponentEffectLayer mEffectLayer = new iComponentEffectLayer(this);
     protected Image mImage = null;
-    protected Color mColor = Color.pink;
     
     @Override
-    public boolean update(int _delta) {
+    public boolean updateSelf(int _delta) {
         mEffectLayer.update(_delta);
         return true;
     }
 
     @Override
     protected void renderSelf(GUIContext guic, Graphics grphcs, Vector2f _globalPos) throws SlickException {
-        
         if(mEffectLayer != null)
             mEffectLayer.render((int)_globalPos.x, (int)_globalPos.y);
-
-        grphcs.drawRect(_globalPos.x, _globalPos.y, getWidth(), getHeight());
+        
+        mImage.draw(_globalPos.x, _globalPos.y, getWidth(), getHeight());
     }   
+    
+    public void setImage(String _ref)
+    {
+        try 
+        {
+            mImage = new Image(_ref);
+        } 
+        catch (SlickException ex) {
+            Logger.getLogger(GraphicalComponent.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
 }
