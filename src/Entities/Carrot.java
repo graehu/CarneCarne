@@ -5,21 +5,19 @@
 package Entities;
 
 import Graphics.Skins.iSkin;
-import World.sWorld;
-import org.jbox2d.common.Vec2;
 
 /**
  *
- * @author G203947
+ * @author Graham
  */
-public class Carrot  extends AIEntity
+public class Carrot  extends FlyingAI
 {
     //private float mMoveSpeed;
 
     public Carrot(iSkin _skin) 
     {
         super(_skin);
-        mMoveSpeed = 6;
+        mMoveSpeed = 0.5f;
     }
     
     public void setMoveSpeed(float _moveSpeed)
@@ -31,6 +29,5 @@ public class Carrot  extends AIEntity
         //mBody.setLinearVelocity(new Vec2(0,0));
         mController.update();
         //mBody.applyLinearImpulse(new Vec2(0, -9.8f/mBody.m_mass), new Vec2(0,0));
-        //subUpdate();    
     } 
 }

@@ -25,16 +25,12 @@ public class AStar implements iPathFinding
     int mXTarget, mYTarget;
     int mMaxDepth;
     Entity mEntity;
-    Command mCommand;
     private LinkedList<Node> mWorkingSet = new LinkedList();
     private LinkedList<Node> mClosedSet = new LinkedList();
     private LinkedList<Vec2> mPath = new LinkedList();
     private LinkedList<Node> mNodes = new LinkedList();
     iHeuristic mHeuristic;
-    ///private Array bestPath;
-    ///private Array heuristicPath;
-    ///private Array totalCost;
-    ///private Path mPath;
+    private Vec2 mLastPoint;
     
     public AStar(Entity _entity, iHeuristic _Heuristic)
     {
@@ -51,45 +47,42 @@ public class AStar implements iPathFinding
         mMaxDepth = _maxDepth;
     }
 
-    public Command follow()
+    public Vec2 follow()
     {
         if(!mPath.isEmpty())
         {
             Vec2 target = mPath.peekFirst();
             Vec2 pos  = mEntity.mBody.getPosition();
 
-            if((target.x+0.2 > pos.x && target.x-0.2 < pos.x) && (target.y+0.2 > pos.y && target.y-0.2 < pos.y))
+            if((target.x+0.25 > pos.x && target.x-0.25 < pos.x) && (target.y+0.25 > pos.y && target.y-0.25 < pos.y))
             {
-
-                mPath.removeFirst();
+                if(mPath.size() > 1)
+                {
+                    pos = mPath.peekFirst();
+                    while(true)
+                    {
+                        mPath.removeFirst();
+                        if(mPath.size() <= 1)
+                            break;
+                        target = mPath.peekFirst();
+                        Vec2 angle = new Vec2(target.x - pos.x, target.y - pos.y);
+                        angle.normalize();
+                        angle.absLocal();
+                        if(!(angle.x == 1 || angle.y == 1))
+                            break;
+                    }
+                }
+                //target.x = target.x+0.5f;
             }
-            else if (target.x > pos.x && mYTarget == mYStart){mCommand = Command.eMoveRight;}
-            else if((target.x < pos.x)  && (target.y == pos.y)){mCommand = Command.eMoveLeft;}
-            else if((target.y > pos.y) && (target.x == pos.x)){mCommand = Command.eMoveDown;}
-            else if((target.y < pos.y) && (target.x == pos.x)){mCommand = Command.eMoveUp;}
-            else if((target.x > pos.x) && (target.y > pos.y)){mCommand = Command.eMoveBottomRight;}
-            else if((target.x < pos.x) && (target.y < pos.y)){mCommand = Command.eMoveTopLeft;}
-            else if((target.x > pos.x) && (target.y < pos.y)){mCommand = Command.eMoveTopRight;}
-            else if((target.x < pos.x) && (target.y > pos.y)){mCommand = Command.eMoveBottomLeft;}
-            else{mCommand = Command.eStandStill;}
-        }
-        else
-        {
-            mCommand = Command.eStandStill;
+            mLastPoint = target;
+            return target;
         }
         
-        //mPath.removeFirst();
-        
-        /*if((sLevel.getPathInfo(mXStart, mYStart) == PathInfo.eNotPassable || sLevel.getPathInfo(mXStart, mYStart+1) == PathInfo.eAir) &&  (mCommand != Command.eMoveRight))
+        if(mLastPoint == null)
         {
-            mCommand = Command.eStandStill;
+            mLastPoint = mEntity.mBody.getPosition();
         }
-        if((sLevel.getPathInfo(mXStart+1, mYStart) == PathInfo.eNotPassable || sLevel.getPathInfo(mXStart+1, mYStart+1) == PathInfo.eAir) && (mCommand != Command.eMoveLeft))
-        {
-            mCommand = Command.eStandStill;
-        }*/
-        
-        return mCommand;
+        return mLastPoint;
     }
     
     public void updatePath(int _xStart, int _yStart, int _xTarget, int _yTarget)
@@ -236,10 +229,10 @@ public class AStar implements iPathFinding
         {
             if(workingNode.mX == startNode.mX && workingNode.mY == startNode.mY)
                 break;
-            mPath.addFirst(new Vec2(workingNode.mX, workingNode.mY));
+            mPath.addFirst(new Vec2(workingNode.mX+0.5f, workingNode.mY));
             workingNode = workingNode.mParent;
         }
-        mPath.push(new Vec2(mXStart, mYStart));
+        //mPath.push(new Vec2(mXStart, mYStart));
 
         return true;
     }

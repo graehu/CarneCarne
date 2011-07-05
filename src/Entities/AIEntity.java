@@ -292,43 +292,6 @@ public class AIEntity extends Entity {
         }
     }
     
-    public void fly(Command _command)
-    {
-        //do sommit
-        //Hover();
-        switch(_command)
-        {
-            case eMoveLeft:
-                mBody.setLinearVelocity(new Vec2(-mMoveSpeed,0));
-                break;
-            case eMoveRight:
-                mBody.setLinearVelocity(new Vec2(mMoveSpeed,0));
-                break;
-            case eMoveUp:
-                mBody.setLinearVelocity(new Vec2(0,-mMoveSpeed));
-                break;
-            case eMoveDown:
-                mBody.setLinearVelocity(new Vec2(0,mMoveSpeed));
-                break;
-            case eMoveTopLeft:
-                mBody.setLinearVelocity(new Vec2(-mMoveSpeed,-mMoveSpeed));
-                break;
-            case eMoveBottomLeft:
-                mBody.setLinearVelocity(new Vec2(-mMoveSpeed, mMoveSpeed));
-                break;
-            case eMoveBottomRight:
-                mBody.setLinearVelocity(new Vec2(mMoveSpeed, mMoveSpeed));
-                break;
-            case eMoveTopRight:
-                mBody.setLinearVelocity(new Vec2(mMoveSpeed, -mMoveSpeed));
-                break;
-        }
-    }
-    public void Hover()
-    {
-        mBody.setLinearVelocity(new Vec2(0,0));
-    }
-    
     public void setMoveSpeed(float _moveSpeed)
     {
         mMoveSpeed = _moveSpeed;

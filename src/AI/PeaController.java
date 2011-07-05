@@ -38,7 +38,7 @@ public class PeaController extends iAIController
             //mPathFinding.updatePath(x, y, 2, 9);
         }
         
-        switch (mPathFinding.follow())
+        /*switch (mPathFinding.follow())
         {
             case eMoveLeft:
             {
@@ -58,6 +58,6 @@ public class PeaController extends iAIController
                     mToggle = true;
                 break;
             }
-        }
+        }*/
     }
 }
