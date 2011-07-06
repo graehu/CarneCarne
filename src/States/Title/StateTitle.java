@@ -6,6 +6,9 @@ package States.Title;
 
 import GUI.Components.Button;
 import GUI.Components.GraphicalComponent;
+import GUI.Components.Text;
+import GUI.Components.iComponent;
+import Utils.sFontLoader;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
@@ -22,18 +25,18 @@ public class StateTitle extends BasicGameState{
     public int getID() {
        return 2;
     }
-    GraphicalComponent comp, bob, joe;
+    iComponent comp, bob, joe;
     public void init(final GameContainer _gc, final StateBasedGame _sbg) throws SlickException {
-        comp = new Button(_gc, null, new Vector2f(200,200), new Vector2f(200, 200));
-        bob = new Button(_gc, null, new Vector2f(50,50), new Vector2f(50, 50));
-        joe = new Button(_gc, null, new Vector2f(10,10), new Vector2f(10, 10));
+        comp = new Button(_gc, new Vector2f(200,200), new Vector2f(200, 200));
+        bob = new Button(_gc, new Vector2f(50,50), new Vector2f(50, 50));
+        joe = new Text(_gc, "BUGGER!", new Vector2f(10,10));
         
         comp.addChild(bob);
         bob.addChild(joe);
         
-        comp.setImage("assets/pea.png");
-        bob.setImage("assets/pea.png");
-        joe.setImage("assets/seesaw.png");
+        ((GraphicalComponent)comp).setImage("assets/pea.png");
+        ((GraphicalComponent)bob).setImage("assets/pea.png");
+        ((Text)joe).setFont(sFontLoader.createFont("ambulance_shotgun", 40));
     }
     
     public void render(GameContainer _gc, StateBasedGame _sbg, Graphics _grphcs) throws SlickException {

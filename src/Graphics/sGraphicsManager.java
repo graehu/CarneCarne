@@ -8,6 +8,7 @@ package Graphics;
 import Events.WindowResizeEvent;
 import Events.sEvents;
 import Graphics.Sprites.iSprite;
+import Utils.sFontLoader;
 import World.sWorld;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -64,6 +65,7 @@ public class sGraphicsManager {
         mLastDisplayMode = Display.getDisplayMode();
         mNativeScreenDimentions.x = Display.getDesktopDisplayMode().getWidth();
         mNativeScreenDimentions.y = Display.getDesktopDisplayMode().getHeight();
+        sFontLoader.setDefaultFont("default");
     }
     public static void beginTransform()
     {

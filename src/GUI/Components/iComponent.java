@@ -18,13 +18,15 @@ import org.newdawn.slick.gui.GUIContext;
  * @author Aaron
  */
 public abstract class iComponent extends AbstractComponent {
-
-    protected iComponent(GUIContext _context, iComponent _parent) 
+    protected iComponent(GUIContext _context) 
     {
         super(_context);
-        
-        //initialise member variables
-        mParent = _parent;
+    }
+    protected iComponent(GUIContext _context, Vector2f _position, Vector2f _dimensions) 
+    {
+        super(_context);
+        setDimensions(_dimensions);
+        setLocalTranslation(_position);
     }
     
     private iComponent  mParent;
@@ -73,6 +75,7 @@ public abstract class iComponent extends AbstractComponent {
         return true;
     }
     protected abstract boolean updateSelf(int _delta);
+    
     public final void render(GUIContext guic, Graphics grphcs) throws SlickException
     {
         render(guic, grphcs, false);
@@ -89,13 +92,12 @@ public abstract class iComponent extends AbstractComponent {
         }
     }
     private void renderInternal(GUIContext guic, Graphics grphcs, Vector2f _globalPos) throws SlickException
-    {        
-        Vector2f trans = getLocalTranslation().add(_globalPos);
+    {      
         float rot = getLocalRotation();
-        float centerX = trans.x + (getWidth() * 0.5f);
-        float centerY = trans.y + (getHeight() * 0.5f);
+        Vector2f trans = getLocalTranslation().add(_globalPos);
+        Vector2f center = new Vector2f(trans.x + (getWidth() * 0.5f), trans.y + (getHeight() * 0.5f));
 
-        grphcs.rotate(centerX, centerY, rot);
+        grphcs.rotate(center.x, center.y, rot);
         {
             if(mIsVisible)
             {
@@ -111,7 +113,7 @@ public abstract class iComponent extends AbstractComponent {
                 child.renderInternal(guic, grphcs, trans);
             }
         }
-        grphcs.rotate(centerX, centerY, -rot);
+        grphcs.rotate(center.x, center.y, -rot);
     }
     private final void renderInternalDebug(Graphics _graphics)
     {
@@ -141,9 +143,8 @@ public abstract class iComponent extends AbstractComponent {
     {
         float rot = getLocalRotation() / (float)(180.0f/Math.PI);
         Vector2f trans = getLocalTranslation();
-        float centerX = trans.x + (getWidth() * 0.5f);
-        float centerY = trans.y + (getHeight() * 0.5f);
-        Transform transform = Transform.createRotateTransform(rot, centerX, centerY);
+        Vector2f center = new Vector2f(trans.x + (getWidth() * 0.5f), trans.y + (getHeight() * 0.5f));
+        Transform transform = Transform.createRotateTransform(rot, center.x, center.y);
         transform = transform.concatenate(Transform.createTranslateTransform(getX(), getY()));
         if(mParent != null)
         {
@@ -198,6 +199,7 @@ public abstract class iComponent extends AbstractComponent {
         }
         else return false;
     }
+    public final Color getColor() {return mColor;}
     public final void setColor(Color _color){mColor =  _color;}
     public final boolean isVisible(){return mIsVisible;}
     public final void setIsVisible(boolean _isVisible){mIsVisible = _isVisible;}

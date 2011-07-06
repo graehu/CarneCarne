@@ -18,13 +18,12 @@ import org.newdawn.slick.gui.GUIContext;
  */
 public class GraphicalComponent extends iComponent{
     
-    public GraphicalComponent(GUIContext _context, iComponent _parent, Vector2f _position, Vector2f _dimensions) {
-        super(_context, _parent);
-        setDimensions(_dimensions);
-        setLocalTranslation(_position);
+    public GraphicalComponent(GUIContext _context, Vector2f _position, Vector2f _dimensions) {
+        super(_context, _position, _dimensions);
+        
     }
     public GraphicalComponent(GUIContext _context) {
-        super(_context, null);
+        super(_context);
     }
     
     public iComponentEffectLayer mEffectLayer = new iComponentEffectLayer(this);
@@ -39,8 +38,8 @@ public class GraphicalComponent extends iComponent{
     @Override
     protected void renderSelf(GUIContext guic, Graphics grphcs, Vector2f _globalPos) throws SlickException {
         //render effects layer
-        if(mEffectLayer != null)
-            mEffectLayer.render((int)_globalPos.x, (int)_globalPos.y);
+        mEffectLayer.render((int)_globalPos.x, (int)_globalPos.y);
+        
         //render image - if none fall back on base rendering
         if(mImage != null)
             mImage.draw(_globalPos.x, _globalPos.y, getWidth(), getHeight());
