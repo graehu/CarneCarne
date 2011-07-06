@@ -6,7 +6,7 @@ package AI;
 
 /**
  *
- * @author G203947
+ * @author Graham
  */
 public class SimpleHeuristic implements iHeuristic
 {

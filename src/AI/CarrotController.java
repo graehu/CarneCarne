@@ -6,21 +6,36 @@ package AI;
 
 import AI.iPathFinding.Command;
 import Entities.AIEntity;
+import Entities.Carrot;
 import Entities.Entity;
+import org.jbox2d.common.Vec2;
 
 /**
  *
- * @author G203947
+ * @author Graham
  */
 public class CarrotController extends iAIController
 {
      iPathFinding mPathFinding;
      Entity mTarget;
      int mTargetX, mTargetY;
+     Command mCommand;
+     CarrotState mState;
+     
+     enum CarrotState
+     {
+         eIdle,
+         ePathing,
+         eWaiting,
+         eDrillAttack,
+         eStuck,
+         eBladeAttack
+     }
     public CarrotController(AIEntity _entity)
     {
         super(_entity);
         mPathFinding = new AStar(mEntity, new ShortestDistance());
+        
     }
     
     public void update()
@@ -36,41 +51,66 @@ public class CarrotController extends iAIController
             mPathFinding.updatePath(x, y, mTargetX, mTargetY-4);
         }
         
+        //((Carrot)mEntity).Hover();
+        
+        Vec2 target = mPathFinding.follow();
+        Vec2 pos = mEntity.mBody.getPosition();
+        
+        /*if((target.x > pos.x) && (target.y+0.2 > pos.y && target.y-0.2 < pos.y)){mCommand = Command.eMoveRight;}
+        else if((target.x < pos.x) && (target.y+0.2 > pos.y && target.y-0.2 < pos.y)){mCommand = Command.eMoveLeft;}
+        else if((target.y > pos.y) && (target.x+0.2 > pos.x && target.x-0.2 < pos.x)){mCommand = Command.eMoveDown;}
+        else if((target.y < pos.y) && (target.x+0.2 > pos.x && target.x-0.2 < pos.x)){mCommand = Command.eMoveUp;}
+        else if((target.x > pos.x) && (target.y > pos.y)){mCommand = Command.eMoveBottomRight;}
+        else if((target.x < pos.x) && (target.y < pos.y)){mCommand = Command.eMoveTopLeft;}
+        else if((target.x > pos.x) && (target.y < pos.y)){mCommand = Command.eMoveTopRight;}
+        else if((target.x < pos.x) && (target.y > pos.y)){mCommand = Command.eMoveBottomLeft;}
+        else{mCommand = Command.eStandStill;}*/
         
         
         
-        switch (mPathFinding.follow())
+        ((Carrot)mEntity).fly(target, 0.5f);
+        
+        /*switch (mPathFinding.follow())
         {
             case eMoveLeft:
-                mEntity.fly(Command.eMoveLeft);
+                ((Carrot)mEntity).fly(Command.eMoveLeft);
+                mState = CarrotState.ePathing;
                 break;
             case eMoveRight:
-               mEntity.fly(Command.eMoveRight);
+                ((Carrot)mEntity).fly(Command.eMoveRight);
+                mState = CarrotState.ePathing;
                 break;
             case eMoveUp:
-                mEntity.fly(Command.eMoveUp);
+                ((Carrot)mEntity).fly(Command.eMoveUp);
+                mState = CarrotState.ePathing;
                 break;
             case eMoveDown:
-                mEntity.fly(Command.eMoveDown);
+                ((Carrot)mEntity).fly(Command.eMoveDown);
+                mState = CarrotState.ePathing;
                 break;
             case eMoveTopLeft:
-                mEntity.fly(Command.eMoveTopLeft);
+                ((Carrot)mEntity).fly(Command.eMoveTopLeft);
+                mState = CarrotState.ePathing;
                 break;
             case eMoveBottomLeft:
-                mEntity.fly(Command.eMoveBottomLeft);
+                ((Carrot)mEntity).fly(Command.eMoveBottomLeft);
+                mState = CarrotState.ePathing;
                 break;
             case eMoveBottomRight:
-                mEntity.fly(Command.eMoveBottomRight);
+                ((Carrot)mEntity).fly(Command.eMoveBottomRight);
+                mState = CarrotState.ePathing;
                 break;
             case eMoveTopRight:
-                mEntity.fly(Command.eMoveTopRight);
+                ((Carrot)mEntity).fly(Command.eMoveTopRight);
+                mState = CarrotState.ePathing;
                 break;
             case eStandStill:
             {
-                mEntity.Hover();
+                ((Carrot)mEntity).Hover();
+                if(mState == CarrotState.ePathing);
                 break;
             }
-        }        
+        }  //*/
     }
     
     
