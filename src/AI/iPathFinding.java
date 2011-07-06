@@ -4,6 +4,8 @@
  */
 package AI;
 
+import org.jbox2d.common.Vec2;
+
 /**
  *
  * @author Graham
@@ -26,5 +28,5 @@ public interface iPathFinding
     }
     public void updatePath(int xStart, int _yStart, int _xTarget, int _yTarget);
     
-    public Command follow();
+    public Vec2 follow();
 }

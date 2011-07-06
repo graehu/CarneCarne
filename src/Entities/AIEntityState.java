@@ -21,6 +21,7 @@ class AIEntityState
         eStillCoveredInTar,
         eIce,
         eDead,
+        eRestartingRace,
         eJumping,
         eStatesMax,
     }
@@ -51,10 +52,18 @@ class AIEntityState
         mTimer++;
         update();
     }
+    void restartingRace()
+    {
+        assert(mState.equals(State.eDead));
+        changeState(State.eRestartingRace);
+    }
     void kill()
     {
-        changeState(State.eDead);
-        mTimer = 0;
+        if (!mState.equals(State.eRestartingRace))
+        {
+            changeState(State.eDead);
+            mTimer = 0;
+        }
     }
     void unkill()
     {

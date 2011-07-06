@@ -13,9 +13,9 @@ import Level.sLevel.TileType;
  */
 public class RightDownSlope extends SlopeTile
 {
-    public RightDownSlope(int _id, sLevel.TileType _tileType, int _maxHealth)
+    public RightDownSlope(int _id, sLevel.TileType _tileType, String _animationsName, int _maxHealth)
     {
-        super(_id, 0, _tileType, _maxHealth);
+        super(_id, 0, _tileType, _animationsName, _maxHealth);
     }
             
     public void getEdges(boolean _boundaries[], int _xTile, int _yTile, TileGrid _tileGrid)

@@ -6,6 +6,8 @@ package Entities;
 
 import Entities.AIEntityState.State;
 import Events.AreaEvents.CheckPointZone;
+import Graphics.Particles.ParticleSys;
+import Graphics.Particles.sParticleManager;
 import Graphics.Skins.iSkin;
 import Graphics.sGraphicsManager;
 import HUD.Reticle;
@@ -31,12 +33,14 @@ public class PlayerEntity extends AIEntity
     private Rectangle mViewPort;
     private int mRaceTimer;
     private int mDeaths;
+    private ParticleSys mParticleSys;
     public PlayerEntity(iSkin _skin, CheckPointZone _spawnPoint)
     {
         super(_skin);
         mOriginalSpawnPoint = mCheckPoint = _spawnPoint;
         mReticle = new Reticle(this);
         mDeaths = mRaceTimer = 0;
+        mParticleSys = sParticleManager.createSystem("CarneFire", new Vec2(0,0), -1);
     }
     public void setClip(Rectangle _viewPort)
     {
@@ -52,6 +56,7 @@ public class PlayerEntity extends AIEntity
         mRaceTimer = 0;
         int deaths = mDeaths;
         kill();
+        mAIEntityState.restartingRace();
         mDeaths = deaths;
     }
     public void getToStartingZone()
@@ -92,8 +97,8 @@ public class PlayerEntity extends AIEntity
                 fixture = fixture.getNext();
             }
             mDeathJoint = sWorld.createMouseJoint(mCheckPoint.getPosition(), mBody);
-            mAIEntityState.kill();
         }
+        mAIEntityState.kill();
     }
     boolean compareFloat(float a, float b, float epsilon)
     {
@@ -128,8 +133,10 @@ public class PlayerEntity extends AIEntity
         }
     }
 
+    @Override
     public void render()
     {
+        mParticleSys.moveEmittersTo(mBody.getPosition().x*64.0f, mBody.getPosition().y*64.0f);
         mSkin.setRotation(mBodyType, mBody.getAngle()*(180/(float)Math.PI));
         super.render();
         if (sGraphicsManager.getClip() == mViewPort)

@@ -19,9 +19,9 @@ import org.jbox2d.dynamics.FixtureDef;
  */
 abstract public class SlopeTile extends RootTile{
     
-    public SlopeTile(int _id, int _slopeType, sLevel.TileType _tileType, int _maxHealth)
+    public SlopeTile(int _id, int _slopeType, sLevel.TileType _tileType, String _animationsName, int _maxHealth)
     {
-        super (TileShape.eSlope, _id, _tileType, _slopeType, _maxHealth);
+        super (TileShape.eSlope, _id, _tileType, _animationsName, _slopeType, _maxHealth);
     }
     @Override
     Fixture createPhysicsBody(int _xTile, int _yTile, Body _body, Tile _tile)

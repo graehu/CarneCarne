@@ -93,13 +93,13 @@ public class RootTileList {
                 else if (shape.equals("Slope"))
                 {
                     for (int rootId = i; i < rootId + 4; i++)
-                        mRootTiles.add(new RightDownSlope(i,type, maxHealth)); 
+                        mRootTiles.add(new RightDownSlope(i,type, animationsName, maxHealth)); 
                     for (int rootId = i; i < rootId + 4; i++)
-                        mRootTiles.add(new LeftDownSlope(i,type, maxHealth)); 
+                        mRootTiles.add(new LeftDownSlope(i,type, animationsName, maxHealth)); 
                     for (int rootId = i; i < rootId + 4; i++)
-                        mRootTiles.add(new LeftUpSlope(i,type, maxHealth)); 
+                        mRootTiles.add(new LeftUpSlope(i,type, animationsName, maxHealth)); 
                     for (int rootId = i; i < rootId + 4; i++)
-                        mRootTiles.add(new RightUpSlope(i,type, maxHealth));
+                        mRootTiles.add(new RightUpSlope(i,type, animationsName, maxHealth));
                 }
                 else if (shape.equals("NonEdible"))
                 {

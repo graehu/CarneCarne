@@ -31,11 +31,6 @@ public class StateTitle extends BasicGameState{
         fullScreenToggle.setPosition(500,500);
         fullScreenToggle.adjustSize();
         //getRootPane().add(fullScreenToggle);
-       
-        
-        
-        
-        
     }
     
     public void render(GameContainer _gc, StateBasedGame _sbg, Graphics _grphcs) throws SlickException {

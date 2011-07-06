@@ -38,6 +38,10 @@ abstract public class TileGrid {
         mHeight = _height;
     }
     
+    public Body getBody()
+    {
+        return mBody;
+    }
     protected void init(HashMap _parameters)
     {
         mBody = sWorld.useFactory("TileFactory", _parameters);

@@ -4,7 +4,6 @@
  */
 package Graphics.Particles;
 
-import org.newdawn.slick.particles.ConfigurableEmitter;
 import org.newdawn.slick.particles.ParticleSystem;
 
 /**
@@ -27,48 +26,48 @@ public class DoubleParticleSys extends ParticleSys
     }
     //move emitters only
     @Override
-    public void moveTo(float _x, float _y)
+    public void moveEmittersTo(float _x, float _y)
     {
-        super.moveTo(_x, _y);
+        super.moveEmittersTo(_x, _y);
         switchSystems();
-        super.moveTo(_x, _y);
+        super.moveEmittersTo(_x, _y);
         switchSystems();
     }
     
     //move emitters only
     @Override
-    public void moveBy(float _dx, float _dy)
+    public void moveEmittersBy(float _dx, float _dy)
     {
-        super.moveBy(_dx, _dy);
+        super.moveEmittersBy(_dx, _dy);
         switchSystems();
-        super.moveBy(_dx, _dy);
+        super.moveEmittersBy(_dx, _dy);
         switchSystems();
     }
     
     @Override
-    public void setWind(ConfigurableEmitter.Value _value)
+    public void setWind(float _windFactor)
     {
-        super.setWind(_value);
+        super.setWind(_windFactor);
         switchSystems();
-        super.setWind(_value);
+        super.setWind(_windFactor);
         switchSystems();
     }
     
     @Override
-    public void setGravity(ConfigurableEmitter.Value _value)
+    public void setGravity(float _gravityFactor)
     {
-        super.setGravity(_value);
+        super.setGravity(_gravityFactor);
         switchSystems();
-        super.setGravity(_value);
+        super.setGravity(_gravityFactor);
         switchSystems();
     }
     
     @Override
-    public void setAngularOffset(ConfigurableEmitter.Value _value)
+    public void setAngularOffset(float _degrees)
     {
-        super.setAngularOffset(_value);
+        super.setAngularOffset(_degrees);
         switchSystems();
-        super.setAngularOffset(_value);
+        super.setAngularOffset(_degrees);
         switchSystems();
     }
 

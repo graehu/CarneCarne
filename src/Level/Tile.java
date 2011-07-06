@@ -110,6 +110,7 @@ public class Tile
     {
         return mRootId.mId;
     }
+    @Override
     public Tile clone()
     {
         return new Tile(mId, mRootId, mTileGrid,-1,-1);
@@ -123,8 +124,8 @@ public class Tile
     {
         eFromUp,
         eFromLeft,
-        eFromRight,
         eFromDown,
+        eFromRight,
         eDirectionsMax
     }
     public int getWaterHeight()
