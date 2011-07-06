@@ -123,27 +123,31 @@ public class AnimatedTiledMap extends TiledMap{
     }
     void createAnimatedTile(int _xPos, int _yPos, String _ref, int _duration, int _maxTimeOffset, boolean _isRandSpeed)
     {
-        //no fail - create animation
-        SpriteSheet sheet = mTileMapAnimations.getSpriteSheet(_ref);
-        Animation anim = new Animation(sheet,_duration);
-
-        //ofset start of animation
-        if(_maxTimeOffset > 0)
-            anim.update(mRand.nextInt(_maxTimeOffset));
-
-        //randomise speed slightly
-        if(_isRandSpeed)
+        if(_xPos < getWidth() && _yPos < getHeight())
         {
-            float randSpeed = mRand.nextFloat()%1.25f;
-            anim.setSpeed(Math.max(0.75f, randSpeed));
-        }
+            //no fail - create animation
+            SpriteSheet sheet = mTileMapAnimations.getSpriteSheet(_ref);
+            Animation anim = new Animation(sheet,_duration);
 
-        mAnimatedLayer[_xPos][_yPos] = new AnimatedTile(anim, new Vec2(_xPos,_yPos));
+            //ofset start of animation
+            if(_maxTimeOffset > 0)
+                anim.update(mRand.nextInt(_maxTimeOffset));
+
+            //randomise speed slightly
+            if(_isRandSpeed)
+            {
+                float randSpeed = mRand.nextFloat()%1.25f;
+                anim.setSpeed(Math.max(0.75f, randSpeed));
+            }
+
+            mAnimatedLayer[_xPos][_yPos] = new AnimatedTile(anim, new Vec2(_xPos,_yPos));
+        }
     }
     
     void destroyAnimatedTile(int _xPos, int _yPos)
     {
-        mAnimatedLayer[_xPos][_yPos] = null;
+        if(_xPos < getWidth() && _yPos < getHeight())
+            mAnimatedLayer[_xPos][_yPos] = null;
     }
     
      /*
@@ -161,8 +165,11 @@ public class AnimatedTiledMap extends TiledMap{
         {
             for(int j = _startY; j < endY; j++)
             {
-                if(mAnimatedLayer[i][j] != null)
-                    mAnimatedLayer[i][j].render(_x, _y);
+                if(i < getWidth() && j < getHeight())
+                {
+                    if(mAnimatedLayer[i][j] != null)
+                        mAnimatedLayer[i][j].render(_x, _y);
+                }
             }
         }
     }
