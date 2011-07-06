@@ -37,7 +37,7 @@ public abstract class iComponent extends AbstractComponent {
     private Transform   mGlobalTransform = Transform.createTranslateTransform(0, 0);
     private boolean     mIsDestroyed = false;
     private boolean     mIsVisible = true;
-    private Color       mColor = Color.pink;
+    private Color       mColor = Color.white;
     private Shape       mShape = new Rectangle(0, 0, 1, 1);
 
     /*
@@ -89,9 +89,7 @@ public abstract class iComponent extends AbstractComponent {
         }
     }
     private void renderInternal(GUIContext guic, Graphics grphcs, Vector2f _globalPos) throws SlickException
-    {
-        grphcs.setColor(mColor);
-        
+    {        
         Vector2f trans = getLocalTranslation().add(_globalPos);
         float rot = getLocalRotation();
         float centerX = trans.x + (getWidth() * 0.5f);
@@ -117,7 +115,7 @@ public abstract class iComponent extends AbstractComponent {
     }
     private final void renderInternalDebug(Graphics _graphics)
     {
-        _graphics.setColor(Color.white);
+        _graphics.setColor(mColor);
         _graphics.draw(getShape());
         
         //render children
@@ -128,7 +126,10 @@ public abstract class iComponent extends AbstractComponent {
             child.renderInternalDebug(_graphics);
         }
     }
-    protected abstract void renderSelf(GUIContext guic, Graphics grphcs, Vector2f _globalPos) throws SlickException;
+    protected void renderSelf(GUIContext guic, Graphics grphcs, Vector2f _globalPos) throws SlickException
+    {
+        grphcs.fillRect(_globalPos.x, _globalPos.y, getWidth(), getHeight());
+    }
     
     /*
      * ----------various getters and setters-------------

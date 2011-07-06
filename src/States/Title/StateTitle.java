@@ -4,6 +4,7 @@
  */
 package States.Title;
 
+import GUI.Components.Button;
 import GUI.Components.GraphicalComponent;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -23,9 +24,9 @@ public class StateTitle extends BasicGameState{
     }
     GraphicalComponent comp, bob, joe;
     public void init(final GameContainer _gc, final StateBasedGame _sbg) throws SlickException {
-        comp = new GraphicalComponent(_gc, null, new Vector2f(200,200), new Vector2f(200, 200));
-        bob = new GraphicalComponent(_gc, null, new Vector2f(50,50), new Vector2f(50, 50));
-        joe = new GraphicalComponent(_gc, null, new Vector2f(10,10), new Vector2f(10, 10));
+        comp = new Button(_gc, null, new Vector2f(200,200), new Vector2f(200, 200));
+        bob = new Button(_gc, null, new Vector2f(50,50), new Vector2f(50, 50));
+        joe = new Button(_gc, null, new Vector2f(10,10), new Vector2f(10, 10));
         
         comp.addChild(bob);
         bob.addChild(joe);

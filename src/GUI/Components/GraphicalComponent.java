@@ -38,10 +38,14 @@ public class GraphicalComponent extends iComponent{
 
     @Override
     protected void renderSelf(GUIContext guic, Graphics grphcs, Vector2f _globalPos) throws SlickException {
+        //render effects layer
         if(mEffectLayer != null)
             mEffectLayer.render((int)_globalPos.x, (int)_globalPos.y);
-        
-        mImage.draw(_globalPos.x, _globalPos.y, getWidth(), getHeight());
+        //render image - if none fall back on base rendering
+        if(mImage != null)
+            mImage.draw(_globalPos.x, _globalPos.y, getWidth(), getHeight());
+        else
+            super.renderSelf(guic, grphcs, _globalPos);
     }   
     
     public void setImage(String _ref)
