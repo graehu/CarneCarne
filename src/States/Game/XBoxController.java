@@ -11,6 +11,7 @@ import Events.RightStickEvent;
 import Events.ShoulderButtonEvent;
 import Events.sEvents;
 import org.jbox2d.common.Vec2;
+import org.newdawn.slick.ControllerListener;
 import org.newdawn.slick.Input;
 
 /**
@@ -29,7 +30,7 @@ import org.newdawn.slick.Input;
  * 8 - L3
  * 9 - R3
  */
-public class XBoxController
+public class XBoxController 
 {
     static private float stickEpsilon = 0.3f; /// TWEAK
     static private float shoulderButtonEpsilon = 0.3f;
@@ -51,8 +52,11 @@ public class XBoxController
         mPlayer = _player;
     }
     
-    public void update(Input _input)
+    public boolean update(Input _input)
     {
+        if(_input.getAxisCount(mPlayer) < 2)
+            return false;
+        
         //get player direction
         Vec2 rightStick = new Vec2(_input.getAxisValue(mPlayer, 3),_input.getAxisValue(mPlayer, 2));
         
@@ -122,6 +126,8 @@ public class XBoxController
         {
             sEvents.triggerEvent(new RightStickEvent(rightStick, mPlayer));
         }        
+        
+        return true;
     }
     //statemachine required to determine releases for triggers
     private void changeState(TriggerState _newState, Vec2 _rightStick)

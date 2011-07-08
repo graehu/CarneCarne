@@ -80,7 +80,7 @@ public class PlayerFactory implements iEntityFactory {
             
             //offsets for sprites bigger than 64x64
             String[] t = {"","h","m","mh"};                          //prefixes
-            Vec2[] v = {new Vec2(-9,0), new Vec2(-34.5f,-36.25f), new Vec2(-9,0), new Vec2(-34.5f,-36.25f)}; //offsets relative to above
+            Vec2[] v = {new Vec2(-9,0), new Vec2(-33,-36), new Vec2(-9,0), new Vec2(-33,-36)}; //offsets relative to above
             String[] p = {"n","s"};     //north and south
             String[] q = {"e","w"};     //east and west
             for(int k = 0; k < 4; k++)
