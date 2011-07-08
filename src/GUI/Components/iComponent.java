@@ -209,8 +209,8 @@ public abstract class iComponent extends AbstractComponent {
      */
     //returns false if child already has a parent
     public final boolean addChild(iComponent _child)
-    {
-        if(_child.setParent(this))
+    {            
+        if(_child.setParent(this) && !_child.equals(this))
         {
             mChildren.add(_child);
             return true;

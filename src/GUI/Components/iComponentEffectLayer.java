@@ -4,6 +4,8 @@
  */
 package GUI.Components;
 
+import GUI.Components.Effects.iComponentEffect;
+import GUI.Components.iComponent;
 import java.util.ArrayDeque;
 
 /**
