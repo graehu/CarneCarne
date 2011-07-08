@@ -6,8 +6,13 @@ package Level;
 
 import Graphics.Particles.sParticleManager;
 import Level.Tile.Direction;
+import World.sWorld;
 import java.util.Comparator;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.NoSuchElementException;
 import java.util.PriorityQueue;
+import org.jbox2d.collision.AABB;
 import org.jbox2d.common.Vec2;
 
 /**
@@ -20,8 +25,9 @@ public class TileRegrowth
     private static int animatedRegrowthTime = 60;
     private LevelTileGrid mTileGrid;
     private int mFrames;
-    private PriorityQueue<RegrowingTile> timingTiles = new PriorityQueue<RegrowingTile>(10, new TileComparer());
+    private LinkedList<RegrowingTile> timingTiles = new LinkedList<RegrowingTile>();
     private PriorityQueue<RegrowingTile> respawningTiles = new PriorityQueue<RegrowingTile>(10, new TileComparer());
+    private LinkedList<RegrowingTile> blockedTiles = new LinkedList<RegrowingTile>();
     //private PriorityQueue<RegrowingTile> activeTiles = new PriorityQueue<RegrowingTile>(10, new TileComparer());
     private RegrowingTile[][] inactiveTiles;
     public TileRegrowth(TileGrid _tileGrid, int _width, int _height)
@@ -37,7 +43,7 @@ public class TileRegrowth
         mFrames = 0;
         inactiveTiles = new RegrowingTile[_width][_height];
     }
-    public void add (int _x, int _y, RootTile _rootId)
+    void add (int _x, int _y, RootTile _rootId)
     {
         //mTileGrid.tiledMap.createAnimatedTile(_x, _y, _rootId.mAnimationsName + "GrowBack");
         RegrowingTile tile = new RegrowingTile(_x,_y, _rootId ,mFrames+nonAnimatedRegrowthTime);
@@ -52,7 +58,7 @@ public class TileRegrowth
         }
         if (supported)
         {
-            timingTiles.add(new RegrowingTile(_x,_y, _rootId ,mFrames+180));
+            timingTiles.addLast(new RegrowingTile(_x,_y, _rootId ,mFrames+nonAnimatedRegrowthTime));
         }
         else
         {
@@ -62,14 +68,21 @@ public class TileRegrowth
     public void update()
     {
         mFrames++;
-        RegrowingTile tile = timingTiles.peek();
+        RegrowingTile tile = null;
+        try
+        {
+            tile = timingTiles.getFirst();
+        }
+        catch (NoSuchElementException e)
+        {
+        }
         if (tile != null && tile.timer < mFrames)
         {
-            timingTiles.remove(tile);
+            timingTiles.removeFirst();
             if (isSupported(tile))
             {
+                tile.timer = mFrames + animatedRegrowthTime;
                 respawningTiles.add(tile);
-                tile.timer += animatedRegrowthTime;
                 mTileGrid.tiledMap.createAnimatedTile(tile.x, tile.y,tile.mRootId.mAnimationsName + "GrowBack");
             }
             else
@@ -83,13 +96,35 @@ public class TileRegrowth
             respawningTiles.remove(tile);
             if (isSupported(tile))
             {
-                placeTile(tile);
-                sParticleManager.createSystem(tile.mRootId.mAnimationsName + "SpawnParticle", new Vec2(32.0f+(tile.x*64.0f), 32.0f+(tile.y*64.0f)), 600);
-                mTileGrid.tiledMap.destroyAnimatedTile(tile.x, tile.y);
+                Vec2 bottomLeft = new Vec2(tile.x, tile.y);
+                AABB aabb = new AABB(bottomLeft, bottomLeft.add(new Vec2(1,0)));
+                if (sWorld.searchAABB(aabb, (1 << sWorld.BodyCategories.ePlayer.ordinal())) == null)
+                {
+                    placeTile(tile);
+                    sParticleManager.createSystem(tile.mRootId.mAnimationsName + "SpawnParticle", new Vec2(32.0f+(tile.x*64.0f), 32.0f+(tile.y*64.0f)), 600);
+                }
+                else
+                {
+                    blockedTiles.add(tile);
+                }
             }
             else
             {
                 inactiveTiles[tile.x][tile.y] = tile;
+            }
+            mTileGrid.tiledMap.destroyAnimatedTile(tile.x, tile.y);
+        }
+        
+        for(Iterator<RegrowingTile> iter = blockedTiles.iterator(); iter.hasNext(); )
+        {
+            RegrowingTile blockedTile = iter.next();
+            Vec2 bottomLeft = new Vec2(blockedTile.x, blockedTile.y);
+            AABB aabb = new AABB(bottomLeft, bottomLeft.add(new Vec2(1,0)));
+            if (sWorld.searchAABB(aabb, (1 << sWorld.BodyCategories.ePlayer.ordinal())) == null)
+            {
+                placeTile(blockedTile);
+                sParticleManager.createSystem(blockedTile.mRootId.mAnimationsName + "SpawnParticle", new Vec2(32.0f+(blockedTile.x*64.0f), 32.0f+(blockedTile.y*64.0f)), 600);
+                iter.remove();
             }
         }
     }
@@ -99,7 +134,6 @@ public class TileRegrowth
             mTileGrid.placeTile(_tile.x, _tile.y, _tile.mRootId.mId);
         else
             mTileGrid.placeTile(_tile.x, _tile.y, _tile.mRootId.getNext().mId);
-        mTileGrid.tiledMap.destroyAnimatedTile(_tile.x, _tile.y);
         checkInactive(_tile.x-1,_tile.y);
         checkInactive(_tile.x+1,_tile.y);
         checkInactive(_tile.x,_tile.y-1);
@@ -111,8 +145,8 @@ public class TileRegrowth
         if (tile != null)
         {
             inactiveTiles[_x][_y] = null;
-            tile.timer = mFrames + 30;
-            timingTiles.add(tile);
+            tile.timer = mFrames + nonAnimatedRegrowthTime;
+            timingTiles.addLast(tile);
             //placeTile(tile);
         }
     }

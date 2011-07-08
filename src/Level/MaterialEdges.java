@@ -24,7 +24,6 @@ class MaterialEdges
                 flags[i][ii] = true;
         if (_graphicalEdge)
         {
-            setFalse(TileType.eSwingable.ordinal(),TileType.eSwingable.ordinal());
             setFalse(TileType.eWater.ordinal(),TileType.eIce.ordinal());
             setFalse(TileType.eWater.ordinal(),TileType.eEdible.ordinal());
 

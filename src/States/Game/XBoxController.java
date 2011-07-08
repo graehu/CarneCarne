@@ -28,7 +28,6 @@ import org.newdawn.slick.Input;
  * 7 - Start
  * 8 - L3
  * 9 - R3
- * Thinking about sitting and mapping the rest of these? Get a job!
  */
 public class XBoxController
 {
@@ -62,8 +61,12 @@ public class XBoxController
         {
             sEvents.triggerEvent(new KeyDownEvent('Q', 0)); //menu
         }
+        if(_input.isButtonPressed(4, mPlayer)) //start
+        {
+            sEvents.triggerEvent(new MapClickReleaseEvent(rightStick,false, mPlayer));
+        } //spit release
         //handle shoulder buttons
-        if(_input.isButtonPressed(5, mPlayer)) //tongue 
+        if(_input.isButtonPressed(5, mPlayer))
         {
             sEvents.triggerEvent(new ShoulderButtonEvent(rightStick,true, mPlayer));
             mRightShoulderButton = true;
@@ -73,7 +76,7 @@ public class XBoxController
             mRightShoulderButton = false;
             sEvents.triggerEvent(new MapClickReleaseEvent(rightStick,true, mPlayer));
         }
-        if(_input.isButtonPressed(4, mPlayer)) //jump
+        if(_input.isButtonPressed(0, mPlayer)) //jump
         {
             sEvents.triggerEvent(new KeyDownEvent('w', mPlayer));
             mLeftShoulderButton = true;

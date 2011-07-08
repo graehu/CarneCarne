@@ -5,6 +5,7 @@
 package Level;
 
 import Level.Tile.Direction;
+import Level.sLevel.TileType;
 import java.util.Stack;
 
 /**
@@ -53,6 +54,15 @@ public class EdgeTile extends BlockTile
         _stack.push(_xTile);
         _stack.push(_yTile);
         _stack.push(mId+textureUnit);
+    }
+    @Override
+    boolean boundaryFrom(Direction _direction, TileType _tileType, MaterialEdges _materialEdges)
+    {
+        if (mDirection.ordinal() == (_direction.ordinal()+2)%4)
+        {
+            return _materialEdges.check(_tileType, mTileType);
+        }
+        return false;
     }
     
 }

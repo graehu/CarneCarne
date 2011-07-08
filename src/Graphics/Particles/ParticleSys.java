@@ -110,15 +110,16 @@ public class ParticleSys
         }
         else //if(mLife == 0.0f)
         {//end of life
+            mIsDead = true;
             for(int i = 0; i < mSystem.getEmitterCount(); i++)
             {
                 //stop emitter producing
                 mSystem.getEmitter(i).wrapUp();
 
                 //when all particles expire declare system dead
-                if(mSystem.getEmitter(i).completed())
+                if(!mSystem.getEmitter(i).completed())
                 {
-                    mIsDead = true;
+                    mIsDead = false;
                 }
             }
         }

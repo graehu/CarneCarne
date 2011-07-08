@@ -80,15 +80,13 @@ public class Tile
     }
     public boolean damageTile()
     {
+        sParticleManager.createSystem(mRootId.mAnimationsName + "DamageParticle", mTileGrid.mBody.getWorldPoint(new Vec2(mXTile,mYTile)).mul(64.0f).add(new Vec2(32,32)), 120);
         if (mHealth > 1)
         {
             mRootId = mRootId.getNext();
-            //mId += 16;
             mHealth--;
-            //mRootId = rootTiles.get(tile.mId);
             Stack<Integer> stack = new Stack<Integer>();
             mTileGrid.mTiles[mXTile][mYTile].checkEdges(stack, mTileGrid);
-            sParticleManager.createSystem(mRootId.mAnimationsName + "DamageParticle", mTileGrid.mBody.getWorldPoint(new Vec2(mXTile,mYTile)).mul(64.0f), 120);
             while (!stack.empty())
             {
                 int id = stack.pop();
@@ -112,6 +110,7 @@ public class Tile
     {
         return mRootId.mId;
     }
+    @Override
     public Tile clone()
     {
         return new Tile(mId, mRootId, mTileGrid,-1,-1);
@@ -125,8 +124,8 @@ public class Tile
     {
         eFromUp,
         eFromLeft,
-        eFromRight,
         eFromDown,
+        eFromRight,
         eDirectionsMax
     }
     public int getWaterHeight()

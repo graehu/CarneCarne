@@ -204,7 +204,7 @@ public class TongueStateMachine {
                     }
                     else if (mTile.getTileType().equals(TileType.eChilli))
                     {
-                        mAmmoLeft = 50;
+                        mAmmoLeft = 100;
                     }
                     else
                     {
@@ -282,6 +282,8 @@ public class TongueStateMachine {
             }
             case eIdleAnimation:
             {
+                
+                
                 mCurrentStateTimer--;
                 if (mCurrentStateTimer == 0)
                 {
@@ -291,10 +293,12 @@ public class TongueStateMachine {
             }
             case eSwinging:
             {
-                mTongueDir = (mJoint.m_bodyB.getPosition().add(mJoint.m_localAnchor2)).sub((mJoint.m_bodyA.getPosition().add(mJoint.m_localAnchor1)));
+                //mTongueDir = (mJoint.m_bodyB.getPosition().add(mJoint.m_localAnchor2)).sub((mJoint.m_bodyA.getPosition().add(mJoint.m_localAnchor1)));
+                mTongueDir = tongueAttachment.sub(mAIController.mEntity.mBody.getPosition());
                 float actualLength = mTongueDir.normalize();
                 setTongue(mTongueDir, actualLength); //lock tongue to block
-                mJoint.m_length = actualLength * 0.99f;
+                mAIController.mEntity.mBody.applyLinearImpulse(mTongueDir.mul(1.0f), mAIController.mEntity.mBody.getWorldPoint(new Vec2(0,0)));
+                //mJoint.m_length = actualLength * 0.99f;
                 
                 //mJoint.m_length -= 0.01f;
                 // mJoint.m_length *= 0.99f; Try either of these
@@ -470,8 +474,7 @@ public class TongueStateMachine {
             }
             case eSwinging:
             {
-                sWorld.destroyJoint(mJoint);
-                mJoint = null;
+                tongueAttachment = null;
                 changeState(State.eRetractingTongue);
             }
         }
@@ -641,12 +644,14 @@ public class TongueStateMachine {
                 //render tongue
                 mAIController.mEntity.mSkin.startAnim("tng", false, 0.0f);
                 mIsTongueActive = true;
-                mJoint = sWorld.createTongueJoint(mAIController.mEntity.mBody);
+                tongueAttachment = sWorld.getLastTongueHit();
+                //mJoint = sWorld.createTongueJoint(mAIController.mEntity.mBody);
             }
         }
         mState = _state;
     }
-    private DistanceJoint mJoint;
+    //private DistanceJoint mJoint;
+    private Vec2 tongueAttachment;
     private void spitBlock()
     {
         mAmmoLeft--;

@@ -38,12 +38,13 @@ abstract class RootTile
         mIsFlammable = _isFlammable;
         mMaxHealth = _maxHealth;
     }
-    public RootTile(TileShape _shape, int _id, sLevel.TileType _tileType, int _slopeType, int _maxHealth)
+    public RootTile(TileShape _shape, int _id, sLevel.TileType _tileType, String _animationsName, int _slopeType, int _maxHealth)
     {
         mShape = _shape;
         mId = _id;
         mTileType = _tileType;
         mSlopeType = _slopeType;
+        mAnimationsName = _animationsName;
         mRegrows = true;
         mMaxHealth = _maxHealth;
     }
