@@ -138,6 +138,7 @@ public class RootTileList {
                         mRootTiles.add(new LineTile(i, type, direction, animationsName, regrows, anchor, isFlammable, maxHealth));
                     }
                 }
+                else i++;
             }
             else
             {
