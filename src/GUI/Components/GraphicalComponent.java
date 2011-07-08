@@ -20,7 +20,6 @@ public class GraphicalComponent extends iComponent{
     
     public GraphicalComponent(GUIContext _context, Vector2f _position, Vector2f _dimensions) {
         super(_context, _position, _dimensions);
-        
     }
     public GraphicalComponent(GUIContext _context) {
         super(_context);
@@ -30,7 +29,7 @@ public class GraphicalComponent extends iComponent{
     protected Image mImage = null;
     
     @Override
-    public boolean updateSelf(int _delta) {
+    protected boolean updateSelf(int _delta) {
         mEffectLayer.update(_delta);
         return true;
     }
@@ -42,7 +41,7 @@ public class GraphicalComponent extends iComponent{
         
         //render image - if none fall back on base rendering
         if(mImage != null)
-            mImage.draw(_globalPos.x, _globalPos.y, getWidth(), getHeight());
+            mImage.draw(_globalPos.x, _globalPos.y, getLocalScale());
         else
             super.renderSelf(guic, grphcs, _globalPos);
     }   
@@ -58,4 +57,6 @@ public class GraphicalComponent extends iComponent{
         }
     }
     
+    public int getImageWidth(){return mImage.getWidth();}
+    public int getImageHeight(){return mImage.getHeight();}
 }

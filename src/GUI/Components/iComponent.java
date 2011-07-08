@@ -32,8 +32,10 @@ public abstract class iComponent extends AbstractComponent {
     private iComponent  mParent;
     private ArrayList<iComponent> mChildren = new ArrayList<iComponent>();
     private Vector2f    mDimensions = new Vector2f(0,0);
+    private float       mLocalScale = 1.0f;
     private float       mLocalRotation = 0.0f;
     private Vector2f    mLocalTranslation = new Vector2f(0,0);
+    private float       mGlobalScale = 1.0f;
     private float       mGlobalRotation = 0.0f;
     private Vector2f    mGlobalTranslation = new Vector2f(0,0);
     private Transform   mGlobalTransform = Transform.createTranslateTransform(0, 0);
@@ -55,6 +57,7 @@ public abstract class iComponent extends AbstractComponent {
     }
     private boolean updateInternal(int _delta)
     {
+        mGlobalScale = calcGlobalScale();
         mGlobalRotation = calcGlobalRotation();
         mGlobalTranslation = calcGlobalTranslation();
         mGlobalTransform = calcGlobalTransform();
@@ -96,7 +99,7 @@ public abstract class iComponent extends AbstractComponent {
         float rot = getLocalRotation();
         Vector2f trans = getLocalTranslation().add(_globalPos);
         Vector2f center = new Vector2f(trans.x + (getWidth() * 0.5f), trans.y + (getHeight() * 0.5f));
-
+        
         grphcs.rotate(center.x, center.y, rot);
         {
             if(mIsVisible)
@@ -142,15 +145,28 @@ public abstract class iComponent extends AbstractComponent {
     private final Transform calcGlobalTransform()
     {
         float rot = getLocalRotation() / (float)(180.0f/Math.PI);
+        float scale = getLocalScale();
         Vector2f trans = getLocalTranslation();
         Vector2f center = new Vector2f(trans.x + (getWidth() * 0.5f), trans.y + (getHeight() * 0.5f));
-        Transform transform = Transform.createRotateTransform(rot, center.x, center.y);
-        transform = transform.concatenate(Transform.createTranslateTransform(getX(), getY()));
+        Transform scaleT = Transform.createScaleTransform(scale, scale);
+        Transform rotateT = Transform.createRotateTransform(rot, center.x, center.y);
+        Transform translateT = Transform.createTranslateTransform(getX(), getY());
+        Transform transform = rotateT.concatenate(translateT).concatenate(scaleT);
         if(mParent != null)
         {
             transform = mParent.getGlobalTransform().concatenate(transform);
         }
         return transform;
+    }
+    public final float getGlobalScale(){return mGlobalScale;}
+    private final float calcGlobalScale()
+    {
+        float scale = mLocalScale;
+        if(mParent != null)
+        {
+            scale *= mParent.getGlobalScale();
+        }
+        return scale;
     }
     public final float getGlobalRotation(){return mGlobalRotation;}
     private final float calcGlobalRotation()
@@ -171,6 +187,11 @@ public abstract class iComponent extends AbstractComponent {
             translation = translation.add(mParent.getGlobalTranslation());
         }
         return translation;
+    }
+    public final float getLocalScale(){return mLocalScale;}
+    public final void setLocalScale(float _scaleFactor)
+    {
+        mLocalScale =_scaleFactor;
     }
     public final float getLocalRotation(){return mLocalRotation;}
     public final void setLocalRotation(float _degrees)

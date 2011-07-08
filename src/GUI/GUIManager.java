@@ -1,16 +1,20 @@
 
 package GUI;
 
+import GUI.Components.iComponent;
+import java.util.HashMap;
+
 /**
  *
  * @author Aaron
  */
-public class GUI {
-    
-    public GUI()
+public class GUIManager {
+
+    public GUIManager()
     {
         
     }
+    
 }
 
 /*
