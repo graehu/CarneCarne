@@ -119,7 +119,7 @@ public class sLevel {
         xTiles = (int)(s.x/64.0f)+2;
         yTiles = (int)(s.y/64.0f)+2;
         Vec2 translation = sWorld.getPixelTranslation();
-        for (int i = midLayer; i < mTiledMap.getLayerCount(); i++)
+        for (int i = midLayer; i < mTiledMap.getLayerCount() - 2/*FIXME*/; i++)
         {
             Vec2 myTranslation = translation.clone();
             myTranslation.x = myTranslation.x *(mParralaxXScale[i]);

@@ -10,6 +10,50 @@
 <project name="CarneCarne" default="default" basedir=".">
     <description>Builds, tests, and runs the project CarneCarne.</description>
     <import file="nbproject/build-impl.xml"/>
+	
+	<property name="src.dir" value="src" />
+    <property name="res.dir" value="data" />
+    <property name="lib.dir" value="lib" />
+    <property name="obj.dir" value="build" />
+    <property name="dist.dir" value="dist" />
+    <property name="data.dir" value="data" />
+    <property name="target.dir" value="." />
+    <property name="script.dir" value="script" />
+    <property name="webstart.dir" value="${target.dir}/webstart" />
+	
+	<target name="-pre-compile">
+		<!-- setup native lib directories -->
+        <mkdir dir="${lib.dir}/natives-win32" />
+        <mkdir dir="${lib.dir}/natives-mac" />
+        <mkdir dir="${lib.dir}/natives-linux" />
+        <unzip src="${lib.dir}/natives/natives-win32.jar" dest="${lib.dir}/natives-win32" />
+        <unzip src="${lib.dir}/natives/natives-mac.jar" dest="${lib.dir}/natives-mac" />
+        <unzip src="${lib.dir}/natives/natives-linux.jar" dest="${lib.dir}/natives-linux" />
+		<copy todir="${obj.dir}/lib">
+            <fileset dir="${lib.dir}" />
+        </copy>
+		<delete dir="${obj.dir}/lib/natives" />
+		<copy todir="${dist.dir}/lib">
+            <fileset dir="${lib.dir}" />
+        </copy>
+		<delete dir="${dist.dir}/lib/natives" />
+		<delete dir="${dist.dir}/assets" />
+	</target>
+	
+	<target name="-post-clean">
+	
+		<copy todir="${dist.dir}" file="getdown/getdown.txt"/>
+		
+		<taskdef name="digest" classname="com.threerings.getdown.tools.DigesterTask"
+		classpath="${lib.dir}/getdown-tools-1.2.jar"/>
+		
+		<property file="c:/temp/certificate.properties"/>
+		
+		<digest appdir="${dist.dir}" keystore="${sign.keystore}" storepass="${sign.storepass}"
+        alias="${sign.alias}"/>
+		
+	</target>
+		
     <!--
 
     There exist several targets which are by default empty and which can be 

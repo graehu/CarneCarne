@@ -139,6 +139,10 @@ public class PlayerEntity extends AIEntity
         //mParticleSys.moveEmittersTo(mBody.getPosition().x*64.0f, mBody.getPosition().y*64.0f);
         mSkin.setRotation(mBodyType, mBody.getAngle()*(180/(float)Math.PI));
         super.render();
+    }
+    
+    public void renderHUD()
+    {
         if (sGraphicsManager.getClip() == mViewPort)
         {
             mReticle.render();
@@ -184,4 +188,6 @@ public class PlayerEntity extends AIEntity
     {
         return mRaceTimer;
     }
+    
+    
 }

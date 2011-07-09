@@ -148,7 +148,7 @@ public class AIEntity extends Entity {
     {
         float waterHeight = mAIEntityState.getWaterHeight();
         waterHeight = mBody.getPosition().y + 1 - waterHeight;
-        mBody.applyLinearImpulse(new Vec2(0, -waterHeight), mBody.getWorldCenter());
+        mBody.applyLinearImpulse(new Vec2(0, -waterHeight*0.8f), mBody.getWorldCenter());
         if (waterHeight > 1.0f)
         {
             waterHeight = 1.0f;
@@ -157,6 +157,7 @@ public class AIEntity extends Entity {
     }
     public void walk(float value)
     {
+        mBody.m_fixtureList.m_friction = 5;
         switch (mAIEntityState.getState())
         {
             case eFalling:
@@ -175,7 +176,6 @@ public class AIEntity extends Entity {
                 }
                 else
                 {
-                    mBody.m_fixtureList.m_friction = 5;
                     mBody.applyLinearImpulse(new Vec2(1.1f*value,0),mBody.getWorldCenter());
                 }
                 break;
@@ -183,7 +183,7 @@ public class AIEntity extends Entity {
             case eStandingOnTar:
             case eStillCoveredInTar:
             {
-                mBody.applyLinearImpulse(new Vec2(0.3f*value,0),mBody.getWorldCenter());
+                mBody.applyLinearImpulse(new Vec2(0.5f*value,0),mBody.getWorldCenter());
                 break;
             }
             case eIce:
@@ -193,7 +193,7 @@ public class AIEntity extends Entity {
             }
             case eSwimming:
             {
-                mBody.applyLinearImpulse(new Vec2(1f*value,0),mBody.getWorldCenter());
+                mBody.applyLinearImpulse(new Vec2(0.5f*value,0),mBody.getWorldCenter());
                 mBody.applyAngularImpulse(0.5f*value);
                 break;
             }
@@ -205,6 +205,7 @@ public class AIEntity extends Entity {
     }
     public void walkLeft()
     {
+        mBody.m_fixtureList.m_friction = 5;
         switch (mAIEntityState.getState())
         {
             case eFalling:
@@ -223,15 +224,14 @@ public class AIEntity extends Entity {
                 }
                 else
                 {
-                    mBody.m_fixtureList.m_friction = 5;
-                    mBody.applyLinearImpulse(new Vec2(-1.1f,0),mBody.getWorldCenter());
+                    mBody.applyLinearImpulse(new Vec2(-1.5f,0),mBody.getWorldCenter());
                 }
                 break;
             }
             case eStandingOnTar:
             case eStillCoveredInTar:
             {
-                mBody.applyLinearImpulse(new Vec2(-0.3f,0),mBody.getWorldCenter());
+                mBody.applyLinearImpulse(new Vec2(-0.5f,0),mBody.getWorldCenter());
                 break;
             }
             case eIce:
@@ -241,7 +241,8 @@ public class AIEntity extends Entity {
             }
             case eSwimming:
             {
-                mBody.applyLinearImpulse(new Vec2(-0.3f,0),mBody.getWorldCenter());
+                mBody.applyLinearImpulse(new Vec2(-0.5f,0),mBody.getWorldCenter());
+                mBody.applyAngularImpulse(-0.3f);
                 break;
             }
             case eDead:
@@ -252,6 +253,7 @@ public class AIEntity extends Entity {
     }
     public void walkRight()
     {
+        mBody.m_fixtureList.m_friction = 5;
         switch (mAIEntityState.getState())
         {
             case eFalling:
@@ -270,15 +272,14 @@ public class AIEntity extends Entity {
                 }
                 else
                 {
-                    mBody.m_fixtureList.m_friction = 5;
-                    mBody.applyLinearImpulse(new Vec2(1.1f,0),mBody.getWorldCenter());
+                    mBody.applyLinearImpulse(new Vec2(1.5f,0),mBody.getWorldCenter());
                 }
                 break;
             }
             case eStandingOnTar:
             case eStillCoveredInTar:
             {
-                mBody.applyLinearImpulse(new Vec2(0.3f,0),mBody.getWorldCenter());
+                mBody.applyLinearImpulse(new Vec2(0.5f,0),mBody.getWorldCenter());
                 break;
             }
             case eIce:
@@ -288,7 +289,8 @@ public class AIEntity extends Entity {
             }
             case eSwimming:
             {
-                mBody.applyLinearImpulse(new Vec2(0.3f,0),mBody.getWorldCenter());
+                mBody.applyLinearImpulse(new Vec2(0.5f,0),mBody.getWorldCenter());
+                mBody.applyAngularImpulse(0.3f);
                 break;
             }
             case eDead:
