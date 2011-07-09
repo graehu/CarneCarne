@@ -46,11 +46,11 @@ public class BlockTile extends RootTile
         {
             fixture.friction = 0.01f;
             fixture.filter.categoryBits = (1 << BodyCategories.eIce.ordinal());
-            fixture.filter.maskBits = Integer.MAX_VALUE;
+            fixture.filter.maskBits = Integer.MAX_VALUE ^(1 << BodyCategories.eEtherealEnemy.ordinal());
         }
         else if (mTileType.equals(TileType.eBouncy))
         {
-            fixture.restitution = 2.0f;
+            fixture.restitution = 1.0f;
         }
         else if (mTileType.equals(TileType.eTar))
         {

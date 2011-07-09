@@ -71,6 +71,7 @@ public class sWorld
         eCheckPoint,
         eSpikes,
         eFire,
+        eEtherealEnemy,
         eBodyCategoriesMax;
     }
     private sWorld()

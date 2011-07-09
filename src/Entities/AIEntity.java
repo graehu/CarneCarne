@@ -25,18 +25,27 @@ public class AIEntity extends Entity {
     protected iAIController mController;
     protected boolean mAllowRoll = false;
     protected int mJumpTimer;
+    protected String mCurrentAnimation;
+    protected float mAnimSpeed;
     protected static int mJumpReload = 60; /// NOTE frame rate change
     protected float mMoveSpeed;
     protected Command mCommand;
     protected AIEntityState mAIEntityState;
 
     public RevoluteJoint mJoint;
+    
+    /*public void changeState(State _newState)
+    {
+        mAIEntityState.changeState(_newState);
+    }*/
+    
     public AIEntity(iSkin _skin)
     {
         super(_skin);
         mAIEntityState = new AIEntityState(this);
         mJumpTimer = 0;
         mMoveSpeed = 1;
+        mAnimSpeed = 1;
     }
     public void update()
     {
@@ -312,6 +321,17 @@ public class AIEntity extends Entity {
     {
         return mAIEntityState.getState().equals(AIEntityState.State.eFalling);
         //return mJumpContacts > 0;
+    }
+    
+    public float setAnimation(String _animation)
+    {
+        if(_animation != mCurrentAnimation)
+        {
+            mSkin.stopAnim(mCurrentAnimation);
+            mCurrentAnimation = _animation;
+            return mSkin.startAnim(_animation, true, mAnimSpeed);
+        }
+        return 0;
     }
     
     public void crouch()
