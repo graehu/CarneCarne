@@ -72,8 +72,8 @@ public class sLevel {
     }
     public static void init() throws SlickException
     {
-        mTiledMap = new AnimatedTiledMap("assets/DeekTestMap.tmx"); /// COMMENT MINE OUT SHITHEAD
-        //mTiledMap = new AnimatedTiledMap("assets/AaronTestMap.tmx");
+        //mTiledMap = new AnimatedTiledMap("assets/DeekTestMap.tmx"); /// COMMENT MINE OUT SHITHEAD
+        mTiledMap = new AnimatedTiledMap("assets/DeekTestMap.tmx"); /// CUM ON MY TITS KNOBJOCKEY
         //mTiledMap = new AnimatedTiledMap("assets/Graham_Tutorial.tmx");
         mTiledMap.initAnimationlayer("assets/TileAnimation.def");
         mLevelEditor = new LevelEditor(mTiledMap);

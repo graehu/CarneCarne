@@ -17,6 +17,7 @@ import Events.iEvent;
 import Events.iEventListener;
 import Events.sEvents;
 import Events.RightStickEvent;
+import Graphics.Particles.sParticleManager;
 import Level.Tile;
 import World.sWorld;
 import java.util.HashMap;
@@ -62,7 +63,7 @@ public class PlayerInputController extends iAIController implements iEventListen
     }
     
     public void update()
-    {        
+    {       
         mTongueState.tick(mEntity);
         ((PlayerEntity)mEntity).setDirection(mPlayerDir);
     
@@ -164,6 +165,8 @@ public class PlayerInputController extends iAIController implements iEventListen
         parameters.put("velocity", mPlayerDir.mul(20.0f));
         parameters.put("position", mEntity.mBody.getPosition().add(mPlayerDir));
         sEntityFactory.create("FireParticle", parameters);
+        sParticleManager.createSystem("DragonBreath", mEntity.mBody.getPosition().add(new Vec2(0.5f,0.5f)).add(mPlayerDir.mul(0.5f)).mul(64.0f), -1f)
+                .setAngularOffset(((float)Math.atan2(mPlayerDir.y, mPlayerDir.x) * 180.0f/(float)Math.PI)-270.0f);
     }
 
     public void trigger(final iEvent _event)
@@ -212,6 +215,7 @@ public class PlayerInputController extends iAIController implements iEventListen
             {
                 case 'w':
                 {
+                    mEntity.stopJumping();
                     break;
                 }
                 case 'a':

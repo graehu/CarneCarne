@@ -7,6 +7,9 @@ package Level;
 import Level.Tile.Direction;
 import Level.sLevel.TileType;
 import java.util.Stack;
+import org.jbox2d.collision.shapes.PolygonShape;
+import org.jbox2d.collision.shapes.Shape;
+import org.jbox2d.common.Vec2;
 
 /**
  *
@@ -64,5 +67,36 @@ public class EdgeTile extends BlockTile
         }
         return false;
     }
-    
+    @Override
+    protected Shape createShape(int _xTile, int _yTile)
+    {
+        PolygonShape shape = new PolygonShape();
+        shape.setAsBox(0.5f, 0.5f, new Vec2(_xTile,_yTile), 0);
+        switch (mDirection)
+        {
+            case eFromLeft:
+            {
+                shape.setAsBox(0.25f, 0.5f, new Vec2(_xTile+0.25f,_yTile), 0.0f);
+                break;
+            }
+            case eFromRight:
+            {
+                shape.setAsBox(0.25f, 0.5f, new Vec2(_xTile-0.25f,_yTile), 0.0f);
+                break;
+            }
+            case eFromDown:
+            {
+                shape.setAsBox(0.5f, 0.25f, new Vec2(_xTile,_yTile-0.25f), 0.0f);
+                break;
+            }
+            case eFromUp:
+            {
+                shape.setAsBox(0.5f, 0.25f, new Vec2(_xTile,_yTile+0.25f), 0.0f);
+                break;
+            }
+            default:
+                assert(false);
+        }
+        return shape;
+    }
 }

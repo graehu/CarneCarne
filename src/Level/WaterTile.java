@@ -22,10 +22,9 @@ import org.jbox2d.dynamics.FixtureDef;
  */
 class WaterTile extends RootTile {
 
-    static final String constMaterial = "Water";
-    public WaterTile(int _rootId, TileType _tileType)
+    public WaterTile(int _rootId, TileType _tileType, String _animationsName)
     {
-        super(TileShape.eBlock, _rootId, _tileType, constMaterial, false, true, false, -1);
+        super(TileShape.eBlock, _rootId, _tileType, _animationsName, false, true, false, -1);
     }
 
     Body createPhysicsBody(int _xTile, int _yTile, HashMap _parameters)
@@ -46,10 +45,6 @@ class WaterTile extends RootTile {
         fixture.filter.maskBits = Integer.MAX_VALUE;
         
         return _body.createFixture(fixture);
-    }
-    public Fixture createFixture(int _xTile, int _yTile)
-    {
-        return null;
     }
 
     void checkEdges(int _xTile, int _yTile, Stack<Integer> _stack, TileGrid _tileGrid)

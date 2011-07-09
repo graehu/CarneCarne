@@ -54,29 +54,31 @@ public class sInput {
         if(input.isKeyDown(Input.KEY_F11))
             sGraphicsManager.toggleFullscreen();
         
+        if(xBoxControllers.size() != input.getControllerCount())
+            initContollers(input);
+        
+        for(XBoxController controller : xBoxControllers)
+        {
+            controller.update(input);
+        }
+    }
+    
+    private static void initContollers(Input input)
+    {
         //handle controller input
         int i = 0;
         mPlayerCount = input.getControllerCount();
-        try
+
+        while (xBoxControllers.size() < mPlayerCount)
         {
-            for (i = 0; i < xBoxControllers.size(); i++)
-            {
-                xBoxControllers.get(i).update(input);
-            }
-            while (true)
-            {
-                xBoxControllers.add(new XBoxController(i));
-                xBoxControllers.get(i).update(input);
+            xBoxControllers.add(new XBoxController(i));
+            if(xBoxControllers.get(i).update(input))
                 i++;
-            }
         }
-        catch (ArrayIndexOutOfBoundsException e)
+        mPlayerCount = i;
+        if (mPlayerCount == 0)
         {
-            mPlayerCount = i;
-            if (mPlayerCount == 0)
-            {
-                mPlayerCount = 1;
-            }
+            mPlayerCount = 1;
         }
     }
     public static void setCursorPos(Vec2 _pos)

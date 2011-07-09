@@ -6,11 +6,10 @@ package Level;
 
 import Level.Tile.Direction;
 import Level.sLevel.TileType;
-import World.sWorld;
 import World.sWorld.BodyCategories;
-import java.util.HashMap;
 import java.util.Stack;
 import org.jbox2d.collision.shapes.PolygonShape;
+import org.jbox2d.collision.shapes.Shape;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyType;
@@ -31,10 +30,15 @@ public class BlockTile extends RootTile
     {
         super(_shape, _id, _tileType, _animationsName, _regrows, _anchor, _isFlammable, _maxHealth);
     }
-    public Fixture createPhysicsBody(int _xTile, int _yTile, Body _body, Tile _tile)
+    protected Shape createShape(int _xTile, int _yTile)
     {
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(0.5f, 0.5f, new Vec2(_xTile,_yTile), 0);
+        return shape;
+    }
+    public Fixture createPhysicsBody(int _xTile, int _yTile, Body _body, Tile _tile)
+    {
+        Shape shape = createShape(_xTile, _yTile);
         FixtureDef fixture = new FixtureDef();
         fixture.filter.categoryBits = (1 << BodyCategories.eEdibleTiles.ordinal());
         fixture.filter.maskBits = Integer.MAX_VALUE;
@@ -61,15 +65,6 @@ public class BlockTile extends RootTile
             fixture.density = 100.0f;
         }
         return _body.createFixture(fixture);
-    }
-    public Fixture createFixture(int _xTile, int _yTile)
-    {
-        HashMap parameters = new HashMap();
-        parameters.put("position", new Vec2(_xTile,_yTile));
-        parameters.put("TileType", mTileType);
-        parameters.put("isDynamic", true);
-        sWorld.useFactory("TileFactory",parameters);
-        return null;
     }
     public void checkEdges(int _xTile, int _yTile, Stack<Integer> _stack, TileGrid _tileGrid)
     {

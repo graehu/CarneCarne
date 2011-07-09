@@ -42,6 +42,7 @@ abstract public class TileGrid {
     {
         return mBody;
     }
+    abstract void dropCheck(int _x, int _y);
     protected void init(HashMap _parameters)
     {
         mBody = sWorld.useFactory("TileFactory", _parameters);
@@ -119,7 +120,6 @@ abstract public class TileGrid {
     }
     public void placeTile(Vec2 _worldPosition, int _rootId)
     {
-        
     }
     void placeTileNoBody(int _x, int _y, int _rootId)
     {
@@ -158,7 +158,6 @@ abstract public class TileGrid {
         setTileId(_x, _y, _gid);
         mTiles[_x][_y].mId = _gid;
         mTiles[_x][_y].mRootId = rootTiles.get(_gid);
-        
     }
     protected void destroyTileImplementation(int _x, int _y)
     {
@@ -219,6 +218,8 @@ abstract public class TileGrid {
             int xTile = stack.pop();
             setTileId(xTile, yTile, id);
         }
+        
+        dropCheck(_x, _y-1);
         caveInSearch(_x, _y, tileType);
     }
     

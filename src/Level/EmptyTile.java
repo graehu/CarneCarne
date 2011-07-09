@@ -6,7 +6,6 @@ package Level;
 
 import Level.Tile.Direction;
 import Level.sLevel.TileType;
-import java.util.HashMap;
 import java.util.Stack;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.Fixture;

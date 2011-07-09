@@ -29,7 +29,7 @@ import org.newdawn.slick.Input;
  * 8 - L3
  * 9 - R3
  */
-public class XBoxController
+public class XBoxController 
 {
     static private float stickEpsilon = 0.3f; /// TWEAK
     static private float shoulderButtonEpsilon = 0.3f;
@@ -51,10 +51,18 @@ public class XBoxController
         mPlayer = _player;
     }
     
-    public void update(Input _input)
+    public boolean update(Input _input)
     {
+        if(_input.getAxisCount(mPlayer) < 2)
+            return false;
+        
         //get player direction
-        Vec2 rightStick = new Vec2(_input.getAxisValue(mPlayer, 3),_input.getAxisValue(mPlayer, 2));
+        Vec2 rightStick = new Vec2(_input.getAxisValue(mPlayer, 1),_input.getAxisValue(mPlayer, 0));
+        
+        if (rightStick.length() > 0.2f)
+        {
+            sEvents.triggerEvent(new RightStickEvent(rightStick, mPlayer));
+        }
         
         //handle start and back buttons
         if(_input.isButtonPressed(7, mPlayer)) //start
@@ -89,9 +97,10 @@ public class XBoxController
         
         //handle shoulder triggers
         float xAxis = _input.getAxisValue(mPlayer, 1);
+        float xStickEpsilon = 0.5f;
         if (xAxisHit)
         {
-            if (xAxis > stickEpsilon || xAxis < -stickEpsilon)
+            if (xAxis > xStickEpsilon || xAxis < -xStickEpsilon)
             {
                 sEvents.triggerEvent(new AnalogueStickEvent(xAxis, mPlayer)); //move
             }
@@ -116,12 +125,9 @@ public class XBoxController
             {
                 changeState(TriggerState.eNotPressed, rightStick);
             }
-        }
+        }     
         
-        if (rightStick.length() > 0.2f)
-        {
-            sEvents.triggerEvent(new RightStickEvent(rightStick, mPlayer));
-        }        
+        return true;
     }
     //statemachine required to determine releases for triggers
     private void changeState(TriggerState _newState, Vec2 _rightStick)
