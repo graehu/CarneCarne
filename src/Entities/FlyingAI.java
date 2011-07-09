@@ -26,6 +26,7 @@ public class FlyingAI extends AIEntity
         mBody.setLinearDamping(0.8f);        
         Vec2 pos = mBody.getPosition();
         Vec2 speed = new Vec2((_point.x-pos.x)/2, (_point.y-pos.y)/2);
+//        mSkin.setRotation(speed.x*20);
         
         if(speed.x > _maxSpeed)
             speed.x = _maxSpeed;
@@ -36,6 +37,9 @@ public class FlyingAI extends AIEntity
             speed.y = _maxSpeed;
         else if(speed.y < -_maxSpeed)
             speed.y = -_maxSpeed;
+        
+        
+        
         
         mBody.applyLinearImpulse(speed, mBody.getWorldCenter());
         

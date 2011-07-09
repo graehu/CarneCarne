@@ -83,7 +83,7 @@ abstract public class SlopeTile extends RootTile{
         fixture.shape = shape;
         //fixture.filter.groupIndex = mTileType.ordinal();
         fixture.filter.categoryBits = (1 << BodyCategories.eEdibleTiles.ordinal());
-        fixture.filter.maskBits = Integer.MAX_VALUE;
+        fixture.filter.maskBits = Integer.MAX_VALUE ^ (1 << BodyCategories.eEtherealEnemy.ordinal());
         if (_body.m_type.equals(BodyType.DYNAMIC))
         {
             fixture.density = 1.0f;

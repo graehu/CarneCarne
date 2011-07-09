@@ -16,8 +16,6 @@ import org.jbox2d.common.Vec2;
 public class Broccoli extends AIEntity
 {
     private float mMoveSpeed;
-    private String mCurrentAnimation;
-    private float mAnimSpeed;
     private float mHopTimmer;
     private float mTimer;
     public Broccoli(iSkin _skin) 
@@ -68,15 +66,7 @@ public class Broccoli extends AIEntity
     {
         
     }
-    public void setAnimation(String _animation)
-    {
-        if(_animation != mCurrentAnimation)
-        {
-            mSkin.stopAnim(mCurrentAnimation);
-            mCurrentAnimation = _animation;
-            mHopTimmer = mSkin.startAnim(_animation, true, mAnimSpeed);
-        }
-    }
+
     /*public void render()
     {
         Vec2 pixelPosition = sWorld.translateToWorld(mBody.getPosition());

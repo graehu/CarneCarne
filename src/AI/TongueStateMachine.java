@@ -297,11 +297,12 @@ public class TongueStateMachine {
                 mTongueDir = tongueAttachment.sub(mAIController.mEntity.mBody.getPosition());
                 float actualLength = mTongueDir.normalize();
                 setTongue(mTongueDir, actualLength); //lock tongue to block
-                mAIController.mEntity.mBody.applyLinearImpulse(mTongueDir.mul(1.0f), mAIController.mEntity.mBody.getWorldPoint(new Vec2(0,0)));
+                mAIController.mEntity.mBody.applyLinearImpulse(mTongueDir.mul(actualLength/2), mAIController.mEntity.mBody.getWorldPoint(new Vec2(0,0)));
                 //mJoint.m_length = actualLength * 0.99f;
+                //amAIController.mEntity.
                 
                 //mJoint.m_length -= 0.01f;
-                // mJoint.m_length *= 0.99f; Try either of these
+                //mJoint.m_length *= 0.99f; //Try either of these
                 break;
             }
         }
