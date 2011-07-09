@@ -65,6 +65,7 @@ public class CaveInSearcher {
         Stack<TileIndex> workingSetSets = new Stack<TileIndex>();
         Stack<TileIndex> gridSets = new Stack<TileIndex>();
         //mChecked[_x][_y] = true;
+        
         check(_x-1,_y, Direction.eFromRight,_tileType,workingSetSets,gridSets);
         calculate(workingSetSets, gridSets);
         

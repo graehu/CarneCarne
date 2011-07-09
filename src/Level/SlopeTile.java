@@ -91,10 +91,6 @@ abstract public class SlopeTile extends RootTile{
         fixture.userData = _tile;
         return _body.createFixture(fixture);
     }
-    public Fixture createFixture(int _xTile, int _yTile)
-    {
-        return null;
-    }
     abstract public void getEdges(boolean _boundaries[], int _xTile, int _yTile, TileGrid _tileGrid);
     public void checkEdges(int _xTile, int _yTile, Stack<Integer> _stack, TileGrid _tileGrid)
     {

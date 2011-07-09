@@ -5,8 +5,10 @@
 package Level;
 
 import Level.sLevel.TileType;
+import World.sWorld;
 import java.util.HashMap;
 import org.jbox2d.common.Vec2;
+import org.jbox2d.dynamics.Body;
 import org.newdawn.slick.tiled.TiledMap;
 
 /**
@@ -44,9 +46,35 @@ public final class LevelTileGrid extends TileGrid
     {
         destroyTileImplementation(_x, _y);
     }
+    boolean dropChecking = false;
     void caveInSearch(int _x, int _y, TileType _tileType)
     {
-        CaveInSearcher search = new CaveInSearcher(this, tiledMap, layerIndex, mBody);
-        search.destroy(_x, _y, _tileType);
+        if (!dropChecking)
+        {
+            CaveInSearcher search = new CaveInSearcher(this, tiledMap, layerIndex, mBody);
+            search.destroy(_x, _y, _tileType);
+        }
+    }
+    void dropCheck(int _x, int _y)
+    {
+        /*if (!dropChecking && mTiles[_x][_y].dothDropeth())
+        {
+            dropChecking = true;
+            if (mTiles[_x][_y].mFixture != null)
+                mTiles[_x][_y].destroyFixture();
+            HashMap parameters = new HashMap();
+            Tile tile = mTiles[_x][_y].clone();
+            tile.mXTile = _x;
+            tile.mYTile = _y;
+            parameters.put("isDynamic", true);
+            parameters.put("position", new Vec2(0,0));
+            parameters.put("angle", 0.0f);
+            parameters.put("linearVelocity", new Vec2(0,0));
+            parameters.put("angularVelocity", 0.0f);
+            Body body = sWorld.useFactory("TileFactory", parameters);
+            tile.createPhysicsBody(body);
+            destroyTile(_x, _y);
+            dropChecking = false;
+        }*/
     }
 }

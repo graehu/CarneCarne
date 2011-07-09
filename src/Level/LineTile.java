@@ -30,26 +30,26 @@ public class LineTile extends BlockTile
         {
             case eFromLeft:
             {
-                edges[0] = _tileGrid.boundaryFrom(_xTile+1, _yTile, mDirection, mTileType);
-                edges[1] = _tileGrid.boundaryFrom(_xTile-1, _yTile, mDirection, mTileType);
+                edges[0] = _tileGrid.boundaryFrom(_xTile+1, _yTile, Direction.eFromLeft, mTileType);
+                edges[1] = _tileGrid.boundaryFrom(_xTile-1, _yTile, Direction.eFromRight, mTileType);
                 break;
             }
             case eFromRight:
             {
-                edges[0] = _tileGrid.boundaryFrom(_xTile-1, _yTile, mDirection, mTileType);
-                edges[1] = _tileGrid.boundaryFrom(_xTile+1, _yTile, mDirection, mTileType);
+                edges[0] = _tileGrid.boundaryFrom(_xTile-1, _yTile, Direction.eFromRight, mTileType);
+                edges[1] = _tileGrid.boundaryFrom(_xTile+1, _yTile, Direction.eFromLeft, mTileType);
                 break;
             }
             case eFromDown:
             {
-                edges[0] = _tileGrid.boundaryFrom(_xTile, _yTile-1, mDirection, mTileType);
-                edges[1] = _tileGrid.boundaryFrom(_xTile, _yTile+1, mDirection, mTileType);
+                edges[0] = _tileGrid.boundaryFrom(_xTile, _yTile-1, Direction.eFromDown, mTileType);
+                edges[1] = _tileGrid.boundaryFrom(_xTile, _yTile+1, Direction.eFromUp, mTileType);
                 break;
             }
             case eFromUp:
             {
-                edges[0] = _tileGrid.boundaryFrom(_xTile, _yTile+1, mDirection, mTileType);
-                edges[1] = _tileGrid.boundaryFrom(_xTile, _yTile-1, mDirection, mTileType);
+                edges[0] = _tileGrid.boundaryFrom(_xTile, _yTile+1, Direction.eFromUp, mTileType);
+                edges[1] = _tileGrid.boundaryFrom(_xTile, _yTile-1, Direction.eFromDown, mTileType);
                 break;
             }
             default:

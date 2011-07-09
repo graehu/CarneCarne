@@ -40,9 +40,6 @@ public class AIEntity extends Entity {
     }
     public void update()
     {
-        //apply gravity
-        Vec2 mv = mBody.getLinearVelocity();
-        float mass = mBody.getMass();
         ContactEdge edge = mBody.m_contactList;
         int mTar = 0;
         int mIce = 0;
@@ -83,6 +80,7 @@ public class AIEntity extends Entity {
                         case eWater:
                         {
                             mWater = ((Tile)other.getUserData()).getWaterHeight();
+                            mJumpContacts++;
                             break;
                         }
                         default:
@@ -115,25 +113,12 @@ public class AIEntity extends Entity {
                         mJumpContacts++; //allow jump on slopes
                         mAllowRoll = true;
                     }
-                    
                 }
             }
             edge = edge.next;
         }
         mAIEntityState.update(mTar, mIce, mWater, mJumpContacts);
-        mBody.applyLinearImpulse(new Vec2(0,0.1f*mBody.getMass()), mBody.getWorldCenter());
-        if (mWaterTiles != 0)
-        {
-            float height = 1.0f-(mWaterHeight - mBody.getPosition().y);
-            if (height > 1.0f)
-            {
-                height = 1.0f;
-            }
-            //while traveling downwards
-            Vec2 velocity = mBody.getLinearVelocity();
-            //velocity.normalize();
-            mBody.applyLinearImpulse(new Vec2(0,-3.0f*height), new Vec2(0,0));
-        }
+        //mBody.applyLinearImpulse(new Vec2(0,0.4f*mBody.getMass()), mBody.getWorldCenter());
         if (mJumpTimer != 0)
         {
             mJumpTimer--;
@@ -155,12 +140,19 @@ public class AIEntity extends Entity {
         float waterHeight = mAIEntityState.getWaterHeight();
         waterHeight = mBody.getPosition().y + 1 - waterHeight;
         mBody.applyLinearImpulse(new Vec2(0, -waterHeight), mBody.getWorldCenter());
+        if (waterHeight > 1.0f)
+        {
+            waterHeight = 1.0f;
+        }
+        mBody.applyLinearImpulse(mBody.getLinearVelocity().mul(-0.3f*waterHeight), mBody.getWorldCenter());
     }
     public void walk(float value)
     {
         switch (mAIEntityState.getState())
         {
             case eFalling:
+            case eFallingDoubleJumped:
+            case eJumping:
             {
                 mBody.applyLinearImpulse(new Vec2(0.1f*value,0), mBody.getWorldCenter());
                 break;
@@ -192,6 +184,8 @@ public class AIEntity extends Entity {
             }
             case eSwimming:
             {
+                mBody.applyLinearImpulse(new Vec2(1f*value,0),mBody.getWorldCenter());
+                mBody.applyAngularImpulse(0.5f*value);
                 break;
             }
             case eDead:
@@ -205,6 +199,8 @@ public class AIEntity extends Entity {
         switch (mAIEntityState.getState())
         {
             case eFalling:
+            case eFallingDoubleJumped:
+            case eJumping:
             {
                 mBody.applyLinearImpulse(new Vec2(-0.1f,0), mBody.getWorldCenter());
                 break;
@@ -234,6 +230,11 @@ public class AIEntity extends Entity {
                 mBody.applyAngularImpulse(-0.5f);
                 break;
             }
+            case eSwimming:
+            {
+                mBody.applyLinearImpulse(new Vec2(-0.3f,0),mBody.getWorldCenter());
+                break;
+            }
             case eDead:
             {
                 break;
@@ -245,6 +246,8 @@ public class AIEntity extends Entity {
         switch (mAIEntityState.getState())
         {
             case eFalling:
+            case eFallingDoubleJumped:
+            case eJumping:
             {
                 mBody.applyLinearImpulse(new Vec2(0.1f,0), mBody.getWorldCenter());
                 break;
@@ -274,6 +277,11 @@ public class AIEntity extends Entity {
                 mBody.applyAngularImpulse(0.5f);
                 break;
             }
+            case eSwimming:
+            {
+                mBody.applyLinearImpulse(new Vec2(0.3f,0),mBody.getWorldCenter());
+                break;
+            }
             case eDead:
             {
                 break;
@@ -282,14 +290,17 @@ public class AIEntity extends Entity {
     }
     public void jump()
     {
-        if (!mAIEntityState.getState().equals(AIEntityState.State.eFalling) && 
-            !mAIEntityState.getState().equals(AIEntityState.State.eJumping))
+        float canJump = mAIEntityState.canJump(mBody.getLinearVelocity().y);
+        if (canJump != 0.0f)
         {
-            
-            mBody.applyLinearImpulse(new Vec2(0,-23.0f), mBody.getWorldCenter());
+            mBody.setLinearVelocity(new Vec2(mBody.getLinearVelocity().x, canJump));
             mJumpTimer = mJumpReload;
             mAIEntityState.jump();
         }
+    }
+    public void stopJumping()
+    {
+        mAIEntityState.stopJumping();
     }
     
     public void setMoveSpeed(float _moveSpeed)

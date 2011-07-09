@@ -204,7 +204,7 @@ public class TongueStateMachine {
                     }
                     else if (mTile.getTileType().equals(TileType.eChilli))
                     {
-                        mAmmoLeft = 100;
+                        mAmmoLeft = 4;
                     }
                     else
                     {
@@ -297,7 +297,7 @@ public class TongueStateMachine {
                 mTongueDir = tongueAttachment.sub(mAIController.mEntity.mBody.getPosition());
                 float actualLength = mTongueDir.normalize();
                 setTongue(mTongueDir, actualLength); //lock tongue to block
-                mAIController.mEntity.mBody.applyLinearImpulse(mTongueDir.mul(1.0f), mAIController.mEntity.mBody.getWorldPoint(new Vec2(0,0)));
+                mAIController.mEntity.mBody.applyLinearImpulse(mTongueDir.mul(actualLength*0.2f), mAIController.mEntity.mBody.getWorldPoint(new Vec2(0,0)));
                 //mJoint.m_length = actualLength * 0.99f;
                 
                 //mJoint.m_length -= 0.01f;

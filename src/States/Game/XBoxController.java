@@ -11,7 +11,6 @@ import Events.RightStickEvent;
 import Events.ShoulderButtonEvent;
 import Events.sEvents;
 import org.jbox2d.common.Vec2;
-import org.newdawn.slick.ControllerListener;
 import org.newdawn.slick.Input;
 
 /**
@@ -58,7 +57,12 @@ public class XBoxController
             return false;
         
         //get player direction
-        Vec2 rightStick = new Vec2(_input.getAxisValue(mPlayer, 3),_input.getAxisValue(mPlayer, 2));
+        Vec2 rightStick = new Vec2(_input.getAxisValue(mPlayer, 1),_input.getAxisValue(mPlayer, 0));
+        
+        if (rightStick.length() > 0.2f)
+        {
+            sEvents.triggerEvent(new RightStickEvent(rightStick, mPlayer));
+        }
         
         //handle start and back buttons
         if(_input.isButtonPressed(7, mPlayer)) //start
@@ -93,9 +97,10 @@ public class XBoxController
         
         //handle shoulder triggers
         float xAxis = _input.getAxisValue(mPlayer, 1);
+        float xStickEpsilon = 0.5f;
         if (xAxisHit)
         {
-            if (xAxis > stickEpsilon || xAxis < -stickEpsilon)
+            if (xAxis > xStickEpsilon || xAxis < -xStickEpsilon)
             {
                 sEvents.triggerEvent(new AnalogueStickEvent(xAxis, mPlayer)); //move
             }
@@ -120,12 +125,7 @@ public class XBoxController
             {
                 changeState(TriggerState.eNotPressed, rightStick);
             }
-        }
-        
-        if (rightStick.length() > 0.2f)
-        {
-            sEvents.triggerEvent(new RightStickEvent(rightStick, mPlayer));
-        }        
+        }     
         
         return true;
     }

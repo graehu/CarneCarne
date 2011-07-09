@@ -100,8 +100,11 @@ public class TileRegrowth
                 AABB aabb = new AABB(bottomLeft, bottomLeft.add(new Vec2(1,0)));
                 if (sWorld.searchAABB(aabb, (1 << sWorld.BodyCategories.ePlayer.ordinal())) == null)
                 {
-                    placeTile(tile);
-                    sParticleManager.createSystem(tile.mRootId.mAnimationsName + "SpawnParticle", new Vec2(32.0f+(tile.x*64.0f), 32.0f+(tile.y*64.0f)), 600);
+                    if (mTileGrid.mTiles[tile.x][tile.y].mRootId.mId == 0)
+                    {
+                        placeTile(tile);
+                        sParticleManager.createSystem(tile.mRootId.mAnimationsName + "SpawnParticle", new Vec2(32.0f+(tile.x*64.0f), 32.0f+(tile.y*64.0f)), 600);
+                    }
                 }
                 else
                 {

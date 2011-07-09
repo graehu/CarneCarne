@@ -26,8 +26,6 @@ import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.Fixture;
 import org.jbox2d.dynamics.FixtureDef;
 import org.jbox2d.dynamics.World;
-import org.jbox2d.dynamics.joints.DistanceJoint;
-import org.jbox2d.dynamics.joints.DistanceJointDef;
 import org.jbox2d.dynamics.joints.Joint;
 import org.jbox2d.dynamics.joints.PrismaticJointDef;
 import org.jbox2d.structs.collision.RayCastInput;
@@ -226,7 +224,6 @@ public class sWorld
             {
                 case eSwingable:
                 case eEdible:
-                case eIce:
                 case eMelonSkin:
                 {
                     if (tile.damageTile())
@@ -236,6 +233,7 @@ public class sWorld
                     }
                     break;
                 }
+                case eIce:
                 case eEmpty:
                 case eIndestructible:
                 {

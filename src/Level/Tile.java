@@ -120,6 +120,11 @@ public class Tile
     {
         return isOnFire;
     }
+
+    boolean dothDropeth()
+    {
+        return true;
+    }
     enum Direction
     {
         eFromUp,
