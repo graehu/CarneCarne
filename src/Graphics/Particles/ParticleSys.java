@@ -105,43 +105,37 @@ public class ParticleSys
      */
     protected boolean update(int _delta)
     {
-        
         if(mLife < 0.0f)
         {//while persistant
-            return true;
+            //do nothing
         }
         else if(mLife > 0.0f)
         {//while still alive
             mLife -= Math.min(mLife,((float)_delta)/1000.0f);
-            return true;
+            //do nothing
         }
         else //if(mLife == 0.0f)
         {//end of life
             mIsDead = false;
             for(int i = 0; i < mSystem.getEmitterCount(); i++)
             {
+                //stop emitter producing
+                mSystem.getEmitter(i).wrapUp();
                 //when all particles expire declare system dead
                 if(mSystem.getEmitter(i).completed())
                 {
                     mCompletedEmittors++;
                     if(mSystem.getEmitterCount() == mCompletedEmittors)
                     {
+                        mSystem.getEmitter(i).resetState();
                         mIsDead = true;
                     }
                 }
-                //stop emitter producing
-                mSystem.getEmitter(i).wrapUp();
             }
         }
         //if dead return false to destroy
         if(mIsDead)
         {
-            //enable enittors so they can be recycled
-            for(int i = 0; i < mSystem.getEmitterCount(); i++)
-            {
-                mSystem.getEmitter(i).resetState();
-                mSystem.getEmitter(i).setEnabled(true);
-            }
             return false;
         }
         else

@@ -103,7 +103,7 @@ public class StateGame extends BasicGameState implements iEventListener {
 //        params.put("pos", new Vec2(500,500));
 //        sSpriteFactory.create("simple", params);
 
-        sSound.play("ambiance");
+        //sSound.play("ambiance");
     }
     
     @Override
@@ -111,7 +111,7 @@ public class StateGame extends BasicGameState implements iEventListener {
     public void leave(GameContainer container, StateBasedGame game) throws SlickException 
     {
         super.leave(container, game);
-        sSound.stop("ambiance");
+        //sSound.stop("ambiance");
     }
     
 //    @Override
@@ -150,9 +150,9 @@ public class StateGame extends BasicGameState implements iEventListener {
         mChangeToMenu = new StateChanger(4, new BlobbyTransition(), new BlobbyTransition(), _sbg);
         
         //Initialise sound
-        sSound.init();
-        sSound.loadSound("ambiance", "assets/sound/sfx/level_ambiance.ogg");
-        sSound.setLooping("ambiance", true);
+//        sSound.init();
+//        sSound.loadSound("ambiance", "assets/sound/sfx/level_ambiance.ogg");
+//        sSound.setLooping("ambiance", true);
 
     }
 

@@ -40,19 +40,18 @@
 		<delete dir="${dist.dir}/assets" />
 	</target>
 	
-	<target name="-post-jar">
+<!--	<target name="-post-jar">
 	
 		<copy todir="${dist.dir}" file="getdown/getdown.txt"/>
 		
 		<taskdef name="digest" classname="com.threerings.getdown.tools.DigesterTask"
 		classpath="${lib.dir}/getdown-tools-1.2.jar"/>
 		
-		<property file="c:/temp/certificate.properties"/>
+		<property file="C:/Temp/certificate.properties"/>
 		
-		<digest appdir="${dist.dir}" keystore="${sign.keystore}" storepass="${sign.storepass}"
-        alias="${sign.alias}"/>
+		<digest appdir="${dist.dir}" keystore="anecessaryevilkeystore" storepass="tacoTACO" alias="anecessaryevil"/>
 		
-	</target>
+	</target>-->
 		
     <!--
 
