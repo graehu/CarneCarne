@@ -12,11 +12,13 @@ import org.newdawn.slick.particles.ParticleSystem;
  */
 public class DoubleParticleSys extends ParticleSys
 {
+    String mRefOther;
     ParticleSystem mOther;
-    public DoubleParticleSys(ParticleSystem _system1, ParticleSystem _system2, float _lifeTime)
+    public DoubleParticleSys(ParticleSystem _system1, String _ref1, ParticleSystem _system2, String _ref2, float _lifeTime)
     {
-        super(_system1, _lifeTime);
+        super(_system1, _lifeTime, _ref1);
         mOther = _system2;
+        mRefOther = _ref2;
     }
     private void switchSystems()
     {
@@ -24,6 +26,15 @@ public class DoubleParticleSys extends ParticleSys
         mOther = mSystem;
         mSystem = other;
     }
+
+    @Override
+    protected void recycle() {
+        sParticleManager.recycle(mSystem, mRef);
+        sParticleManager.recycle(mOther, mRefOther);
+        mSystem = null;
+        mOther = null;
+    }
+    
     //move emitters only
     @Override
     public void moveEmittersTo(float _x, float _y)

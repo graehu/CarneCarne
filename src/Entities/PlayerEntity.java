@@ -172,6 +172,10 @@ public class PlayerEntity extends AIEntity
                 mSkin.startAnim("gum", false, 0.0f);
                 mBodyType = "gum";
                 break;
+            case eChilli:
+                mSkin.startAnim("spi", false, 0.0f);
+                mBodyType = "spi";
+                break;
             default:
             case eTileTypesMax:
                 mSkin.startAnim("bdy", false, 0.0f);

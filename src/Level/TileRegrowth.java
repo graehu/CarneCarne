@@ -103,7 +103,7 @@ public class TileRegrowth
                     if (mTileGrid.mTiles[tile.x][tile.y].mRootId.mId == 0)
                     {
                         placeTile(tile);
-                        sParticleManager.createSystem(tile.mRootId.mAnimationsName + "SpawnParticle", new Vec2(32.0f+(tile.x*64.0f), 32.0f+(tile.y*64.0f)), 600);
+                        sParticleManager.createSystem(tile.mRootId.mAnimationsName + "SpawnParticle", new Vec2(32.0f+(tile.x*64.0f), 32.0f+(tile.y*64.0f)), 1);
                     }
                 }
                 else

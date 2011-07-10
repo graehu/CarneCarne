@@ -62,7 +62,7 @@ public class PlayerFactory implements iEntityFactory {
                 mouthHat.set(i, "mh" + mouthHat.get(i));
             }
             //create final list in render order
-            ArrayList<String> charAnims = new ArrayList(Arrays.asList("bdy", "edi", "gum", "wtr", "flt", "jly", "shn"));
+            ArrayList<String> charAnims = new ArrayList(Arrays.asList("bdy", "edi", "gum", "wtr", "flt", "jly", "shn", "spi"));
             charAnims.addAll(face);
             charAnims.addAll(hat);
             charAnims.addAll(mouth);

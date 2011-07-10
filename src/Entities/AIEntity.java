@@ -325,6 +325,11 @@ public class AIEntity extends Entity {
         //return mJumpContacts > 0;
     }
     
+    public boolean isDead()
+    {
+        return mAIEntityState.getState() == AIEntityState.State.eDead;
+    }
+    
     public float setAnimation(String _animation)
     {
         if(_animation != mCurrentAnimation)

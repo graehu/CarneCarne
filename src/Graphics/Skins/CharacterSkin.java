@@ -125,6 +125,13 @@ public class CharacterSkin implements iSkin
             return mOffsets.get(ref);
         else return null;
     }
+    
+    public void setAlpha(float _alpha) {
+        for(iSkin skin : mSkins)
+        {
+            skin.setAlpha(_alpha);
+        }
+    }
 
     public void setIsLooping(boolean _isLooping) {
         throw new UnsupportedOperationException("Not supported yet.");

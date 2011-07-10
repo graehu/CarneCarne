@@ -74,6 +74,10 @@ public class StaticSkin implements iSkin
     public float getDuration() {
         return 0.0f;
     }
+    
+    public void setAlpha(float _alpha) {
+        mImage.setAlpha(_alpha);
+    }
 
     public float startAnim(String _animation, boolean _isLooping, float _speed) {
         throw new UnsupportedOperationException("Not supported yet.");

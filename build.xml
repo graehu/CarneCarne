@@ -40,7 +40,7 @@
 		<delete dir="${dist.dir}/assets" />
 	</target>
 	
-	<target name="-post-clean">
+	<target name="-post-jar">
 	
 		<copy todir="${dist.dir}" file="getdown/getdown.txt"/>
 		

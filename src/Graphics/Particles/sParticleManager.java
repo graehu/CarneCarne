@@ -23,6 +23,7 @@ public class sParticleManager {
     
     static HashMap<String, ParticleSystem> mLoadedSystems = new HashMap<String, ParticleSystem>();
     static ArrayList<ParticleSys> mInstancedSystems = new ArrayList<ParticleSys>();
+    static HashMap<String, ArrayList<ParticleSystem>> mSystemPool = new HashMap<String, ArrayList<ParticleSystem>>();
     
     private sParticleManager()
     {
@@ -39,11 +40,17 @@ public class sParticleManager {
         return createSystemImplementation(_ref, _position, _lifeTime, true);
     }
     private static ParticleSys createSystemImplementation(String _ref, Vec2 _position, float _lifeTime, boolean _dive)
-    {
-        ParticleSystem system = null;
-        if(mLoadedSystems.containsKey(_ref))
-        {//already loaded
-            system = mLoadedSystems.get(_ref);
+    {     
+        //if pooled object of same type exists use that
+        ParticleSystem system = grabPooledSystem(_ref);
+        if(system != null)
+        {          
+            system.reset();
+        }
+        //else if system already loaded but not pooled use that
+        else if(mLoadedSystems.containsKey(_ref))
+        {   
+            system = getLoadedSystem(_ref);
         }
         else
         {//create new
@@ -57,7 +64,7 @@ public class sParticleManager {
                 {
                     system = createSystemImplementation(_ref + "1", _position, _lifeTime, false).mSystem;
                     ParticleSystem system2 = createSystemImplementation(_ref + "2", _position, _lifeTime, false).mSystem;
-                    ParticleSys p = new DoubleParticleSys(system, system2, _lifeTime);
+                    ParticleSys p = new DoubleParticleSys(system,_ref + "1", system2, _ref + "2", _lifeTime);
                     mInstancedSystems.add(p);
                     return p;
                 }
@@ -66,42 +73,88 @@ public class sParticleManager {
                     Logger.getLogger(sParticleManager.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-            mLoadedSystems.put(_ref, system);
-        }
-        //clone and initialise new system
-        try
-        {
-            system = system.duplicate(); //clone
-        }
-        catch (SlickException e)
-        {
-            /// Probably want to do this, it'll lead to more predictable errors
-            system = null;
+            putLoadedSystem(_ref, system);
         }
         system.setPosition(_position.x, _position.y);
+        
         //Create wrapper for system and instance it
-        ParticleSys p = new ParticleSys(system, _lifeTime);
-        if (_dive)
+        ParticleSys p = new ParticleSys(system, _lifeTime, _ref);
+        
+        if (_dive) //only instance systems when diving so we don't duplicate
         {
             mInstancedSystems.add(p);
         }
         
         return p;        
     }
-        
     
+    //returns null if not pooled
+    private static ParticleSystem grabPooledSystem(String _ref)
+    {
+        if(false == mSystemPool.containsKey(_ref))
+            return null;
+        
+        ArrayList<ParticleSystem> pool = mSystemPool.get(_ref);
+        if(pool.isEmpty())
+            return null;
+        
+        ParticleSystem sys = pool.get(0);
+        pool.remove(0);
+        return sys;
+    }
+    
+    private static ParticleSystem getLoadedSystem(String _ref)
+    {
+        try 
+        {
+            return mLoadedSystems.get(_ref).duplicate();
+        } 
+        catch (SlickException ex) 
+        {
+            Logger.getLogger(sParticleManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+    
+    private static void putLoadedSystem(String _ref, ParticleSystem _system)
+    {
+        try 
+        {
+            mLoadedSystems.put(_ref, _system.duplicate());
+        } 
+        catch (SlickException ex) 
+        {
+            Logger.getLogger(sParticleManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     /*
      * _delta: time step in milliseconds
      */
     public static void update(int _delta)
     {
+        ParticleSys sys = null;
         for(Iterator<ParticleSys> i = mInstancedSystems.iterator(); i.hasNext();)
         {
-            if(false == i.next().update(_delta))
+            sys = i.next();
+            if(false == sys.update(_delta))
             {
+                sys.recycle();
                 i.remove();
             }
             
+        }
+    }
+    
+    protected static void recycle(ParticleSystem _system, String _ref)
+    {
+        if(mSystemPool.containsKey(_ref))
+        {
+            mSystemPool.get(_ref).add(_system);
+        }
+        else
+        {
+            mSystemPool.put(_ref, new ArrayList<ParticleSystem>());
+            mSystemPool.get(_ref).add(_system);
         }
     }
     
@@ -120,12 +173,7 @@ public class sParticleManager {
             //calc positions in screenspace
             float posX = particle.mSystem.getPositionX() + _x;
             float posY = particle.mSystem.getPositionY() + _y;
-            //cull
-            if( posX >= -_border && posX < _width + _border &&
-                posY >= -_border && posY < _height + _border)
-            {
-                particle.render(posX, posY);
-            }
+            particle.render(posX, posY);
         }
     }
 }

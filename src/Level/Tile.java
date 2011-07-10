@@ -80,7 +80,7 @@ public class Tile
     }
     public boolean damageTile()
     {
-        sParticleManager.createSystem(mRootId.mAnimationsName + "DamageParticle", mTileGrid.mBody.getWorldPoint(new Vec2(mXTile,mYTile)).mul(64.0f).add(new Vec2(32,32)), 120);
+        sParticleManager.createSystem(mRootId.mAnimationsName + "DamageParticle", mTileGrid.mBody.getWorldPoint(new Vec2(mXTile,mYTile)).mul(64.0f).add(new Vec2(32,32)), 1f);
         if (mHealth > 1)
         {
             mRootId = mRootId.getNext();

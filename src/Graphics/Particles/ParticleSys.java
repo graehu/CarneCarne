@@ -6,9 +6,7 @@
 
 package Graphics.Particles;
 
-import java.util.Arrays;
 import org.newdawn.slick.particles.ConfigurableEmitter;
-import org.newdawn.slick.particles.ParticleEmitter;
 import org.newdawn.slick.particles.ParticleSystem;
 
 /**
@@ -17,15 +15,18 @@ import org.newdawn.slick.particles.ParticleSystem;
  */
 public class ParticleSys
 {
-    protected float mLife;
+    protected String mRef = null;
+    protected float mLife = 0.0f;
     protected boolean mIsDead = false;
-    protected ParticleSystem mSystem;
+    protected ParticleSystem mSystem = null;
+    private int mCompletedEmittors = 0;
 
     /*
      * _lifetime: -ve denotes persistence, +ve is lifetime in seconds
      */
-    protected ParticleSys(ParticleSystem _system, float _lifeTime)
+    protected ParticleSys(ParticleSystem _system, float _lifeTime, String _ref)
     {
+        mRef = _ref;
         mSystem = _system;
         mLife = _lifeTime;
     }
@@ -39,6 +40,12 @@ public class ParticleSys
     public void kill()
     {
         mLife = 0.0f;
+    }
+    
+    protected void recycle()
+    {
+        sParticleManager.recycle(mSystem, mRef);
+        mSystem = null;
     }
     
     //move emitters only
@@ -98,7 +105,7 @@ public class ParticleSys
      */
     protected boolean update(int _delta)
     {
-        mSystem.update(_delta);
+        
         if(mLife < 0.0f)
         {//while persistant
             return true;
@@ -110,28 +117,39 @@ public class ParticleSys
         }
         else //if(mLife == 0.0f)
         {//end of life
-            mIsDead = true;
+            mIsDead = false;
             for(int i = 0; i < mSystem.getEmitterCount(); i++)
             {
+                //when all particles expire declare system dead
+                if(mSystem.getEmitter(i).completed())
+                {
+                    mCompletedEmittors++;
+                    if(mSystem.getEmitterCount() == mCompletedEmittors)
+                    {
+                        mIsDead = true;
+                    }
+                }
                 //stop emitter producing
                 mSystem.getEmitter(i).wrapUp();
-
-                //when all particles expire declare system dead
-                if(!mSystem.getEmitter(i).completed())
-                {
-                    mIsDead = false;
-                }
             }
         }
         //if dead return false to destroy
         if(mIsDead)
         {
+            //enable enittors so they can be recycled
+            for(int i = 0; i < mSystem.getEmitterCount(); i++)
+            {
+                mSystem.getEmitter(i).resetState();
+                mSystem.getEmitter(i).setEnabled(true);
+            }
             return false;
         }
         else
         {
+            mSystem.update(_delta);
             return true;
         }
+        
         
     }
 

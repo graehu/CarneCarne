@@ -55,6 +55,13 @@ public class TiledSkin implements iSkin
             }
         }
     }
+    
+    public void setAlpha(float _alpha) {
+        for(CaveInSearcher.TempTile tile : mTiles)
+        {
+            tile.image.setAlpha(_alpha);
+        }
+    }
 
     
     

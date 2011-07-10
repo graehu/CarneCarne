@@ -13,7 +13,6 @@ import Level.sLevel.TileType;
 import World.sWorld;
 import java.util.HashMap;
 import org.jbox2d.common.Vec2;
-import org.jbox2d.dynamics.joints.DistanceJoint;
 
 /**
  *
@@ -43,7 +42,7 @@ public class TongueStateMachine {
     //static members
     static Vec2 mUp = new Vec2(0,-1);
     static int tongueFiringTimeout = 10;
-    static int spitDelay = 10;
+    static int actionDelay = 10;
     static float tongueLength = 6.0f;
     static int idleAnimationTrigger = 1000;
     
@@ -604,6 +603,8 @@ public class TongueStateMachine {
                 //render tongue
                 mAIController.mEntity.mSkin.startAnim("tng", false, 0.0f);
                 mIsTongueActive = true;
+                mCurrentStateTimer = setAnimation("FiringHammer");
+                mCurrentStateTimer = Math.max(actionDelay, mCurrentStateTimer);
                 break;
             }
             case eSpittingBlock:
@@ -612,7 +613,7 @@ public class TongueStateMachine {
                 mAIController.mEntity.mSkin.stopAnim("tng");
                 mIsTongueActive = false;
                 mCurrentStateTimer = setAnimation("SpittingBlock");
-                mCurrentStateTimer = Math.max(spitDelay, mCurrentStateTimer);
+                mCurrentStateTimer = Math.max(actionDelay, mCurrentStateTimer);
                 spitBlock();
                 break;
             }

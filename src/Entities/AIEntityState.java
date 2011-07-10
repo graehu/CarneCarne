@@ -249,6 +249,20 @@ class AIEntityState
     }
     private void changeState(State _newState)
     {
+        switch(_newState)
+        {
+            case eDead:
+            {
+                mEntity.mSkin.setAlpha(0.5f);
+                break;
+            }
+            default:
+            {
+                mEntity.mSkin.setAlpha(1f);
+                break;
+            }
+                    
+        }
         mState = _newState;
     }
 }
