@@ -25,14 +25,18 @@ public class DoubleParticleSys extends ParticleSys
         ParticleSystem other = mOther;
         mOther = mSystem;
         mSystem = other;
+        
+        String otherRef = mRefOther;
+        mRefOther = mRef;
+        mRef = otherRef;
     }
 
     @Override
     protected void recycle() {
-        sParticleManager.recycle(mSystem, mRef);
-        sParticleManager.recycle(mOther, mRefOther);
-        mSystem = null;
-        mOther = null;
+        super.recycle();
+        switchSystems();
+        super.recycle();
+        switchSystems();
     }
     
     //move emitters only
@@ -91,7 +95,7 @@ public class DoubleParticleSys extends ParticleSys
     {
         boolean ret = super.update(_delta);
         switchSystems();
-        ret = super.update(_delta) || ret;
+        ret = super.update(_delta) && ret;
         switchSystems();
         return ret;
     }

@@ -44,6 +44,11 @@ public class ParticleSys
     
     protected void recycle()
     {
+        for(int i = 0; i < mSystem.getEmitterCount(); i++)
+        {
+            mSystem.getEmitter(i).resetState();
+            mSystem.releaseAll(mSystem.getEmitter(i));
+        }
         sParticleManager.recycle(mSystem, mRef);
         mSystem = null;
     }
@@ -127,7 +132,6 @@ public class ParticleSys
                     mCompletedEmittors++;
                     if(mSystem.getEmitterCount() == mCompletedEmittors)
                     {
-                        mSystem.getEmitter(i).resetState();
                         mIsDead = true;
                     }
                 }

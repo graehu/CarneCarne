@@ -126,7 +126,7 @@ public class TileRegrowth
             if (sWorld.searchAABB(aabb, (1 << sWorld.BodyCategories.ePlayer.ordinal())) == null)
             {
                 placeTile(blockedTile);
-                sParticleManager.createSystem(blockedTile.mRootId.mAnimationsName + "SpawnParticle", new Vec2(32.0f+(blockedTile.x*64.0f), 32.0f+(blockedTile.y*64.0f)), 600);
+                sParticleManager.createSystem(blockedTile.mRootId.mAnimationsName + "SpawnParticle", new Vec2(32.0f+(blockedTile.x*64.0f), 32.0f+(blockedTile.y*64.0f)), 1);
                 iter.remove();
             }
         }

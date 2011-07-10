@@ -51,7 +51,7 @@ public class Tile
         /*try
         {
             if (mRootId.mAnimationsName != null)
-                sParticleManager.createSystem(mRootId.mAnimationsName + "FireHit", mTileGrid.mBody.getWorldPoint(new Vec2(mXTile,mYTile)).mul(64.0f), 120);
+                sParticleManager.createSystem(mRootId.mAnimationsName + "FireHit", mTileGrid.mBody.getWorldPoint(new Vec2(mXTile,mYTile)).mul(64.0f), 2);
         }
         catch (NullPointerException e) /// FIXME lol jk this is working PERFECTLY
         {
