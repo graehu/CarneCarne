@@ -7,6 +7,8 @@ package HUD;
 import Entities.AIEntity;
 import Graphics.Sprites.iSprite;
 import Graphics.Sprites.sSpriteFactory;
+import Graphics.sGraphicsManager;
+import Input.sInput;
 import World.sWorld;
 import java.util.HashMap;
 import org.jbox2d.common.Vec2;

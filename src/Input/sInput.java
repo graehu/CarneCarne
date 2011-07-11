@@ -81,13 +81,17 @@ public class sInput {
             mPlayerCount = 1;
         }
     }
-    public static void setCursorPos(Vec2 _pos)
+    public static void setAbsCursorPos(Vec2 _pos)
     {
         org.lwjgl.input.Mouse.setCursorPosition((int)_pos.x, (int)_pos.y);
     }
-    public static Vec2 getCursorPos()
+    public static Vec2 getAbsCursorPos()
     {
-        return new Vec2(mMouseStateMachine.mNewMouseX,mMouseStateMachine.mNewMouseY);
+        return new Vec2(org.lwjgl.input.Mouse.getX(),org.lwjgl.input.Mouse.getY());
+    }
+    public static Vec2 getDeltaCursor()
+    {
+        return new Vec2(org.lwjgl.input.Mouse.getDX(),org.lwjgl.input.Mouse.getDY());
     }
 }
 

@@ -8,6 +8,7 @@ package Graphics;
 import Events.WindowResizeEvent;
 import Events.sEvents;
 import Graphics.Sprites.iSprite;
+import Utils.sFontLoader;
 import World.sWorld;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -38,6 +39,10 @@ public class sGraphicsManager {
     private static ArrayList<iSprite> mManagedSprites = new ArrayList<iSprite>();
     private static AppGameContainer mGameContainer;
     
+    public static Vec2 RelativeToAbsoluteScreen(Vec2 _rel)
+    {
+         return new Vec2(Display.getDisplayMode().getWidth() * _rel.x, Display.getDisplayMode().getHeight() * _rel.y);
+    }
     public static Vec2 getScreenDimensions()
     {
         return mScreenDimensions.clone();
@@ -48,7 +53,7 @@ public class sGraphicsManager {
     }        
     public static void setScreenDimensions(Vec2 _screenDimensions)
     {
-        mScreenDimensions = _screenDimensions;
+        mScreenDimensions = _screenDimensions.clone();
     }
   
     private sGraphicsManager()
@@ -62,8 +67,10 @@ public class sGraphicsManager {
     {
         mGameContainer = _gc;
         mLastDisplayMode = Display.getDisplayMode();
+        setScreenDimensions(new Vec2(mLastDisplayMode.getWidth(), mLastDisplayMode.getHeight()));
         mNativeScreenDimentions.x = Display.getDesktopDisplayMode().getWidth();
         mNativeScreenDimentions.y = Display.getDesktopDisplayMode().getHeight();
+        sFontLoader.setDefaultFont("default");
     }
     public static void beginTransform()
     {

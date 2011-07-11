@@ -75,6 +75,7 @@ public class PlayerFactory implements iEntityFactory {
             animDef.put("anims",charAnims); //declare all animations
             iSkin skin = sSkinFactory.create("character", animDef);
             //initialise facing, body and tongue animations
+            skin.startAnim("bdy", false, 0.0f);
             skin.startAnim("e", false, 0.0f);
             skin.setOffset("tng", new Vec2(32,32));
             
