@@ -40,11 +40,11 @@
 		<delete dir="${dist.dir}/assets" />
 	</target>
 	
-	<target name="-post-clean">
+<!--	<target name="-post-clean">
 		<taskdef name="digest" classname="com.threerings.getdown.tools.DigesterTask"
          classpath="${lib.dir}/getdown-tools-1.2.jar"/>
 		<digest appdir="${dist.dir}"/>
-	</target>
+	</target>-->
 		
     <!--
 

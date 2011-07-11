@@ -5,6 +5,7 @@
 package GUI.Components;
 
 import org.newdawn.slick.Color;
+import org.newdawn.slick.Font;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.geom.Shape;
@@ -19,6 +20,7 @@ public class Button extends GraphicalComponent{
     public Button(GUIContext _context, Vector2f _position, Vector2f _dimensions) {
         super(_context, _position, _dimensions);
         _context.getInput().addPrimaryListener(this);
+        setColor(mDefaultColor);
     }
     public Button(GUIContext _context) {
         super(_context);
@@ -31,12 +33,13 @@ public class Button extends GraphicalComponent{
         eDefault   
     }
     
+    Text mText = null;
     Image mDefaultImage = null;
-    Color mDefaultColor = Color.white;
+    Color mDefaultColor = new Color(0,0,0);
     Image mMouseOverImage = null;
-    Color mMouseOverColor = Color.green;
+    Color mMouseOverColor = new Color(187,139,44);
     Image mSelectedImage = null;
-    Color mSelectedColor = Color.red;
+    Color mSelectedColor = new Color(210,187,21);
     ButtonState mState = ButtonState.eDefault;
     Runnable mCallback = null;
 
@@ -45,7 +48,7 @@ public class Button extends GraphicalComponent{
         mCallback = _callback;
     }
     @Override
-    public boolean updateSelf(int _delta) 
+    protected boolean updateSelf(int _delta) 
     {        
         return super.updateSelf(_delta);
     }
@@ -88,7 +91,9 @@ public class Button extends GraphicalComponent{
             }
         } 
         mState = _newState;
+        mText.setColor(getColor());
     }
+    
     @Override
     public void mouseMoved(int oldx, int oldy, int newx, int newy) {
         if(mState != ButtonState.eSelected)
@@ -96,7 +101,8 @@ public class Button extends GraphicalComponent{
             Shape myshape = getShape();
             if(myshape.contains(newx, newy))
             {
-                changeState(ButtonState.eHoverOver);  
+                if(mState != ButtonState.eSelected)
+                    changeState(ButtonState.eHoverOver);  
             }
             else 
                 changeState(ButtonState.eDefault);
@@ -104,7 +110,19 @@ public class Button extends GraphicalComponent{
     }
 
     @Override
-    public void mouseClicked(int button, int x, int y, int clickCount) {
+    public void mouseDragged(int oldx, int oldy, int newx, int newy) {
+        Shape myshape = getShape();
+        if(myshape.contains(newx, newy))
+        {
+            //do nothing
+        }
+        else 
+            changeState(ButtonState.eDefault);
+    }
+    
+
+    @Override
+    public void mousePressed(int button, int x, int y) {
         switch(button)
         {
             case Input.MOUSE_LEFT_BUTTON: 
@@ -113,12 +131,58 @@ public class Button extends GraphicalComponent{
                 if(myshape.contains(x, y))
                 {
                     changeState(ButtonState.eSelected);
-                    consumeEvent();
+                    //consumeEvent();
                 }
                 else
                     changeState(ButtonState.eDefault);
             }
         }
+    }
+
+    
+    @Override
+    public void mouseClicked(int button, int x, int y, int clickCount) {
+//        switch(button)
+//        {
+//            case Input.MOUSE_LEFT_BUTTON: 
+//            {
+//                Shape myshape = getShape();
+//                if(myshape.contains(x, y))
+//                {
+//                    changeState(ButtonState.eSelected);
+//                    //consumeEvent();
+//                }
+//                else
+//                    changeState(ButtonState.eDefault);
+//            }
+//        }
+    }
+    public void addText(GUIContext _context, Font _font, String _str)
+    {
+         addText(_context, _font, _str, false);
+    }
+    public void addText(GUIContext _context, Font _font, String _str, boolean _sizeToText)
+    {
+        if(mText != null)
+        {
+            removeChild(mText);
+            mText.destroy();
+            mText = null;
+        }
+        Vector2f pos = new Vector2f(    (getWidth() - _font.getWidth(_str)) * 0.5f,
+                                        (getHeight() - _font.getHeight(_str)) * 0.5f);
+        mText = new Text(_context, _font, _str, pos);
+        addChild(mText);
+        mText.setColor(getColor());
+        
+        if(_sizeToText)
+            setDimensionsToText();
+    }
+    
+    public void setDimensionsToText()
+    {
+        setDimensions(mText.getDimensions());
+        mText.setLocalTranslation(new Vector2f(0, 0));
     }
     
     

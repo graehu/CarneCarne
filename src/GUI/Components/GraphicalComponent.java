@@ -41,9 +41,7 @@ public class GraphicalComponent extends iComponent{
         
         //render image - if none fall back on base rendering
         if(mImage != null)
-            mImage.draw(_globalPos.x, _globalPos.y, getLocalScale());
-        else
-            super.renderSelf(guic, grphcs, _globalPos);
+            mImage.draw(_globalPos.x, _globalPos.y);
     }   
     
     public void setImage(String _ref)
@@ -55,6 +53,11 @@ public class GraphicalComponent extends iComponent{
         catch (SlickException ex) {
             Logger.getLogger(GraphicalComponent.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    public void setDimentionsToImage()
+    {
+        setDimensions(new Vector2f(mImage.getWidth(), mImage.getHeight()));
     }
     
     public int getImageWidth(){return mImage.getWidth();}

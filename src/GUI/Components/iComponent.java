@@ -97,9 +97,11 @@ public abstract class iComponent extends AbstractComponent {
     private void renderInternal(GUIContext guic, Graphics grphcs, Vector2f _globalPos) throws SlickException
     {      
         float rot = getLocalRotation();
+        float scale = getLocalScale();
         Vector2f trans = getLocalTranslation().add(_globalPos);
         Vector2f center = new Vector2f(trans.x + (getWidth() * 0.5f), trans.y + (getHeight() * 0.5f));
         
+        grphcs.scale(scale, scale);
         grphcs.rotate(center.x, center.y, rot);
         {
             if(mIsVisible)
@@ -117,6 +119,7 @@ public abstract class iComponent extends AbstractComponent {
             }
         }
         grphcs.rotate(center.x, center.y, -rot);
+        grphcs.scale(1/scale, 1/scale);
     }
     private final void renderInternalDebug(Graphics _graphics)
     {
@@ -151,7 +154,7 @@ public abstract class iComponent extends AbstractComponent {
         Transform scaleT = Transform.createScaleTransform(scale, scale);
         Transform rotateT = Transform.createRotateTransform(rot, center.x, center.y);
         Transform translateT = Transform.createTranslateTransform(getX(), getY());
-        Transform transform = rotateT.concatenate(translateT).concatenate(scaleT);
+        Transform transform = scaleT.concatenate(rotateT).concatenate(translateT);
         if(mParent != null)
         {
             transform = mParent.getGlobalTransform().concatenate(transform);

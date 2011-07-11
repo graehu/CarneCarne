@@ -5,6 +5,7 @@
 package GUI.Components;
 
 import Utils.sFontLoader;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.Font;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
@@ -16,9 +17,12 @@ import org.newdawn.slick.gui.GUIContext;
  * @author Aaron
  */
 public class Text extends iComponent{
-    public Text(GUIContext _context, String _str, Vector2f _position) {
+    public Text(GUIContext _context, Font _font, String _str, Vector2f _position) {
         super(_context);
-        mFont = _context.getDefaultFont(); //must be intialised first
+        if(_font == null)
+            mFont = _context.getDefaultFont(); //must be intialised first
+        else 
+            mFont = _font;
         mTextString = _str;
         calcDimensions();
         setLocalTranslation(_position);
@@ -41,7 +45,7 @@ public class Text extends iComponent{
         if(mFont == null)
             super.renderSelf(guic, grphcs, _globalPos);
         else
-            mFont.drawString(_globalPos.x, _globalPos.y, mTextString);
+            mFont.drawString(_globalPos.x, _globalPos.y, mTextString, getColor());
             
     }
     

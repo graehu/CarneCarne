@@ -56,6 +56,8 @@ public class sFontLoader {
                 //initialise font
                 font.addAsciiGlyphs();   //Add Glyphs
                 font.addGlyphs(400, 600); //Add Glyphs
+                font.addNeheGlyphs();
+                font.addGlyphs("_");
                 font.getEffects().add(new ColorEffect(java.awt.Color.WHITE)); //Add Effects
                 font.loadGlyphs();  //Load Glyphs
                         

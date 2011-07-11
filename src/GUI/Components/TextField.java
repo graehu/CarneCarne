@@ -40,13 +40,15 @@ public class TextField extends iComponent {
 	private Font font;
 
 	/** The text color */
-	private Color text = Color.white;
+	private Color text = Color.gray;
+        private Color selectedTextColor = Color.white;
+        private Color unselectedTextColor = Color.gray;
 
 	/** The current cursor position */
 	private int cursorPos;
 
 	/** True if the cursor should be visible */
-	private boolean visibleCursor = true;
+	private boolean visibleCursor = false;
 
 	/** The last key pressed */
 	private int lastKey = -1;
@@ -135,15 +137,22 @@ public class TextField extends iComponent {
 	 *            The color to use for the text
 	 */
 	public void setTextColor(Color color) {
-		text = color;
+		unselectedTextColor = color;
+                text = unselectedTextColor;
 	}
+        
+        public void setSelectedTextColor(Color color)
+        {
+            selectedTextColor = color;
+        }
 
 	/**
 	 * @see org.newdawn.slick.gui.AbstractComponent#render(org.newdawn.slick.gui.GUIContext,
 	 *      org.newdawn.slick.Graphics)
 	 */
-        
-	public void renderSelf(GUIContext guic, Graphics g, Vector2f _globalPos) throws SlickException {
+        int mCursorTimer = 0;
+        int mCursorDelay = 400;
+	protected void renderSelf(GUIContext guic, Graphics g, Vector2f _globalPos) throws SlickException {
 		if (lastKey != -1) {
 			if (input.isKeyDown(lastKey)) {
 				if (repeatTimer < System.currentTimeMillis()) {
@@ -172,9 +181,14 @@ public class TextField extends iComponent {
 		g.translate(tx + 2, 0);
                     g.setFont(font);
                     g.drawString(value, _globalPos.x + 1, _globalPos.y + 1);
-
-                    if (hasFocus() && visibleCursor) {
-                            g.drawString("_", _globalPos.x + 1 + cpos + 2, _globalPos.y + 1);
+                    if(mIsSelected && mCursorTimer > mCursorDelay)
+                    {
+                        mCursorTimer = 0;
+                        visibleCursor = !visibleCursor;
+                    }
+                    if (visibleCursor) 
+                    {
+                        g.drawString("_", _globalPos.x + 1 + cpos + 2, _globalPos.y + 1);
                     }
 		g.translate(-tx - 2, 0);
 
@@ -280,7 +294,7 @@ public class TextField extends iComponent {
 	 * @see org.newdawn.slick.gui.AbstractComponent#keyPressed(int, char)
 	 */
 	public void keyPressed(int key, char c) {
-		if (hasFocus()) {
+		if (hasFocus() || mIsSelected) {
 			if (key != -1)
 			{
 				if ((key == Input.KEY_V) && 
@@ -385,10 +399,31 @@ public class TextField extends iComponent {
 		
 		super.setFocus(focus);
 	}
+    boolean mIsSelected = false;
+    @Override
+    public void mouseClicked(int button, int x, int y, int clickCount) {
+        if(getShape().contains(x, y))
+        {
+            text = selectedTextColor;
+            visibleCursor = true;
+            mIsSelected = true;
+        }
+        else
+        {
+            text = unselectedTextColor;
+            visibleCursor = false;
+            mIsSelected = false;
+        }
+    }
 
+        
     @Override
     protected boolean updateSelf(int _delta) {
-        //needs nothing
+//        if(centered)
+//        {
+//            //center based on length
+//        }
+        mCursorTimer += _delta;
         return true;
     }
 }
