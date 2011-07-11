@@ -4,7 +4,11 @@
  */
 package Level;
 
+import AI.SimplePlatformController;
+import AI.StupidPlatformController;
+import AI.iPlatformController;
 import AI.sPathFinding;
+import Entities.CaveIn;
 import Entities.PlayerEntity;
 import Entities.sEntityFactory;
 import Events.AreaEvents.CheckPointZone;
@@ -13,11 +17,13 @@ import Events.AreaEvents.RaceEndZone;
 import Events.AreaEvents.RaceStartZone;
 import Events.PlayerCreatedEvent;
 import Events.sEvents;
+import Level.sLevel.TileType;
 import World.sWorld;
 import java.util.HashMap;
 import java.util.Stack;
 import java.util.Vector;
 import org.jbox2d.common.Vec2;
+import org.jbox2d.dynamics.Body;
 import org.newdawn.slick.tiled.TiledMap;
 
 /**
@@ -87,7 +93,7 @@ public class FlagProcessor
     RaceStartZoneParameters raceStartZone;
     RaceEndZoneParameters raceEndZone;
     int mPlayers;
-    FlagProcessor(TiledMap _tiledMap)
+    FlagProcessor(TiledMap _tiledMap, int _levelLayerIndex, Body _levelBody, TileGrid _tileGrid)
     {
         raceStartZone = null;
         mPlayers = 0;
@@ -192,14 +198,30 @@ public class FlagProcessor
                     }
                     else if (spawn.equals("Platform"))
                     {
-                        Vec2 dimensions = new Vec2(0,0);
+                        /*Vec2 dimensions = new Vec2(0,0);
                         dimensions.x = new Float(_tiledMap.getTileProperty(id, "Width", "3.0"));
                         dimensions.y = new Float(_tiledMap.getTileProperty(id, "Height", "1.0"));  
                         parameters.put("dimensions",dimensions);   
                         parameters.put("ref",_tiledMap.getTileProperty(id, "Image","Error, image not defined")); 
                         parameters.put("position",new Vec2(i,ii));
                         parameters.put("Type",_tiledMap.getTileProperty(id, "Type", "Error, platform type not defined"));
-                        sEntityFactory.create("MovingPlatform", parameters);              
+                        sEntityFactory.create("MovingPlatform", parameters);  */
+                        PlatformCaveInSearcher search = new PlatformCaveInSearcher(_tileGrid, _tiledMap, _levelLayerIndex, _levelBody);
+                        search.destroy(i,ii, TileType.eEdible);
+                        Body platformBody = search.getCreatedBody();
+                        iPlatformController controller = null;
+                        String platformType = _tiledMap.getTileProperty(id, "PlatformType", "Error, platform type not defined");
+                        if (platformType.equals("Stupid"))
+                        {
+                            controller = new StupidPlatformController();
+                        }
+                        else if(platformType.equals("Simple"))
+                        {
+                            controller = new SimplePlatformController();
+                        }
+                        CaveIn cavein = (CaveIn)platformBody.getUserData();
+                        cavein.setPlatformController(controller);
+                        controller.setTileGrid(cavein);
                     }
                 }
             }

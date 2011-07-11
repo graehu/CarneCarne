@@ -13,6 +13,7 @@ import World.sWorld;
 import java.util.ArrayList;
 import java.util.HashMap;
 import org.jbox2d.common.Vec2;
+import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.Fixture;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.tiled.TileSet;
@@ -50,6 +51,10 @@ public class CaveInTileGrid extends TileGrid
     {
         ids[_x-mXTrans][_y-mYTrans] = _id;
     }
+    protected BodyType getBodyType()
+    {
+        return BodyType.DYNAMIC;
+    }
     public void finish(ArrayList<TempTile> tiles)
     {
         for (TempTile tile: tiles)
@@ -59,7 +64,7 @@ public class CaveInTileGrid extends TileGrid
             tile.y -= mYTrans;
         }
         HashMap<String, Object> parameters = new HashMap<String, Object>();
-        parameters.put("isDynamic", true);
+        parameters.put("bodyType", getBodyType());
         parameters.put("position", new Vec2(mXTrans, mYTrans).add(mPosition));
         parameters.put("position", mPosition);
         parameters.put("angle", mAngle);

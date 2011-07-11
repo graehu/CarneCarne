@@ -64,7 +64,7 @@ public class Tile
             {
                 try /// FIXME not sure why this is happening, possibly to do with cave ins, Tiles shouldn't be transfered in cave ins without changing coordinates
                 {
-                    mTileGrid.placeTileNoBody(mXTile, mYTile, mId + 16);
+                    //mTileGrid.placeTileNoBody(mXTile, mYTile, mId + 16);
                     mTileGrid.mTileFire.addTile(this);
                 }
                 catch (ArrayIndexOutOfBoundsException e)

@@ -97,7 +97,7 @@ public class StateGame extends BasicGameState implements iEventListener {
     public void enter(GameContainer container, StateBasedGame game) throws SlickException 
     {         
         super.enter(container, game);
-
+        container.setMouseGrabbed(true);
         //sSound.play("ambiance");
     }
     
@@ -106,6 +106,7 @@ public class StateGame extends BasicGameState implements iEventListener {
     public void leave(GameContainer container, StateBasedGame game) throws SlickException 
     {
         super.leave(container, game);
+        container.setMouseGrabbed(false);
         //sSound.stop("ambiance");
     }
     

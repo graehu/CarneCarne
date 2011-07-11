@@ -4,7 +4,7 @@
  */
 package AI;
 
-import Entities.MovingPlatform;
+import Entities.CaveIn;
 
 /**
  *
@@ -12,10 +12,10 @@ import Entities.MovingPlatform;
  */
 public abstract class iPlatformController
 {
-    MovingPlatform mPlatform;
-    public void setPlatform(MovingPlatform _platform)
+    CaveIn mEntity;
+    public void setTileGrid(CaveIn _tileGrid)
     {
-        mPlatform = _platform;
+        mEntity = _tileGrid;
     }
     public abstract void update();
 }
