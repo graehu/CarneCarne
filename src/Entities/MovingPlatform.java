@@ -4,18 +4,13 @@
  */
 package Entities;
 
-import AI.iPlatformController;
-import Graphics.Skins.iSkin;
-import World.sWorld;
-import org.jbox2d.common.Vec2;
-
 /**
  *
  * @author alasdair
  */
-public class MovingPlatform extends Entity
+public class MovingPlatform// extends Entity
 {
-    iPlatformController mController;
+    /*iPlatformController mController;
     private Vec2 mDimensions;
     private float mMoveSpeed;
     public MovingPlatform(iSkin _skin, iPlatformController _controller, Vec2 _dimensions)
@@ -53,5 +48,5 @@ public class MovingPlatform extends Entity
         Vec2 pos = sWorld.translateToWorld(physPos);
         mSkin.render(pos.x,pos.y); 
         mSkin.setRotation(mBody.getAngle()*180.0f/(float)Math.PI);
-    }
+    }*/
 }

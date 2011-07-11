@@ -4,11 +4,11 @@
  */
 package Entities;
 
+import AI.iPlatformController;
 import Graphics.Skins.iSkin;
 import Graphics.sGraphicsManager;
 import World.sWorld;
 import org.jbox2d.common.Vec2;
-import org.newdawn.slick.SlickException;
 
 /**
  *
@@ -16,13 +16,27 @@ import org.newdawn.slick.SlickException;
  */
 public class CaveIn extends Entity
 {
-    CaveIn(iSkin _skin)
+    iPlatformController mPlatformController;
+    int mWidth, mHeight;
+    CaveIn(iSkin _skin, int _width, int _height)
     {
         super(_skin);
+        mPlatformController = null;
+        mWidth = _width;
+        mHeight = _height;
+    }
+    
+    public void setPlatformController (iPlatformController _controller)
+    {
+        mPlatformController = _controller;
     }
     @Override
     public void update()
     {
+        if (mPlatformController != null)
+        {
+            mPlatformController.update();
+        }
     }
     public void render()
     { 
@@ -31,6 +45,15 @@ public class CaveIn extends Entity
             sGraphicsManager.rotate(axis.x, axis.y, mBody.getAngle()*180.0f/(float)Math.PI);
             mSkin.render(mBody.getPosition().x,mBody.getPosition().y);
         sGraphicsManager.endTransform();
+    }
+    
+    public int getWidth()
+    {
+        return mWidth;
+    }
+    public int getHeight()
+    {
+        return mHeight;
     }
     
 }

@@ -25,7 +25,7 @@ public final class LevelTileGrid extends TileGrid
         tiledMap = (AnimatedTiledMap)_tiledMap;
         layerIndex = _layerIndex;
         HashMap parameters = new HashMap();
-        parameters.put("isDynamic", false);
+        //parameters.put("isDynamic", false);
         parameters.put("position", new Vec2(0, 0));
         parameters.put("angle", 0.0f);
         init(parameters);

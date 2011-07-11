@@ -26,7 +26,7 @@ public class LevelEditor {
         
         tileGrid = new LevelTileGrid(mTiledMap, rootTiles, layerIndex);
         
-        FlagProcessor flagProcessor = new FlagProcessor(_tiledMap);
+        FlagProcessor flagProcessor = new FlagProcessor(_tiledMap, layerIndex, tileGrid.mBody, tileGrid);
         flagProcessor = null;
     }
     public void placeTile(int _x, int _y, int _rootId)

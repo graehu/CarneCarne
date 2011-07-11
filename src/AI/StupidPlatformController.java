@@ -16,7 +16,7 @@ public class StupidPlatformController extends iPlatformController
     @Override
     public void update()
     {
-        mPlatform.mBody.setLinearVelocity(new Vec2(0.1f,0));
+        mEntity.mBody.setLinearVelocity(new Vec2(0.1f,0));
     }
     
 }

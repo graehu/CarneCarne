@@ -4,6 +4,7 @@
  */
 package Entities;
 
+import AI.iPlatformController;
 import Graphics.Skins.iSkin;
 import Graphics.Skins.sSkinFactory;
 import java.util.HashMap;
@@ -21,7 +22,9 @@ class CaveInFactory implements iEntityFactory
     public Entity useFactory(HashMap _parameters)
     {
         iSkin skin = sSkinFactory.create("tiled", _parameters, false);
-        CaveIn entity = new CaveIn(skin);
+        int width = (Integer)_parameters.get("width");
+        int height = (Integer)_parameters.get("height");
+        CaveIn entity = new CaveIn(skin, width, height);
         _parameters.put("entity", entity);
         entity.mBody = (Body)_parameters.get("body");
         return entity;

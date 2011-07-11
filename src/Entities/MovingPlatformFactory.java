@@ -26,7 +26,7 @@ class MovingPlatformFactory implements iEntityFactory
 
     public Entity useFactory(HashMap _parameters)
     {
-        iSkin skin = sSkinFactory.create("static", _parameters);
+        /*iSkin skin = sSkinFactory.create("static", _parameters);
         //Integer width =  (Integer)_parameters.get("Width");
         Vec2 dimensions = (Vec2)_parameters.get("dimensions");
         
@@ -46,7 +46,9 @@ class MovingPlatformFactory implements iEntityFactory
         _parameters.put("userData", entity);
         Body body = sWorld.useFactory("MovingPlatformBodyFactory", _parameters);
         entity.mBody = body;
-        return entity;
+        return entity;*/
+        assert(false);
+        return null;
     }
     
 }

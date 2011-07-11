@@ -22,15 +22,14 @@ public class TileFactory implements iPhysicsFactory {
     {
         Vec2 position = (Vec2)_parameters.get("position");
         Tile tile = (Tile)_parameters.get("Tile");
-        boolean dynamic = ((Boolean)_parameters.get("isDynamic")).booleanValue();
         float angle = ((Float)_parameters.get("angle")).floatValue();
         
         BodyDef def = new BodyDef();
-        if (dynamic)
+        if (_parameters.containsKey("bodyType"))
         {
-            def.type = BodyType.DYNAMIC;
-            def.angle = angle;
+            def.type = ((BodyType)_parameters.get("bodyType"));
         }
+        def.angle = angle;
         def.position.x = position.x;
         def.position.y = position.y;
         //def.fixedRotation = true;

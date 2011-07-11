@@ -18,8 +18,8 @@ public class SimplePlatformController extends iPlatformController
     @Override
     public void update() 
     {
-        Vec2 pos = mPlatform.mBody.getPosition();
-        Vec2 dimes = mPlatform.getDimensions();
+        Vec2 pos = mEntity.mBody.getPosition();
+        Vec2 dimes = new Vec2(mEntity.getWidth(), mEntity.getHeight());
         if(mToggle == false)
         {
             if(sLevel.getPathInfo((int)(pos.x-((dimes.x/2)-0.5f)), (int)(pos.y-((dimes.y/2)-0.5f))) == PathInfo.eNotPassable)
@@ -37,11 +37,11 @@ public class SimplePlatformController extends iPlatformController
         
         if(mToggle)
         {
-            mPlatform.mBody.setLinearVelocity(new Vec2(mPlatform.getMoveSpeed(), 0));
+            mEntity.mBody.setLinearVelocity(new Vec2(1, 0)); /// changed from mPlatform.getMoveSpeed()
         }
         else
         {
-            mPlatform.mBody.setLinearVelocity(new Vec2(-mPlatform.getMoveSpeed(), 0));
+            mEntity.mBody.setLinearVelocity(new Vec2(-1, 0));
         }
     }
     
