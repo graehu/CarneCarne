@@ -139,6 +139,10 @@ public class PlayerEntity extends AIEntity
         //mParticleSys.moveEmittersTo(mBody.getPosition().x*64.0f, mBody.getPosition().y*64.0f);
         mSkin.setRotation(mBodyType, mBody.getAngle()*(180/(float)Math.PI));
         super.render();
+    }
+    
+    public void renderHUD()
+    {
         if (sGraphicsManager.getClip() == mViewPort)
         {
             mReticle.render();
@@ -168,6 +172,10 @@ public class PlayerEntity extends AIEntity
                 mSkin.startAnim("gum", false, 0.0f);
                 mBodyType = "gum";
                 break;
+            case eChilli:
+                mSkin.startAnim("spi", false, 0.0f);
+                mBodyType = "spi";
+                break;
             default:
             case eTileTypesMax:
                 mSkin.startAnim("bdy", false, 0.0f);
@@ -184,4 +192,6 @@ public class PlayerEntity extends AIEntity
     {
         return mRaceTimer;
     }
+    
+    
 }

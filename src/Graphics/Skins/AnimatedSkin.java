@@ -72,6 +72,13 @@ public class AnimatedSkin implements iSkin{
         else
             mHeight = mAnim.getHeight();
     }
+    
+    public void setAlpha(float _alpha) {
+        for(int i = 0; i < mAnim.getFrameCount(); i++)
+        {
+            mAnim.getImage(i).setAlpha(_alpha);
+        }
+    }
 
     public void stopAnim(String _animation) {
         throw new UnsupportedOperationException("Not supported yet.");

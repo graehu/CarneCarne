@@ -111,7 +111,7 @@ public class RootTileList {
                     for (int rootId = i; i < rootId + 4; i++)
                     {
                         mRootTiles.add(new WaterTile(rootId, type, animationsName));
-                    }                
+                    }
                 }
                 else if (shape.equals("MelonSkin"))
                 {

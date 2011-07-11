@@ -51,7 +51,7 @@ public class Reticle {
     {
         mCurrentDir = _pos.sub(sWorld.translateToWorld(mPlayer.mBody.getPosition())).sub(new Vec2(32,32));
         mDistance = mCurrentDir.normalize();
-        mDistance = Math.min(mDistance,mOffset);
+        //mDistance = Math.min(mDistance,mOffset);
     }
     public void render()
     {

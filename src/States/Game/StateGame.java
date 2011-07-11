@@ -52,6 +52,7 @@ public class StateGame extends BasicGameState implements iEventListener {
     public StateGame()
     {
     }
+    boolean die = false;//FIXME: DELETE
     public void trigger(iEvent _event) {
         //on player creation subscribe to their input
         if(_event.getType().equals("PlayerCreatedEvent"))
@@ -64,8 +65,10 @@ public class StateGame extends BasicGameState implements iEventListener {
             KeyDownEvent event = (KeyDownEvent) _event;
             if(event.getKey() == 'Q')
             {
+                //FIXME: quit
+                die = true;
                 //goto menu
-                mChangeToMenu.run();
+                //mChangeToMenu.run();
             }
         }
     }
@@ -77,6 +80,7 @@ public class StateGame extends BasicGameState implements iEventListener {
 
     public void update(GameContainer _gc, StateBasedGame _sbg, int _delta) throws SlickException 
     {
+        if(die) _gc.exit();
         sInput.update(_delta);
         mGameMode.update(_delta);
         //update particles
@@ -87,7 +91,6 @@ public class StateGame extends BasicGameState implements iEventListener {
     {
         Vec2 s = sGraphicsManager.getScreenDimensions();
         mGameMode.render(_gc.getGraphics());
-        _grphcs.drawString("fucking work god damnit", 500, 500);
     }
     @Override
     //callback for when the game enters this state
@@ -100,7 +103,7 @@ public class StateGame extends BasicGameState implements iEventListener {
 //        params.put("pos", new Vec2(500,500));
 //        sSpriteFactory.create("simple", params);
 
-        sSound.play("ambiance");
+        //sSound.play("ambiance");
     }
     
     @Override
@@ -108,6 +111,7 @@ public class StateGame extends BasicGameState implements iEventListener {
     public void leave(GameContainer container, StateBasedGame game) throws SlickException 
     {
         super.leave(container, game);
+        //sSound.stop("ambiance");
     }
     
 //    @Override
@@ -146,9 +150,9 @@ public class StateGame extends BasicGameState implements iEventListener {
         mChangeToMenu = new StateChanger(4, new BlobbyTransition(), new BlobbyTransition(), _sbg);
         
         //Initialise sound
-        sSound.init();
-        sSound.loadSound("ambiance", "assets/sound/sfx/level_ambiance.ogg");
-        sSound.setLooping("ambiance", true);
+//        sSound.init();
+//        sSound.loadSound("ambiance", "assets/sound/sfx/level_ambiance.ogg");
+//        sSound.setLooping("ambiance", true);
 
     }
 

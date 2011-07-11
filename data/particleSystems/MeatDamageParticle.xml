@@ -9,7 +9,7 @@
 <yOffset enabled="true" max="25.0" min="-25.0"/>
 <initialDistance enabled="false" max="0.0" min="0.0"/>
 <speed enabled="true" max="200.0" min="50.0"/>
-<length enabled="true" max="50.0" min="50.0"/>
+<length enabled="true" max="50.0" min="0.0"/>
 <emitCount enabled="false" max="1000.0" min="1000.0"/>
 <spread type="random" value="53.0"/>
 <angularOffset type="simple" value="0.0"/>

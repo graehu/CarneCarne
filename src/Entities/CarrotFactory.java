@@ -33,8 +33,8 @@ class CarrotFactory implements iEntityFactory {
         skin.stopAnim("car_fly");
         skin.startAnim("car_fly", true, 1);
         skin.setOffset("car_fly", new Vec2(-30f*2,-16.55f));
-        skin.setOffset("car_stu", new Vec2(-30f*2,-16.55f));
-        skin.setOffset("car_att", new Vec2(-30f*2,-16.55f));
+        skin.setOffset("car_stu", new Vec2(-35.5f, -14.55f));
+        skin.setOffset("car_att", new Vec2(-34.5f,-64.40f));
         ///FIXME the x offset isn't perfect.
         AIEntity entity = new Carrot(skin);
         HashMap parameters = new HashMap();

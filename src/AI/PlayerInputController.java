@@ -165,13 +165,39 @@ public class PlayerInputController extends iAIController implements iEventListen
         parameters.put("velocity", mPlayerDir.mul(20.0f));
         parameters.put("position", mEntity.mBody.getPosition().add(mPlayerDir));
         sEntityFactory.create("FireParticle", parameters);
-        sParticleManager.createSystem("DragonBreath", mEntity.mBody.getPosition().add(new Vec2(0.5f,0.5f)).add(mPlayerDir.mul(0.5f)).mul(64.0f), -1f)
+        sParticleManager.createSystem("DragonBreath", mEntity.mBody.getPosition().add(new Vec2(0.5f,0.5f)).add(mPlayerDir.mul(0.5f)).mul(64.0f), 1f)
                 .setAngularOffset(((float)Math.atan2(mPlayerDir.y, mPlayerDir.x) * 180.0f/(float)Math.PI)-270.0f);
     }
 
     public void trigger(final iEvent _event)
     {
-        if (_event.getType().equals("KeyDownEvent"))
+        if (_event.getType().equals("RightStickEvent"))
+        {
+            RightStickEvent event = (RightStickEvent)_event;
+            mPlayerDir = event.getDirection();
+            mPlayerDir.normalize();
+            ((PlayerEntity)mEntity).mReticle.updateDirection(mPlayerDir);
+            if(mTongueState.mIsTongueActive == false)
+            {
+                look(mPlayerDir);
+            }
+        }
+        else if (_event.getType().equals("MouseMoveEvent"))
+        {
+            MouseMoveEvent event = (MouseMoveEvent)_event;
+            mPlayerDir = event.getPhysicsPosition().sub(mEntity.mBody.getPosition().add(new Vec2(0.5f,0.5f))); //offset by half the width and height
+            mPlayerDir.normalize();
+            ((PlayerEntity)mEntity).mReticle.setWorldPosition(event.getWorldPosition());
+            if(mTongueState.mIsTongueActive == false)
+            {
+                look(mPlayerDir);
+            }    
+        }
+        //-------------------------------------------------------
+        else if(mEntity.isDead())
+            return; // if dead accept only look input
+        //-------------------------------------------------------
+        else if (_event.getType().equals("KeyDownEvent"))
         {
             KeyDownEvent event = (KeyDownEvent)_event;
             switch (event.getKey())
@@ -231,28 +257,6 @@ public class PlayerInputController extends iAIController implements iEventListen
                     break;
                 }
             }
-        }
-        else if (_event.getType().equals("RightStickEvent"))
-        {
-            RightStickEvent event = (RightStickEvent)_event;
-            mPlayerDir = event.getDirection();
-            mPlayerDir.normalize();
-            ((PlayerEntity)mEntity).mReticle.updateDirection(mPlayerDir);
-            if(mTongueState.mIsTongueActive == false)
-            {
-                look(mPlayerDir);
-            }
-        }
-        else if (_event.getType().equals("MouseMoveEvent"))
-        {
-            MouseMoveEvent event = (MouseMoveEvent)_event;
-            mPlayerDir = event.getPhysicsPosition().sub(mEntity.mBody.getPosition().add(new Vec2(0.5f,0.5f))); //offset by half the width and height
-            mPlayerDir.normalize();
-            ((PlayerEntity)mEntity).mReticle.setWorldPosition(event.getWorldPosition());
-            if(mTongueState.mIsTongueActive == false)
-            {
-                look(mPlayerDir);
-            }    
         }
         else if (_event.getType().equals("MapClickReleaseEvent"+mPlayer))
         {

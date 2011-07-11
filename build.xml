@@ -40,12 +40,18 @@
 		<delete dir="${dist.dir}/assets" />
 	</target>
 	
-	<target name="-post-clean">
+<!--	<target name="-post-jar">
+	
+		<copy todir="${dist.dir}" file="getdown/getdown.txt"/>
+		
 		<taskdef name="digest" classname="com.threerings.getdown.tools.DigesterTask"
-                classpath="${lib.dir}/getdown-tools-1.2.jar"/>
-		<digest appdir="${dist.dir}"/>
-	</target>
-        
+		classpath="${lib.dir}/getdown-tools-1.2.jar"/>
+		
+		<property file="C:/Temp/certificate.properties"/>
+		
+		<digest appdir="${dist.dir}" keystore="anecessaryevilkeystore" storepass="tacoTACO" alias="anecessaryevil"/>
+		
+	</target>-->
 		
     <!--
 
@@ -96,7 +102,7 @@
 
     An example of overriding the target for project execution could look like this:
 
-        <target name="run" depends="SlickTestbed-impl.jar">
+        <target name="run" depends="CarneCarne-impl.jar">
             <exec dir="bin" executable="launcher.exe">
                 <arg file="${dist.jar}"/>
             </exec>

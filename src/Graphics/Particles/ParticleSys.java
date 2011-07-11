@@ -6,9 +6,8 @@
 
 package Graphics.Particles;
 
-import java.util.Arrays;
+import java.util.HashSet;
 import org.newdawn.slick.particles.ConfigurableEmitter;
-import org.newdawn.slick.particles.ParticleEmitter;
 import org.newdawn.slick.particles.ParticleSystem;
 
 /**
@@ -17,15 +16,18 @@ import org.newdawn.slick.particles.ParticleSystem;
  */
 public class ParticleSys
 {
-    protected float mLife;
+    protected String mRef = null;
+    protected float mLife = 0.0f;
     protected boolean mIsDead = false;
-    protected ParticleSystem mSystem;
+    protected ParticleSystem mSystem = null;
+    private HashSet<Integer> mCompletedEmittors = new HashSet<Integer>();
 
     /*
      * _lifetime: -ve denotes persistence, +ve is lifetime in seconds
      */
-    protected ParticleSys(ParticleSystem _system, float _lifeTime)
+    protected ParticleSys(ParticleSystem _system, float _lifeTime, String _ref)
     {
+        mRef = _ref;
         mSystem = _system;
         mLife = _lifeTime;
     }
@@ -39,6 +41,17 @@ public class ParticleSys
     public void kill()
     {
         mLife = 0.0f;
+    }
+    
+    protected void recycle()
+    {
+        for(int i = 0; i < mSystem.getEmitterCount(); i++)
+        {
+            mSystem.getEmitter(i).resetState();
+            mSystem.releaseAll(mSystem.getEmitter(i));
+        }
+        sParticleManager.recycle(mSystem, mRef);
+        mSystem = null;
     }
     
     //move emitters only
@@ -98,28 +111,34 @@ public class ParticleSys
      */
     protected boolean update(int _delta)
     {
-        mSystem.update(_delta);
         if(mLife < 0.0f)
         {//while persistant
-            return true;
+            //do nothing
         }
         else if(mLife > 0.0f)
         {//while still alive
             mLife -= Math.min(mLife,((float)_delta)/1000.0f);
-            return true;
+            //do nothing
         }
         else //if(mLife == 0.0f)
         {//end of life
-            mIsDead = true;
+            mIsDead = false;
             for(int i = 0; i < mSystem.getEmitterCount(); i++)
             {
                 //stop emitter producing
                 mSystem.getEmitter(i).wrapUp();
-
                 //when all particles expire declare system dead
-                if(!mSystem.getEmitter(i).completed())
+                if(mSystem.getEmitter(i).completed())
                 {
-                    mIsDead = false;
+                    if(false == mCompletedEmittors.contains(i))
+                    {
+                        mCompletedEmittors.add(i);
+                        if(mSystem.getEmitterCount() == mCompletedEmittors.size())
+                        {
+                            mCompletedEmittors.clear();
+                            mIsDead = true;
+                        }
+                    }
                 }
             }
         }
@@ -130,8 +149,10 @@ public class ParticleSys
         }
         else
         {
+            mSystem.update(_delta);
             return true;
         }
+        
         
     }
 

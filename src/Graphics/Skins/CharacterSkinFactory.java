@@ -19,10 +19,18 @@ public class CharacterSkinFactory implements iSkinFactory {
     {
         
     }
-    public iSkin useFactory(HashMap _params) throws SlickException
+    public iSkin useFactory(HashMap _params)
     {
-        return new CharacterSkin(   _params.containsKey("ref") ? "assets/" + (String)_params.get("ref") + ".def" : null,
-                                    _params.containsKey("anims") ? (List<String>)_params.get("anims") : new ArrayList(),
-                                    _params.containsKey("duration") ? (Integer)_params.get("duration") : 41); //~24fps
+        try
+        {
+            return new CharacterSkin(   _params.containsKey("ref") ? "assets/" + (String)_params.get("ref") + ".def" : null,
+                                        _params.containsKey("anims") ? (List<String>)_params.get("anims") : new ArrayList(),
+                                        _params.containsKey("duration") ? (Integer)_params.get("duration") : 41); //~24fps
+        }
+        catch (SlickException e)
+        {
+            assert (false);
+            return null;
+        }
     }
 }

@@ -105,6 +105,7 @@ public class BodyCamera extends iCamera implements iEventListener{
             sGraphicsManager.renderManagedSprites();
             sLevel.renderForeground();
             sParticleManager.render((int)getPixelTranslation().x, (int)getPixelTranslation().y, (int)mViewPort.getWidth(), (int)mViewPort.getHeight(),0);
+            ((PlayerEntity)mBody.getUserData()).renderHUD();
         sGraphicsManager.endTransform();      
     }
     
