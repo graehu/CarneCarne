@@ -6,6 +6,7 @@
 
 package Graphics.Particles;
 
+import java.util.HashSet;
 import org.newdawn.slick.particles.ConfigurableEmitter;
 import org.newdawn.slick.particles.ParticleSystem;
 
@@ -19,7 +20,7 @@ public class ParticleSys
     protected float mLife = 0.0f;
     protected boolean mIsDead = false;
     protected ParticleSystem mSystem = null;
-    private int mCompletedEmittors = 0;
+    private HashSet<Integer> mCompletedEmittors = new HashSet<Integer>();
 
     /*
      * _lifetime: -ve denotes persistence, +ve is lifetime in seconds
@@ -129,10 +130,14 @@ public class ParticleSys
                 //when all particles expire declare system dead
                 if(mSystem.getEmitter(i).completed())
                 {
-                    mCompletedEmittors++;
-                    if(mSystem.getEmitterCount() == mCompletedEmittors)
+                    if(false == mCompletedEmittors.contains(i))
                     {
-                        mIsDead = true;
+                        mCompletedEmittors.add(i);
+                        if(mSystem.getEmitterCount() == mCompletedEmittors.size())
+                        {
+                            mCompletedEmittors.clear();
+                            mIsDead = true;
+                        }
                     }
                 }
             }

@@ -95,7 +95,7 @@ public class DoubleParticleSys extends ParticleSys
     {
         boolean ret = super.update(_delta);
         switchSystems();
-        ret = super.update(_delta) && ret;
+        ret = super.update(_delta) || ret;
         switchSystems();
         return ret;
     }

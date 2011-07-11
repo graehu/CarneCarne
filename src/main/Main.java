@@ -34,8 +34,8 @@ public class Main extends StateBasedGame
             //app.setMouseGrabbed(true);
             app.setDisplayMode(800, 600, false);
             app.setVSync(true);
-            //app.setSmoothDeltas(true);
-            app.setTargetFrameRate(60);
+            app.setSmoothDeltas(true);
+            //app.setTargetFrameRate(60);
             app.setMouseGrabbed(true);
             app.start();
         }
