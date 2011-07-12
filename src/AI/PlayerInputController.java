@@ -28,6 +28,16 @@ import org.jbox2d.common.Vec2;
  * @author alasdair
  */
 public class PlayerInputController extends iAIController implements iEventListener {
+
+    public boolean isSwinging()
+    {
+        return mTongueState.isSwinging();
+    }
+
+    public Vec2 getTongueDir()
+    {
+        return mTongueState.getTongueDir();
+    }
     enum Controls
     {
         eTongue,
@@ -40,7 +50,7 @@ public class PlayerInputController extends iAIController implements iEventListen
     //protected to allow TongueStateMachine access
     private TongueStateMachine mTongueState;
     protected String mFaceDirAnim;
-    protected Vec2 mPlayerDir = new Vec2(1,0);
+    public Vec2 mPlayerDir = new Vec2(1,0);
     private int mPlayer;
     
     public PlayerInputController(AIEntity _entity, int _player)

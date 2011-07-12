@@ -6,15 +6,12 @@ package Level;
 
 import Level.Tile.Direction;
 import Level.sLevel.TileType;
-import World.sWorld.BodyCategories;
 import java.util.Stack;
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.collision.shapes.Shape;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
-import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.Fixture;
-import org.jbox2d.dynamics.FixtureDef;
 
 /**
  *
@@ -39,32 +36,7 @@ public class BlockTile extends RootTile
     public Fixture createPhysicsBody(int _xTile, int _yTile, Body _body, Tile _tile)
     {
         Shape shape = createShape(_xTile, _yTile);
-        FixtureDef fixture = new FixtureDef();
-        fixture.filter.categoryBits = (1 << BodyCategories.eEdibleTiles.ordinal());
-        fixture.filter.maskBits = Integer.MAX_VALUE;
-        if (mTileType.equals(TileType.eIce))
-        {
-            fixture.friction = 0.01f;
-            fixture.filter.categoryBits = (1 << BodyCategories.eIce.ordinal());
-            fixture.filter.maskBits = Integer.MAX_VALUE ^(1 << BodyCategories.eEtherealEnemy.ordinal());
-        }
-        else if (mTileType.equals(TileType.eBouncy))
-        {
-            fixture.restitution = 1.0f;
-        }
-        else if (mTileType.equals(TileType.eTar))
-        {
-            fixture.filter.categoryBits = (1 << BodyCategories.eTar.ordinal());
-            fixture.restitution = 0.0f;
-            fixture.friction = 10f;
-        }
-        fixture.shape = shape;
-        fixture.userData = _tile; /// FIXME make this body data instead
-        if (_body.m_type.equals(BodyType.DYNAMIC))
-        {
-            fixture.density = 100.0f;
-        }
-        return _body.createFixture(fixture);
+        return fixtureWithMaterial(shape, _body, _tile);
     }
     public void checkEdges(int _xTile, int _yTile, Stack<Integer> _stack, TileGrid _tileGrid)
     {

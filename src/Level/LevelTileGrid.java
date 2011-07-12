@@ -5,10 +5,8 @@
 package Level;
 
 import Level.sLevel.TileType;
-import World.sWorld;
 import java.util.HashMap;
 import org.jbox2d.common.Vec2;
-import org.jbox2d.dynamics.Body;
 import org.newdawn.slick.tiled.TiledMap;
 
 /**

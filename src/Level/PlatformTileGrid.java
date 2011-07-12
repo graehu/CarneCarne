@@ -5,6 +5,7 @@
 package Level;
 
 import Level.CaveInSearcher.TempTile;
+import Level.sLevel.TileType;
 import java.util.ArrayList;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.BodyType;
@@ -40,5 +41,9 @@ public class PlatformTileGrid extends CaveInTileGrid
     public int getHeight()
     {
         return ids[0].length;
+    }
+    @Override
+    void caveInSearch(int _x, int _y, TileType _tileType)
+    {
     }
 }

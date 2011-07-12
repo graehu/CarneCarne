@@ -6,9 +6,13 @@ package Level;
 
 import Level.Tile.Direction;
 import Level.sLevel.TileType;
+import World.sWorld.BodyCategories;
 import java.util.Stack;
+import org.jbox2d.collision.shapes.Shape;
 import org.jbox2d.dynamics.Body;
+import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.Fixture;
+import org.jbox2d.dynamics.FixtureDef;
 
 /**
  *
@@ -45,7 +49,9 @@ abstract class RootTile
         mTileType = _tileType;
         mSlopeType = _slopeType;
         mAnimationsName = _animationsName;
-        mRegrows = true;
+        mRegrows = false;
+        mAnchor = false;
+        mIsFlammable = false;
         mMaxHealth = _maxHealth;
     }
     
@@ -71,4 +77,33 @@ abstract class RootTile
     }
     abstract Fixture createPhysicsBody(int _xTile, int _yTile, Body _body, Tile _tile);
     abstract void checkEdges(int _xTile, int _yTile, Stack<Integer> _stack, TileGrid _tileGrid);
+    protected Fixture fixtureWithMaterial(Shape _shape, Body _body, Object _userData)
+    {
+        FixtureDef fixture = new FixtureDef();
+        fixture.filter.categoryBits = (1 << BodyCategories.eEdibleTiles.ordinal());
+        fixture.filter.maskBits = Integer.MAX_VALUE;
+        if (mTileType.equals(TileType.eIce))
+        {
+            fixture.friction = 0.01f;
+            fixture.filter.categoryBits = (1 << BodyCategories.eIce.ordinal());
+            fixture.filter.maskBits = Integer.MAX_VALUE ^(1 << BodyCategories.eEtherealEnemy.ordinal());
+        }
+        else if (mTileType.equals(TileType.eBouncy))
+        {
+            fixture.restitution = 1.0f;
+        }
+        else if (mTileType.equals(TileType.eTar))
+        {
+            fixture.filter.categoryBits = (1 << BodyCategories.eTar.ordinal());
+            fixture.restitution = 0.0f;
+            fixture.friction = 10f;
+        }
+        fixture.shape = _shape;
+        fixture.userData = _userData; /// FIXME make this body data instead
+        if (_body.m_type.equals(BodyType.DYNAMIC))
+        {
+            fixture.density = 100.0f;
+        }
+        return _body.createFixture(fixture);
+    }
 }
