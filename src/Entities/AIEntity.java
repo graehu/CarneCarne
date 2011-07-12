@@ -31,6 +31,7 @@ public class AIEntity extends Entity {
     protected float mMoveSpeed;
     protected Command mCommand;
     protected AIEntityState mAIEntityState;
+    protected TileType mTileType;
 
     public RevoluteJoint mJoint;
     
@@ -49,12 +50,23 @@ public class AIEntity extends Entity {
     }
     public void update()
     {
+        //count contacts
+        int numContacts = 0;
+        ContactEdge edgeCounter = mBody.m_contactList;
+        while(edgeCounter != null)
+        {
+            numContacts++;
+            edgeCounter = edgeCounter.next;
+        }
+        
         ContactEdge edge = mBody.m_contactList;
         int mTar = 0;
         int mIce = 0;
         int mWater = 0;
         int mJumpContacts = 0;
         mAllowRoll = false;
+        
+        
         while (edge != null)
         {
             Fixture other = edge.contact.m_fixtureA;
@@ -113,6 +125,9 @@ public class AIEntity extends Entity {
                     if(edge.contact.isTouching() && !other.isSensor())
                     {
                         mJumpContacts++;
+                        //set tile type while only touching one type
+                        if(numContacts == 1)
+                            mTileType = ((Tile)other.getUserData()).getTileType();
                     }
                 }
                 else if(collisionNorm.y < - 0.3 || collisionNorm.y > 0.3)//slopes // horizontal

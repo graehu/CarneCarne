@@ -35,6 +35,7 @@ public class TextField extends iComponent {
 
 	/** The value stored in the text field */
 	private String value = "";
+        private String defaultValue = "";
 
 	/** The font used to render text in the field */
 	private Font font;
@@ -67,6 +68,9 @@ public class TextField extends iComponent {
 	
 	/** True if events should be consumed by the field */
 	private boolean consume = true;
+        
+        /** True after first selection */
+        private boolean used = false;
 	
 	/**
 	 * Create a new text field
@@ -172,15 +176,19 @@ public class TextField extends iComponent {
 		g.setColor(text.multiply(clr));
 		Font temp = g.getFont();
 
-		int cpos = font.getWidth(value.substring(0, cursorPos));
+                String str = defaultValue;
+                if(used)
+                    str = value;
+                
+		int cpos = font.getWidth(str.substring(0, cursorPos));
 		int tx = 0;
 		if (cpos > getWidth()) {
 			tx = getWidth() - cpos - font.getWidth("_");
 		}
-
+                
 		g.translate(tx + 2, 0);
                     g.setFont(font);
-                    g.drawString(value, _globalPos.x + 1, _globalPos.y + 1);
+                    g.drawString(str, _globalPos.x + 1, _globalPos.y + 1);
                     if(mIsSelected && mCursorTimer > mCursorDelay)
                     {
                         mCursorTimer = 0;
@@ -219,6 +227,11 @@ public class TextField extends iComponent {
 			cursorPos = value.length();
 		}
 	}
+        
+        public void setDefaultText(String value)
+        {
+            this.defaultValue = value;
+        }
 
 	/**
 	 * Set the position of the cursor
@@ -386,6 +399,7 @@ public class TextField extends iComponent {
 				if (consume) {
 					container.getInput().consumeEvent();
 				}
+                                mIsSelected = false;
 			}
 
 		}
@@ -404,14 +418,14 @@ public class TextField extends iComponent {
     public void mouseClicked(int button, int x, int y, int clickCount) {
         if(getShape().contains(x, y))
         {
-            text = selectedTextColor;
-            visibleCursor = true;
             mIsSelected = true;
+            if(used == false)
+            {
+                used = true;
+            }
         }
         else
         {
-            text = unselectedTextColor;
-            visibleCursor = false;
             mIsSelected = false;
         }
     }
@@ -419,10 +433,16 @@ public class TextField extends iComponent {
         
     @Override
     protected boolean updateSelf(int _delta) {
-//        if(centered)
-//        {
-//            //center based on length
-//        }
+        if(mIsSelected)
+        {
+            text = selectedTextColor;
+            visibleCursor = true;
+        }
+        else
+        {
+            text = unselectedTextColor;
+            visibleCursor = false;
+        }
         mCursorTimer += _delta;
         return true;
     }
