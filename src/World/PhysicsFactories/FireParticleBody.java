@@ -2,9 +2,11 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package World;
+package World.PhysicsFactories;
 
+import World.PhysicsFactories.iPhysicsFactory;
 import Entities.Entity;
+import World.sWorld;
 import java.util.HashMap;
 import org.jbox2d.collision.shapes.CircleShape;
 import org.jbox2d.common.Vec2;
@@ -18,7 +20,7 @@ import org.jbox2d.dynamics.World;
  *
  * @author alasdair
  */
-class FireParticleBody implements iPhysicsFactory
+public class FireParticleBody implements iPhysicsFactory
 {
 
     public FireParticleBody() {

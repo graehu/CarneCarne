@@ -10,6 +10,8 @@
 
 package Level;
 
+import java.util.Comparator;
+import java.util.PriorityQueue;
 import java.util.Random;
 import org.jbox2d.common.Vec2;
 import org.newdawn.slick.Animation;
@@ -21,8 +23,8 @@ import org.newdawn.slick.tiled.TiledMap;
 /**
  * @author Aaron
  */
-public class AnimatedTiledMap extends TiledMap{
-    
+public class AnimatedTiledMap extends TiledMap
+{
     class AnimatedTile
     {
         AnimatedTile(Animation _anim, Vec2 _pos)
@@ -48,7 +50,8 @@ public class AnimatedTiledMap extends TiledMap{
     AnimatedTiledMap(String mMapRef) throws SlickException
     {
         //construct parent
-        super(mMapRef);        
+        super(mMapRef);  
+        timingTiles = new PriorityQueue<TimingOutTile>(10, new TileComparer());
     }
     
     public void initAnimationlayer(String _packedAnimSheetRef) throws SlickException
@@ -171,6 +174,48 @@ public class AnimatedTiledMap extends TiledMap{
                         mAnimatedLayer[i][j].render(_x, _y);
                 }
             }
+        }
+    }
+    private class TimingOutTile
+    {
+        int mX, mY, mTimer;
+        TimingOutTile(int _x, int _y, int _timer)
+        {
+            mX = _x;
+            mY = _y;
+            mTimer = _timer;
+        }
+    }
+    private static class TileComparer implements Comparator<TimingOutTile> 
+    {
+        public int compare(TimingOutTile x, TimingOutTile y)
+        {
+            if (x.mTimer < y.mTimer)
+            {
+                return -1;
+            }
+            if (x.mTimer > y.mTimer)
+            {
+                return 1;
+            }
+            return 0;
+        }
+    }
+    PriorityQueue<TimingOutTile> timingTiles;
+    int mFrames = 0;
+    void createTimingOutAnimatedTile(int _x, int _y, String _ref, int _timer)
+    {
+        timingTiles.add(new TimingOutTile(_x, _y, mFrames + _timer));
+        createAnimatedTile(_x, _y, _ref);
+    }
+    public void update()
+    {
+        mFrames++;
+        TimingOutTile tile = timingTiles.peek();
+        if (tile != null && tile.mTimer < mFrames)
+        {
+            timingTiles.remove(tile);
+            mAnimatedLayer[tile.mX][tile.mY] = null;
         }
     }
 }

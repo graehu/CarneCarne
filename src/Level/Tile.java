@@ -75,6 +75,13 @@ public class Tile
             else if (mRootId.mTileType.equals(TileType.eIce))
             {
                 destroyFixture();
+                try
+                {
+                    ((LevelTileGrid)mTileGrid).tiledMap.createTimingOutAnimatedTile(mXTile, mYTile,"iceanimation", 49);
+                }
+                catch (ClassCastException e)
+                {
+                }
             }
         }
     }
@@ -102,7 +109,11 @@ public class Tile
     {
         return mTileGrid;
     }
-    public Vec2 getPosition()
+    public Vec2 getWorldPosition()
+    {
+        return mTileGrid.mBody.getWorldPoint(new Vec2(mXTile, mYTile));
+    }
+    public Vec2 getLocalPosition()
     {
         return new Vec2(mXTile, mYTile);
     }

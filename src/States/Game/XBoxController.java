@@ -57,8 +57,12 @@ public class XBoxController
             return false;
         
         //get player direction
-        Vec2 rightStick = new Vec2(_input.getAxisValue(mPlayer, 1),_input.getAxisValue(mPlayer, 0));
+        Vec2 rightStick = new Vec2(_input.getAxisValue(mPlayer, 3),_input.getAxisValue(mPlayer, 2));
         
+        if (rightStick.length() < 0.2f)
+        {
+            rightStick = new Vec2(_input.getAxisValue(mPlayer, 1),_input.getAxisValue(mPlayer, 0));
+        }
         if (rightStick.length() > 0.2f)
         {
             sEvents.triggerEvent(new RightStickEvent(rightStick, mPlayer));

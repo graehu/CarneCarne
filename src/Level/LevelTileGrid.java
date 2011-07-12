@@ -44,6 +44,12 @@ public final class LevelTileGrid extends TileGrid
     {
         destroyTileImplementation(_x, _y);
     }
+    @Override
+    public void update()
+    {
+        super.update();
+        tiledMap.update();
+    }
     boolean dropChecking = false;
     void caveInSearch(int _x, int _y, TileType _tileType)
     {

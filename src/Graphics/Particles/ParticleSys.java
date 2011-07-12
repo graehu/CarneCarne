@@ -14,7 +14,7 @@ import org.newdawn.slick.particles.ParticleSystem;
  *
  * @author a203945
  */
-public class ParticleSys
+class ParticleSys implements ParticleSysBase
 {
     protected String mRef = null;
     protected float mLife = 0.0f;
@@ -43,7 +43,7 @@ public class ParticleSys
         mLife = 0.0f;
     }
     
-    protected void recycle()
+    public void recycle()
     {
         for(int i = 0; i < mSystem.getEmitterCount(); i++)
         {
@@ -109,7 +109,7 @@ public class ParticleSys
      * Assumes time step in milliseconds
      * Returns false if life < 0
      */
-    protected boolean update(int _delta)
+    public boolean update(int _delta)
     {
         if(mLife < 0.0f)
         {//while persistant
@@ -156,7 +156,7 @@ public class ParticleSys
         
     }
 
-    protected void render(float _x, float _y)
+    public void render(float _x, float _y)
     {
         mSystem.render(_x, _y);
     }

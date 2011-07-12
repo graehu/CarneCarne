@@ -41,7 +41,7 @@ public class sLevel {
     private static float mParralaxYScale[];
     private static AnimatedTiledMap mTiledMap;
     private static LevelEditor mLevelEditor;
-    private static int layerIndex;  
+    private static int flagsLayer; /// Ignore this one
     private static int midLayer; 
     private static int xTiles, yTiles;
     public enum PathInfo
@@ -79,6 +79,7 @@ public class sLevel {
         mTiledMap.initAnimationlayer("assets/TileAnimation.def");
         mLevelEditor = new LevelEditor(mTiledMap);
         midLayer = mTiledMap.getLayerIndex("Level");
+        flagsLayer = mTiledMap.getLayerIndex("Flags");
         mParralaxXScale = new float[mTiledMap.getLayerCount()];
         mParralaxYScale = new float[mTiledMap.getLayerCount()];
         for (int i = 0; i < mParralaxXScale.length; i++)
@@ -99,16 +100,19 @@ public class sLevel {
         Vec2 translation = sWorld.getPixelTranslation();
         for (int i = 0; i < midLayer; i++)
         {
-            Vec2 myTranslation = translation.clone();
-            myTranslation.x = myTranslation.x *(mParralaxXScale[i]);
-            myTranslation.y = myTranslation.y *(mParralaxYScale[i]);
-            int xStart = -(int)(myTranslation.x/64.0f);
-            int yStart = -(int)(myTranslation.y/64.0f);
-            int transX = (int)myTranslation.x;
-            int transY = (int)myTranslation.y;
-            transX = transX % 64;
-            transY = transY % 64;
-            mTiledMap.render(transX,transY, xStart,yStart, xTiles,yTiles, i, false);
+            if (i != flagsLayer)
+            {
+                Vec2 myTranslation = translation.clone();
+                myTranslation.x = myTranslation.x *(mParralaxXScale[i]);
+                myTranslation.y = myTranslation.y *(mParralaxYScale[i]);
+                int xStart = -(int)(myTranslation.x/64.0f);
+                int yStart = -(int)(myTranslation.y/64.0f);
+                int transX = (int)myTranslation.x;
+                int transY = (int)myTranslation.y;
+                transX = transX % 64;
+                transY = transY % 64;
+                mTiledMap.render(transX,transY, xStart,yStart, xTiles,yTiles, i, false);
+            }
         }
         int xStart = -(int)(translation.x/64.0f);
         int yStart = -(int)(translation.y/64.0f);
@@ -120,18 +124,21 @@ public class sLevel {
         xTiles = (int)(s.x/64.0f)+2;
         yTiles = (int)(s.y/64.0f)+2;
         Vec2 translation = sWorld.getPixelTranslation();
-        for (int i = midLayer; i < mTiledMap.getLayerCount() - 2/*FIXME*/; i++)
+        for (int i = midLayer; i < mTiledMap.getLayerCount(); i++) /// I fixed it you terrible, terrible person
         {
-            Vec2 myTranslation = translation.clone();
-            myTranslation.x = myTranslation.x *(mParralaxXScale[i]);
-            myTranslation.y = myTranslation.y *(mParralaxYScale[i]);
-            int xStart = -(int)(myTranslation.x/64.0f);
-            int yStart = -(int)(myTranslation.y/64.0f);
-            int transX = (int)myTranslation.x;
-            int transY = (int)myTranslation.y;
-            transX = transX % 64;
-            transY = transY % 64;
-            mTiledMap.render(transX,transY, xStart,yStart, xTiles,yTiles, i, false);
+            if (i != flagsLayer)
+            {
+                Vec2 myTranslation = translation.clone();
+                myTranslation.x = myTranslation.x *(mParralaxXScale[i]);
+                myTranslation.y = myTranslation.y *(mParralaxYScale[i]);
+                int xStart = -(int)(myTranslation.x/64.0f);
+                int yStart = -(int)(myTranslation.y/64.0f);
+                int transX = (int)myTranslation.x;
+                int transY = (int)myTranslation.y;
+                transX = transX % 64;
+                transY = transY % 64;
+                mTiledMap.render(transX,transY, xStart,yStart, xTiles,yTiles, i, false);
+            }
         }     
         
     }

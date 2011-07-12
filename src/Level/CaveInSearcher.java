@@ -79,7 +79,7 @@ public class CaveInSearcher {
         check(_x,_y+1, Direction.eFromUp,_tileType,workingSetSets,gridSets);
         calculate(workingSetSets, gridSets);
     }
-    private void calculate(Stack<TileIndex> workingSet, Stack<TileIndex> grid)
+    protected void calculate(Stack<TileIndex> workingSet, Stack<TileIndex> grid)
     {
         while (!workingSet.isEmpty())
         {

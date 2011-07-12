@@ -28,7 +28,12 @@ public class FakeTile extends Tile
         return TileType.eSwingable;
     }
     @Override
-    public Vec2 getPosition()
+    public Vec2 getWorldPosition()
+    {
+        return mBody.getPosition();
+    }
+    @Override
+    public Vec2 getLocalPosition()
     {
         return mBody.getPosition();
     }
@@ -37,6 +42,7 @@ public class FakeTile extends Tile
     {
         //((Entity)mBody.getUserData()).kill();
     }
+    @Override
     public boolean damageTile()
     {
         return true;

@@ -2,8 +2,10 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package World;
+package World.PhysicsFactories;
 
+import World.PhysicsFactories.iPhysicsFactory;
+import World.sWorld;
 import java.util.HashMap;
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Vec2;
@@ -17,7 +19,7 @@ import org.jbox2d.dynamics.World;
  *
  * @author alasdair
  */
-class MovingPlatformBodyFactory implements iPhysicsFactory
+public class MovingPlatformBodyFactory implements iPhysicsFactory
 {
 
     public MovingPlatformBodyFactory() {

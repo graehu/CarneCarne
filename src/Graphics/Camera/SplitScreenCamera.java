@@ -2,8 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package Graphics;
+package Graphics.Camera;
 
+import Graphics.Camera.iCamera;
 import java.util.ArrayList;
 import java.util.Vector;
 import org.jbox2d.common.Vec2;

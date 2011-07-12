@@ -4,6 +4,7 @@
  */
 package World;
 
+import World.PhysicsFactories.iPhysicsFactory;
 import World.sWorld.BodyCategories;
 import java.util.HashMap;
 import org.jbox2d.collision.shapes.PolygonShape;

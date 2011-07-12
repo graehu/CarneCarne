@@ -2,8 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package World;
+package World.PhysicsFactories;
 
+import World.PhysicsFactories.iPhysicsFactory;
 import Entities.Entity;
 import Level.sLevel;
 import World.sWorld.BodyCategories;
@@ -20,7 +21,7 @@ import org.jbox2d.dynamics.World;
  *
  * @author alasdair
  */
-class SpatBlockBodyFactory implements iPhysicsFactory {
+public class SpatBlockBodyFactory implements iPhysicsFactory {
 
     public SpatBlockBodyFactory() {
     }

@@ -2,8 +2,10 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package Graphics;
+package Graphics.Camera;
 
+import Graphics.Camera.BodyCamera;
+import Graphics.sGraphicsManager;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 import org.newdawn.slick.geom.Rectangle;
