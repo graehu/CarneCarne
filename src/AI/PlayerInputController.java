@@ -42,6 +42,7 @@ public class PlayerInputController extends iAIController implements iEventListen
     protected String mFaceDirAnim;
     protected Vec2 mPlayerDir = new Vec2(1,0);
     private int mPlayer;
+    int actionTimer = 0, actionDelay = 10;
     
     public PlayerInputController(AIEntity _entity, int _player)
     {
@@ -64,6 +65,7 @@ public class PlayerInputController extends iAIController implements iEventListen
     
     public void update()
     {       
+        actionTimer++;
         mTongueState.tick(mEntity);
         ((PlayerEntity)mEntity).setDirection(mPlayerDir);
     
@@ -272,6 +274,10 @@ public class PlayerInputController extends iAIController implements iEventListen
         }
         else //assume MapClick
         {
+            if(actionTimer < actionDelay)
+                return;
+            else
+                actionTimer = 0;
             MapClickEvent event = (MapClickEvent)_event;
             if (event.leftbutton())
             {
