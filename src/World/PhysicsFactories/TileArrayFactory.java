@@ -2,9 +2,11 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package World;
+package World.PhysicsFactories;
 
+import World.PhysicsFactories.iPhysicsFactory;
 import Level.CaveInSearcher;
+import World.sWorld;
 import java.util.ArrayList;
 import java.util.HashMap;
 import org.jbox2d.collision.shapes.PolygonShape;
@@ -19,7 +21,7 @@ import org.jbox2d.dynamics.World;
  *
  * @author alasdair
  */
-class TileArrayFactory implements iPhysicsFactory
+public class TileArrayFactory implements iPhysicsFactory
 {
 
     public TileArrayFactory() {

@@ -45,6 +45,19 @@ public class PlatformCaveInSearcher extends CaveInSearcher
         return false;
     }
     @Override
+    public void destroy(int _x, int _y, TileType _tileType)
+    {
+        Stack<TileIndex> workingSetSets = new Stack<TileIndex>();
+        Stack<TileIndex> gridSets = new Stack<TileIndex>();
+        //mChecked[_x][_y] = true;
+        
+        Tile tile = mTileGrid.get(_x, _y);
+        workingSetSets.add(new TileIndex(_x, _y, tile.getTileType()));
+        gridSets.add(new TileIndex(_x, _y, tile.getTileType()));
+        mChecked[_x][_y] = Checked.eNoAnchor;
+        calculate(workingSetSets, gridSets);
+    }
+    @Override
     protected CaveInTileGrid createTileGrid(RootTileList _rootTiles, TiledMap _tiledMap, int _xTrans, int _yTrans, int _width, int _height, int _layerIndex, Vec2 _position, float _angle, Vec2 _linearVelocity, float _angularVelocity)
     {
         return new PlatformTileGrid(_rootTiles, _tiledMap, _xTrans, _yTrans, _width, _height, _layerIndex, _position, _angle, _linearVelocity, _angularVelocity);

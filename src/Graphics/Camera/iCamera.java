@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package Graphics;
+package Graphics.Camera;
 
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;

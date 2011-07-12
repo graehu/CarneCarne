@@ -2,8 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package World;
+package World.PhysicsFactories;
 
+import World.PhysicsFactories.iPhysicsFactory;
 import Level.sLevel;
 import World.sWorld.BodyCategories;
 import java.util.HashMap;

@@ -2,13 +2,14 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package Graphics;
+package Graphics.Camera;
 
 import Events.KeyDownEvent;
 import Events.iEvent;
 import Events.iEventListener;
 import Events.sEvents;
 import Graphics.Particles.sParticleManager;
+import Graphics.sGraphicsManager;
 import Level.sLevel;
 import World.sWorld;
 import org.jbox2d.common.Vec2;

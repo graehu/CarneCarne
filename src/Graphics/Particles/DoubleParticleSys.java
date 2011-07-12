@@ -32,7 +32,7 @@ public class DoubleParticleSys extends ParticleSys
     }
 
     @Override
-    protected void recycle() {
+    public void recycle() {
         super.recycle();
         switchSystems();
         super.recycle();
@@ -91,7 +91,7 @@ public class DoubleParticleSys extends ParticleSys
      * Returns false if life < 0
      */
     @Override
-    protected boolean update(int _delta)
+    public boolean update(int _delta)
     {
         boolean ret = super.update(_delta);
         switchSystems();
@@ -101,7 +101,7 @@ public class DoubleParticleSys extends ParticleSys
     }
 
     @Override
-    protected void render(float _x, float _y)
+    public void render(float _x, float _y)
     {
         super.render(_x, _y);
         switchSystems();

@@ -98,6 +98,11 @@ abstract class RootTile
             fixture.restitution = 0.0f;
             fixture.friction = 10f;
         }
+        else if (mTileType.equals(TileType.eSpikes))
+        {
+            fixture.filter.categoryBits = (1 << BodyCategories.eSpikes.ordinal());
+            fixture.restitution = 0.0f;
+        }
         fixture.shape = _shape;
         fixture.userData = _userData; /// FIXME make this body data instead
         if (_body.m_type.equals(BodyType.DYNAMIC))

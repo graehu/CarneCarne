@@ -43,7 +43,10 @@ class WaterTile extends RootTile {
         fixture.userData = _tile;
         fixture.filter.categoryBits = (1 << BodyCategories.eWater.ordinal());
         fixture.filter.maskBits = Integer.MAX_VALUE;
-        
+        if (mTileType.equals(TileType.eAcid))
+        {
+            fixture.filter.categoryBits = (1 << BodyCategories.eSpikes.ordinal());
+        }
         return _body.createFixture(fixture);
     }
 
