@@ -205,12 +205,14 @@ public class FlagProcessor
                         parameters.put("ref",_tiledMap.getTileProperty(id, "Image","Error, image not defined")); 
                         parameters.put("position",new Vec2(i,ii));
                         parameters.put("Type",_tiledMap.getTileProperty(id, "Type", "Error, platform type not defined"));
-                        sEntityFactory.create("MovingPlatform", parameters);  */
+                        sEntityFactory.create("MovingPlatform", parameters)*/
+                        
                         PlatformCaveInSearcher search = new PlatformCaveInSearcher(_tileGrid, _tiledMap, _levelLayerIndex, _levelBody);
                         search.destroy(i,ii, TileType.eEdible);
                         Body platformBody = search.getCreatedBody();
                         iPlatformController controller = null;
                         String platformType = _tiledMap.getTileProperty(id, "PlatformType", "Error, platform type not defined");
+                        
                         if (platformType.equals("Stupid"))
                         {
                             controller = new StupidPlatformController();

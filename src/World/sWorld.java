@@ -23,6 +23,7 @@ import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyDef;
+import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.Fixture;
 import org.jbox2d.dynamics.FixtureDef;
 import org.jbox2d.dynamics.World;
@@ -115,7 +116,8 @@ public class sWorld
         }
         public boolean reportFixture(Fixture _fixture)
         {
-            if ((_fixture.m_filter.categoryBits & mCollisionMask) != 0)
+            if ((_fixture.m_filter.categoryBits & mCollisionMask) != 0 ||
+                    _fixture.getBody().getType().equals(BodyType.KINEMATIC))
             {
                 mBody = _fixture.getBody();
                 return false;
