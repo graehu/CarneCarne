@@ -4,6 +4,8 @@
  */
 package Graphics;
 
+import AI.PlayerInputController;
+import Entities.AIEntity;
 import Entities.PlayerEntity;
 import Events.CaveInEvent;
 import Events.iEvent;
@@ -29,6 +31,9 @@ public class BodyCamera extends iCamera implements iEventListener{
     Body mBody;
     Vec2 mPosition = new Vec2(0,0);
     Vec2 mTranslation = new Vec2(0,0);
+    boolean mLookDirection;
+    float mXLookOffset, mXLookVelocity;
+    int mLookChangeTimer;
     Vec2 mShake = new Vec2(0,0);
     boolean mTopSplit;
     float mTimer;
@@ -40,9 +45,64 @@ public class BodyCamera extends iCamera implements iEventListener{
         ((PlayerEntity)_body.getUserData()).setClip(_viewPort);
         mTopSplit = _topSplit;
         mTimer = 0;
+        mLookChangeTimer = 0;
+        mXLookOffset = mXLookVelocity = 0.0f;
+        mLookDirection = false;
         sEvents.subscribeToEvent("CaveInEvent", this);
         
     }
+    private static final float directionEpsilon = 0.6f;
+    private static final float maxLookOffset = 0.05f;
+    private static final float offsetMoveVelocity = 0.002f;
+    private void calculateLookOffset()
+    {
+        float v = mBody.getLinearVelocity().x;
+        v = ((PlayerInputController)((AIEntity)mBody.getUserData()).mController).mPlayerDir.x;
+        boolean oldLookDirection = mLookDirection;
+        float widthScale = mViewPort.getWidth()/1680.0f;;
+        if (v > 0.0f)
+        {
+            if (v > directionEpsilon)
+            {
+                mLookDirection = true;
+            }
+        }
+        else
+        {
+            if (v < -directionEpsilon)
+            {
+                mLookDirection = false;
+            }
+        }
+        if (oldLookDirection != mLookDirection)
+        {
+            mLookChangeTimer++;
+            if (mLookChangeTimer < 60)
+            {
+                mLookDirection = !mLookDirection;
+            }
+        }
+        else mLookChangeTimer = 0;
+        if (mLookDirection)
+        {
+            if (mXLookOffset > -maxLookOffset)
+            {
+                mXLookVelocity -= offsetMoveVelocity;
+            }
+            else mXLookVelocity *= 0.99f;
+        }
+        else
+        {
+            if (mXLookOffset < maxLookOffset)
+            {
+                mXLookVelocity += offsetMoveVelocity;
+            }
+            else mXLookVelocity *= 0.99f;
+        }
+        mXLookOffset += mXLookVelocity * widthScale;
+        mXLookVelocity *= 0.99f;
+    }
+
 
     @Override
     public void resize(Rectangle _viewPort) 
@@ -109,6 +169,7 @@ public class BodyCamera extends iCamera implements iEventListener{
         sGraphicsManager.endTransform();      
     }
     
+    @Override
     public iCamera addPlayer(Body _body)
     {
         return new SplitScreenCamera(mBody, _body, mViewPort, mTopSplit);
@@ -116,10 +177,13 @@ public class BodyCamera extends iCamera implements iEventListener{
     protected void calculatePosition()
     {
         mPosition = mBody.getPosition();
+        mPosition = mPosition.add(new Vec2(0.5f,0.5f));
+        calculateLookOffset();
         Vec2 s = sGraphicsManager.getTrueScreenDimensions();
         s.x = (mViewPort.getMaxX()- mViewPort.getX());
         s.y = (mViewPort.getMaxY()- mViewPort.getY());
         mTranslation = new Vec2(( (s.x/2)/64.0f), ((s.y/2)/64.0f));
+        mTranslation.x += mXLookOffset;
         if (mPosition.x < mTranslation.x)
         {
             mTranslation.x -= ((mTranslation.x)-mPosition.x);
@@ -132,7 +196,7 @@ public class BodyCamera extends iCamera implements iEventListener{
         mTranslation = mTranslation.add(mShake);
         sGraphicsManager.setScreenDimensions(s);
     }
-
+    
     public void trigger(iEvent _event)
     {
         mCaveInEvent = (CaveInEvent)_event;

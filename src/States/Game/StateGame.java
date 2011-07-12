@@ -97,12 +97,7 @@ public class StateGame extends BasicGameState implements iEventListener {
     public void enter(GameContainer container, StateBasedGame game) throws SlickException 
     {         
         super.enter(container, game);
-        //TEST: MANAGED SPRITE
-//        HashMap params = new HashMap();
-//        params.put("img", new Image("data/assets/splashbig.png"));
-//        params.put("pos", new Vec2(500,500));
-//        sSpriteFactory.create("simple", params);
-
+        container.setMouseGrabbed(true);
         //sSound.play("ambiance");
     }
     
@@ -111,25 +106,9 @@ public class StateGame extends BasicGameState implements iEventListener {
     public void leave(GameContainer container, StateBasedGame game) throws SlickException 
     {
         super.leave(container, game);
+        container.setMouseGrabbed(false);
         //sSound.stop("ambiance");
     }
-    
-//    @Override
-//    protected RootPane createRootPane() {
-//        // don't call getRootPane() in this method !!
-//        RootPane myRootPane = super.createRootPane();
-//        
-//        // specify a theme name instead of the default "state"+getID()
-//        myRootPane.setTheme("mainMenu");
-//    
-//        // return the root pane so that it is available for getRootPane()
-//        return myRootPane;
-//    }
-//
-//    @Override
-//    //this is where we can layout the elements of the UI
-//    protected void layoutRootPane() {        
-//    } 
     
     public void init(GameContainer _gc, StateBasedGame _sbg) throws SlickException
     {

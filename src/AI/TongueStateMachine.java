@@ -6,6 +6,8 @@ package AI;
 
 import Entities.AIEntity;
 import Entities.PlayerEntity;
+import Graphics.Particles.ParticleSys;
+import Graphics.Particles.sParticleManager;
 import Graphics.Sprites.iSprite;
 import Graphics.Sprites.sSpriteFactory;
 import Level.Tile;
@@ -158,6 +160,13 @@ public class TongueStateMachine {
                     case eIce:
                     case eIndestructible:
                     {
+                        Vec2 pos = sWorld.translateToWorld(mTonguePosition).sub(sWorld.getPixelTranslation());
+                        pos = pos.add(new Vec2(32,32));
+                        ParticleSys sys = sParticleManager.createSystem("spit", pos, 1f);
+                        if(mTongueDir.x >= 0)
+                            sys.setAngularOffset(-(float)(Math.acos(Vec2.dot(mTongueDir, mUp.negate())) * 180/Math.PI));
+                        else
+                            sys.setAngularOffset((float)(Math.acos(Vec2.dot(mTongueDir, mUp.negate())) * 180/Math.PI));
                         changeState(State.eRetractingTongue);
                         break;
                     }
@@ -281,8 +290,6 @@ public class TongueStateMachine {
             }
             case eIdleAnimation:
             {
-                
-                
                 mCurrentStateTimer--;
                 if (mCurrentStateTimer == 0)
                 {
@@ -595,7 +602,6 @@ public class TongueStateMachine {
                 //render tongue
                 mAIController.mEntity.mSkin.startAnim("tng", false, 0.0f);
                 mIsTongueActive = true;
-                mCurrentStateTimer = 0;
                 break;
             }
             case eRetractingHammer:
@@ -603,8 +609,7 @@ public class TongueStateMachine {
                 //render tongue
                 mAIController.mEntity.mSkin.startAnim("tng", false, 0.0f);
                 mIsTongueActive = true;
-                mCurrentStateTimer = setAnimation("FiringHammer");
-                mCurrentStateTimer = Math.max(actionDelay, mCurrentStateTimer);
+                //mCurrentStateTimer = Math.max(actionDelay, mCurrentStateTimer);
                 break;
             }
             case eSpittingBlock:
@@ -667,5 +672,13 @@ public class TongueStateMachine {
             //mAIController.spitBlock(mPosition, mTile);
             mAIController.spitBlock(mTile);
         }
+    }
+    public boolean isSwinging()
+    {
+        return (mState.equals(State.eSwinging));
+    }
+    public Vec2 getTongueDir()
+    {
+        return mTongueDir.clone();
     }
 }

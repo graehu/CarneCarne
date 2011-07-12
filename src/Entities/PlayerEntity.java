@@ -6,16 +6,19 @@ package Entities;
 
 import Entities.AIEntityState.State;
 import Events.AreaEvents.CheckPointZone;
-import Graphics.Particles.ParticleSys;
-import Graphics.Particles.sParticleManager;
 import Graphics.Skins.iSkin;
+import Graphics.Sprites.iSprite;
+import Graphics.Sprites.sSpriteFactory;
 import Graphics.sGraphicsManager;
 import HUD.Reticle;
 import Level.sLevel.TileType;
 import World.sWorld;
+import java.util.HashMap;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Fixture;
 import org.jbox2d.dynamics.joints.Joint;
+import org.newdawn.slick.Image;
+import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
 
 /**
@@ -30,6 +33,7 @@ public class PlayerEntity extends AIEntity
     private Joint mDeathJoint;
     private Vec2 mDirection;
     public Reticle mReticle;
+    private iSprite mArrowSprite;
     private Rectangle mViewPort;
     private int mRaceTimer;
     private int mDeaths;
@@ -40,7 +44,16 @@ public class PlayerEntity extends AIEntity
         mOriginalSpawnPoint = mCheckPoint = _spawnPoint;
         mReticle = new Reticle(this);
         mDeaths = mRaceTimer = 0;
-        //mParticleSys = sParticleManager.createSystem("CarneFire", new Vec2(0,0), -1);
+        HashMap params = new HashMap();
+        try
+        {
+            params.put("img", new Image("assets/Arrow.png"));
+        }
+        catch (SlickException e)
+        {
+            assert(false);
+        }
+        mArrowSprite = sSpriteFactory.create("simple", params, false);
     }
     public void setClip(Rectangle _viewPort)
     {
@@ -147,6 +160,12 @@ public class PlayerEntity extends AIEntity
         {
             mReticle.render();
             mCheckPoint.renderRaceState(mRaceTimer);
+            Vec2 direction = mCheckPoint.getNext().getPosition().sub(mBody.getPosition());
+            direction.normalize();
+            float rotation = (float)Math.atan2(direction.y, direction.x);
+            //rotation -= 180.0f;
+            mArrowSprite.setRotation(rotation*180.0f/(float)Math.PI);
+            mArrowSprite.render(mViewPort.getWidth()*0.5f, 0);
             sGraphicsManager.drawString("You have died " + mDeaths + " times", 0f, 0.1f);
         }
     }
@@ -191,6 +210,20 @@ public class PlayerEntity extends AIEntity
     public int getRaceTimer()
     {
         return mRaceTimer;
+    }
+    @Override
+    protected void airControl(float _value)
+    {
+        /*if (((PlayerInputController)mController).isSwinging())
+        {
+            Vec2 tongueDir = ((PlayerInputController)mController).getTongueDir();
+            tongueDir = new Vec2(-tongueDir.y,tongueDir.x).mul(_value);
+            mBody.applyLinearImpulse(tongueDir, mBody.getWorldCenter());
+        }
+        else*/
+        {
+            mBody.applyLinearImpulse(new Vec2(0.1f*_value,0), mBody.getWorldCenter());
+        }
     }
     
     

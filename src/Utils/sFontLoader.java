@@ -4,17 +4,13 @@
  */
 package Utils;
 
-import java.awt.Color;
-import java.awt.Font;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.newdawn.slick.SlickException;
-import org.newdawn.slick.TrueTypeFont;
+import org.newdawn.slick.Font;
 import org.newdawn.slick.UnicodeFont;
 import org.newdawn.slick.font.effects.ColorEffect;
-import org.newdawn.slick.font.effects.Effect;
 import org.newdawn.slick.util.ResourceLoader;
 
 /**
@@ -23,20 +19,26 @@ import org.newdawn.slick.util.ResourceLoader;
  */
 public class sFontLoader {
     private sFontLoader(){}
-    static Map<String, TrueTypeFont> mFontList = new HashMap<String, TrueTypeFont>();
+    private static Map<String, UnicodeFont> mFontList = new HashMap<String, UnicodeFont>();
+    private static Font mDefaultFont = null;
     
+    public static Font getDefaultFont(){return mDefaultFont;}
+    public static void setDefaultFont(String _ref)
+    {
+        mDefaultFont = createFont(_ref, 100);
+    }
     /*
      * loads truetype font from file, prepends dir, appends ".ttf"
      */
-    public static TrueTypeFont createFont(String _ref)
+    public static UnicodeFont createFont(String _ref)
     {
         return createFont(_ref, 32, false, false);
     }
-    public static TrueTypeFont createFont(String _ref, int _size)
+    public static UnicodeFont createFont(String _ref, int _size)
     {
         return createFont(_ref, _size, false, false);
     }
-    public static TrueTypeFont createFont(String _ref, int _size, boolean _bold, boolean _italic)
+    public static UnicodeFont createFont(String _ref, int _size, boolean _bold, boolean _italic)
     {
         if(mFontList.containsKey(_ref))
         {
@@ -45,11 +47,20 @@ public class sFontLoader {
         else
         {
             String dir = "ui/fonts/";
-            TrueTypeFont font = null;
+            UnicodeFont font = null;
             try
             {
-                Font jfont = Font.createFont(Font.TRUETYPE_FONT, ResourceLoader.getResourceAsStream(dir+_ref+".ttf"));
-                font = new TrueTypeFont(jfont, true);
+                java.awt.Font jfont = java.awt.Font.createFont(java.awt.Font.TRUETYPE_FONT, ResourceLoader.getResourceAsStream(dir+_ref+".ttf"));
+                font = new UnicodeFont(jfont, _size, _bold, _italic);
+                
+                //initialise font
+                font.addAsciiGlyphs();   //Add Glyphs
+                font.addGlyphs(400, 600); //Add Glyphs
+                font.addNeheGlyphs();
+                font.addGlyphs("_");
+                font.getEffects().add(new ColorEffect(java.awt.Color.WHITE)); //Add Effects
+                font.loadGlyphs();  //Load Glyphs
+                        
                 if(font != null)
                     mFontList.put(_ref, font);
             } 

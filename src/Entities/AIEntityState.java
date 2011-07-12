@@ -4,6 +4,10 @@
  */
 package Entities;
 
+import Graphics.Particles.sParticleManager;
+import World.sWorld;
+import org.jbox2d.common.Vec2;
+
 /**
  *
  * @author alasdair
@@ -249,19 +253,19 @@ class AIEntityState
     }
     private void changeState(State _newState)
     {
+        mEntity.mSkin.setAlpha(1f);
         switch(_newState)
         {
+            case eJumping:
+            {
+                sParticleManager.createSystem("cloud", sWorld.translateToWorld(mEntity.mBody.getPosition()).sub(sWorld.getPixelTranslation()).add(new Vec2(32,64)), 1f);
+                break;
+            }
             case eDead:
             {
                 mEntity.mSkin.setAlpha(0.5f);
                 break;
-            }
-            default:
-            {
-                mEntity.mSkin.setAlpha(1f);
-                break;
-            }
-                    
+            }                    
         }
         mState = _newState;
     }

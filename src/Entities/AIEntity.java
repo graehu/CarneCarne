@@ -22,7 +22,7 @@ import org.jbox2d.dynamics.joints.RevoluteJoint;
 public class AIEntity extends Entity {
 
     final static float root2 = (float) Math.sqrt(2);
-    protected iAIController mController;
+    public iAIController mController;
     protected boolean mAllowRoll = false;
     protected int mJumpTimer;
     protected String mCurrentAnimation;
@@ -155,6 +155,10 @@ public class AIEntity extends Entity {
         }
         mBody.applyLinearImpulse(mBody.getLinearVelocity().mul(-0.3f*waterHeight), mBody.getWorldCenter());
     }
+    protected void airControl(float _value)
+    {
+        mBody.applyLinearImpulse(new Vec2(0.1f*_value,0), mBody.getWorldCenter());
+    }
     public void walk(float value)
     {
         mBody.m_fixtureList.m_friction = 5;
@@ -164,7 +168,7 @@ public class AIEntity extends Entity {
             case eFallingDoubleJumped:
             case eJumping:
             {
-                mBody.applyLinearImpulse(new Vec2(0.1f*value,0), mBody.getWorldCenter());
+                airControl(value);
                 break;
             }
             case eStanding:
@@ -322,7 +326,6 @@ public class AIEntity extends Entity {
     public boolean isAirBorn()
     {
         return mAIEntityState.getState().equals(AIEntityState.State.eFalling);
-        //return mJumpContacts > 0;
     }
     
     public boolean isDead()
@@ -332,7 +335,7 @@ public class AIEntity extends Entity {
     
     public float setAnimation(String _animation)
     {
-        if(_animation != mCurrentAnimation)
+        if(!_animation.equals(mCurrentAnimation))
         {
             mSkin.stopAnim(mCurrentAnimation);
             mCurrentAnimation = _animation;
@@ -344,18 +347,10 @@ public class AIEntity extends Entity {
     public void crouch()
     {
     }
+    @Override
     public void render()
     {
         Vec2 pixelPosition = sWorld.translateToWorld(mBody.getPosition());
         mSkin.render(pixelPosition.x,pixelPosition.y);
     }
-
-    /*public void canJump()
-    {
-        mJumpContacts++;
-    }
-    public void cantJump()
-    {
-        mJumpContacts--;
-    }*/
 }

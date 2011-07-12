@@ -4,6 +4,7 @@
  */
 package Level;
 
+import org.newdawn.slick.SlickException;
 import org.newdawn.slick.tiled.TiledMap;
 
 /**
@@ -28,6 +29,26 @@ public class LevelEditor {
         
         FlagProcessor flagProcessor = new FlagProcessor(_tiledMap, layerIndex, tileGrid.mBody, tileGrid);
         flagProcessor = null;
+    }
+    private LevelEditor(TiledMap _tiledMap, RootTileList _rootTiles, int _layerIndex)
+    {
+        mTiledMap = _tiledMap;
+        layerIndex = _layerIndex;
+        rootTiles = _rootTiles;
+        tileGrid = new LevelTileGrid(mTiledMap, rootTiles, layerIndex);
+    }
+    @Override
+    public LevelEditor clone()
+    {
+        try
+        {
+            return new LevelEditor(new AnimatedTiledMap("assets/DeekTestMap.tmx"), rootTiles, layerIndex);
+        }
+        catch (SlickException e)
+        {
+            assert(false);
+            return null;
+        }
     }
     public void placeTile(int _x, int _y, int _rootId)
     {

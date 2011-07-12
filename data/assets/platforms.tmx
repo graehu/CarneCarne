@@ -23,6 +23,7 @@
   <tile id="16">
    <properties>
     <property name="Anchor" value="True"/>
+	<property name="Flammable" value="True"/>
     <property name="Material" value="Tar"/>
     <property name="Regrows" value="False"/>
     <property name="Type" value="Block"/>
