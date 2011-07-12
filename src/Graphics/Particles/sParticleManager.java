@@ -29,6 +29,11 @@ public class sParticleManager {
     {
         
     }
+    
+    public static void warmUp()
+    {
+        //warm the pool here
+    }
     /*
      * _ref:        classpath dir of system's .xml
      * _x           position in X (pixels)

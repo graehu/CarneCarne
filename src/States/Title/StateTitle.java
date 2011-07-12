@@ -20,6 +20,7 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.UnicodeFont;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
@@ -62,15 +63,16 @@ public class StateTitle extends BasicGameState implements iEventListener{
     float mScale = 1.0f;
     float mOffset = 0.0f;
     InternalState mState = InternalState.eCenter;
-    Font mUIFont = null;
+    UnicodeFont mUIFont = null;
     Font mInputFont = null;
 
     public void init(final GameContainer _gc, final StateBasedGame _sbg) throws SlickException {
         sEvents.subscribeToEvent("WindowResizeEvent", this);
         
         //initialise fonts
-        mUIFont = sFontLoader.createFont("manastirka",64);    
-        mInputFont = sFontLoader.createFont("BIRTH OF A HERO", 64, false, true); 
+        mUIFont = sFontLoader.createFont("manastirka",72);    
+        mUIFont.setPaddingAdvanceX(-2);
+        mInputFont = sFontLoader.createFont("BIRTH OF A HERO", 72, false, true); 
         
         //initialise background & foreground
         mBackground = new GraphicalComponent(_gc);
@@ -104,17 +106,17 @@ public class StateTitle extends BasicGameState implements iEventListener{
         Vector2f buttonDim = new Vector2f(200/mScale,50/mScale);
         mNameField = new TextField(_gc, mInputFont, 0, 0, (int)buttonDim.x, (int)buttonDim.y);
         mNameField.setMaxLength(15);
-        mNameField.setText("Name");
+        mNameField.setDefaultText("Name");
         mNameField.setTextColor(new Color(0,0,0));
         mNameField.setSelectedTextColor(new Color(187,139,44));
         mAdventureButton = new Button(_gc, new Vector2f(), buttonDim);
-        mAdventureButton.addText(_gc, mUIFont, "Adventure Mode", true);
+        mAdventureButton.addText(_gc, mUIFont, "AdvEnturE ModE", true); //uppercase 'e' 's' because lowercase is crap
         mRaceButton = new Button(_gc, new Vector2f(), buttonDim);
-        mRaceButton.addText(_gc, mUIFont, "Race Mode", true);
+        mRaceButton.addText(_gc, mUIFont, "RacE ModE", true);
         mOptionsButton = new Button(_gc, new Vector2f(), buttonDim);
-        mOptionsButton.addText(_gc, mUIFont, "Options", true);
+        mOptionsButton.addText(_gc, mUIFont, "OptionS", true);
         mHighScoresButton = new Button(_gc, new Vector2f(), buttonDim);
-        mHighScoresButton.addText(_gc, mUIFont, "Highscores", true);
+        mHighScoresButton.addText(_gc, mUIFont, "HighScorES", true);
         
         calcUI();
          
@@ -190,16 +192,16 @@ public class StateTitle extends BasicGameState implements iEventListener{
         mForeground.setLocalTranslation(vOffset);
         
         mLogo.setLocalScale(mScale);
-        mLogo.setLocalTranslation(vOffset);
+        mLogo.setLocalTranslation(new Vector2f(mBackground.getWidth() * 0.1f, mOffset + (mBackground.getHeight() * 0.15f)));
         
         Vector2f buttonPos = new Vector2f(mBackground.getWidth() * 0.6f, mOffset + (mBackground.getHeight() * 0.3f));
-        int buttonOffset = (int)80;
+        int buttonOffset = (int)75;
         
         mNameField.setLocalScale(mScale);
         mNameField.setLocalTranslation(new Vector2f(buttonPos.x, buttonPos.y));
         
         mAdventureButton.setLocalScale(mScale);
-        mAdventureButton.setLocalTranslation(new Vector2f(buttonPos.x, buttonPos.y + buttonOffset));
+        mAdventureButton.setLocalTranslation(new Vector2f(buttonPos.x, buttonPos.y + buttonOffset + 10)); //constant to provide extra offset for namefield
         mAdventureButton.setDimensionsToText();
         
         mRaceButton.setLocalScale(mScale);
@@ -207,11 +209,11 @@ public class StateTitle extends BasicGameState implements iEventListener{
         mRaceButton.setDimensionsToText();
         
         mOptionsButton.setLocalScale(mScale);
-        mOptionsButton.setLocalTranslation(new Vector2f(buttonPos.x, buttonPos.y + 3*buttonOffset));
+        mOptionsButton.setLocalTranslation(new Vector2f(buttonPos.x, buttonPos.y + 3*buttonOffset - 10));
         mOptionsButton.setDimensionsToText();
         
         mHighScoresButton.setLocalScale(mScale);
-        mHighScoresButton.setLocalTranslation(new Vector2f(buttonPos.x, buttonPos.y + 4*buttonOffset));
+        mHighScoresButton.setLocalTranslation(new Vector2f(buttonPos.x, buttonPos.y + 4*buttonOffset - 20)); //FIXME: booooooooooodge
         mHighScoresButton.setDimensionsToText();
         
         mParalax0.setLocalScale(mScale);
