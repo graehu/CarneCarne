@@ -71,7 +71,6 @@ public class EdgeTile extends BlockTile
     protected Shape createShape(int _xTile, int _yTile)
     {
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(0.5f, 0.5f, new Vec2(_xTile,_yTile), 0);
         switch (mDirection)
         {
             case eFromLeft:

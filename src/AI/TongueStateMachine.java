@@ -673,4 +673,12 @@ public class TongueStateMachine {
             mAIController.spitBlock(mTile);
         }
     }
+    public boolean isSwinging()
+    {
+        return (mState.equals(State.eSwinging));
+    }
+    public Vec2 getTongueDir()
+    {
+        return mTongueDir.clone();
+    }
 }

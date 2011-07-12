@@ -17,7 +17,7 @@ public class StaticSkin implements iSkin
     float mWidth, mHeight;
     Image mImage;
     //constructor public to graphics package only
-    StaticSkin(String _image) throws SlickException
+    public StaticSkin(String _image) throws SlickException
     {
         mImage = new Image(_image);
     }

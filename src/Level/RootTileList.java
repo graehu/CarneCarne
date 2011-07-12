@@ -103,7 +103,42 @@ public class RootTileList {
                 }
                 else if (shape.equals("NonEdible"))
                 {
-                    mRootTiles.add(new NonEdibleTile(i, type, anchor));
+                    int size = Integer.valueOf(_tiledMap.getTileProperty(i, "Size", "1"));
+                    for (int ii = 0; ii < size; ii++)
+                    {
+                        mRootTiles.add(new NonEdibleTile(i, type, anchor));
+                        i++;
+                    }
+                }
+                else if (shape.equals("NonEdibleEdge"))
+                {
+                    int size = Integer.valueOf(_tiledMap.getTileProperty(i, "Size", "1"));
+                    float bodyScale = Float.valueOf(_tiledMap.getTileProperty(i, "BodyScale", "1.0"));
+                    for (int ii = 0; ii < size; ii++)
+                    {
+                        mRootTiles.add(new NonEdibleEdgeTile(i, type, Direction.values()[ii], animationsName, bodyScale));
+                        i++;
+                    }
+                }
+                else if (shape.equals("NonEdibleSlope"))
+                {
+                    SlopeTile tile;
+                    
+                    tile = new RightDownSlope(i,type, animationsName, maxHealth);
+                    tile.setImmutable();
+                    mRootTiles.add(tile);
+                    i++;
+                    tile = new LeftDownSlope(i,type, animationsName, maxHealth);
+                    tile.setImmutable();
+                    mRootTiles.add(tile);
+                    i++;
+                    tile = new LeftUpSlope(i,type, animationsName, maxHealth);
+                    tile.setImmutable();
+                    mRootTiles.add(tile);
+                    i++;
+                    tile = new RightUpSlope(i,type, animationsName, maxHealth);
+                    tile.setImmutable();
+                    mRootTiles.add(tile);
                     i++;
                 }
                 else if (shape.equals("Water"))

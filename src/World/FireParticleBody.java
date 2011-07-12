@@ -32,7 +32,7 @@ class FireParticleBody implements iPhysicsFactory
         FixtureDef fixture = new FixtureDef();
         fixture.isSensor = true;
         CircleShape shape = new CircleShape();
-        shape.m_radius = 0.5f;
+        shape.m_radius = 0.25f;
         fixture.shape = shape;
         fixture.filter.categoryBits = (1 << sWorld.BodyCategories.eFire.ordinal());
         fixture.filter.maskBits = Integer.MAX_VALUE;
