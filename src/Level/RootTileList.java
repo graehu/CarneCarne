@@ -61,7 +61,7 @@ public class RootTileList {
             String shape = _tiledMap.getTileProperty(i, "Type", "None");
             String typeString = _tiledMap.getTileProperty(i, "Material", "Edible");
             int maxHealth = new Integer(_tiledMap.getTileProperty(i, "MaxHealth", "1")).intValue();
-            String animationsName = _tiledMap.getTileProperty(i, "Animationsname", "Meat");
+            String animationsName = _tiledMap.getTileProperty(i, "Animationsname", "Default");
             boolean regrows = Boolean.valueOf(_tiledMap.getTileProperty(i,"Regrows","true")).booleanValue();
             boolean anchor = Boolean.valueOf(_tiledMap.getTileProperty(i, "Anchor", "true")).booleanValue();
             boolean isFlammable = Boolean.valueOf(_tiledMap.getTileProperty(i, "Flammable", "false")).booleanValue();

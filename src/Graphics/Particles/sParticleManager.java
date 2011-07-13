@@ -22,7 +22,7 @@ import org.newdawn.slick.particles.ParticleSystem;
 public class sParticleManager {
     
     static HashMap<String, ParticleSystem> mLoadedSystems = new HashMap<String, ParticleSystem>();
-    static ArrayList<ParticleSys> mInstancedSystems = new ArrayList<ParticleSys>();
+    static ArrayList<ParticleSysBase> mInstancedSystems = new ArrayList<ParticleSysBase>();
     static HashMap<String, ArrayList<ParticleSystem>> mSystemPool = new HashMap<String, ArrayList<ParticleSystem>>();
     
     private sParticleManager()
@@ -43,7 +43,7 @@ public class sParticleManager {
     public static ParticleSysBase createMovingSystem(String _ref, float _lifeTime, Tile _tile)
     {
         ParticleSysBase p = new MovingParticleSys(createSystemImplementation(_ref, _tile.getWorldPosition().mul(64).add(new Vec2(32,32)), _lifeTime, true, false), _tile);
-        //mInstancedSystems.add(p);
+        mInstancedSystems.add(p);
         return p;
     }
     public static ParticleSysBase createSystem(String _ref, Vec2 _position, float _lifeTime)
@@ -76,7 +76,10 @@ public class sParticleManager {
                     system = createSystemImplementation(_ref + "1", _position, _lifeTime, false, _store).mSystem;
                     ParticleSystem system2 = createSystemImplementation(_ref + "2", _position, _lifeTime, false, _store).mSystem;
                     ParticleSys p = new DoubleParticleSys(system,_ref + "1", system2, _ref + "2", _lifeTime);
-                    mInstancedSystems.add(p);
+                    if (_store)
+                    {
+                        mInstancedSystems.add(p);
+                    }
                     return p;
                 }
                 else
@@ -143,8 +146,8 @@ public class sParticleManager {
      */
     public static void update(int _delta)
     {
-        ParticleSys sys = null;
-        for(Iterator<ParticleSys> i = mInstancedSystems.iterator(); i.hasNext();)
+        ParticleSysBase sys = null;
+        for(Iterator<ParticleSysBase> i = mInstancedSystems.iterator(); i.hasNext();)
         {
             sys = i.next();
             if(false == sys.update(_delta))
@@ -179,12 +182,11 @@ public class sParticleManager {
     public static void render(int _x, int _y, int _width, int _height, int _border)
     {
         //assumes equal length arrays: mInstancedSystems & mInstancedSysPos
-        for(ParticleSys particle : mInstancedSystems)
+        for(ParticleSysBase particle : mInstancedSystems)
         {
             //calc positions in screenspace
-            float posX = particle.mSystem.getPositionX() + _x;
-            float posY = particle.mSystem.getPositionY() + _y;
-            particle.render(posX, posY);
+            Vec2 position = particle.getPosition();
+            particle.render(position.x + _x, position.y + _y);
         }
     }
 }

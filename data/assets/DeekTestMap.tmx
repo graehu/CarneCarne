@@ -36,6 +36,7 @@
   <tile id="0">
    <properties>
     <property name="Anchor" value="True"/>
+    <property name="Animationsname" value="Bone"/>
     <property name="Direction" value="Up"/>
     <property name="Material" value="Swingable"/>
     <property name="Size" value="11"/>
@@ -54,6 +55,7 @@
   <tile id="0">
    <properties>
     <property name="Anchor" value="True"/>
+    <property name="Animationsname" value="Bone"/>
     <property name="Direction" value="Right"/>
     <property name="Material" value="Swingable"/>
     <property name="Size" value="11"/>
@@ -72,6 +74,7 @@
   <tile id="0">
    <properties>
     <property name="Anchor" value="True"/>
+    <property name="Animationsname" value="Bone"/>
     <property name="Direction" value="Down"/>
     <property name="Material" value="Swingable"/>
     <property name="Size" value="2"/>
@@ -81,6 +84,7 @@
   <tile id="4">
    <properties>
     <property name="Anchor" value="True"/>
+    <property name="Animationsname" value="Bone"/>
     <property name="Direction" value="Up"/>
     <property name="Material" value="Swingable"/>
     <property name="Size" value="2"/>
@@ -90,6 +94,7 @@
   <tile id="8">
    <properties>
     <property name="Anchor" value="True"/>
+    <property name="Animationsname" value="Bone"/>
     <property name="Direction" value="Right"/>
     <property name="Material" value="Swingable"/>
     <property name="Size" value="3"/>
@@ -99,6 +104,7 @@
   <tile id="14">
    <properties>
     <property name="Anchor" value="True"/>
+    <property name="Animationsname" value="Bone"/>
     <property name="Direction" value="Left"/>
     <property name="Material" value="Swingable"/>
     <property name="Size" value="3"/>
@@ -112,6 +118,7 @@
    <properties>
     <property name="Direction" value="Down"/>
     <property name="Material" value="Chilli"/>
+    <property name="Regrows" value="False"/>
     <property name="Type" value="Edge"/>
    </properties>
   </tile>
@@ -119,6 +126,7 @@
    <properties>
     <property name="Direction" value="Up"/>
     <property name="Material" value="Chilli"/>
+    <property name="Regrows" value="False"/>
     <property name="Type" value="Line"/>
    </properties>
   </tile>
@@ -126,6 +134,7 @@
    <properties>
     <property name="Direction" value="Up"/>
     <property name="Material" value="Chilli"/>
+    <property name="Regrows" value="False"/>
     <property name="Type" value="Edge"/>
    </properties>
   </tile>
@@ -187,6 +196,7 @@
   <tile id="0">
    <properties>
     <property name="Anchor" value="False"/>
+    <property name="Animationsname" value="Meat"/>
     <property name="Material" value="Edible"/>
     <property name="Type" value="Block"/>
    </properties>
@@ -412,7 +422,7 @@
  </layer>
  <layer name="Level" width="100" height="100">
   <data encoding="base64" compression="gzip">
-   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
+   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
   </data>
  </layer>
  <layer name="Foreground" width="100" height="100">

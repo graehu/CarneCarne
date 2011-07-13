@@ -136,6 +136,11 @@ public class Tile
     {
         return true;
     }
+
+    public void updateSystems()
+    {
+        mTileGrid.mTileFire.update();
+    }
     enum Direction
     {
         eFromUp,

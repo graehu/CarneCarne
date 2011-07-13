@@ -4,6 +4,8 @@
  */
 package Graphics.Particles;
 
+import org.jbox2d.common.Vec2;
+
 /**
  *
  * @author alasdar
@@ -37,4 +39,6 @@ public interface ParticleSysBase
     boolean update(int _delta);
 
     void render(float _x, float _y);
+    
+    public Vec2 getPosition();
 }

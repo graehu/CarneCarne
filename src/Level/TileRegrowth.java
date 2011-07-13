@@ -83,7 +83,10 @@ public class TileRegrowth
             {
                 tile.timer = mFrames + animatedRegrowthTime;
                 respawningTiles.add(tile);
-                mTileGrid.tiledMap.createAnimatedTile(tile.x, tile.y,tile.mRootId.mAnimationsName + "GrowBack");
+                if (tile.mRootId.mAnimationsName.equals("Default")) /// FIXME remove this
+                    mTileGrid.tiledMap.createAnimatedTile(tile.x, tile.y,"Meat" + "GrowBack");
+                else
+                    mTileGrid.tiledMap.createAnimatedTile(tile.x, tile.y,tile.mRootId.mAnimationsName + "GrowBack");
             }
             else
             {
