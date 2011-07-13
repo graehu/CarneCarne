@@ -2,8 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package World;
+package World.PhysicsFactories;
 
+import World.PhysicsFactories.iPhysicsFactory;
 import Entities.AIEntity;
 import World.sWorld.BodyCategories;
 import java.util.HashMap;
@@ -20,9 +21,10 @@ import org.jbox2d.dynamics.World;
  *
  * @author alasdair
  */
-class PlayerFactory implements iPhysicsFactory {
+public class PlayerFactory implements iPhysicsFactory {
 
-    public PlayerFactory() {
+    public PlayerFactory()
+    {
     }
 
     public Body useFactory(HashMap _parameters, World _world)

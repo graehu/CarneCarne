@@ -158,7 +158,6 @@ public class PlayerEntity extends AIEntity
     {
         if (sGraphicsManager.getClip() == mViewPort)
         {
-            mReticle.render();
             mCheckPoint.renderRaceState(mRaceTimer);
             if(mCheckPoint.getNext() != null)
             {
@@ -167,10 +166,11 @@ public class PlayerEntity extends AIEntity
                 float rotation = (float)Math.atan2(direction.y, direction.x);
                 //rotation -= 180.0f;
                 mArrowSprite.setRotation(rotation*180.0f/(float)Math.PI);
-            mArrowSprite.render(mViewPort.getWidth()*0.5f, 0);
+                mArrowSprite.render(mViewPort.getWidth()*0.5f, 0);
             }
             
             sGraphicsManager.drawString("You have died " + mDeaths + " times", 0f, 0.1f);
+            mReticle.render(); //always render ontop
         }
     }
     

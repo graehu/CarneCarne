@@ -2,9 +2,11 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package World;
+package World.PhysicsFactories;
 
+import World.PhysicsFactories.iPhysicsFactory;
 import Entities.SeeSaw;
+import World.sWorld;
 import java.util.HashMap;
 import org.jbox2d.collision.shapes.CircleShape;
 import org.jbox2d.collision.shapes.PolygonShape;
@@ -21,7 +23,7 @@ import org.jbox2d.dynamics.joints.RevoluteJointDef;
  *
  * @author alasdair
  */
-class SeeSawBodyFactory implements iPhysicsFactory {
+public class SeeSawBodyFactory implements iPhysicsFactory {
 
     public SeeSawBodyFactory()
     {

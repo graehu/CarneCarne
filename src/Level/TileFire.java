@@ -8,6 +8,7 @@ import Graphics.Particles.sParticleManager;
 import java.util.LinkedList;
 import java.util.Queue;
 import org.jbox2d.common.Vec2;
+import org.jbox2d.dynamics.BodyType;
 
 /**
  *
@@ -17,7 +18,7 @@ class TileFire
 {
     TileGrid mTileGrid;
     private int mFrames;
-    private final int burnTime = 180;
+    private final int burnTime = 60;
     private final int decayLife = 60;
     private class BurningTile
     {
@@ -39,7 +40,10 @@ class TileFire
     void addTile(Tile _tile)
     {
         burningTiles.add(new BurningTile(_tile, mFrames + burnTime));
-        sParticleManager.createSystem("TarBurn", new Vec2(_tile.mXTile,_tile.mYTile).mul(64).add(new Vec2(32,32)), 180/60.0f);
+        if (_tile.mTileGrid.mBody.m_type.equals(BodyType.STATIC))
+            sParticleManager.createSystem("TarBurn", new Vec2(_tile.getWorldPosition()).mul(64).add(new Vec2(32,32)), 180/60.0f);
+        else
+            sParticleManager.createMovingSystem("TarBurn", 180/60.0f,_tile);
     }
     void update()
     {

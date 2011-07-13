@@ -35,14 +35,27 @@ public class PlatformCaveInSearcher extends CaveInSearcher
         }
         if (!mChecked[_x][_y].equals(Checked.eNoAnchor))
         {
-            mChecked[_x][_y] = Checked.eNoAnchor;
             if (tile.mFixture != null && tile.boundaryFrom(_direction, _tileType, MaterialEdges.AnchorEdges))
             {
+                mChecked[_x][_y] = Checked.eNoAnchor;
                 _workingSet.add(new TileIndex(_x, _y, tile.getTileType()));
                 _thisBlock.add(new TileIndex(_x, _y, tile.getTileType()));
             }
         }
         return false;
+    }
+    @Override
+    public void destroy(int _x, int _y, TileType _tileType)
+    {
+        Stack<TileIndex> workingSetSets = new Stack<TileIndex>();
+        Stack<TileIndex> gridSets = new Stack<TileIndex>();
+        //mChecked[_x][_y] = true;
+        
+        Tile tile = mTileGrid.get(_x, _y);
+        workingSetSets.add(new TileIndex(_x, _y, tile.getTileType()));
+        gridSets.add(new TileIndex(_x, _y, tile.getTileType()));
+        mChecked[_x][_y] = Checked.eNoAnchor;
+        calculate(workingSetSets, gridSets);
     }
     @Override
     protected CaveInTileGrid createTileGrid(RootTileList _rootTiles, TiledMap _tiledMap, int _xTrans, int _yTrans, int _width, int _height, int _layerIndex, Vec2 _position, float _angle, Vec2 _linearVelocity, float _angularVelocity)

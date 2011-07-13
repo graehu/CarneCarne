@@ -130,7 +130,7 @@ public class AIEntity extends Entity {
                             mTileType = ((Tile)other.getUserData()).getTileType();
                     }
                 }
-                else if(collisionNorm.y < - 0.3 || collisionNorm.y > 0.3)//slopes // horizontal
+                else if(collisionNorm.y < - 0.3 || collisionNorm.y > 0.3)//slopes
                 {
                     if(edge.contact.isTouching() && !other.isSensor())
                     {

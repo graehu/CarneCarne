@@ -1,8 +1,8 @@
 
-package World;
+package World.PhysicsFactories;
 
 import Entities.AIEntity;
-import World.iPhysicsFactory;
+import World.PhysicsFactories.iPhysicsFactory;
 import World.sWorld.BodyCategories;
 import java.util.HashMap;
 import org.jbox2d.collision.shapes.CircleShape;

@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package Graphics;
+package Graphics.Camera;
 
 import AI.PlayerInputController;
 import Entities.AIEntity;
@@ -12,6 +12,7 @@ import Events.iEvent;
 import Events.iEventListener;
 import Events.sEvents;
 import Graphics.Particles.sParticleManager;
+import Graphics.sGraphicsManager;
 import Level.sLevel;
 import World.sWorld;
 import org.jbox2d.common.Vec2;
@@ -32,12 +33,14 @@ public class BodyCamera extends iCamera implements iEventListener{
     Vec2 mPosition = new Vec2(0,0);
     Vec2 mTranslation = new Vec2(0,0);
     boolean mLookDirection;
-    float mXLookOffset, mXLookVelocity;
+    Vec2 mLookOffset;
+    float mXLookVelocity;
     int mLookChangeTimer;
     Vec2 mShake = new Vec2(0,0);
     boolean mTopSplit;
     float mTimer;
     CaveInEvent mCaveInEvent;
+    CameraGrabber mGrabber = null;
     public BodyCamera(Body _body, Rectangle _viewPort, boolean _topSplit)
     {
         super(_viewPort);
@@ -46,9 +49,11 @@ public class BodyCamera extends iCamera implements iEventListener{
         mTopSplit = _topSplit;
         mTimer = 0;
         mLookChangeTimer = 0;
-        mXLookOffset = mXLookVelocity = 0.0f;
+        mLookOffset = new Vec2(0,0);
+        mXLookVelocity = 0.0f;
         mLookDirection = false;
         sEvents.subscribeToEvent("CaveInEvent", this);
+        mGrabber = new CameraGrabber(new Vec2(34,11));
         
     }
     private static final float directionEpsilon = 0.6f;
@@ -56,10 +61,11 @@ public class BodyCamera extends iCamera implements iEventListener{
     private static final float offsetMoveVelocity = 0.002f;
     private void calculateLookOffset()
     {
+        mLookOffset.y = 0;
         float v = mBody.getLinearVelocity().x;
         v = ((PlayerInputController)((AIEntity)mBody.getUserData()).mController).mPlayerDir.x;
         boolean oldLookDirection = mLookDirection;
-        float widthScale = mViewPort.getWidth()/1680.0f;;
+        float widthScale = mViewPort.getWidth()/1680.0f;
         if (v > 0.0f)
         {
             if (v > directionEpsilon)
@@ -85,7 +91,7 @@ public class BodyCamera extends iCamera implements iEventListener{
         else mLookChangeTimer = 0;
         if (mLookDirection)
         {
-            if (mXLookOffset > -maxLookOffset)
+            if (mLookOffset.x > -maxLookOffset)
             {
                 mXLookVelocity -= offsetMoveVelocity;
             }
@@ -93,16 +99,20 @@ public class BodyCamera extends iCamera implements iEventListener{
         }
         else
         {
-            if (mXLookOffset < maxLookOffset)
+            if (mLookOffset.x < maxLookOffset)
             {
                 mXLookVelocity += offsetMoveVelocity;
             }
             else mXLookVelocity *= 0.99f;
         }
-        mXLookOffset += mXLookVelocity * widthScale;
         mXLookVelocity *= 0.99f;
+        mLookOffset.x += mXLookVelocity * widthScale;
+        /*if (mGrabber != null)
+        {
+            mLookOffset = mGrabber.getOffset(mPosition);
+            mGrabber = mGrabber.update();
+        }*/
     }
-
 
     @Override
     public void resize(Rectangle _viewPort) 
@@ -183,7 +193,7 @@ public class BodyCamera extends iCamera implements iEventListener{
         s.x = (mViewPort.getMaxX()- mViewPort.getX());
         s.y = (mViewPort.getMaxY()- mViewPort.getY());
         mTranslation = new Vec2(( (s.x/2)/64.0f), ((s.y/2)/64.0f));
-        mTranslation.x += mXLookOffset;
+        mTranslation = mTranslation.add(mLookOffset);
         if (mPosition.x < mTranslation.x)
         {
             mTranslation.x -= ((mTranslation.x)-mPosition.x);

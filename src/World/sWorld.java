@@ -4,17 +4,28 @@
  */
 package World;
 
+import World.PhysicsFactories.SeeSawBodyFactory;
+import World.PhysicsFactories.SpatBlockBodyFactory;
+import World.PhysicsFactories.FireParticleBody;
+import World.PhysicsFactories.MovingPlatformBodyFactory;
+import World.PhysicsFactories.CircleCharFactory;
+import World.PhysicsFactories.TileArrayFactory;
+import World.PhysicsFactories.NonEdibleTileFactory;
+import World.PhysicsFactories.TileFactory;
+import World.PhysicsFactories.iPhysicsFactory;
+import World.PhysicsFactories.BoxCharFactory;
 import Entities.Entity;
 import Events.AreaEvents.AreaEvent;
 import Events.TileDestroyedEvent;
 import Events.iEvent;
 import Events.iEventListener;
 import Events.sEvents;
-import Graphics.FreeCamera;
-import Graphics.iCamera;
+import Graphics.Camera.FreeCamera;
+import Graphics.Camera.iCamera;
 import Graphics.sGraphicsManager;
 import Level.Tile;
 import Level.sLevel.TileType;
+import World.PhysicsFactories.PlayerFactory;
 import java.util.HashMap;
 import org.jbox2d.callbacks.QueryCallback;
 import org.jbox2d.callbacks.RayCastCallback;
@@ -23,6 +34,7 @@ import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyDef;
+import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.Fixture;
 import org.jbox2d.dynamics.FixtureDef;
 import org.jbox2d.dynamics.World;
@@ -115,7 +127,8 @@ public class sWorld
         }
         public boolean reportFixture(Fixture _fixture)
         {
-            if ((_fixture.m_filter.categoryBits & mCollisionMask) != 0)
+            if ((_fixture.m_filter.categoryBits & mCollisionMask) != 0 ||
+                    _fixture.getBody().getType().equals(BodyType.KINEMATIC))
             {
                 mBody = _fixture.getBody();
                 return false;
@@ -165,7 +178,7 @@ public class sWorld
         }
     }
     private static Fixture mLastHit;
-    private static Vec2 mLastAnchor;
+    private static TongueAnchor mLastTongueAnchor;
     public static Tile eatTiles(Vec2 start, Vec2 end)
     {
         TongueCallback callback = new TongueCallback(start, end);
@@ -199,7 +212,7 @@ public class sWorld
                 case eIndestructible:
                 {
                     Tile hitTile = (Tile)mLastHit.getUserData();
-                    mLastAnchor = hitTile.getTileGrid().getBody().getWorldPoint(hitTile.getPosition());
+                    mLastTongueAnchor = new MovingBodyTongueAnchor(hitTile.getTileGrid().getBody(), hitTile.getLocalPosition());
                     break;
                 }
             }
@@ -269,9 +282,9 @@ public class sWorld
         Joint joint = mWorld.createJoint(def);
         return joint;
     }
-    public static Vec2 getLastTongueHit()
+    public static TongueAnchor getLastTongueHit()
     {
-        return mLastAnchor;
+        return mLastTongueAnchor;
     }
     /*public static DistanceJoint createTongueJoint(Body _body)
     {

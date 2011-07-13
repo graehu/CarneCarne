@@ -4,7 +4,7 @@
  */
 package Graphics.Particles;
 
-import java.io.IOException;
+import Level.Tile;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -40,11 +40,17 @@ public class sParticleManager {
      * _y           position in Y (pixels)
      * _lifeTime:   time until death (seconds)
      */
-    public static ParticleSys createSystem(String _ref, Vec2 _position, float _lifeTime)
+    public static ParticleSysBase createMovingSystem(String _ref, float _lifeTime, Tile _tile)
     {
-        return createSystemImplementation(_ref, _position, _lifeTime, true);
+        ParticleSysBase p = new MovingParticleSys(createSystemImplementation(_ref, _tile.getWorldPosition().mul(64).add(new Vec2(32,32)), _lifeTime, true, false), _tile);
+        //mInstancedSystems.add(p);
+        return p;
     }
-    private static ParticleSys createSystemImplementation(String _ref, Vec2 _position, float _lifeTime, boolean _dive)
+    public static ParticleSysBase createSystem(String _ref, Vec2 _position, float _lifeTime)
+    {
+        return createSystemImplementation(_ref, _position, _lifeTime, true, true);
+    }
+    private static ParticleSys createSystemImplementation(String _ref, Vec2 _position, float _lifeTime, boolean _dive, boolean _store)
     {     
         //if pooled object of same type exists use that
         ParticleSystem system = grabPooledSystem(_ref);
@@ -67,8 +73,8 @@ public class sParticleManager {
             {
                 if (_dive)
                 {
-                    system = createSystemImplementation(_ref + "1", _position, _lifeTime, false).mSystem;
-                    ParticleSystem system2 = createSystemImplementation(_ref + "2", _position, _lifeTime, false).mSystem;
+                    system = createSystemImplementation(_ref + "1", _position, _lifeTime, false, _store).mSystem;
+                    ParticleSystem system2 = createSystemImplementation(_ref + "2", _position, _lifeTime, false, _store).mSystem;
                     ParticleSys p = new DoubleParticleSys(system,_ref + "1", system2, _ref + "2", _lifeTime);
                     mInstancedSystems.add(p);
                     return p;
@@ -85,7 +91,7 @@ public class sParticleManager {
         //Create wrapper for system and instance it
         ParticleSys p = new ParticleSys(system, _lifeTime, _ref);
         
-        if (_dive) //only instance systems when diving so we don't duplicate
+        if (_dive && _store) //only instance systems when diving so we don't duplicate
         {
             mInstancedSystems.add(p);
         }

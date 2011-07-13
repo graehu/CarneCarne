@@ -4,10 +4,7 @@
  */
 package Entities;
 
-import Events.EntityDeathEvent;
-import Events.TarFireEvent;
-import Events.sEvents;
-import Graphics.Particles.ParticleSys;
+import Graphics.Particles.ParticleSysBase;
 import Graphics.Particles.sParticleManager;
 import Graphics.Skins.iSkin;
 import Level.Tile;
@@ -23,7 +20,7 @@ import org.jbox2d.dynamics.contacts.ContactEdge;
 public class FireParticle extends Entity
 {
     Vec2 mVelocity;
-    ParticleSys mParticles;
+    ParticleSysBase mParticles;
     int mTimer;
     public FireParticle(iSkin _skin, Vec2 _velocity)
     {
@@ -57,7 +54,7 @@ public class FireParticle extends Entity
                     Tile tile = (Tile)edge.contact.m_fixtureA.getUserData();
                     if (tile == null)
                         tile = (Tile)edge.contact.m_fixtureB.getUserData();
-                    ParticleSys system = sParticleManager.createSystem(tile.getAnimationsName() + "FireHit", this.mBody.getPosition().add(new Vec2(0.5f,0.5f)).mul(64.0f), 2);
+                    ParticleSysBase system = sParticleManager.createSystem(tile.getAnimationsName() + "FireHit", this.mBody.getPosition().add(new Vec2(0.5f,0.5f)).mul(64.0f), 2);
                     Vec2 direction = this.mBody.getLinearVelocity();
                     direction.normalize();
                     float offset = (float)Math.atan2(direction.y, direction.x) * 180.0f/(float)Math.PI;

@@ -6,12 +6,13 @@ package AI;
 
 import Entities.AIEntity;
 import Entities.PlayerEntity;
-import Graphics.Particles.ParticleSys;
+import Graphics.Particles.ParticleSysBase;
 import Graphics.Particles.sParticleManager;
 import Graphics.Sprites.iSprite;
 import Graphics.Sprites.sSpriteFactory;
 import Level.Tile;
 import Level.sLevel.TileType;
+import World.TongueAnchor;
 import World.sWorld;
 import java.util.HashMap;
 import org.jbox2d.common.Vec2;
@@ -162,7 +163,7 @@ public class TongueStateMachine {
                     {
                         Vec2 pos = sWorld.translateToWorld(mTonguePosition).sub(sWorld.getPixelTranslation());
                         pos = pos.add(new Vec2(32,32));
-                        ParticleSys sys = sParticleManager.createSystem("spit", pos, 1f);
+                        ParticleSysBase sys = sParticleManager.createSystem(mTile.getAnimationsName() + "Spit", pos, 1f);
                         if(mTongueDir.x >= 0)
                             sys.setAngularOffset(-(float)(Math.acos(Vec2.dot(mTongueDir, mUp.negate())) * 180/Math.PI));
                         else
@@ -299,17 +300,25 @@ public class TongueStateMachine {
             }
             case eSwinging:
             {
-                //mTongueDir = (mJoint.m_bodyB.getPosition().add(mJoint.m_localAnchor2)).sub((mJoint.m_bodyA.getPosition().add(mJoint.m_localAnchor1)));
-                mTongueDir = tongueAttachment.sub(mAIController.mEntity.mBody.getPosition());
-                float actualLength = mTongueDir.normalize();
-                setTongue(mTongueDir, actualLength); //lock tongue to block
-                mAIController.mEntity.mBody.applyLinearImpulse(mTongueDir.mul(actualLength*0.3f), mAIController.mEntity.mBody.getWorldPoint(new Vec2(0,0)));
+                if (tongueAttachment.hasContact())
+                {
+                    //mTongueDir = (mJoint.m_bodyB.getPosition().add(mJoint.m_localAnchor2)).sub((mJoint.m_bodyA.getPosition().add(mJoint.m_localAnchor1)));
+                    mTongueDir = tongueAttachment.getPosition().sub(mAIController.mEntity.mBody.getPosition());
+                    float actualLength = mTongueDir.normalize();
+                    setTongue(mTongueDir, actualLength); //lock tongue to block
+                    mAIController.mEntity.mBody.applyLinearImpulse(mTongueDir.mul(actualLength*0.3f), mAIController.mEntity.mBody.getWorldPoint(new Vec2(0,0)));
+                    //mJoint.m_length = actualLength * 0.99f;
+                    //amAIController.mEntity.
 
-                //mJoint.m_length = actualLength * 0.99f;
-                //amAIController.mEntity.
-                
-                //mJoint.m_length -= 0.01f;
-                //mJoint.m_length *= 0.99f; //Try either of these
+                    //mJoint.m_length -= 0.01f;
+                    //mJoint.m_length *= 0.99f; //Try either of these
+                }
+                else
+                {
+                    tongueAttachment = null;
+                    changeState(State.eRetractingTongue);
+                    tick(_entity);
+                }
                 break;
             }
         }
@@ -659,7 +668,7 @@ public class TongueStateMachine {
         mState = _state;
     }
     //private DistanceJoint mJoint;
-    private Vec2 tongueAttachment;
+    private TongueAnchor tongueAttachment;
     private void spitBlock()
     {
         mAmmoLeft--;
