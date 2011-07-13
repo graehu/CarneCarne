@@ -3,7 +3,7 @@
 <emitter imageName="particleSystems\MelonSkinParticle.png" name="Default" renderType="quads" useAdditive="false" useOriented="true">
 <spawnInterval enabled="true" max="30.0" min="30.0"/>
 <spawnCount enabled="true" max="10.0" min="3.0"/>
-<initialLife enabled="true" max="700.0" min="500.0"/>
+<initialLife enabled="true" max="500.0" min="200.0"/>
 <initialSize enabled="true" max="10.0" min="5.0"/>
 <xOffset enabled="true" max="25.0" min="-25.0"/>
 <yOffset enabled="true" max="25.0" min="-25.0"/>

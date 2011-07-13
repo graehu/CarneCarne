@@ -15,9 +15,9 @@ import java.util.Stack;
 public class LineTile extends BlockTile
 {
     Direction mDirection;
-    LineTile(int _id, sLevel.TileType _tileType, Direction _direction, String _animationsName, boolean _regrows, boolean _anchor, boolean _isFlammable, int _maxHealth)
+    LineTile(int _id, sLevel.TileType _tileType, Direction _direction, String _animationsNames[], boolean _regrows, boolean _anchor, boolean _isFlammable, int _maxHealth)
     {
-        super(_id, _tileType, _animationsName, _regrows, _anchor, _isFlammable, _maxHealth, TileShape.eEdge);
+        super(_id, _tileType, _animationsNames, _regrows, _anchor, _isFlammable, _maxHealth, TileShape.eEdge);
         mDirection = _direction;
     }
     

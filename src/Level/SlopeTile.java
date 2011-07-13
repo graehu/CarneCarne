@@ -17,9 +17,9 @@ import org.jbox2d.dynamics.Fixture;
 abstract public class SlopeTile extends RootTile
 {
     boolean mMutable;
-    public SlopeTile(int _id, int _slopeType, sLevel.TileType _tileType, String _animationsName, int _maxHealth)
+    public SlopeTile(int _id, int _slopeType, sLevel.TileType _tileType, String _animationsNames[], int _maxHealth)
     {
-        super (TileShape.eSlope, _id, _tileType, _animationsName, _slopeType, _maxHealth);
+        super (TileShape.eSlope, _id, _tileType, _animationsNames, _slopeType, _maxHealth);
         mMutable = true;
     }
     void setImmutable()
