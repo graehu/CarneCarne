@@ -42,9 +42,9 @@ public class Tile
     {
         return mRootId.mTileType;
     }
-    public String getAnimationsName()
+    public String getAnimationsName(RootTile.AnimationType _animationType)
     {
-        return mRootId.mAnimationsName;
+        return mRootId.getAnimationsName(_animationType);
     }
     public void setOnFire()
     {
@@ -87,7 +87,7 @@ public class Tile
     }
     public boolean damageTile()
     {
-        sParticleManager.createSystem(mRootId.mAnimationsName + "DamageParticle", mTileGrid.mBody.getWorldPoint(new Vec2(mXTile,mYTile)).mul(64.0f).add(new Vec2(32,32)), 1f);
+        sParticleManager.createSystem(mRootId.getAnimationsName(RootTile.AnimationType.eDamage) + "DamageParticle", mTileGrid.mBody.getWorldPoint(new Vec2(mXTile,mYTile)).mul(64.0f).add(new Vec2(32,32)), 1f);
         if (mHealth > 1)
         {
             mRootId = mRootId.getNext();

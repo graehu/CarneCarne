@@ -5,6 +5,7 @@
 package Entities;
 
 import Graphics.Particles.sParticleManager;
+import Level.RootTile.AnimationType;
 import World.sWorld;
 import org.jbox2d.common.Vec2;
 
@@ -258,7 +259,8 @@ class AIEntityState
         {
             case eJumping:
             {
-                sParticleManager.createSystem("cloud", sWorld.translateToWorld(mEntity.mBody.getPosition()).sub(sWorld.getPixelTranslation()).add(new Vec2(32,64)), 1f);
+                if (mEntity.mTouchingTile != null)
+                    sParticleManager.createSystem(mEntity.mTouchingTile.getAnimationsName(AnimationType.eJump) + "Jump", sWorld.translateToWorld(mEntity.mBody.getPosition()).sub(sWorld.getPixelTranslation()).add(new Vec2(32,64)), 1f);
                 break;
             }
             case eDead:

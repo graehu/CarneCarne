@@ -74,8 +74,9 @@ public class sLevel {
     {
         //mTiledMap = new AnimatedTiledMap("assets/DeekTestMap.tmx"); /// Fuck off ass jerky
         //mTiledMap = new AnimatedTiledMap("assets/AaronTestMap.tmx");
+        mTiledMap = new AnimatedTiledMap("assets/DeekTestMap.tmx"); /// Nomnom tasty poocake
         //mTiledMap = new AnimatedTiledMap("assets/Graham_Tutorial.tmx");
-        mTiledMap = new AnimatedTiledMap("assets/platforms2.tmx");
+        //mTiledMap = new AnimatedTiledMap("assets/platforms2.tmx");
         mTiledMap.initAnimationlayer("assets/TileAnimation.def");
         mLevelEditor = new LevelEditor(mTiledMap);
         midLayer = mTiledMap.getLayerIndex("Level");

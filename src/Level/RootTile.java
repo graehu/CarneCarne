@@ -18,7 +18,7 @@ import org.jbox2d.dynamics.FixtureDef;
  *
  * @author alasdair
  */
-abstract class RootTile
+public abstract class RootTile
 {
     TileShape mShape;
     int mId;
@@ -28,27 +28,36 @@ abstract class RootTile
     sLevel.TileType mTileType;
     int mMaxHealth;
     boolean mIsFlammable;
-    String mAnimationsName;
     RootTile mNext;
-    public RootTile(TileShape _shape, int _id, sLevel.TileType _tileType, String _animationsName, boolean _regrows, boolean _anchor, boolean _isFlammable, int _maxHealth)
+    public enum AnimationType
+    {
+        eFireHit,
+        eDamage,
+        eSpawn,
+        eSpit,
+        eJump,
+        eAnimationsMax
+    }
+    String mAnimationsNames[];
+    public RootTile(TileShape _shape, int _id, sLevel.TileType _tileType, String _animationsNames[], boolean _regrows, boolean _anchor, boolean _isFlammable, int _maxHealth)
     {
         mShape = _shape;
         mId = _id;
         mTileType = _tileType;
-        mAnimationsName = _animationsName;
+        mAnimationsNames = _animationsNames;
         mRegrows = _regrows;
         mAnchor = _anchor;
         mNext = null;
         mIsFlammable = _isFlammable;
         mMaxHealth = _maxHealth;
     }
-    public RootTile(TileShape _shape, int _id, sLevel.TileType _tileType, String _animationsName, int _slopeType, int _maxHealth)
+    public RootTile(TileShape _shape, int _id, sLevel.TileType _tileType, String _animationsNames[], int _slopeType, int _maxHealth)
     {
         mShape = _shape;
         mId = _id;
         mTileType = _tileType;
         mSlopeType = _slopeType;
-        mAnimationsName = _animationsName;
+        mAnimationsNames = _animationsNames;
         mRegrows = false;
         mAnchor = false;
         mIsFlammable = false;
@@ -62,6 +71,10 @@ abstract class RootTile
     public void setNext(RootTile _next)
     {
         mNext = _next;
+    }
+    public String getAnimationsName(RootTile.AnimationType _animationType)
+    {
+        return mAnimationsNames[_animationType.ordinal()];
     }
 
     abstract boolean boundaryFrom(Direction _direction, TileType _tileType, MaterialEdges _materialEdges);

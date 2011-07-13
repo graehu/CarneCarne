@@ -17,10 +17,20 @@ import org.jbox2d.common.Vec2;
  */
 class NonEdibleTile extends BlockTile
 {
-    static final String constMaterial = "Meat";
+    private static String[] getAnimationsNames()
+    {
+        String[] strings = new String[AnimationType.eAnimationsMax.ordinal()];
+        strings[AnimationType.eFireHit.ordinal()] = "Default";
+        strings[AnimationType.eDamage.ordinal()] = null;
+        strings[AnimationType.eSpawn.ordinal()] = null;
+        strings[AnimationType.eSpit.ordinal()] = "Default";
+        strings[AnimationType.eJump.ordinal()] = "Hard";
+        return strings;
+    }
+    final static String mConstAnimations[] = getAnimationsNames();
     public NonEdibleTile(int _id, sLevel.TileType _tileType, boolean _anchor)
     {
-        super(_id, _tileType, constMaterial, false, _anchor, false, 1, TileShape.eBlock);
+        super(_id, _tileType, mConstAnimations, false, _anchor, false, 1, TileShape.eBlock);
     }
     @Override
     public void checkEdges(int _xTile, int _yTile, Stack<Integer> _stack, TileGrid _tileGrid)

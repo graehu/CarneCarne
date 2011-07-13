@@ -10,6 +10,7 @@ import Graphics.Particles.ParticleSysBase;
 import Graphics.Particles.sParticleManager;
 import Graphics.Sprites.iSprite;
 import Graphics.Sprites.sSpriteFactory;
+import Level.RootTile.AnimationType;
 import Level.Tile;
 import Level.sLevel.TileType;
 import World.TongueAnchor;
@@ -163,7 +164,7 @@ public class TongueStateMachine {
                     {
                         Vec2 pos = sWorld.translateToWorld(mTonguePosition).sub(sWorld.getPixelTranslation());
                         pos = pos.add(new Vec2(32,32));
-                        ParticleSysBase sys = sParticleManager.createSystem(mTile.getAnimationsName() + "Spit", pos, 1f);
+                        ParticleSysBase sys = sParticleManager.createSystem(mTile.getAnimationsName(AnimationType.eSpit) + "Spit", pos, 1f);
                         if(mTongueDir.x >= 0)
                             sys.setAngularOffset(-(float)(Math.acos(Vec2.dot(mTongueDir, mUp.negate())) * 180/Math.PI));
                         else

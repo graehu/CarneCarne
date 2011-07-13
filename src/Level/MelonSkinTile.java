@@ -27,13 +27,25 @@ class MelonSkinTile extends BlockTile {
         eUpRight,
         eSkinDirectionsSize,
     }
+    private static String[] getAnimationsNames()
+    {
+        String[] strings = new String[AnimationType.eAnimationsMax.ordinal()];
+        strings[AnimationType.eFireHit.ordinal()] = "Default";
+        strings[AnimationType.eDamage.ordinal()] = "MelonS";
+        strings[AnimationType.eSpawn.ordinal()] = null;
+        strings[AnimationType.eSpit.ordinal()] = "Default";
+        strings[AnimationType.eJump.ordinal()] = "MelonS";
+        return strings;
+    }
+    final static String mConstAnimations[] = getAnimationsNames();
     SkinDirection mDirection;
     public MelonSkinTile(int _id, TileType type, SkinDirection _direction, int _maxHealth)
     {
-        super(_id, type, "Meat", false, true, false, _maxHealth);
+        super(_id, type, mConstAnimations, false, true, false, _maxHealth);
         mDirection = _direction;
     }
     
+    @Override
     public void checkEdges(int _xTile, int _yTile, Stack<Integer> _stack, TileGrid _tileGrid)
     {
         boolean flags[] = new boolean[3];
