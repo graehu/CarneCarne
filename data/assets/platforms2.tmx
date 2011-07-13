@@ -27,6 +27,7 @@
   <tile id="0">
    <properties>
     <property name="Anchor" value="True"/>
+    <property name="Animationsname" value="Bone"/>
     <property name="Direction" value="Up"/>
     <property name="Material" value="Swingable"/>
     <property name="Size" value="11"/>
@@ -45,6 +46,7 @@
   <tile id="0">
    <properties>
     <property name="Anchor" value="True"/>
+    <property name="Animationsname" value="Bone"/>
     <property name="Direction" value="Right"/>
     <property name="Material" value="Swingable"/>
     <property name="Size" value="11"/>
@@ -103,6 +105,7 @@
    <properties>
     <property name="Direction" value="Down"/>
     <property name="Material" value="Chilli"/>
+    <property name="Regrows" value="False"/>
     <property name="Type" value="Edge"/>
    </properties>
   </tile>
@@ -110,6 +113,7 @@
    <properties>
     <property name="Direction" value="Up"/>
     <property name="Material" value="Chilli"/>
+    <property name="Regrows" value="False"/>
     <property name="Type" value="Line"/>
    </properties>
   </tile>
@@ -117,6 +121,7 @@
    <properties>
     <property name="Direction" value="Up"/>
     <property name="Material" value="Chilli"/>
+    <property name="Regrows" value="False"/>
     <property name="Type" value="Edge"/>
    </properties>
   </tile>
@@ -178,6 +183,7 @@
   <tile id="0">
    <properties>
     <property name="Anchor" value="False"/>
+    <property name="Animationsname" value="Meat"/>
     <property name="Material" value="Edible"/>
     <property name="Type" value="Block"/>
    </properties>
@@ -406,7 +412,7 @@
  </layer>
  <layer name="StaticBackground" width="128" height="128">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC+3VOw6CQBQF0Nn/Qggat6BOg53uwn1IQaEVmPmK5yQ3hoTwXjIXDAEAAAAAAAAAAACAvZvmPFsvQVM6gA6gA+gAOoAOoAPoADqADjC1XgAAAIAP98Q86q9MRlNibvVXpiPOH0IYWi/QwHlDcsxo7TjnMOe0XI/L7/B2/Y/nf9mQHDN6N67fskvXleScw+8ocV6xwDPJr+S7Ggs+m3Q1vtOxwgy+V/M/OlacBQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA9O8F++CSbwAAAQA=
+   H4sIAAAAAAAAC+3SQQrCMBAF0Nz/IKWKV1CzqTu9hfdoFxUiCC00TUJ9Dz4lUJiB+SEAAAAAAAAAAAAAcHTDlHftJahKB9ABdAAdQAfQAXQAHUAH0AGG2gsAAADw5bkxr/Irk9GwMY/yK9MQ94cQutoLVHBdkRwzajtPOU25zO9+/nbJ+x/vf1uRHDNa1y//ckj3heScQ7vij+wxgzbFsO/t0zm0JYYyt0/n0Y4Yyt0+nQkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPAxApqj/yYAAAEA
   </data>
  </layer>
  <layer name="Animations" width="128" height="128">
@@ -416,12 +422,12 @@
  </layer>
  <layer name="Level" width="128" height="128">
   <data encoding="base64" compression="gzip">
-   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
+   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
   </data>
  </layer>
  <layer name="StaticForeground" width="128" height="128">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC+3ZQQqCUABFURu0gKj978ZmDRs2aCdhKEQgmtH35zsHJIMi4b5Rv2kA5mn7i0z6Z9M/m/7Z9M+mfzb9s+mfTf9s+mfTP5v+2fTPpn82/bPpn03/bPpn03+bdh98tut/7e9vP3gWyjs00xvYv3zOBrJ1zW0gmw1gA9gANoANYAO8b4A8NsCwAecFuboN3Nd+CAAAAODp+OV1Kv/IVOTcvw7/+d1H3rNNXePL2g9RiI2vZ+550pIzh6nvtCP3S3+PZX51pqj//1jjXFnjupTegP71KbkB/etUagP6AwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABA3R4trycjAAABAA==
+   H4sIAAAAAAAAC+3ZMYrCUABF0Vi4ANH9l7oS7aa0nMKdSCSCyASdaH5+8s4BUSFq4L7K3zQA7zl2DzLpn03/bPpn0z+b/tn0z6Z/Nv2z6Z9N/2z6Z5tD/8OXrhliP9L31mIO/RmP/tn0z6Z/Nv2z6b9Mq39c2/Y/d69/R7gXyts0rzewfrjueQPnvg+xSG1zG8hmA9gANoANYAP8tQGyPG+APDbAfQPOC3K1G7hMfRMAAADAzfbDx678LVORU/d8/8/v0vOeZWob/0x9E4XY+HTePU8acubw6jPHntdDf49hxjpT1H8+pjhX1rgupTegf31KbkD/OpXagP4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFC3K2yoxLIAAAEA
   </data>
  </layer>
  <layer name="Foreground" width="128" height="128" visible="0">
@@ -436,7 +442,7 @@
  </layer>
  <layer name="Flags" width="128" height="128">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC+3ayUoDQRQF0O7/X7qJc+Ks0cTZL/IvDMkFceHKQJJu6XcO3P2DS1FV8JoGAAAAAACoYtQ2zX5ykBy2fU9D147S+XFykpzqv5xxOp8kZ8m5/su5SOeXyVVyrX8AAAAG5iZ/3dvkLpn695Zzn84fklky1385j+n8KXlOXvRfzms6f0vekw/9AzBQn30PQK/0X5v+a/vpf6/9HWrRPwAA8B/Z0ajtrx2Nr+5HokOb7mgstz8SHbKjwbqcdQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPi26HsAAGDn3PcAgPcAAAyf+x4A8B4AgOFz3wMAAAAAAACsbwU950iDAAABAA==
+   H4sIAAAAAAAAC+3ayUpDQRAF0Pf+f+nGOMXZOE8x+aL8RcRcEBfuAjF0fHUO3H3BpeluqK4DAAAAAACq2O+7bpQcJId962l237L1AH/sKJ0fJyfJWP/lnKbzs+Q8udB/OZfp/Cq5Tm70DwAANPDVegAGbZK/7m1yl9z795bzkM4fk6fkWf/lvKTz1+Qtedd/OdN0/pHMkrn+ARioResBaEr/tem/tp/+9/rfoRb9AwAAu8iORm12NGrbdEfDDuH/ZkeDdTnrAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA8O2z9QAAwNa57wEA7wEAGD73PQDgPQAAw+e+BwAAAAAAAFjfCiRUoHMAAAEA
   </data>
  </layer>
 </map>
