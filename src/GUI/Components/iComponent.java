@@ -124,7 +124,7 @@ public abstract class iComponent extends AbstractComponent {
     private final void renderInternalDebug(Graphics _graphics)
     {
         _graphics.setColor(mColor);
-        _graphics.draw(getShape());
+        renderSelfDebug(_graphics) ;
         
         //render children
         Iterator<iComponent> itr = getChildIterator();
@@ -134,7 +134,11 @@ public abstract class iComponent extends AbstractComponent {
             child.renderInternalDebug(_graphics);
         }
     }
-    protected void renderSelf(GUIContext guic, Graphics grphcs, Vector2f _globalPos) throws SlickException
+    protected void renderSelfDebug(Graphics _graphics)
+    {
+        _graphics.draw(getShape());
+    }
+    protected void renderSelf(GUIContext guic, Graphics grphcs, final Vector2f _globalPos) throws SlickException
     {
         grphcs.fillRect(_globalPos.x, _globalPos.y, getWidth(), getHeight());
     }

@@ -4,6 +4,7 @@
  */
 package GUI.Components;
 
+import java.util.Iterator;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
@@ -20,31 +21,76 @@ public class ScrollableComponent extends GraphicalComponent{
     
     private boolean isAutoScrollPaused = true;
     private Vector2f mAutoScroll = new Vector2f(0,0);
+    private Vector2f mTarget = new Vector2f(0,0);
     private Vector2f mScroll = new Vector2f(0,0);
+    private Vector2f mOldScroll = new Vector2f(0,0);
     private Vector2f mAbsMaxScroll = new Vector2f(0,0);
 
     @Override
     protected boolean updateSelf(int _delta) {
         if(false == isAutoScrollPaused)
         {
-            mScroll.add(mAutoScroll);
+            float timeStep = ((float)_delta)/1000.0f; //convert to seconds
+            
+            //if target not reached in X
+            if(mScroll.x > mTarget.x ) //X greater than
+                mScroll.x -= mAutoScroll.x * timeStep;
+            else if(mScroll.x < mTarget.x) //X lesser than
+                mScroll.x += mAutoScroll.x * timeStep;
+            else autoScrollStop(true);
+            
+            //if target not reached in Y
+            if(mScroll.y > mTarget.y) //Y greater than
+                mScroll.y -= mAutoScroll.y * timeStep;
+            else if(mScroll.y < mTarget.y) //Y lesser than
+                mScroll.y += mAutoScroll.y * timeStep;
+            else autoScrollStop(false);
+            
+            //clamp if within an autoscroll step
+            if( mScroll.x > mTarget.x - mAutoScroll.x * timeStep && 
+                mScroll.x < mTarget.x + mAutoScroll.x * timeStep)
+                mScroll.x = mTarget.x;
+            if( mScroll.y > mTarget.y - mAutoScroll.y * timeStep && 
+                mScroll.y < mTarget.y + mAutoScroll.y * timeStep)
+                mScroll.y = mTarget.y;
+            
             forceToBounds(mScroll);
-            if(mScroll.x == 0 || mScroll.x == 1)
-                autoScrollStop(true);
-            if(mScroll.y == 0 || mScroll.y == 1)
-                autoScrollStop(false);
+            
+            if(mAutoScroll.x == 0 && mAutoScroll.y == 0)
+                isAutoScrollPaused = true;
         }
+        Vector2f deltaScroll = mScroll.copy().sub(mOldScroll);
+        Vector2f offset = new Vector2f(-deltaScroll.x * mAbsMaxScroll.x, deltaScroll.y * mAbsMaxScroll.y);
+        Iterator<iComponent> itr = getChildIterator();
+        while(itr.hasNext())
+        {
+            iComponent child = itr.next();
+            
+            Vector2f newPos = child.getLocalTranslation().add(offset);
+            child.setLocalTranslation(newPos);
+        }
+        mOldScroll.set(mScroll);
         return super.updateSelf(_delta);
     }
 
     @Override
     protected void renderSelf(GUIContext guic, Graphics grphcs, Vector2f _globalPos) throws SlickException 
     {        
-        grphcs.setWorldClip((int)_globalPos.x, (int)_globalPos.y, getWidth(), getHeight());
-            Vector2f offset = new Vector2f(-mScroll.x * mAbsMaxScroll.x, mScroll.y * mAbsMaxScroll.y);
-            super.renderSelf(guic, grphcs, _globalPos.add(offset));
+        Vector2f offset = new Vector2f(-mScroll.x * mAbsMaxScroll.x, mScroll.y * mAbsMaxScroll.y);
+        grphcs.setWorldClip(_globalPos.x, _globalPos.y, getWidth(), getHeight());
+        grphcs.translate(offset.x, offset.y);
+            super.renderSelf(guic, grphcs, _globalPos);
+        grphcs.translate(-offset.x, -offset.y);
         grphcs.clearWorldClip();
     }
+    //need to override this method to scroll debug too
+
+    @Override
+    protected void renderSelfDebug(Graphics _graphics) 
+    {
+        super.renderSelfDebug(_graphics);
+    }
+    
 
     @Override
     public void setImage(String _ref) {
@@ -81,17 +127,14 @@ public class ScrollableComponent extends GraphicalComponent{
         mScroll.y = _y;
         mScroll.y = forceToBounds(mScroll.y);
     }
-    //scroll at given step per second (0-1)
-    public final void autoScrollHorizonal(float _perSecond)
+    //scroll to relative point (0-1)
+    public final void scrollTo(Vector2f _relativePoint, Vector2f _ratePerSec)
     {
-        mAutoScroll.x = _perSecond;
-        mAutoScroll.x = forceToBounds(mAutoScroll.x);
-    }
-    //scroll at given step per second (0-1)
-    public final void autoScrollVertical(float _perSecond)
-    {
-        mAutoScroll.y = _perSecond;
-        mAutoScroll.y = forceToBounds(mAutoScroll.y);
+        forceToBounds(_relativePoint);
+        forceToBounds(_ratePerSec);
+        mTarget.set(_relativePoint);
+        mAutoScroll.set(_ratePerSec);
+        isAutoScrollPaused = false;
     }
     public final void autoScrollStop(boolean _stopHorizontal)
     {

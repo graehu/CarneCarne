@@ -4,12 +4,14 @@
  */
 package GUI.Components.Effects;
 
+import GUI.Components.iComponent;
+
 /**
  *
  * @author a203945
  */
-public interface iComponentEffect {
-    
-    void render(int _x, int _y);
-    void update(int _delta);
+public interface iComponentEffect 
+{
+    abstract void render(int _x, int _y, int _w, int _h);
+    abstract void update(int _delta);
 }

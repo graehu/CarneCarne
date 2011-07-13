@@ -116,7 +116,7 @@ class AIEntityState
         {
             return _currentVelocity-3.0f;
         }
-        return -5.0f;
+        return -8.0f;
         
     }
     public int getWaterHeight()
