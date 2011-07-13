@@ -28,10 +28,12 @@ public class Main extends StateBasedGame
         NativeLibLoader nativeLibLoaderJinput = new NativeLibLoader("net.java.games.input.librarypath");
         nativeLibLoaderJinput.init();
         //nativeLibLoaderJinput.setupPath();
+        
         try
         {            
             AppGameContainer app = new AppGameContainer(new Main());
-            //app.setMouseGrabbed(true);
+            app.setIcon("icon.png");
+            
             app.setDisplayMode(800, 600, false);
             app.setVSync(true);
             app.setSmoothDeltas(true);

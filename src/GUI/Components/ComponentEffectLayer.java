@@ -12,9 +12,9 @@ import java.util.ArrayDeque;
  *
  * @author a203945
  */
-public class iComponentEffectLayer {
+public class ComponentEffectLayer {
     
-    iComponentEffectLayer(iComponent _component)
+    ComponentEffectLayer(iComponent _component)
     {
         mComponent = _component;
     }
@@ -22,11 +22,11 @@ public class iComponentEffectLayer {
     iComponent mComponent;
     ArrayDeque<iComponentEffect> mEffects = new ArrayDeque<iComponentEffect>();
     
-    void render(int _x, int _y)
+    void render(int _x, int _y, int _w, int _h)
     {
         for(iComponentEffect effect : mEffects)
         {
-            effect.render(_x, _y);
+            effect.render(_x, _y, _w, _h);
         }
     }
     void update(int _delta)
@@ -36,11 +36,11 @@ public class iComponentEffectLayer {
             effect.update(_delta);
         }
     }
-    void pushEffect(iComponentEffect _effect)
+    public void pushEffect(iComponentEffect _effect)
     {
         mEffects.push(_effect);
     }
-    void popEffect()
+    public void popEffect()
     {
         mEffects.pop();
     }

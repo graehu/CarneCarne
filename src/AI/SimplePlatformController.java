@@ -19,20 +19,30 @@ public class SimplePlatformController extends iPlatformController
     public void update() 
     {
         Vec2 pos = mEntity.mBody.getPosition();
-        Vec2 dimes = new Vec2(mEntity.getWidth(), mEntity.getHeight());
+        Vec2 dimes = new Vec2(mEntity.getWidth()-1, mEntity.getHeight()-1);
         if(mToggle == false)
         {
-            if(sLevel.getPathInfo((int)(pos.x-((dimes.x/2)-0.5f)), (int)(pos.y-((dimes.y/2)-0.5f))) == PathInfo.eNotPassable)
+            //if(sLevel.getPathInfo((int)(pos.x-((dimes.x/2)-0.5f)), (int)(pos.y-((dimes.y/2)-0.5f))) == PathInfo.eNotPassable)
+            for(int i = 0; i < dimes.y+1; i++)
             {
-                mToggle = true;
+                if(sLevel.getPathInfo((int)(pos.x), (int)(pos.y+i)) == PathInfo.eNotPassable)
+                {
+                    mToggle = true;
+                    break;
+                }
             }
         }
         else
         {
-            if(sLevel.getPathInfo((int)(pos.x+((dimes.x/2)+0.5f)), (int)(pos.y+((dimes.y/2)+0.5f))) == PathInfo.eNotPassable)
+            //if(sLevel.getPathInfo((int)(pos.x+((dimes.x/2)+0.5f)), (int)(pos.y+((dimes.y/2)+0.5f))) == PathInfo.eNotPassable)
+            for(int i = 0; i < dimes.y+1; i++)
             {
-                mToggle = false;
-            } 
+                if(sLevel.getPathInfo((int)(pos.x+dimes.x+1), (int)(pos.y+i)) == PathInfo.eNotPassable)
+                {
+                    mToggle = false;
+                    break;
+                } 
+            }
         }
         
         if(mToggle)

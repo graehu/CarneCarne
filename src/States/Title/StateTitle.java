@@ -8,12 +8,14 @@ import Events.iEvent;
 import Events.iEventListener;
 import Events.sEvents;
 import GUI.Components.Button;
+import GUI.Components.Effects.AnimatedEffect;
 import GUI.Components.GraphicalComponent;
 import GUI.Components.ScrollableComponent;
 import GUI.Components.TextField;
 import Graphics.sGraphicsManager;
 import Utils.sFontLoader;
 import org.jbox2d.common.Vec2;
+import org.lwjgl.opengl.Display;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Font;
 import org.newdawn.slick.GameContainer;
@@ -43,18 +45,35 @@ public class StateTitle extends BasicGameState implements iEventListener{
         }
     }
     
-    enum InternalState
+    enum MenuState
     {
         eCenter,
         eLeft,
         eRight
     }
     
+    GameContainer cont = null;
+    @Override
+    public void enter(GameContainer container, StateBasedGame game) throws SlickException {
+        cont = container;
+        super.enter(container, game);
+        container.setMouseCursor("ui/title/mouse.png", 0, 62); //FIXME: break in fullscreen
+    }
+
+    @Override
+    public void leave(GameContainer container, StateBasedGame game) throws SlickException {
+        super.leave(container, game);
+        container.setDefaultMouseCursor();
+    }
+    
+    
     GraphicalComponent mBackground = null, mForeground = null;
     GraphicalComponent mLogo = null;
     ScrollableComponent mParalax0 = null;
     ScrollableComponent mParalax1 = null;
     ScrollableComponent mParalax2 = null;
+    GraphicalComponent mCarrotAnimation = null;
+    GraphicalComponent mBrocAnimation = null;
     TextField mNameField = null;
     Button mAdventureButton = null;
     Button mRaceButton = null;
@@ -62,7 +81,7 @@ public class StateTitle extends BasicGameState implements iEventListener{
     Button mHighScoresButton = null;
     float mScale = 1.0f;
     float mOffset = 0.0f;
-    InternalState mState = InternalState.eCenter;
+    MenuState mState = MenuState.eCenter;
     UnicodeFont mUIFont = null;
     Font mInputFont = null;
 
@@ -87,9 +106,15 @@ public class StateTitle extends BasicGameState implements iEventListener{
         mScale = screen.x/mBackground.getWidth();
         
         //initialise logo
-        mLogo = new GraphicalComponent(_gc, new Vector2f(), new Vector2f());
+        mLogo = new GraphicalComponent(_gc, new Vector2f(1690.5f,-470f), new Vector2f());
         mLogo.setImage("ui/title/logo.png");
         mLogo.setDimentionsToImage();
+        
+        //initialise animations
+        mCarrotAnimation = new GraphicalComponent(_gc, new Vector2f(1200,10), new Vector2f(170, 140));
+        mCarrotAnimation.mEffectLayer.pushEffect(new AnimatedEffect("ui/title/car_ss.png", 170, 140, 41));
+        mBrocAnimation = new GraphicalComponent(_gc, new Vector2f(3453-60,10), new Vector2f(23, 39));
+        mBrocAnimation.mEffectLayer.pushEffect(new AnimatedEffect("ui/title/broc_ss.png", 23, 39, 41));
         
         //initalise paralax
         Vector2f paralaxDim = new Vector2f(screen.x/mScale,400);
@@ -101,6 +126,11 @@ public class StateTitle extends BasicGameState implements iEventListener{
         mParalax1.setImage("ui/title/p1.png");
         mParalax2 = new ScrollableComponent(_gc, paralaxPos, paralaxDim);
         mParalax2.setImage("ui/title/p2.png");
+        
+        //add carrot and broc animations to the middle paralax layer
+        mParalax1.addChild(mCarrotAnimation);
+        mParalax1.addChild(mBrocAnimation);
+        mParalax0.addChild(mLogo);
         
         //initialise buttons
         Vector2f buttonDim = new Vector2f(200/mScale,50/mScale);
@@ -125,6 +155,16 @@ public class StateTitle extends BasicGameState implements iEventListener{
                 _sbg.enterState(3, null, new BlobbyTransition(Color.black));
             }
         });
+        mOptionsButton.setCallback(new Runnable() {
+            public void run() {
+                mState = MenuState.eLeft;
+            }
+        });
+        mHighScoresButton.setCallback(new Runnable() {
+            public void run() {
+                mState = MenuState.eRight;
+            }
+        });
         
     }
     
@@ -133,7 +173,6 @@ public class StateTitle extends BasicGameState implements iEventListener{
         mBackground.render(_gc, _grphcs, debug);
         //render other stuff here
         mParalax2.render(_gc, _grphcs, debug);
-        mLogo.render(_gc, _grphcs, debug);
         mParalax1.render(_gc, _grphcs, debug);
         mParalax0.render(_gc, _grphcs, debug);
         
@@ -152,19 +191,7 @@ public class StateTitle extends BasicGameState implements iEventListener{
         if(input.isKeyDown(Input.KEY_F11))
             sGraphicsManager.toggleFullscreen();  
         
-        float speed = 0.005f;
-        if(input.isKeyDown(Input.KEY_LEFT))
-        {
-            mParalax0.scrollHorizontalBy(-speed); 
-            mParalax1.scrollHorizontalBy(-speed);
-            mParalax2.scrollHorizontalBy(-speed);
-        }
-        if(input.isKeyDown(Input.KEY_RIGHT))
-        {
-            mParalax0.scrollHorizontalBy(speed);
-            mParalax1.scrollHorizontalBy(speed);
-            mParalax2.scrollHorizontalBy(speed);
-        }
+        updateMenuState();
         
         mParalax0.update(_i);
         mParalax1.update(_i);
@@ -175,6 +202,35 @@ public class StateTitle extends BasicGameState implements iEventListener{
         mRaceButton.update(_i);
         mOptionsButton.update(_i);
         mHighScoresButton.update(_i);
+    }
+    
+    protected void updateMenuState()
+    {
+        float scrollTime = 0.5f;
+        switch(mState)
+        {
+            case eLeft:
+            {
+                mParalax0.scrollTo(new Vector2f(0,0), new Vector2f(scrollTime, 0));
+                mParalax1.scrollTo(new Vector2f(0,0), new Vector2f(scrollTime, 0));
+                mParalax2.scrollTo(new Vector2f(0,0), new Vector2f(scrollTime, 0));
+                break;
+            }
+            case eCenter:
+            {
+                mParalax0.scrollTo(new Vector2f(0.5f,0), new Vector2f(scrollTime, 0));
+                mParalax1.scrollTo(new Vector2f(0.5f,0), new Vector2f(scrollTime, 0));
+                mParalax2.scrollTo(new Vector2f(0.5f,0), new Vector2f(scrollTime, 0));
+                break;
+            }
+            case eRight:
+            {
+                mParalax0.scrollTo(new Vector2f(1f,0), new Vector2f(scrollTime, 0));
+                mParalax1.scrollTo(new Vector2f(1f,0), new Vector2f(scrollTime, 0));
+                mParalax2.scrollTo(new Vector2f(1f,0), new Vector2f(scrollTime, 0));
+                break;
+            }
+        }
     }
     
     protected void calcUI()
@@ -190,9 +246,6 @@ public class StateTitle extends BasicGameState implements iEventListener{
         mBackground.setLocalTranslation(vOffset);
         mForeground.setLocalScale(mScale);
         mForeground.setLocalTranslation(vOffset);
-        
-        mLogo.setLocalScale(mScale);
-        mLogo.setLocalTranslation(new Vector2f(mBackground.getWidth() * 0.1f, mOffset + (mBackground.getHeight() * 0.15f)));
         
         Vector2f buttonPos = new Vector2f(mBackground.getWidth() * 0.6f, mOffset + (mBackground.getHeight() * 0.3f));
         int buttonOffset = (int)75;
@@ -220,9 +273,10 @@ public class StateTitle extends BasicGameState implements iEventListener{
         mParalax1.setLocalScale(mScale);
         mParalax2.setLocalScale(mScale);
         
-        mParalax0.setLocalTranslation(new Vector2f(0,mOffset + (mBackground.getHeight()-mParalax0.getImageHeight())));
-        mParalax1.setLocalTranslation(new Vector2f(0,mOffset + (mBackground.getHeight()-mParalax1.getImageHeight())));
-        mParalax2.setLocalTranslation(new Vector2f(0,mOffset + (mBackground.getHeight()-mParalax2.getImageHeight())));
+        float paralaxOffset = -34.0f; //tweak
+        mParalax0.setLocalTranslation(new Vector2f(0,mOffset + (mBackground.getHeight()-mParalax0.getImageHeight()) + paralaxOffset));
+        mParalax1.setLocalTranslation(new Vector2f(0,mOffset + (mBackground.getHeight()-mParalax1.getImageHeight()) + paralaxOffset));
+        mParalax2.setLocalTranslation(new Vector2f(0,mOffset + (mBackground.getHeight()-mParalax2.getImageHeight()) + paralaxOffset));
     }
     
 }

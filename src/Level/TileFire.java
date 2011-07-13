@@ -18,7 +18,7 @@ class TileFire
 {
     TileGrid mTileGrid;
     private int mFrames;
-    private final int burnTime = 180;
+    private final int burnTime = 60;
     private final int decayLife = 60;
     private class BurningTile
     {

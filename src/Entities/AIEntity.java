@@ -126,11 +126,11 @@ public class AIEntity extends Entity {
                     {
                         mJumpContacts++;
                         //set tile type while only touching one type
-                        if(numContacts == 1)
+                        if(numContacts == 1 && other.getUserData() != null)
                             mTileType = ((Tile)other.getUserData()).getTileType();
                     }
                 }
-                else if(collisionNorm.y < - 0.3 || collisionNorm.y > 0.3)//slopes // horizontal
+                else if(collisionNorm.y < - 0.3 || collisionNorm.y > 0.3)//slopes
                 {
                     if(edge.contact.isTouching() && !other.isSensor())
                     {
@@ -142,7 +142,7 @@ public class AIEntity extends Entity {
             edge = edge.next;
         }
         mAIEntityState.update(mTar, mIce, mWater, mJumpContacts);
-        //mBody.applyLinearImpulse(new Vec2(0,0.4f*mBody.getMass()), mBody.getWorldCenter());
+        mBody.applyLinearImpulse(new Vec2(0,0.2f*mBody.getMass()), mBody.getWorldCenter());
         if (mJumpTimer != 0)
         {
             mJumpTimer--;
@@ -172,7 +172,7 @@ public class AIEntity extends Entity {
     }
     protected void airControl(float _value)
     {
-        mBody.applyLinearImpulse(new Vec2(0.1f*_value,0), mBody.getWorldCenter());
+        mBody.applyLinearImpulse(new Vec2(0.8f*_value,0), mBody.getWorldCenter());
     }
     public void walk(float value)
     {
@@ -224,99 +224,11 @@ public class AIEntity extends Entity {
     }
     public void walkLeft()
     {
-        mBody.m_fixtureList.m_friction = 5;
-        switch (mAIEntityState.getState())
-        {
-            case eFalling:
-            case eFallingDoubleJumped:
-            case eJumping:
-            {
-                mBody.applyLinearImpulse(new Vec2(-0.1f,0), mBody.getWorldCenter());
-                break;
-            }
-            case eStanding:
-            {
-                if(mAllowRoll)
-                {
-                    mBody.m_fixtureList.m_friction = 20;
-                    mBody.applyAngularImpulse(-0.7f);
-                }
-                else
-                {
-                    mBody.applyLinearImpulse(new Vec2(-1.5f,0),mBody.getWorldCenter());
-                }
-                break;
-            }
-            case eStandingOnTar:
-            case eStillCoveredInTar:
-            {
-                mBody.applyLinearImpulse(new Vec2(-0.5f,0),mBody.getWorldCenter());
-                break;
-            }
-            case eIce:
-            {
-                mBody.applyAngularImpulse(-0.5f);
-                break;
-            }
-            case eSwimming:
-            {
-                mBody.applyLinearImpulse(new Vec2(-0.5f,0),mBody.getWorldCenter());
-                mBody.applyAngularImpulse(-0.3f);
-                break;
-            }
-            case eDead:
-            {
-                break;
-            }
-        }
+        walk(-1f);
     }
     public void walkRight()
     {
-        mBody.m_fixtureList.m_friction = 5;
-        switch (mAIEntityState.getState())
-        {
-            case eFalling:
-            case eFallingDoubleJumped:
-            case eJumping:
-            {
-                mBody.applyLinearImpulse(new Vec2(0.1f,0), mBody.getWorldCenter());
-                break;
-            }
-            case eStanding:
-            {
-                if(mAllowRoll)
-                {
-                    mBody.m_fixtureList.m_friction = 20;
-                    mBody.applyAngularImpulse(0.7f);
-                }
-                else
-                {
-                    mBody.applyLinearImpulse(new Vec2(1.5f,0),mBody.getWorldCenter());
-                }
-                break;
-            }
-            case eStandingOnTar:
-            case eStillCoveredInTar:
-            {
-                mBody.applyLinearImpulse(new Vec2(0.5f,0),mBody.getWorldCenter());
-                break;
-            }
-            case eIce:
-            {
-                mBody.applyAngularImpulse(0.5f);
-                break;
-            }
-            case eSwimming:
-            {
-                mBody.applyLinearImpulse(new Vec2(0.5f,0),mBody.getWorldCenter());
-                mBody.applyAngularImpulse(0.3f);
-                break;
-            }
-            case eDead:
-            {
-                break;
-            }
-        }
+        walk(1f);
     }
     public void jump()
     {

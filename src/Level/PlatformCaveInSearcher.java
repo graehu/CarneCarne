@@ -35,9 +35,9 @@ public class PlatformCaveInSearcher extends CaveInSearcher
         }
         if (!mChecked[_x][_y].equals(Checked.eNoAnchor))
         {
-            mChecked[_x][_y] = Checked.eNoAnchor;
             if (tile.mFixture != null && tile.boundaryFrom(_direction, _tileType, MaterialEdges.AnchorEdges))
             {
+                mChecked[_x][_y] = Checked.eNoAnchor;
                 _workingSet.add(new TileIndex(_x, _y, tile.getTileType()));
                 _thisBlock.add(new TileIndex(_x, _y, tile.getTileType()));
             }

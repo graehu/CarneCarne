@@ -23,6 +23,7 @@
   <tile id="16">
    <properties>
     <property name="Anchor" value="True"/>
+	<property name="Flammable" value="True"/>
     <property name="Material" value="Tar"/>
     <property name="Regrows" value="False"/>
     <property name="Type" value="Block"/>
@@ -230,6 +231,11 @@
     <property name="Type" value="NonEdible"/>
    </properties>
   </tile>
+  <tile id="19">
+   <properties>
+    <property name="Material" value="Spikes"/>
+   </properties>
+  </tile>
   <tile id="23">
    <properties>
     <property name="Spawn" value="Player"/>
@@ -414,7 +420,7 @@
  </layer>
  <layer name="Level" width="100" height="100">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC+3bTXLTMByGcbHskjvwOTB89QR8w5F6BI6QPZseoYseKLfAnqknQpJj+W/JeqM+z8y7YGKSOL9SnEKunjh3xRg7u8fQs+E8nw97vWIvhr3MfH22vI6hx8G77eCtp14N5/nXsDeNPHp1mHpr9HjfwCPs6cPCfs/sEvownOfHYe9W7NOw64YeoUP46/G1Pwbby+O40+NYa/Xno5WHejU95lLzmHvqJa4n1/7ekh7+bty+S53PvTt//rmv057vDWp5zH295zzXu4XHvU/cz2cXz7/9u4uXeuzc4y7V44+3pd+T+70gdfwXF8+//YeLl7qf3ONqWEznZq3G1411X108//afLl7qfnKPq2HRk8c3F8+//ZeLl7qf3ONKW4zfg2868lDeUpNFaY/wWqdF4+NP73vC5zJ3TTYVXoOX2FKhBR7tCi38ax/L8LBX2gIPezUs8LBVy6Jnj6WfyViradGzR41qW+CRn2+Bx/+37e0RWvTukTrX3B1cPOvP+9esF4+5cyu92haX5rF0LnuspsUleLR63fcyCe9b2UPJoKe1+Pvc75hYyePVw0MrPLTCQys8tEpdw+HRrrlr6lbhMf8ep1S3Lv//9uJx/j1nifDIL+dnAFvDI78cj60meOSX67HF5LbSUs9/aeqt8Wh53fVYWuuBSd0sHpjUy+oxLvU5JMvWfF/f+u8J6lk9xmNTn0OyDI9TWzxSn0OyDI9TWzxSn0OyDI9TWzxKzvp8e/egtuGhFR5a4aEVHlrhoRUeWuGhFR5a4aEVHlrhoRUeWuGhFR5a4aEVHlrhoRUeWuGhFR5a4aEVHlrhoRUeWuGhFR5a4aEVHlrhoRUeWuGhFR5a4aEVHlrhoRUeWuGhFR5a4aEVHlrhoRUeWuGhFR5a4aEVHlrhoRUeWoUejLF4/wBL3ihIQJwAAA==
+   H4sIAAAAAAAAC+3WTa6CMBRA4Tp06KL82aJLdBeOTEgRuMUip+Wc5E5e4NK8L6jnU0pnx3FmJ1L0Omrk8+vBaiuPzzUle6P9uu/IHlukx/ieGtf8e3et+7dsb4/8uZHPuSN51Podlv+PCe9efh7Sb9aps0Xvmds1d823a2vtXtoZPdueLXm8BjP8W2TvcH/JeZbuK333WnD4lHs8K+7d6r6S9+PbdxO5Xz4Tp76L1zx/7f2R/fmzjvL9EX3W1I4aeyM7ye/JPz0okc+/1uOS2p0ePa6p3enR45banR497qnd6dHjkdqdHj1aH2qtnPMo6cFKD1Z6sNKDlR6s9GClBys9WOnBSg9WerDSg5UerPRgpQcrPVjpwUoPVnqw0oOVHqz0YKUHKz1Y6cFKD1Z6sNKDlR6s9GClBys9WOnBSg9WerDSg5UerPRgpQcrPVjpwUoPVnqw0oOVHqz0YKUHKz1Y6cFKD1Z6sNKDlR6s9GClBys9WOnBSg9WerDSg5UerPRgpQcrPVjpwUoPVnqw0oOVHqz0YKUHKz1Y6cFKD1Z6sNKDVe7hOM543rcBgK9AnAAA
   </data>
  </layer>
  <layer name="Foreground" width="100" height="100">
@@ -429,7 +435,7 @@
  </layer>
  <layer name="Flags" width="100" height="100">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC+3RsQkAIAADQXUSwaUdV+zEwjYgdxOEfCkAwK9GTS9guzvoktOP73UAIGm29AIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAXhZjGFE9QJwAAA==
+   H4sIAAAAAAAAC+3USwqAMAwFwHoTwfvf0a0bIf0RbWfWDSQvNKUAwHdcR3YHAGO83TN3bh7Z5qjJvXZHkfer/rXz0X/vLK310bq/Z72y3XczYv7dM8w0K3s7BQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIOoGKZpO8UCcAAA=
   </data>
  </layer>
 </map>
