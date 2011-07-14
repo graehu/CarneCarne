@@ -5,6 +5,7 @@
 package Input;
 
 import Events.KeyDownEvent;
+import Events.KeyUpEvent;
 import Events.MapClickEvent;
 import Events.MapClickReleaseEvent;
 import Events.MouseMoveEvent;
@@ -27,6 +28,7 @@ public class sInput {
     static private int mPlayerCount;
     static private ArrayList<XBoxController> xBoxControllers = new ArrayList<XBoxController>();
     static MouseStateMachine mMouseStateMachine;
+    static boolean mJumpToggle = false;;
     public static void init(GameContainer _gc)
     {
         mGameContainer = _gc;
@@ -40,7 +42,15 @@ public class sInput {
         //handle keyboard&mouse input (defaults to player 0)
         mMouseStateMachine.tick(input);
         if(input.isKeyDown(Input.KEY_W))
+        {
             sEvents.triggerEvent(new KeyDownEvent('w', 0));
+            mJumpToggle = true;
+        }
+        else if(mJumpToggle)
+        {
+            sEvents.triggerEvent(new KeyUpEvent('w', 0));
+            mJumpToggle = false;
+        } 
         if(input.isKeyDown(Input.KEY_A))
             sEvents.triggerEvent(new KeyDownEvent('a', 0));
         if(input.isKeyDown(Input.KEY_S))

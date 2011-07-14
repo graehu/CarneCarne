@@ -38,6 +38,8 @@ import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.Fixture;
 import org.jbox2d.dynamics.FixtureDef;
 import org.jbox2d.dynamics.World;
+import org.jbox2d.dynamics.joints.DistanceJoint;
+import org.jbox2d.dynamics.joints.DistanceJointDef;
 import org.jbox2d.dynamics.joints.Joint;
 import org.jbox2d.dynamics.joints.PrismaticJointDef;
 import org.jbox2d.structs.collision.RayCastInput;
@@ -286,20 +288,20 @@ public class sWorld
     {
         return mLastTongueAnchor;
     }
-    /*public static DistanceJoint createTongueJoint(Body _body)
+    public static DistanceJoint createTongueJoint(Body _body)
     {
         DistanceJointDef def = new DistanceJointDef();
-        def.initialize(_body, mLastHit.m_body, _body.getPosition(), mLastAnchor);
+        def.initialize(_body, mLastHit.m_body, _body.getPosition(), mLastTongueAnchor.getPosition());
         def.collideConnected = true;
-        Vec2 direction = _body.getPosition().sub(mLastAnchor);
+        Vec2 direction = _body.getPosition().sub(mLastTongueAnchor.getPosition());
         def.length = direction.normalize();
         def.length = 0.0f;
-        //def.frequencyHz = 1.0f;
-        //def.dampingRatio = 0.1f;
-        def.frequencyHz = 0.5f;
-        def.dampingRatio = 0.02f; /// Reduce these to make his tongue springy
+        def.frequencyHz = 1.0f;
+        def.dampingRatio = 1.0f;
+        //def.frequencyHz = 0.5f;
+        //def.dampingRatio = 0.02f; /// Reduce these to make his tongue springy
         return (DistanceJoint)mWorld.createJoint(def);
-    }*/
+    }
     public static Body createAreaEvent(int _x, int _y, int _x2, int _y2, AreaEvent _event)
     {
         BodyDef def = new BodyDef();

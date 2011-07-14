@@ -6,6 +6,7 @@ package States.Game;
 
 import Events.AnalogueStickEvent;
 import Events.KeyDownEvent;
+import Events.KeyUpEvent;
 import Events.MapClickReleaseEvent;
 import Events.RightStickEvent;
 import Events.ShoulderButtonEvent;
@@ -73,10 +74,10 @@ public class XBoxController
         {
             sEvents.triggerEvent(new KeyDownEvent('Q', 0)); //menu
         }
-        if(_input.isButtonPressed(4, mPlayer)) //start
+        if(_input.isButtonPressed(4, mPlayer)) 
         {
             sEvents.triggerEvent(new MapClickReleaseEvent(rightStick,false, mPlayer));
-        } //spit release
+        } 
         //handle shoulder buttons
         if(_input.isButtonPressed(5, mPlayer))
         {
@@ -95,6 +96,7 @@ public class XBoxController
         }
         else if(mLeftShoulderButton)//on release
         {
+            sEvents.triggerEvent(new KeyUpEvent('w', mPlayer));
             mLeftShoulderButton = false;
             
         }

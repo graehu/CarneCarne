@@ -16,6 +16,7 @@ import World.TongueAnchor;
 import World.sWorld;
 import java.util.HashMap;
 import org.jbox2d.common.Vec2;
+import org.jbox2d.dynamics.joints.DistanceJoint;
 
 /**
  *
@@ -53,9 +54,11 @@ public class TongueStateMachine {
     protected State mState;
     private int mCurrentStateTimer;
     private PlayerInputController mAIController;
+    private DistanceJoint mJoint = null;
     private iSprite mTongueEndSprite;
     protected Vec2 mTongueDir = new Vec2(1,0);
     private Vec2 mTonguePosition = new Vec2(0,0);
+    private float mTargetDistance = 0; //the distance the tongue trys to achieve
     private int mAmmoLeft;
     protected boolean mIsTongueActive = false;
     private String mBlockMaterial;
@@ -306,8 +309,18 @@ public class TongueStateMachine {
                     mTongueDir = tongueAttachment.getPosition().sub(mAIController.mEntity.mBody.getPosition());
                     float actualLength = mTongueDir.normalize();
                     setTongue(mTongueDir, actualLength); //lock tongue to block
-                    mAIController.mEntity.mBody.applyLinearImpulse(mTongueDir.mul(actualLength*0.3f), mAIController.mEntity.mBody.getWorldPoint(new Vec2(0,0)));
-                    //mJoint.m_length = actualLength * 0.99f;
+                    if(actualLength > mTargetDistance)
+                    {
+                        actualLength = mTargetDistance;
+                        //mAIController.mEntity.mBody.applyLinearImpulse(mTongueDir.mul(1f), mAIController.mEntity.mBody.getWorldCenter());
+                        //mAIController.mEntity.mBody.applyLinearImpulse(mTongueDir.mul(actualLength*0.6f), mAIController.mEntity.mBody.getWorldPoint(new Vec2(0,0)));
+                    }
+                    else
+                    {
+                        mTargetDistance = actualLength;
+                    }
+                    //mJoint.m_dampingRatio = 1.0f;
+                    mJoint.m_length = actualLength;
                     //amAIController.mEntity.
 
                     //mJoint.m_length -= 0.01f;
@@ -541,6 +554,10 @@ public class TongueStateMachine {
             {
                 break;
             }
+            case eSwinging:
+            {
+                break;
+            }
             case eIdleAnimation:
             {
                 break;
@@ -550,7 +567,19 @@ public class TongueStateMachine {
     
     private void changeState(State _state)
     {
-        switch (_state)
+        switch(mState)
+        {
+            case eSwinging:
+            {
+                sWorld.destroyJoint(mJoint);
+                mJoint = null;
+            }
+            default:
+            {
+
+            }
+        }
+        switch (_state) //new 
         {
             case eStart:
             {
@@ -662,7 +691,8 @@ public class TongueStateMachine {
                 mAIController.mEntity.mSkin.startAnim("tng", false, 0.0f);
                 mIsTongueActive = true;
                 tongueAttachment = sWorld.getLastTongueHit();
-                //mJoint = sWorld.createTongueJoint(mAIController.mEntity.mBody);
+                mTargetDistance = 2;//mTonguePosition.sub(mAIController.mEntity.mBody.getPosition()).length();
+                mJoint = sWorld.createTongueJoint(mAIController.mEntity.mBody);
             }
         }
         mState = _state;
@@ -689,5 +719,10 @@ public class TongueStateMachine {
     public Vec2 getTongueDir()
     {
         return mTongueDir.clone();
+    }
+    //reel in tongue (in metres)
+    public void reelInTongue(float _scalar)
+    {
+        mTargetDistance -= _scalar;
     }
 }
