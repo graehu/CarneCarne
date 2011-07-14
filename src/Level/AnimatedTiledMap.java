@@ -161,17 +161,20 @@ public class AnimatedTiledMap extends TiledMap
      */
     public void renderAnimatedLayer(float _x, float _y, int _startX, int _startY, int _width, int _height)
     {
-        //assumes lists of equal length
-        int endX = _startX + _width;
-        int endY = _startY + _height;
-        for(int i = _startX; i < endX; i++)
+        if (mIsLoaded)
         {
-            for(int j = _startY; j < endY; j++)
+            //assumes lists of equal length
+            int endX = _startX + _width;
+            int endY = _startY + _height;
+            for(int i = _startX; i < endX; i++)
             {
-                if(i < getWidth() && j < getHeight())
+                for(int j = _startY; j < endY; j++)
                 {
-                    if(mAnimatedLayer[i][j] != null)
-                        mAnimatedLayer[i][j].render(_x, _y);
+                    if(i < getWidth() && j < getHeight())
+                    {
+                        if(mAnimatedLayer[i][j] != null)
+                            mAnimatedLayer[i][j].render(_x, _y);
+                    }
                 }
             }
         }

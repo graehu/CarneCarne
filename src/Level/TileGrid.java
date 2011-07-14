@@ -117,9 +117,7 @@ abstract public class TileGrid {
     {
         placeTileNoBody(_x, _y, _rootId);
         createPhysicsBody(_x, _y, mTiles[_x][_y]);
-    }
-    public void placeTile(Vec2 _worldPosition, int _rootId)
-    {
+        setTileId(_x, _y, _rootId); /// Watch out, this is new and may break things 14/Jul/11
     }
     void placeTileNoBody(int _x, int _y, int _rootId)
     {

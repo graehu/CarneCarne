@@ -18,4 +18,9 @@ abstract public class iAIController {
         mEntity = _entity;
     }
     abstract public void update();
+    
+    public void destroy()
+    {
+        
+    }
 }

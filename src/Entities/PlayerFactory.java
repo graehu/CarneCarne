@@ -22,11 +22,9 @@ import java.util.HashMap;
 public class PlayerFactory implements iEntityFactory {
     
     boolean used;
-    private int players;
     public PlayerFactory()
     {
         used = false;
-        players = 0;
     }
     public Entity useFactory(HashMap _parameters)
     {
@@ -109,12 +107,12 @@ public class PlayerFactory implements iEntityFactory {
             parameters.put("position", position);
             parameters.put("aIEntity", entity);
             parameters.put("category", sWorld.BodyCategories.ePlayer);
+            int player = (Integer)_parameters.get("playerNumber");
             entity.mBody = sWorld.useFactory("PlayerFactory",parameters);
-            PlayerInputController controller = new PlayerInputController(entity, players);
+            PlayerInputController controller = new PlayerInputController(entity, player);
             entity.mController = controller;
             sWorld.addPlayer(entity.mBody);
-            sEvents.triggerEvent(new PlayerCreatedEvent(entity, players));
-            players++;
+            sEvents.triggerEvent(new PlayerCreatedEvent(entity, player));
             return entity;
         }
     }

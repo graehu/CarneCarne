@@ -18,7 +18,6 @@ import Events.AreaEvents.RaceStartZone;
 import Events.PlayerCreatedEvent;
 import Events.sEvents;
 import Level.sLevel.TileType;
-import World.sWorld;
 import java.util.HashMap;
 import java.util.Stack;
 import java.util.Vector;
@@ -92,11 +91,11 @@ public class FlagProcessor
     private Vector<RaceCheckPointParameters> checkPoints;
     RaceStartZoneParameters raceStartZone;
     RaceEndZoneParameters raceEndZone;
-    int mPlayers;
+    StartBarrier mBarrier;
     FlagProcessor(TiledMap _tiledMap, int _levelLayerIndex, Body _levelBody, TileGrid _tileGrid)
     {
+        mBarrier = new StartBarrier();
         raceStartZone = null;
-        mPlayers = 0;
         spawnPoints = new Stack<PlayerSpawnPoint>();
         checkPoints = new Vector<RaceCheckPointParameters>();
         lowestX = lowestY = Integer.MAX_VALUE;
@@ -180,11 +179,6 @@ public class FlagProcessor
                     {
                         playerPositions.push(new Vec2(i,ii));
                     }
-                    else if (spawn.equals("CheckPoint"))
-                    {
-                        parameters.put("position",new Vec2(i,ii));
-                        sWorld.useFactory("CheckPointFactory", parameters);
-                    }
                     else if (spawn.equals("SeeSaw"))
                     {
                         Vec2 dimensions = new Vec2(0,0);
@@ -195,6 +189,10 @@ public class FlagProcessor
                         parameters.put("ref",_tiledMap.getTileProperty(id, "Image","Error, image not defined"));
                         parameters.put("position",new Vec2(i,ii));
                         sEntityFactory.create("SeeSaw", parameters);
+                    }
+                    else if (spawn.equals("StartBarrier"))
+                    {
+                        mBarrier.addTile(i,ii,_tiledMap.getTileId(i, ii, mLayerIndex));
                     }
                     else if (spawn.equals("Platform"))
                     {
@@ -228,6 +226,11 @@ public class FlagProcessor
                 }
             }
         }
+    }
+    public void run()
+    {
+        mBarrier.enable();
+        HashMap parameters = new HashMap();
         RaceStartZone startZone = null;
         if (raceEndZone != null)
         {
@@ -248,15 +251,16 @@ public class FlagProcessor
             startZone = new RaceStartZone(raceStartZone.x, raceStartZone.y, raceStartZone.x2, raceStartZone.y2, zone, playerPositions.size());
             sEvents.addNewAreaEvent(startZone);
         }
+        int players = playerPositions.size();
         while (!playerPositions.isEmpty())
         {
             Vec2 position = playerPositions.pop();
             parameters.put("position", position);
-            parameters.put("playerNumber", --mPlayers);
+            parameters.put("playerNumber", --players);
             parameters.put("checkPoint", new PlayerSpawnZone((int)position.x, (int)position.y, (int)position.x+1, (int)position.y+1, startZone));
             PlayerEntity player = (PlayerEntity)sEntityFactory.create("Player",parameters);
             sPathFinding.addPlayer(player);
-            sEvents.triggerEvent(new PlayerCreatedEvent(player,mPlayers));
+            sEvents.triggerEvent(new PlayerCreatedEvent(player,players));
         }
     }
     private class Tile

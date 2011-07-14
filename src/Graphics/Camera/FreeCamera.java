@@ -19,7 +19,6 @@ import org.newdawn.slick.ShapeFill;
 import org.newdawn.slick.fills.GradientFill;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Vector2f;
-import org.newdawn.slick.opengl.SlickCallable;
 
 /**
  *
@@ -77,7 +76,8 @@ public class FreeCamera extends iCamera implements iEventListener
         sGraphicsManager.endTransform();       
     }
 
-    public void trigger(iEvent _event) {
+    public boolean trigger(iEvent _event)
+    {
         KeyDownEvent event = (KeyDownEvent)_event;
         switch (event.getKey())
         {
@@ -102,6 +102,7 @@ public class FreeCamera extends iCamera implements iEventListener
                 break;
             }
         }
+        return true;
     }
     
     public iCamera addPlayer(Body _body)

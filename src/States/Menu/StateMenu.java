@@ -53,12 +53,13 @@ public class StateMenu extends BasicGameState implements iEventListener{
         mPlayer = _player;
     }
 
-    public void trigger(iEvent _event) 
+    public boolean trigger(iEvent _event) 
     {
         if(_event.getName().equals("KeyDownEvent"+'Q'+mPlayer))
         {
             mChangeToGame.run();
         }
+        return true;
     }
     
 }

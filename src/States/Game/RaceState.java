@@ -35,7 +35,7 @@ class RaceState implements iEventListener
         sEvents.subscribeToEvent("RaceWonEvent", this);
     }
 
-    public void trigger(iEvent _event) 
+    public boolean trigger(iEvent _event) 
     {
         if (_event.getType().equals("RaceWonEvent"))
         {
@@ -43,6 +43,7 @@ class RaceState implements iEventListener
             raceTimes.add(event.getTime());
             changeState(State.eRaceWon);
         }
+        return true;
     }
     
     public void update()

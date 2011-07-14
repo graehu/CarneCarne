@@ -52,9 +52,10 @@ public class RaceEndZone extends CheckPointZone implements iEventListener
         return false;
     }
 
-    public void trigger(iEvent _event)
+    public boolean trigger(iEvent _event)
     {
         RaceResetEvent event = (RaceResetEvent)_event;
         mWinner = null;
+        return true;
     }
 }

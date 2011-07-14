@@ -207,8 +207,9 @@ public class BodyCamera extends iCamera implements iEventListener{
         sGraphicsManager.setScreenDimensions(s);
     }
     
-    public void trigger(iEvent _event)
+    public boolean trigger(iEvent _event)
     {
         mCaveInEvent = (CaveInEvent)_event;
+        return true;
     }
 }

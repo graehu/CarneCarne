@@ -8,7 +8,7 @@ package Events;
  *
  * @author alasdair
  */
-public interface iEventListener {
-    
-    public void trigger(iEvent _event);
+public interface iEventListener
+{
+    public boolean trigger(iEvent _event);
 }

@@ -23,7 +23,10 @@ public class MapClickEvent extends iEvent {
     }
     public String getName()
     {
-        return "MapClickEvent" + mPlayer;
+        if (mLeftButton)
+            return "MapClickEventL" + mPlayer;
+        else
+            return "MapClickEventR" + mPlayer;
     }
     public String getType()
     {
@@ -32,9 +35,5 @@ public class MapClickEvent extends iEvent {
     public Vec2 getPosition()
     {
         return mPosition;
-    }
-    public boolean leftbutton()
-    {
-        return mLeftButton;
     }
 }

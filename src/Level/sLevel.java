@@ -13,6 +13,17 @@ import org.newdawn.slick.SlickException;
  * @author alasdair
  */
 public class sLevel {
+
+    public static void placeTile(int _x, int _y, int _rootId)
+    {
+        mLevelEditor.placeTile(_x, _y, _rootId);
+    }
+
+    static TileGrid getTileGrid()
+    {
+        return mLevelEditor.tileGrid;
+    }
+
     
     public static enum TileType
     {
@@ -70,18 +81,45 @@ public class sLevel {
     private sLevel()
     {
     }
-    public static void init() throws SlickException
+    public static RootTile getRootTile(int _rootId)
     {
-        //mTiledMap = new AnimatedTiledMap("assets/DeekTestMap.tmx"); /// Nomnom tasty poocake
-        mTiledMap = new AnimatedTiledMap("assets/DeekTestMap.tmx");
-        //mTiledMap = new AnimatedTiledMap("assets/Graham_Tutorial.tmx");
-        //mTiledMap = new AnimatedTiledMap("assets/platforms2.tmx");
-        mTiledMap.initAnimationlayer("assets/TileAnimation.def");
+        return mLevelEditor.rootTiles.get(_rootId);
+    }
+    public static void init()
+    {
+        try
+        {
+            mTiledMap = new AnimatedTiledMap("assets/DeekTestMap.tmx");
+            //mTiledMap = new AnimatedTiledMap("assets/Graham_Tutorial.tmx");
+            //mTiledMap = new AnimatedTiledMap("assets/platforms2.tmx");
+        }
+        catch (SlickException e)
+        {
+            assert(false);
+        }
         mLevelEditor = new LevelEditor(mTiledMap);
-        midLayer = mTiledMap.getLayerIndex("Level");
-        flagsLayer = mTiledMap.getLayerIndex("Flags");
         mParralaxXScale = new float[mTiledMap.getLayerCount()];
         mParralaxYScale = new float[mTiledMap.getLayerCount()];
+        for (int i = 0; i < mParralaxXScale.length; i++)
+        {
+            mParralaxXScale[i] = 1.0f;
+            mParralaxYScale[i] = 1.0f;
+        }
+    }
+    public static void loadLevel()
+    {
+        //mTiledMap = new AnimatedTiledMap("assets/DeekTestMap.tmx"); /// Nomnom tasty poocake
+        try
+        {
+            mTiledMap.initAnimationlayer("assets/TileAnimation.def");
+        }
+        catch (SlickException e)
+        {
+            assert(false);
+        }
+        mLevelEditor.init();
+        midLayer = mTiledMap.getLayerIndex("Level");
+        flagsLayer = mTiledMap.getLayerIndex("Flags");
         for (int i = 0; i < mParralaxXScale.length; i++)
         {
             mParralaxXScale[i] = new Float(mTiledMap.getLayerProperty(i, "ScaleX", "1.0"));

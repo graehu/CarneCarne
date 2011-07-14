@@ -662,7 +662,7 @@ public class TongueStateMachine {
                 //render tongue
                 mAIController.mEntity.mSkin.startAnim("tng", false, 0.0f);
                 mIsTongueActive = true;
-                tongueAttachment = sWorld.getLastTongueHit();
+                tongueAttachment = sWorld.getLastTongueHit(mAIController.mPlayer);
                 //mJoint = sWorld.createTongueJoint(mAIController.mEntity.mBody);
             }
         }

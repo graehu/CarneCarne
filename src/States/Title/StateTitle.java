@@ -38,11 +38,13 @@ public class StateTitle extends BasicGameState implements iEventListener{
        return 2;
     }
 
-    public void trigger(iEvent _event) {
+    public boolean trigger(iEvent _event)
+    {
         if(_event.getName().equals("WindowResizeEvent"))
         {
             calcUI();
         }
+        return true;
     }
     
     enum MenuState

@@ -117,11 +117,11 @@ public class XBoxController
         float shoulderButtons =_input.getAxisValue(mPlayer,4);
         if (mTriggerState != TriggerState.eStart || shoulderButtons != -1.0f)
         {
-            if (shoulderButtons > shoulderButtonEpsilon) //right trigger
+            /*if (shoulderButtons > shoulderButtonEpsilon) //left trigger
             {
                 changeState(TriggerState.eLeftPressed, rightStick);
             }
-            else if (shoulderButtons < -shoulderButtonEpsilon) //left trigger
+            else */if (shoulderButtons < -shoulderButtonEpsilon) //right trigger
             {
                 changeState(TriggerState.eRightPressed, rightStick);
             }

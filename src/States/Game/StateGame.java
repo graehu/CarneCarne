@@ -51,7 +51,7 @@ public class StateGame extends BasicGameState implements iEventListener {
     {
     }
     boolean die = false;//FIXME: DELETE
-    public void trigger(iEvent _event) {
+    public boolean trigger(iEvent _event) {
         //on player creation subscribe to their input
         if(_event.getType().equals("PlayerCreatedEvent"))
         {
@@ -69,6 +69,7 @@ public class StateGame extends BasicGameState implements iEventListener {
                 //mChangeToMenu.run();
             }
         }
+        return true;
     }
     
     public int getID()
@@ -80,7 +81,7 @@ public class StateGame extends BasicGameState implements iEventListener {
     {
         if(die) _gc.exit();
         sInput.update(_delta);
-        mGameMode.update(_delta);
+        mGameMode = mGameMode.update(_delta);
         //update particles
         sParticleManager.update(_delta);
     }
@@ -112,7 +113,7 @@ public class StateGame extends BasicGameState implements iEventListener {
     {
         //createRootPane();
         mGameType = GameType.eRaceGame;
-        mGameMode = new RaceMode();
+        mGameMode = new IntroMode();
         
         //subscribe to events (must be done before further initialisation)
         sEvents.subscribeToEvent("PlayerCreatedEvent", this);
@@ -122,6 +123,7 @@ public class StateGame extends BasicGameState implements iEventListener {
         sSpriteFactory.init();
         sWorld.init();
         sLevel.init();
+        //sLevel.loadLevel();
         
         //create state changers
         mChangeToMenu = new StateChanger(4, new BlobbyTransition(), new BlobbyTransition(), _sbg);
