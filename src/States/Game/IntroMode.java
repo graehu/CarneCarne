@@ -6,6 +6,7 @@ package States.Game;
 
 import Entities.PlayerEntity;
 import Entities.sEntityFactory;
+import Events.GenericEvent;
 import Events.TutorialSpawnEvent;
 import Events.iEvent;
 import Events.iEventListener;
@@ -30,11 +31,13 @@ public class IntroMode implements iGameMode, iEventListener
     ArrayList<PlayerEntity> mPlayers;
     ArrayList<IntroSection> mSections;
     Body mGroundBody;
+    int mEndedPlayers = 0;
     public IntroMode()
     {
         mPlayers = new ArrayList<PlayerEntity>();
         mSections = new ArrayList<IntroSection>();
         sEvents.subscribeToEvent("TutorialSpawnEvent", this);
+        sEvents.subscribeToEvent("PlayerEndedTutorialEvent", this);
     }
     boolean inited = false;
     public iGameMode update(float _time)
@@ -109,6 +112,15 @@ public class IntroMode implements iGameMode, iEventListener
             PlayerEntity player = (PlayerEntity)sEntityFactory.create("Player",parameters);
             player.mIntroSection = introSection;
             mPlayers.add(player);
+        }
+        else if (_event.getName().equals("PlayerEndedTutorialEvent"))
+        {
+            mEndedPlayers++;
+            if (mEndedPlayers == 2)
+            {
+                sEvents.triggerEvent(new GenericEvent("AllPlayersTutorialEndedEvent"));
+                return false;
+            }
         }
         else
         {
