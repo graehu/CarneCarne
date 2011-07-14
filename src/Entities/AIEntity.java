@@ -29,6 +29,7 @@ public class AIEntity extends Entity {
     protected Tile mTouchingTile;
     protected String mCurrentAnimation;
     protected float mAnimSpeed;
+    protected Vec2 mFloorNormal;
     protected static int mJumpReload = 60; /// NOTE frame rate change
     protected float mMoveSpeed;
     protected Command mCommand;
@@ -83,6 +84,7 @@ public class AIEntity extends Entity {
             //        other.m_filter.categoryBits == (1 << sWorld.BodyCategories.eNonEdibleTiles.ordinal()))
             //if (other.getUserData() != null)
             {
+                Vec2 collisionNorm = edge.contact.m_manifold.localNormal;
                 if (other.getUserData() != null)
                 {
                     TileType tileType = ((Tile)other.getUserData()).getTileType();
@@ -111,7 +113,7 @@ public class AIEntity extends Entity {
                             break;
                     }
                 }
-                Vec2 collisionNorm = edge.contact.m_manifold.localNormal;
+                
                 float rot = other.getBody().getTransform().getAngle();
                 collisionNorm.x = (float) (collisionNorm.x*Math.cos(rot) - collisionNorm.y*Math.sin(rot));
                 collisionNorm.y = (float) (collisionNorm.x*Math.sin(rot) + collisionNorm.y*Math.cos(rot));
@@ -133,6 +135,7 @@ public class AIEntity extends Entity {
                         if(numContacts == 1 && other.getUserData() != null)
                             mTileType = ((Tile)other.getUserData()).getTileType();
                     }
+                    mFloorNormal = collisionNorm.clone();
                 }
                 else if(collisionNorm.y < - 0.3 || collisionNorm.y > 0.3)//slopes
                 {
@@ -141,6 +144,7 @@ public class AIEntity extends Entity {
                         mJumpContacts++; //allow jump on slopes
                         mAllowRoll = true;
                     }
+                    mFloorNormal = collisionNorm.clone();
                 }
             }
             edge = edge.next;

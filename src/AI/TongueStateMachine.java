@@ -60,6 +60,7 @@ public class TongueStateMachine {
     protected Vec2 mTongueDir = new Vec2(1,0);
     private Vec2 mTonguePosition = new Vec2(0,0);
     private float mTargetDistance = 0; //the distance the tongue trys to achieve
+    private float mLastLength = 0;
     private int mAmmoLeft;
     protected boolean mIsTongueActive = false;
     private String mBlockMaterial;
@@ -307,20 +308,25 @@ public class TongueStateMachine {
                 if (tongueAttachment.hasContact())
                 {
                     //mTongueDir = (mJoint.m_bodyB.getPosition().add(mJoint.m_localAnchor2)).sub((mJoint.m_bodyA.getPosition().add(mJoint.m_localAnchor1)));
-                    mTongueDir = tongueAttachment.getPosition().sub(mAIController.mEntity.mBody.getPosition());
+                    mTongueDir = mJoint.m_bodyB.getWorldPoint(mJoint.m_localAnchor2).sub(mAIController.mEntity.mBody.getPosition());
                     float actualLength = mTongueDir.normalize();
                     setTongue(mTongueDir, actualLength); //lock tongue to block
+                    if(actualLength < mLastLength)
+                        mJoint.m_frequencyHz = 0.001f;
+                    else
+                        mJoint.m_frequencyHz = 3.0f;
+                     mLastLength = actualLength;
                     if(actualLength > mTargetDistance)
                     {
                         actualLength = mTargetDistance;
-                        //mAIController.mEntity.mBody.applyLinearImpulse(mTongueDir.mul(1f), mAIController.mEntity.mBody.getWorldCenter());
-                        //mAIController.mEntity.mBody.applyLinearImpulse(mTongueDir.mul(actualLength*0.6f), mAIController.mEntity.mBody.getWorldPoint(new Vec2(0,0)));
                     }
                     else
                     {
-                        mTargetDistance = actualLength;
+                        mJoint.m_frequencyHz = 0.001f;
                     }
+                    
                     //mJoint.m_dampingRatio = 1.0f;
+                    
                     mJoint.m_length = actualLength;
                     //amAIController.mEntity.
 

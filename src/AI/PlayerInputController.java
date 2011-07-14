@@ -80,13 +80,6 @@ public class PlayerInputController extends iAIController implements iEventListen
         mTongueState.tick(mEntity);
         ((PlayerEntity)mEntity).setDirection(mPlayerDir);
     
-        if(mTongueState.mState != TongueStateMachine.State.eSwinging)
-        {
-            if(mEntity.mBody.getLinearVelocity().x > 0) //moving right
-                mEntity.mBody.setLinearVelocity(new Vec2(Math.min(4,mEntity.mBody.getLinearVelocity().x),mEntity.mBody.getLinearVelocity().y));
-            else //moving left
-                mEntity.mBody.setLinearVelocity(new Vec2(Math.max(-4,mEntity.mBody.getLinearVelocity().x),mEntity.mBody.getLinearVelocity().y));
-        }
         if(mTongueState.mIsTongueActive)
         {
             look(mTongueState.mTongueDir);

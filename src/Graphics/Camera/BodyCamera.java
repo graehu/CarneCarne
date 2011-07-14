@@ -193,7 +193,7 @@ public class BodyCamera extends iCamera implements iEventListener{
         s.x = (mViewPort.getMaxX()- mViewPort.getX());
         s.y = (mViewPort.getMaxY()- mViewPort.getY());
         mTranslation = new Vec2(( (s.x/2)/64.0f), ((s.y/2)/64.0f));
-        mTranslation = mTranslation.add(mLookOffset);
+        //mTranslation = mTranslation.add(mLookOffset); //FIXME: FIX CURSOR BUG
         if (mPosition.x < mTranslation.x)
         {
             mTranslation.x -= ((mTranslation.x)-mPosition.x);
