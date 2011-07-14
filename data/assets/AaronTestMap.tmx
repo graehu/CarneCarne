@@ -412,7 +412,7 @@
  </layer>
  <layer name="Level" width="100" height="100">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC+3TQQrCMBCG0dm48P6n8wjeQmoRRGprk0Vm4nvw70yp+WhExN2ey2J5l9ufL3OPiDF3osfq1ePTL/+j5UzGVegRsX/3R7/fOjv63qv3OKtii6w9ll06n1WxReYevU0qtsjeo6dJxRYVevR+J/HlmVlXoUdLk9H3OnuPvSbXg3OVVqnHVpOZWlTs8d5kthZVe8w8PXItWw8DAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAKDFA5Ob+UlAnAAA
+   H4sIAAAAAAAAC+3SSw7CMAwFQF+r91+x6EG4BYIVigr5ALJVZiRv2iiJ/RIRcVWPqiJ7DlWqiqN7Zc9GHse2mOshe6Znz2N1r5E+s+f/j3n0zsrOoHIe97o0/7ZOvdvr1feqmVTR3qvNZGWv3hnP67JzqJ7HJ5mMvP2R8+Uxn8u+uHfvTHnMZ7LH+lsfXSeP9T5+uV4ea33I4zuyesme/5nzmO07e/byqF9VZM+hSgEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMO8GW5EHZ0CcAAA=
   </data>
  </layer>
  <layer name="Foreground" width="100" height="100">
