@@ -6,6 +6,7 @@ package Events.AreaEvents;
 
 import Entities.PlayerEntity;
 import Events.RaceResetEvent;
+import Events.RaceStartEvent;
 import Events.iEvent;
 import Events.iEventListener;
 import Events.sEvents;
@@ -53,6 +54,10 @@ public class RaceStartZone extends CheckPointZone implements iEventListener
             return true;
         }
         mRaceHasStarted = mPlayers.size() == mNumPlayers;
+        if (mRaceHasStarted)
+        {
+            sEvents.triggerEvent(new RaceStartEvent());
+        }
         return mRaceHasStarted;
     }
     @Override
@@ -68,9 +73,10 @@ public class RaceStartZone extends CheckPointZone implements iEventListener
         }
     }
 
-    public void trigger(iEvent _event)
+    public boolean trigger(iEvent _event)
     {
         RaceResetEvent event = (RaceResetEvent)_event;
         mRaceHasStarted = false;
+        return true;
     }
 }

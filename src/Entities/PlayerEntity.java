@@ -4,7 +4,6 @@
  */
 package Entities;
 
-import AI.PlayerInputController;
 import Entities.AIEntityState.State;
 import Events.AreaEvents.CheckPointZone;
 import Graphics.Skins.iSkin;
@@ -13,6 +12,7 @@ import Graphics.Sprites.sSpriteFactory;
 import Graphics.sGraphicsManager;
 import HUD.Reticle;
 import Level.sLevel.TileType;
+import States.Game.IntroSection;
 import World.sWorld;
 import java.util.HashMap;
 import org.jbox2d.common.Vec2;
@@ -31,6 +31,7 @@ public class PlayerEntity extends AIEntity
     String mBodyType = "bdy";
     private CheckPointZone mOriginalSpawnPoint;
     private CheckPointZone mCheckPoint;
+    public IntroSection mIntroSection;
     private Joint mDeathJoint;
     private Vec2 mDirection;
     public Reticle mReticle;
@@ -55,6 +56,11 @@ public class PlayerEntity extends AIEntity
             assert(false);
         }
         mArrowSprite = sSpriteFactory.create("simple", params, false);
+    }
+    public void destroy() /// FIXME more memory leaks to cleanup in here
+    {
+        /// Purposefully not destroying the body
+        mController.destroy();
     }
     public void setClip(Rectangle _viewPort)
     {
@@ -120,8 +126,8 @@ public class PlayerEntity extends AIEntity
     }
     @Override
     protected void subUpdate()
-    {        
-        if (mCheckPoint.incrementRaceTimer())
+    {
+        if (mCheckPoint != null && mCheckPoint.incrementRaceTimer()) /// FIXME - put this null check in as a quick fix for IntroMode
         {
             mRaceTimer++;
         }
@@ -159,18 +165,23 @@ public class PlayerEntity extends AIEntity
     {
         if (sGraphicsManager.getClip() == mViewPort)
         {
-            mCheckPoint.renderRaceState(mRaceTimer);
-            if(mCheckPoint.getNext() != null)
+            if (mCheckPoint != null)
             {
-                Vec2 direction = mCheckPoint.getNext().getPosition().sub(mBody.getPosition());
-                direction.normalize();
-                float rotation = (float)Math.atan2(direction.y, direction.x);
-                //rotation -= 180.0f;
-                mArrowSprite.setRotation(rotation*180.0f/(float)Math.PI);
-                mArrowSprite.render(mViewPort.getWidth()*0.5f, 0);
+                mCheckPoint.renderRaceState(mRaceTimer);
+                if(mCheckPoint.getNext() != null)
+                {
+                    Vec2 direction = mCheckPoint.getNext().getPosition().sub(mBody.getPosition());
+                    direction.normalize();
+                    float rotation = (float)Math.atan2(direction.y, direction.x);
+                    //rotation -= 180.0f;
+                    mArrowSprite.setRotation(rotation*180.0f/(float)Math.PI);
+                    mArrowSprite.render(mViewPort.getWidth()*0.5f, 0);
+                }
+
+                sGraphicsManager.drawString("You have died " + mDeaths + " times", 0f, 0.1f);
             }
-            
-            sGraphicsManager.drawString("You have died " + mDeaths + " times", 0f, 0.1f);
+            else if (mIntroSection != null)
+                mIntroSection.render();
             mReticle.render(); //always render ontop
         }
     }
@@ -235,6 +246,7 @@ public class PlayerEntity extends AIEntity
             }
         }
     }
+
     
     
 }

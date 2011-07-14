@@ -5,7 +5,6 @@
 package States.Game;
 
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.SlickException;
 
 /**
  *
@@ -13,6 +12,6 @@ import org.newdawn.slick.SlickException;
  */
 public interface iGameMode {
     
-    public void update(float _time);
+    public iGameMode update(float _time);
     public void render(Graphics _graphics);
 }

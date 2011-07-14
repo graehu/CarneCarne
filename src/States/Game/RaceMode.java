@@ -29,30 +29,24 @@ public class RaceMode implements iGameMode, iEventListener
     {
         mTimer = 0;
         mRaceState = new RaceState();
-        try
-        {
-            sEvents.subscribeToEvent("PlayerCreatedEvent", this);
-            sEvents.subscribeToEvent("RaceResetEvent", this);
-        }
-        finally
-        {
-            sEvents.unsubscribeToEvent("PlayerCreatedEvent", this);
-        }
+        sEvents.subscribeToEvent("PlayerCreatedEvent", this);
+        sEvents.subscribeToEvent("RaceResetEvent", this);
     }
-    public void update(float _time)
+    public iGameMode update(float _time)
     {
         mTimer++;
         mRaceState.update();
         sLevel.update();
         sWorld.update(_time);
         sEvents.processEvents();
+        return this;
     }
     public void render(Graphics _graphics)
     {
         sWorld.getCamera().render();
     }
 
-    public void trigger(iEvent _event)
+    public boolean trigger(iEvent _event)
     {
         if (_event.getName().equals("PlayerCreatedEvent"))
         {
@@ -67,5 +61,6 @@ public class RaceMode implements iGameMode, iEventListener
                 entity.resetRace();
             }
         }
+        return true;
     }
 }

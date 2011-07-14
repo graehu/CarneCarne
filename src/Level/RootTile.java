@@ -64,6 +64,10 @@ public abstract class RootTile
         mMaxHealth = _maxHealth;
     }
     
+    public TileType getTileType()
+    {
+        return mTileType;
+    }
     public RootTile getNext()
     {
         return mNext;

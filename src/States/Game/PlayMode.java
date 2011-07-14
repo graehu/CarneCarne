@@ -12,17 +12,18 @@ import Level.sLevel;
  *
  * @author alasdair
  */
-public class PlayMode implements iGameMode {
-    
+public class PlayMode implements iGameMode
+{
     public PlayMode()
     {
         
     }
-    public void update(float _time)
+    public iGameMode update(float _time)
     {
         sLevel.update();
         sWorld.update(_time);
         sEvents.processEvents();
+        return this;
     }
     public void render(Graphics _graphics)
     {

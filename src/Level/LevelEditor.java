@@ -17,6 +17,7 @@ public class LevelEditor {
     int layerIndex;
     RootTileList rootTiles;
     TileGrid tileGrid;
+    FlagProcessor mFlagProcessor;
     
     public LevelEditor(TiledMap _tiledMap)
     {
@@ -24,11 +25,14 @@ public class LevelEditor {
         layerIndex = mTiledMap.getLayerIndex("Level");
         
         rootTiles = new RootTileList(mTiledMap);
-        
         tileGrid = new LevelTileGrid(mTiledMap, rootTiles, layerIndex);
+        mFlagProcessor = new FlagProcessor(mTiledMap, layerIndex, tileGrid.mBody, tileGrid);
         
-        FlagProcessor flagProcessor = new FlagProcessor(_tiledMap, layerIndex, tileGrid.mBody, tileGrid);
-        flagProcessor = null;
+    }
+    void init()
+    {
+        mFlagProcessor.run();
+        mFlagProcessor = null;
     }
     private LevelEditor(TiledMap _tiledMap, RootTileList _rootTiles, int _layerIndex)
     {
@@ -80,4 +84,5 @@ public class LevelEditor {
     {
         return tileGrid.damageTile(_x, _y);
     }
+
 }

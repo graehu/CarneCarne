@@ -15,7 +15,9 @@ import World.PhysicsFactories.TileFactory;
 import World.PhysicsFactories.iPhysicsFactory;
 import World.PhysicsFactories.BoxCharFactory;
 import Entities.Entity;
+import Entities.SpatBlock;
 import Events.AreaEvents.AreaEvent;
+import Events.PlayerSwingEvent;
 import Events.TileDestroyedEvent;
 import Events.iEvent;
 import Events.iEventListener;
@@ -23,8 +25,11 @@ import Events.sEvents;
 import Graphics.Camera.FreeCamera;
 import Graphics.Camera.iCamera;
 import Graphics.sGraphicsManager;
+import Level.RootTile;
 import Level.Tile;
+import Level.sLevel;
 import Level.sLevel.TileType;
+import World.PhysicsFactories.GroundBodyFactory;
 import World.PhysicsFactories.PlayerFactory;
 import java.util.HashMap;
 import org.jbox2d.callbacks.QueryCallback;
@@ -61,12 +66,14 @@ public class sWorld
         {
             sEvents.subscribeToEvent("WindowResizeEvent", this);
         }
-        public void trigger(iEvent _event) {
+        public boolean trigger(iEvent _event)
+        {
             if(_event.getType().equals("WindowResizeEvent"))
             {
                 Vec2 s = sGraphicsManager.getTrueScreenDimensions();
                 sWorld.resizeViewport(new Rectangle(0,0,s.x, s.y));
             }
+            return true;
         }
     }
 
@@ -109,7 +116,8 @@ public class sWorld
         factories.put("SeeSawBodyFactory", new SeeSawBodyFactory());
         factories.put("MovingPlatformBodyFactory", new MovingPlatformBodyFactory());
         factories.put("FireParticleBody", new FireParticleBody());
-        mCamera = new FreeCamera( new Rectangle(0,0,s.x, s.y));        
+        factories.put("GroundBody", new GroundBodyFactory());
+        mCamera = new FreeCamera(new Rectangle(0,0,s.x, s.y));        
         resizeViewport(new Rectangle(0,0,s.x, s.y));    
         mResizeListener = new ResizeListener();
     }
@@ -190,6 +198,13 @@ public class sWorld
             return null;
         }
         mLastHit = callback.getFixture();
+        if (callback.getFixture().m_filter.categoryBits == (1 << BodyCategories.eSpatTiles.ordinal()))
+        {
+            int id = ((SpatBlock)callback.getFixture().getBody().getUserData()).getRootId();
+            RootTile tile = sLevel.getRootTile(id);
+            mWorld.destroyBody(callback.getFixture().getBody());
+            return new Tile(id, tile, null, -1, -1);
+        }
         Tile tile = (Tile)callback.getFixture().getUserData();
         Tile ret = tile;
         if (tile != null)
@@ -259,6 +274,12 @@ public class sWorld
         }
         return true;
     }
+    public static iCamera switchCamera(iCamera _newCamera)
+    {
+        iCamera camera = mCamera;
+        mCamera = _newCamera;
+        return camera;
+    }
     public static Body searchAABB(AABB _aabb, int _collisionMask)
     {
         AABBCallback callback = new AABBCallback(_collisionMask);
@@ -284,8 +305,9 @@ public class sWorld
         Joint joint = mWorld.createJoint(def);
         return joint;
     }
-    public static TongueAnchor getLastTongueHit()
+    public static TongueAnchor getLastTongueHit(int _player)
     {
+        sEvents.triggerEvent(new PlayerSwingEvent(_player));
         return mLastTongueAnchor;
     }
     public static DistanceJoint createTongueJoint(Body _body)

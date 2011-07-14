@@ -38,6 +38,10 @@ public class Tile
         mYTile = _yTile;
         isOnFire = false;
     }
+    public RootTile getRootTile()
+    {
+        return mRootId;
+    }
     public TileType getTileType()
     {
         return mRootId.mTileType;

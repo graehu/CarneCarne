@@ -33,7 +33,6 @@ public class PlayerInputController extends iAIController implements iEventListen
     {
         return mTongueState.isSwinging();
     }
-
     public Vec2 getTongueDir()
     {
         return mTongueState.getTongueDir();
@@ -51,7 +50,7 @@ public class PlayerInputController extends iAIController implements iEventListen
     private TongueStateMachine mTongueState;
     protected String mFaceDirAnim;
     public Vec2 mPlayerDir = new Vec2(1,0);
-    private int mPlayer;
+    int mPlayer;
     int actionTimer = 0, actionDelay = 10;
     
     public PlayerInputController(AIEntity _entity, int _player)
@@ -65,13 +64,30 @@ public class PlayerInputController extends iAIController implements iEventListen
         sEvents.subscribeToEvent("KeyDownEvent"+'s'+_player, this);
         sEvents.subscribeToEvent("KeyDownEvent"+'d'+_player, this);
         sEvents.subscribeToEvent("KeyDownEvent"+' '+_player, this);
-        sEvents.subscribeToEvent("MapClickEvent"+_player, this);
+        sEvents.subscribeToEvent("MapClickEventL"+_player, this);
+        sEvents.subscribeToEvent("MapClickEventR"+_player, this);
         sEvents.subscribeToEvent("MapClickReleaseEvent"+_player, this);
         sEvents.subscribeToEvent("MouseMoveEvent"+_player, this);
         sEvents.subscribeToEvent("MouseDragEvent"+_player, this);
         sEvents.subscribeToEvent("AnalogueStickEvent"+_player, this);
         sEvents.subscribeToEvent("RightStickEvent"+_player, this);
         mTongueState = new TongueStateMachine(this);
+    }
+    @Override
+    public void destroy() /// FIXME more memory leaks to clean up in here
+    {
+        sEvents.unsubscribeToEvent("KeyDownEvent"+'w'+mPlayer, this);
+        sEvents.unsubscribeToEvent("KeyDownEvent"+'a'+mPlayer, this);
+        sEvents.unsubscribeToEvent("KeyDownEvent"+'s'+mPlayer, this);
+        sEvents.unsubscribeToEvent("KeyDownEvent"+'d'+mPlayer, this);
+        sEvents.unsubscribeToEvent("KeyDownEvent"+' '+mPlayer, this);
+        sEvents.unsubscribeToEvent("MapClickEventL"+mPlayer, this);
+        sEvents.unsubscribeToEvent("MapClickEventR"+mPlayer, this);
+        sEvents.unsubscribeToEvent("MapClickReleaseEvent"+mPlayer, this);
+        sEvents.unsubscribeToEvent("MouseMoveEvent"+mPlayer, this);
+        sEvents.unsubscribeToEvent("MouseDragEvent"+mPlayer, this);
+        sEvents.unsubscribeToEvent("AnalogueStickEvent"+mPlayer, this);
+        sEvents.unsubscribeToEvent("RightStickEvent"+mPlayer, this);
     }
     
     public void update()
@@ -175,7 +191,7 @@ public class PlayerInputController extends iAIController implements iEventListen
                 .setAngularOffset(((float)Math.atan2(mPlayerDir.y, mPlayerDir.x) * 180.0f/(float)Math.PI)-270.0f);
     }
 
-    public void trigger(final iEvent _event)
+    public boolean trigger(final iEvent _event)
     {
         if (_event.getType().equals("RightStickEvent"))
         {
@@ -201,7 +217,7 @@ public class PlayerInputController extends iAIController implements iEventListen
         }
         //-------------------------------------------------------
         else if(mEntity.isDead())
-            return; // if dead accept only look input
+            return true;// if dead accept only look input
         //-------------------------------------------------------
         else if (_event.getType().equals("KeyDownEvent"))
         {
@@ -276,22 +292,26 @@ public class PlayerInputController extends iAIController implements iEventListen
                 mTongueState.rightRelease(event.getPosition());
             }            
         }
-        else //assume MapClick
+        else if (_event.getType().equals("MapClickEventL"+mPlayer))
         {
             if(actionTimer < actionDelay)
-                return;
+                return true;
             else
                 actionTimer = 0;
             MapClickEvent event = (MapClickEvent)_event;
-            if (event.leftbutton())
-            {
-                mTongueState.leftClick(event.getPosition());
-            }
-            else
-            {
-                mTongueState.rightClick(event.getPosition());
-            }
+            mTongueState.leftClick(event.getPosition());
         }
+        else if (_event.getType().equals("MapClickEventR"+mPlayer))
+        {
+            if(actionTimer < actionDelay)
+                return true;
+            else
+                actionTimer = 0;
+            MapClickEvent event = (MapClickEvent)_event;
+            mTongueState.rightClick(event.getPosition());
+        }
+        else throw new UnsupportedOperationException();
+        return true;
     }    
     private void look(final Vec2 _direction)
     {

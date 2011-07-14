@@ -37,7 +37,7 @@ public class GumLandEvent extends iEvent
     @Override
     public boolean process()
     {
-        mTile.getTileGrid().placeTile(mTile.getLocalPosition(), mRootId);
+        //mTile.getTileGrid().placeTile(mTile.getLocalPosition(), mRootId);
         sWorld.destroyBody(mBody);
         return true;
     }

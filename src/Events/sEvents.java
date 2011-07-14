@@ -6,11 +6,12 @@ package Events;
 
 import Events.AreaEvents.AreaEvent;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Set;
 import java.util.Stack;
-import main.sLog;
 /**
  *
  * @author alasdair
@@ -19,9 +20,15 @@ public class sEvents {
     
     private static Hashtable<String,LinkedList<iEventListener>> mTable = new Hashtable<String,LinkedList<iEventListener>>();
     private static Collection<iEvent> delayedEvents = new LinkedList<iEvent>();
+    private static Set<String> blockedEvents = new HashSet<String>();
 
     public static void addNewAreaEvent(AreaEvent _areaEvent)
     {
+    }
+
+    public static void unblockAllEvents()
+    {
+        blockedEvents = new HashSet<String>();
     }
     private sEvents()
     {
@@ -46,12 +53,8 @@ public class sEvents {
     }
     public static void unsubscribeToEvent(String _eventName, iEventListener _listener)
     {
-        assert(false);
-        /*iEventListener removed = (iEventListener)mTable.remove(_eventName);
-        if (removed != _listener)
-        {
-            sLog.error("Listener was not registered");
-        }*/
+        LinkedList<iEventListener> list = mTable.get(_eventName);
+        list.remove(_listener);
     }
     public static void triggerDelayedEvent(iEvent _event)
     {
@@ -66,12 +69,7 @@ public class sEvents {
         while(i.hasNext())
         {
             iEvent event = i.next();
-            LinkedList<iEventListener> list = mTable.get(event.getName());
-            if (list != null)
-            {
-                for (iEventListener listener: list)
-                    listener.trigger(event);
-            }
+            triggerEvent(event);
             if (event.process())
             {
                 i.remove();
@@ -83,14 +81,34 @@ public class sEvents {
         }
         delayedEvents = currentEvents;
     }
+    public static void blockEvent(String _name)
+    {
+        blockedEvents.add(_name);
+    }
+    public static void unblockEvent(String _name)
+    {
+        blockedEvents.remove(_name);
+    }
     public static void triggerEvent(iEvent _event)
     {
-        LinkedList<iEventListener> list = mTable.get(_event.getName());
-        if (list != null)
+        if (!blockedEvents.contains(_event.getName()))
         {
-            for (iEventListener listener: list)
-                listener.trigger(_event);
+            LinkedList<iEventListener> list = mTable.get(_event.getName());
+            if (list != null)
+            {
+                /*for (iEventListener listener: list)
+                    listener.trigger(_event);*/
+                Iterator<iEventListener> i = list.iterator();
+                while(i.hasNext())
+                {
+                    iEventListener listener = i.next();
+                    if (!listener.trigger(_event))
+                    {
+                        i.remove();
+                    }
+                }
+            }
+            _event.process();
         }
-        _event.process();
     }
 }
