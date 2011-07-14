@@ -4,6 +4,7 @@
  */
 package Entities;
 
+import AI.PlayerInputController;
 import Entities.AIEntityState.State;
 import Events.AreaEvents.CheckPointZone;
 import Graphics.Skins.iSkin;
@@ -226,7 +227,7 @@ public class PlayerEntity extends AIEntity
         }
         else*/
         {
-            mBody.applyLinearImpulse(new Vec2(0.1f*_value,0), mBody.getWorldCenter());
+            mBody.applyLinearImpulse(new Vec2(0.3f*_value,0), mBody.getWorldCenter());
         }
     }
     

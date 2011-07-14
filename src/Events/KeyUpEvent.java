@@ -11,14 +11,15 @@ package Events;
 public class KeyUpEvent extends iEvent {
     
     private char mKey;
-    public KeyUpEvent(char _key)
+    private int mPlayer;
+    public KeyUpEvent(char _key, int _player)
     {
         mKey = _key;
+        mPlayer = _player;
     }
-    
     public String getName()
     {
-        return "KeyUpEvent" + mKey;
+        return getType() + mKey + mPlayer;
     }
     public String getType()
     {

@@ -7,6 +7,7 @@ package Entities;
 import AI.iAIController;
 import AI.iPathFinding.Command;
 import Entities.AIEntityState.State;
+import Graphics.Particles.sParticleManager;
 import Graphics.Skins.iSkin;
 import Level.Tile;
 import Level.sLevel.TileType;
@@ -166,7 +167,7 @@ public class AIEntity extends Entity {
     {
         float waterHeight = mAIEntityState.getWaterHeight();
         waterHeight = mBody.getPosition().y + 1 - waterHeight;
-        mBody.applyLinearImpulse(new Vec2(0, -waterHeight*0.8f), mBody.getWorldCenter());
+        mBody.applyLinearImpulse(new Vec2(0, -waterHeight*1.2f), mBody.getWorldCenter());
         if (waterHeight > 1.0f)
         {
             waterHeight = 1.0f;
@@ -184,6 +185,9 @@ public class AIEntity extends Entity {
         {
             case eFalling:
             case eFallingDoubleJumped:
+            {
+                mBody.m_fixtureList.m_friction = 1;
+            }
             case eJumping:
             {
                 airControl(value);
@@ -241,6 +245,7 @@ public class AIEntity extends Entity {
             mBody.setLinearVelocity(new Vec2(mBody.getLinearVelocity().x, canJump));
             mJumpTimer = mJumpReload;
             mAIEntityState.jump();
+            sParticleManager.createSystem("cloud", sWorld.translateToWorld(mBody.getPosition()).sub(sWorld.getPixelTranslation()).add(new Vec2(32,64)), 1f);
         }
     }
     public void stopJumping()
