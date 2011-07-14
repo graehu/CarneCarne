@@ -314,7 +314,7 @@ public class TongueStateMachine {
                     if(actualLength < mLastLength)
                         mJoint.m_frequencyHz = 0.001f;
                     else
-                        mJoint.m_frequencyHz = 3.0f;
+                        mJoint.m_frequencyHz = 4f;
                      mLastLength = actualLength;
                     if(actualLength > mTargetDistance)
                     {

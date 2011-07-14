@@ -54,6 +54,9 @@ public class AIEntity extends Entity {
     }
     public void update()
     {
+        //dampen
+        mBody.setAngularDamping(8);
+        
         //count contacts
         int numContacts = 0;
         ContactEdge edgeCounter = mBody.m_contactList;
@@ -155,7 +158,6 @@ public class AIEntity extends Entity {
         {
             mJumpTimer--;
         }
-        mBody.setAngularDamping(8);
 
         mController.update();
         subUpdate();

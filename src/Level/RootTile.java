@@ -103,7 +103,7 @@ public abstract class RootTile
         }
         else if (mTileType.equals(TileType.eBouncy))
         {
-            fixture.restitution = 1.0f;
+            fixture.restitution = 0.8f;
         }
         else if (mTileType.equals(TileType.eTar))
         {
