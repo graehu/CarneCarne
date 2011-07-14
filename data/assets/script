@@ -1,0 +1,9 @@
+echo "convert -resize 275x150 SignTutorialXXXX.png SignTutorialXXXX1.png; rm SignTutorialXXXX.png; mv SignTutorialXXXX1.png SignTutorialXXXX.png" > file
+for file in `ls SignTutorial*.png`
+do
+    echo "$file" > file2
+    NAME=`sed s/SignTutorial// file2 | sed s/.png//`
+    sed s/XXXX/$NAME/g file > file3
+    chmod u+x file3
+    ./file3
+done
