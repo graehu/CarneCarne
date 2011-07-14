@@ -230,15 +230,20 @@ public class PlayerEntity extends AIEntity
     @Override
     protected void airControl(float _value)
     {
-        /*if (((PlayerInputController)mController).isSwinging())
+        float max = 8;
+        if(_value >= 0)
         {
-            Vec2 tongueDir = ((PlayerInputController)mController).getTongueDir();
-            tongueDir = new Vec2(-tongueDir.y,tongueDir.x).mul(_value);
-            mBody.applyLinearImpulse(tongueDir, mBody.getWorldCenter());
+            if(mBody.getLinearVelocity().x < max)
+            {
+                mBody.applyLinearImpulse(new Vec2(0.3f*_value,0), mBody.getWorldCenter());
+            }
         }
-        else*/
+        else //if(_value < 0)
         {
-            mBody.applyLinearImpulse(new Vec2(0.3f*_value,0), mBody.getWorldCenter());
+            if(mBody.getLinearVelocity().x > -max)
+            {
+                mBody.applyLinearImpulse(new Vec2(0.3f*_value,0), mBody.getWorldCenter());
+            }
         }
     }
 

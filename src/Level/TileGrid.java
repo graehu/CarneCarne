@@ -228,6 +228,8 @@ abstract public class TileGrid {
     boolean boundaryFrom(int _xTile, int _yTile, Direction _direction, TileType _tileType)
     {
         Tile tile = get(_xTile, _yTile);
+        if(tile == null)
+            return false;
         return tile.mRootId.boundaryFrom(_direction, _tileType, MaterialEdges.GraphicalEdges);
     }
 }
