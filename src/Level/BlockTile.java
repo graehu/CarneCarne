@@ -19,13 +19,13 @@ import org.jbox2d.dynamics.Fixture;
  */
 public class BlockTile extends RootTile
 {
-    public BlockTile(int _id, sLevel.TileType _tileType, String _animationsName, boolean _regrows, boolean _anchor, boolean _isFlammable, int _maxHealth)
+    public BlockTile(int _id, sLevel.TileType _tileType, String _animationsNames[], boolean _regrows, boolean _anchor, boolean _isFlammable, int _maxHealth)
     {
-        super(TileShape.eBlock, _id, _tileType, _animationsName, _regrows, _anchor, _isFlammable, _maxHealth);
+        super(TileShape.eBlock, _id, _tileType, _animationsNames, _regrows, _anchor, _isFlammable, _maxHealth);
     }
-    public BlockTile(int _id, sLevel.TileType _tileType, String _animationsName, boolean _regrows, boolean _anchor, boolean _isFlammable, int _maxHealth, TileShape _shape)
+    public BlockTile(int _id, sLevel.TileType _tileType, String _animationsNames[], boolean _regrows, boolean _anchor, boolean _isFlammable, int _maxHealth, TileShape _shape)
     {
-        super(_shape, _id, _tileType, _animationsName, _regrows, _anchor, _isFlammable, _maxHealth);
+        super(_shape, _id, _tileType, _animationsNames, _regrows, _anchor, _isFlammable, _maxHealth);
     }
     protected Shape createShape(int _xTile, int _yTile)
     {

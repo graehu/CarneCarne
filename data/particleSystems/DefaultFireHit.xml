@@ -2,18 +2,18 @@
 <system additive="true" points="false">
 <emitter imageName="" name="Default" renderType="inherit" useAdditive="false" useOriented="false">
 <spawnInterval enabled="true" max="30.0" min="20.0"/>
-<spawnCount enabled="true" max="8.0" min="2.0"/>
-<initialLife enabled="true" max="2000.0" min="1500.0"/>
-<initialSize enabled="true" max="20.0" min="10.0"/>
+<spawnCount enabled="true" max="10.0" min="4.0"/>
+<initialLife enabled="true" max="1500.0" min="1000.0"/>
+<initialSize enabled="true" max="60.0" min="20.0"/>
 <xOffset enabled="true" max="20.0" min="-20.0"/>
 <yOffset enabled="true" max="20.0" min="-20.0"/>
 <initialDistance enabled="false" max="0.0" min="0.0"/>
 <speed enabled="true" max="500.0" min="200.0"/>
 <length enabled="true" max="100.0" min="50.0"/>
 <emitCount enabled="false" max="1000.0" min="1000.0"/>
-<spread type="random" value="130.0"/>
+<spread type="random" value="54.0"/>
 <angularOffset type="simple" value="0.0"/>
-<growthFactor type="simple" value="-10.0"/>
+<growthFactor type="simple" value="-84.0"/>
 <gravityFactor type="simple" value="0.0"/>
 <windFactor type="simple" value="0.0"/>
 <startAlpha type="simple" value="205.0"/>

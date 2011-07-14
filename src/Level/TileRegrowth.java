@@ -83,7 +83,10 @@ public class TileRegrowth
             {
                 tile.timer = mFrames + animatedRegrowthTime;
                 respawningTiles.add(tile);
-                mTileGrid.tiledMap.createAnimatedTile(tile.x, tile.y,tile.mRootId.mAnimationsName + "GrowBack");
+                if (tile.mRootId.getAnimationsName(RootTile.AnimationType.eSpawn).equals("Default")) /// FIXME remove this
+                    mTileGrid.tiledMap.createAnimatedTile(tile.x, tile.y,"Meat" + "GrowBack");
+                else
+                    mTileGrid.tiledMap.createAnimatedTile(tile.x, tile.y,tile.mRootId.getAnimationsName(RootTile.AnimationType.eSpawn) + "GrowBack");
             }
             else
             {
@@ -103,7 +106,7 @@ public class TileRegrowth
                     if (mTileGrid.mTiles[tile.x][tile.y].mRootId.mId == 0)
                     {
                         placeTile(tile);
-                        sParticleManager.createSystem(tile.mRootId.mAnimationsName + "SpawnParticle", new Vec2(32.0f+(tile.x*64.0f), 32.0f+(tile.y*64.0f)), 1);
+                        sParticleManager.createSystem(tile.mRootId.getAnimationsName(RootTile.AnimationType.eSpawn) + "SpawnParticle", new Vec2(32.0f+(tile.x*64.0f), 32.0f+(tile.y*64.0f)), 1);
                     }
                 }
                 else
@@ -126,7 +129,8 @@ public class TileRegrowth
             if (sWorld.searchAABB(aabb, (1 << sWorld.BodyCategories.ePlayer.ordinal())) == null)
             {
                 placeTile(blockedTile);
-                sParticleManager.createSystem(blockedTile.mRootId.mAnimationsName + "SpawnParticle", new Vec2(32.0f+(blockedTile.x*64.0f), 32.0f+(blockedTile.y*64.0f)), 1);
+                String name = blockedTile.mRootId.getAnimationsName(RootTile.AnimationType.eSpawn) + "SpawnParticle";
+                sParticleManager.createSystem(name, new Vec2(32.0f+(blockedTile.x*64.0f), 32.0f+(blockedTile.y*64.0f)), 1);
                 iter.remove();
             }
         }

@@ -22,9 +22,9 @@ import org.jbox2d.dynamics.FixtureDef;
  */
 class WaterTile extends RootTile {
 
-    public WaterTile(int _rootId, TileType _tileType, String _animationsName)
+    public WaterTile(int _rootId, TileType _tileType, String _animationsNames[])
     {
-        super(TileShape.eBlock, _rootId, _tileType, _animationsName, false, true, false, -1);
+        super(TileShape.eBlock, _rootId, _tileType, _animationsNames, false, true, false, -1);
     }
 
     Body createPhysicsBody(int _xTile, int _yTile, HashMap _parameters)

@@ -24,6 +24,7 @@
   <tile id="0">
    <properties>
     <property name="Anchor " value="True"/>
+    <property name="Animationsname" value="Tar"/>
     <property name="Flammable" value="True"/>
     <property name="Material" value="Tar"/>
     <property name="Regrows" value="False"/>
@@ -36,6 +37,7 @@
   <tile id="0">
    <properties>
     <property name="Anchor" value="True"/>
+    <property name="Animationsname" value="Bone"/>
     <property name="Direction" value="Up"/>
     <property name="Material" value="Swingable"/>
     <property name="Size" value="11"/>
@@ -54,6 +56,7 @@
   <tile id="0">
    <properties>
     <property name="Anchor" value="True"/>
+    <property name="Animationsname" value="Bone"/>
     <property name="Direction" value="Right"/>
     <property name="Material" value="Swingable"/>
     <property name="Size" value="11"/>
@@ -72,6 +75,7 @@
   <tile id="0">
    <properties>
     <property name="Anchor" value="True"/>
+    <property name="Animationsname" value="Bone"/>
     <property name="Direction" value="Down"/>
     <property name="Material" value="Swingable"/>
     <property name="Size" value="2"/>
@@ -81,6 +85,7 @@
   <tile id="4">
    <properties>
     <property name="Anchor" value="True"/>
+    <property name="Animationsname" value="Bone"/>
     <property name="Direction" value="Up"/>
     <property name="Material" value="Swingable"/>
     <property name="Size" value="2"/>
@@ -90,6 +95,7 @@
   <tile id="8">
    <properties>
     <property name="Anchor" value="True"/>
+    <property name="Animationsname" value="Bone"/>
     <property name="Direction" value="Right"/>
     <property name="Material" value="Swingable"/>
     <property name="Size" value="3"/>
@@ -99,6 +105,7 @@
   <tile id="14">
    <properties>
     <property name="Anchor" value="True"/>
+    <property name="Animationsname" value="Bone"/>
     <property name="Direction" value="Left"/>
     <property name="Material" value="Swingable"/>
     <property name="Size" value="3"/>
@@ -110,22 +117,28 @@
   <image source="chilli.png" width="128" height="256"/>
   <tile id="0">
    <properties>
+    <property name="Animationsname" value="Chilli"/>
     <property name="Direction" value="Down"/>
     <property name="Material" value="Chilli"/>
+    <property name="Regrows" value="False"/>
     <property name="Type" value="Edge"/>
    </properties>
   </tile>
   <tile id="2">
    <properties>
+    <property name="Animationsname" value="Chilli"/>
     <property name="Direction" value="Up"/>
     <property name="Material" value="Chilli"/>
+    <property name="Regrows" value="False"/>
     <property name="Type" value="Line"/>
    </properties>
   </tile>
   <tile id="6">
    <properties>
+    <property name="Animationsname" value="Chilli"/>
     <property name="Direction" value="Up"/>
     <property name="Material" value="Chilli"/>
+    <property name="Regrows" value="False"/>
     <property name="Type" value="Edge"/>
    </properties>
   </tile>
@@ -187,6 +200,8 @@
   <tile id="0">
    <properties>
     <property name="Anchor" value="False"/>
+    <property name="Animationsname" value="Meat"/>
+    <property name="FireHitAnimation" value="Default"/>
     <property name="Material" value="Edible"/>
     <property name="Type" value="Block"/>
    </properties>
@@ -224,6 +239,7 @@
   <image source="TileIce.png" width="256" height="256"/>
   <tile id="0">
    <properties>
+    <property name="Animationsname" value="Ice"/>
     <property name="Material" value="Ice"/>
     <property name="Regrows" value="False"/>
     <property name="Type" value="Block"/>
@@ -339,6 +355,8 @@
   <image source="TileMelonFlesh.png" width="256" height="256"/>
   <tile id="0">
    <properties>
+    <property name="Animationsname" value="MelonF"/>
+    <property name="FireHitAnimation" value="Default"/>
     <property name="Material" value="MelonFlesh"/>
     <property name="Regrows" value="No"/>
     <property name="Type" value="Block"/>
@@ -412,7 +430,7 @@
  </layer>
  <layer name="Level" width="100" height="100">
   <data encoding="base64" compression="gzip">
-   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
+   H4sIAAAAAAAAC+2aOW4UQRSGeyQ2CUts8hEICAgICAgJCDgAByBwQMARHFiQEFqW8ElYhvUcPsLcghrRJRdFva22qR7/n/TkcdfW9f5+73X3zGaapg1sWs+WM7YWNeZ7mjj2vHDOmIfG4xzrxOd1ZFP0mRpfG6/HacEczxLHXsx/LwJLwbWFPDIep/DXf+z/2Lg+NeMhJIy3s4J5Unq8nP/W0uOx8TgFp4FvP2XaqJiphdfj3NnHRPsqYTFLiw/Kx97OiOM99TicLeZVwmKWEh+SDt7OhfZd6nGYsJilxocmVnZVQ0Ler/6alh7x8cR4nEJTyzUataKVHrXj4x1x/EQxdgvl57hNq08rlhIfWj44e+3saLY3zt5O+ntZizYt8HqEfrHqsVQs+SnWsBVeD+reyXPUyXqirdu7iA+/zifCcuM6zFdce8t9tn7vFXNc8Vw/E9brnV4LWs1Lza29x6Dm2wSfvxDWck9+7dSzTg3rrUfpfKEeXwnroccuLHft8Lw5rLnLcl77xibxV7Nfi1+suQt65O+t5DsKin31tYZSPUq+o6Cw6HFRwUaiVI/zWicScJX1GJGcfHVtNU3Xnd1wdrPDe5Xe69Ug95kw1EO771ury3dctxP9NPNonsV9H2k9y5whGp8dC/2ottxnwlAPbt/hXg+CfndW//fZzrO995D8F8JpSK0Xn5dmrhCNz06EfiXP4ilCPSQ/e+66tnvO7jt7kNgvNQ/nJ38tbHWMNZTWi9HG04iEelj37dHqxfmJiwGOlMa5c42ApZ6X1lXOT5SG0popjXOvqxGw6KHNA5QPc/yUWlNTy5aK5X2Idu85+Zu6N5LW5DRu+b1RKyzPqNrr+2B1eX/F3RdosMTUEv0fI+kh5e91oo/kQ25OTY0qHT8ykh6a3GPNT1z/0vWkejM6/3wX5c5/7eybs+/zXjTPJNaayvX3bdt8R80Vj9+n+h7W8x/u/H86++Xs97wXTf6W+lieJ1NtpeOXxK6+J4XxBnh6+k47p/U3Y1yfjXLsqLS8hi16hP6jfKnpQ42L+4/KKHpoYiClAacL1zYqo+mhjQFNDCFf5c1NxYA1Hiw5blRG0UObqzQaSf+PrEdLauqhqSWWea4iuXpofV2Sz64iVj2s17wfkzNuCZrUflasdb/L1WYuRqT+o5Hjc8s7EsucpfUiJ0ao/fQmd13rO6uS+MjNQdwcqZo+gh45aLWopQeniTZH5dSPJehh0aJED81zQ5zbNGP2SQ+rFi30kHxO1R9KL3+M2u+o5GiRq0eNepFTz1N7HpFcLSg9uN9n5NaK0rpO7dtKjfsjbb9aenC/3YjzSirPaLWR6romX7Wy3nB6SL/tl65vKSaoGmLNV/tMqIf0+0uLL6X6DtL0ivtd5QMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEA7/gDF7YxJQJwAAA==
   </data>
  </layer>
  <layer name="Foreground" width="100" height="100">

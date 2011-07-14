@@ -7,6 +7,7 @@ package Entities;
 import AI.iPlatformController;
 import Graphics.Skins.iSkin;
 import Graphics.sGraphicsManager;
+import Level.Tile;
 import World.sWorld;
 import org.jbox2d.common.Vec2;
 
@@ -37,7 +38,9 @@ public class CaveIn extends Entity
         {
             mPlatformController.update();
         }
+        ((Tile)mBody.getFixtureList().getUserData()).updateSystems();
     }
+    @Override
     public void render()
     { 
         sGraphicsManager.beginTransform();

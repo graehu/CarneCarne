@@ -7,6 +7,7 @@ package Entities;
 import Graphics.Particles.ParticleSysBase;
 import Graphics.Particles.sParticleManager;
 import Graphics.Skins.iSkin;
+import Level.RootTile.AnimationType;
 import Level.Tile;
 import World.sWorld;
 import World.sWorld.BodyCategories;
@@ -54,7 +55,7 @@ public class FireParticle extends Entity
                     Tile tile = (Tile)edge.contact.m_fixtureA.getUserData();
                     if (tile == null)
                         tile = (Tile)edge.contact.m_fixtureB.getUserData();
-                    ParticleSysBase system = sParticleManager.createSystem(tile.getAnimationsName() + "FireHit", this.mBody.getPosition().add(new Vec2(0.5f,0.5f)).mul(64.0f), 2);
+                    ParticleSysBase system = sParticleManager.createSystem(tile.getAnimationsName(AnimationType.eFireHit) + "FireHit", this.mBody.getPosition().add(new Vec2(0.5f,0.5f)).mul(64.0f), 2);
                     Vec2 direction = this.mBody.getLinearVelocity();
                     direction.normalize();
                     float offset = (float)Math.atan2(direction.y, direction.x) * 180.0f/(float)Math.PI;

@@ -26,6 +26,7 @@ public class AIEntity extends Entity {
     public iAIController mController;
     protected boolean mAllowRoll = false;
     protected int mJumpTimer;
+    protected Tile mTouchingTile;
     protected String mCurrentAnimation;
     protected float mAnimSpeed;
     protected static int mJumpReload = 60; /// NOTE frame rate change
@@ -48,6 +49,7 @@ public class AIEntity extends Entity {
         mJumpTimer = 0;
         mMoveSpeed = 1;
         mAnimSpeed = 1;
+        mTouchingTile = null;
     }
     public void update()
     {
@@ -66,7 +68,7 @@ public class AIEntity extends Entity {
         int mWater = 0;
         int mJumpContacts = 0;
         mAllowRoll = false;
-        
+        mTouchingTile = null;
         
         while (edge != null)
         {
@@ -125,6 +127,7 @@ public class AIEntity extends Entity {
                 {
                     if(edge.contact.isTouching() && !other.isSensor())
                     {
+                        mTouchingTile = ((Tile)other.getUserData());
                         mJumpContacts++;
                         //set tile type while only touching one type
                         if(numContacts == 1 && other.getUserData() != null)

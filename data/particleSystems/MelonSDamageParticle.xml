@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <system additive="false" points="false">
-<emitter imageName="particleSystems\MeatParticle2.png" name="Default" renderType="quads" useAdditive="false" useOriented="true">
+<emitter imageName="particleSystems\MelonSkinParticle.png" name="Default" renderType="quads" useAdditive="false" useOriented="true">
 <spawnInterval enabled="true" max="30.0" min="30.0"/>
 <spawnCount enabled="true" max="10.0" min="3.0"/>
 <initialLife enabled="true" max="500.0" min="200.0"/>
@@ -35,45 +35,47 @@
 <point x="1.0" y="1.0"/>
 </scaleY>
 <color>
-<step b="0.11372549" g="0.18431373" offset="0.0" r="0.6"/>
+<step b="0.42352942" g="0.827451" offset="0.0" r="0.67058825"/>
+<step b="0.07450981" g="0.54901963" offset="1.0" r="0.13333334"/>
+<step b="1.0" g="0.4" offset="1.0" r="0.6"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="0.2" g="0.0" offset="1.0" r="1.0"/>
+<step b="0.2" g="0.0" offset="1.0" r="1.0"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="0.6" g="0.8" offset="1.0" r="1.0"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="0.6" g="0.8" offset="1.0" r="1.0"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="1.0" g="0.4" offset="1.0" r="0.6"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.6"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="1.0" g="0.4" offset="1.0" r="0.6"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="0.2" g="0.0" offset="1.0" r="1.0"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="0.2" g="0.0" offset="1.0" r="1.0"/>
+<step b="0.2" g="0.0" offset="1.0" r="1.0"/>
+<step b="0.6" g="0.8" offset="1.0" r="1.0"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="0.6" g="0.8" offset="1.0" r="1.0"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="0.2" g="0.0" offset="1.0" r="1.0"/>
+<step b="0.2" g="0.0" offset="1.0" r="1.0"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="1.0" g="0.4" offset="1.0" r="0.6"/>
+<step b="0.2" g="0.0" offset="1.0" r="1.0"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="0.2" g="0.0" offset="1.0" r="1.0"/>
+<step b="0.2" g="0.0" offset="1.0" r="1.0"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="1.0" g="0.4" offset="1.0" r="0.6"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.6"/>
+<step b="1.0" g="0.4" offset="1.0" r="0.6"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="0.6" g="0.8" offset="1.0" r="1.0"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
 <step b="0.11372549" g="0.18431373" offset="1.0" r="0.6"/>
-<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
-<step b="0.6" g="0.8" offset="1.0" r="1.0"/>
-<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
-<step b="1.0" g="0.4" offset="1.0" r="0.6"/>
-<step b="0.0" g="0.0" offset="1.0" r="0.6"/>
-<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
-<step b="1.0" g="0.4" offset="1.0" r="0.6"/>
-<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
-<step b="0.2" g="0.0" offset="1.0" r="1.0"/>
-<step b="0.2" g="0.0" offset="1.0" r="1.0"/>
-<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
-<step b="0.2" g="0.0" offset="1.0" r="1.0"/>
-<step b="1.0" g="0.4" offset="1.0" r="0.6"/>
-<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
-<step b="0.2" g="0.0" offset="1.0" r="1.0"/>
-<step b="0.2" g="0.0" offset="1.0" r="1.0"/>
-<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
-<step b="0.6" g="0.8" offset="1.0" r="1.0"/>
-<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
-<step b="0.6" g="0.8" offset="1.0" r="1.0"/>
-<step b="0.2" g="0.0" offset="1.0" r="1.0"/>
-<step b="0.2" g="0.0" offset="1.0" r="1.0"/>
-<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
-<step b="0.2" g="0.0" offset="1.0" r="1.0"/>
-<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
-<step b="1.0" g="0.4" offset="1.0" r="0.6"/>
-<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
-<step b="0.0" g="0.0" offset="1.0" r="0.6"/>
-<step b="1.0" g="0.4" offset="1.0" r="0.6"/>
-<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
-<step b="0.6" g="0.8" offset="1.0" r="1.0"/>
-<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
-<step b="0.6" g="0.8" offset="1.0" r="1.0"/>
-<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
-<step b="0.2" g="0.0" offset="1.0" r="1.0"/>
-<step b="0.2" g="0.0" offset="1.0" r="1.0"/>
-<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
 <step b="1.0" g="0.4" offset="1.0" r="0.6"/>
 <step b="0.67058825" g="0.79607844" offset="1.0" r="0.8117647"/>
 <step b="0.3529412" g="0.40392157" offset="1.0" r="0.6745098"/>

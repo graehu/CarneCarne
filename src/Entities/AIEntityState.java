@@ -5,6 +5,7 @@
 package Entities;
 
 import Graphics.Particles.sParticleManager;
+import Level.RootTile.AnimationType;
 import World.sWorld;
 import org.jbox2d.common.Vec2;
 
@@ -256,7 +257,7 @@ class AIEntityState
     {
         mEntity.mSkin.setAlpha(1f);
         switch(_newState)
-        {               
+        {
             case eDead:
             {
                 mEntity.mSkin.setAlpha(0.5f);

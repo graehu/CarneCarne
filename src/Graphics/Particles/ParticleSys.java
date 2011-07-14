@@ -7,6 +7,7 @@
 package Graphics.Particles;
 
 import java.util.HashSet;
+import org.jbox2d.common.Vec2;
 import org.newdawn.slick.particles.ConfigurableEmitter;
 import org.newdawn.slick.particles.ParticleSystem;
 
@@ -159,5 +160,10 @@ class ParticleSys implements ParticleSysBase
     public void render(float _x, float _y)
     {
         mSystem.render(_x, _y);
+    }
+
+    public Vec2 getPosition()
+    {
+        return new Vec2(mSystem.getPositionX(), mSystem.getPositionY());
     }
 }

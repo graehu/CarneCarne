@@ -15,9 +15,9 @@ import java.util.Stack;
 class NonEdibleEdgeTile extends EdgeTile
 {
     float mBodyScale;
-    public NonEdibleEdgeTile(int _id, TileType _tileType, Direction _direction, String _animationsName, float _bodyScale)
+    public NonEdibleEdgeTile(int _id, TileType _tileType, Direction _direction, String _animationsNames[], float _bodyScale)
     {
-        super(_id, _tileType, _direction, _animationsName, false, true, false, -1);
+        super(_id, _tileType, _direction, _animationsNames, false, true, false, -1);
         mBodyScale = _bodyScale;
     }
     

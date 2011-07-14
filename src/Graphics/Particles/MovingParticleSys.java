@@ -64,6 +64,11 @@ public class MovingParticleSys implements ParticleSysBase
 
     public void render(float _x, float _y)
     {
-        throw new UnsupportedOperationException("You stupid nigger");
+        mParticles.render(_x, _y);
+    }
+
+    public Vec2 getPosition()
+    {
+        return mTile.getWorldPosition().mul(64).add(new Vec2(32,32));
     }
 }
