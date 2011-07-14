@@ -8,6 +8,7 @@ import Events.sEvents;
 import Graphics.Skins.iSkin;
 import Graphics.Skins.sSkinFactory;
 import java.util.HashMap;
+import org.jbox2d.common.Vec2;
 
 /**
  *
@@ -16,18 +17,19 @@ import java.util.HashMap;
 class IntroEndSection extends IntroSection
 {
     iSkin mSkin;
-    public IntroEndSection()
+    public IntroEndSection(Vec2 _position, int _playerNumber)
     {
+        super(_position, _playerNumber);
         sEvents.unblockAllEvents();
         HashMap params = new HashMap();
-        params.put("ref", "IntroEnd");
+        params.put("ref", "SignTutorialFinish");
         mSkin = sSkinFactory.create("static", params);
     }
 
     @Override
     public IntroSection updateImpl()
     {
-        if (mTimer > 60)
+        if (mTimer > 120)
         {
             return null;
         }

@@ -4,7 +4,6 @@
  */
 package Entities;
 
-import AI.PlayerInputController;
 import Entities.AIEntityState.State;
 import Events.AreaEvents.CheckPointZone;
 import Graphics.Skins.iSkin;
@@ -13,6 +12,7 @@ import Graphics.Sprites.sSpriteFactory;
 import Graphics.sGraphicsManager;
 import HUD.Reticle;
 import Level.sLevel.TileType;
+import States.Game.IntroSection;
 import World.sWorld;
 import java.util.HashMap;
 import org.jbox2d.common.Vec2;
@@ -31,6 +31,7 @@ public class PlayerEntity extends AIEntity
     String mBodyType = "bdy";
     private CheckPointZone mOriginalSpawnPoint;
     private CheckPointZone mCheckPoint;
+    public IntroSection mIntroSection;
     private Joint mDeathJoint;
     private Vec2 mDirection;
     public Reticle mReticle;
@@ -179,6 +180,8 @@ public class PlayerEntity extends AIEntity
 
                 sGraphicsManager.drawString("You have died " + mDeaths + " times", 0f, 0.1f);
             }
+            else if (mIntroSection != null)
+                mIntroSection.render();
             mReticle.render(); //always render ontop
         }
     }

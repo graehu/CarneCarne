@@ -39,7 +39,7 @@ public class RaceEndZone extends CheckPointZone implements iEventListener
         {
             _entity.placeCheckPoint(this);
             mWinner = _entity;
-            sEvents.triggerEvent(new RaceWonEvent(mWinner));
+            sEvents.triggerDelayedEvent(new RaceWonEvent(mWinner));
         }
         else
         {

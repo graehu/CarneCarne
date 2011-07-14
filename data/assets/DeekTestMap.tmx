@@ -257,6 +257,11 @@
     <property name="Type" value="NonEdible"/>
    </properties>
   </tile>
+  <tile id="1">
+   <properties>
+    <property name="Spawn" value="Tutorial"/>
+   </properties>
+  </tile>
   <tile id="23">
    <properties>
     <property name="Spawn" value="Player"/>
@@ -435,7 +440,7 @@
  </layer>
  <layer name="Level" width="100" height="100">
   <data encoding="base64" compression="gzip">
-   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
+   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
   </data>
  </layer>
  <layer name="Foreground" width="100" height="100">
@@ -450,7 +455,7 @@
  </layer>
  <layer name="Flags" width="100" height="100">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC+3TuwmAMBSG0WT/cWx1BAdxC7FLCh+IJJd4DvzdLQIfSYnRbL0fQEWPWPSIRY82pod3esSix8fy/cmS65X0aO+sxSFajzXXG1HZIfr/+EOPK3rEokcs0XoAAAAAAAAAwFtzrkdfegAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADAuHZ2DkbxQJwAAA==
+   H4sIAAAAAAAAC+3ZQQqAIBBAUb3/cdrWgeoULatFKDiZ1HswOwXhoxtT4mvWtw/AhR5j0WMsevQxVa7TYyx6BMvlJUu+zlltjzkfQ5vWHucOmrSL6uGOxIh+r/QoW2+mZh/j0AMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHjK9vYBAAAAAAAAgG78DwIAwL/sbNaT9ECcAAA=
   </data>
  </layer>
 </map>

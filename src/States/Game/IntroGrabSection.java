@@ -9,6 +9,7 @@ import Graphics.Skins.iSkin;
 import Graphics.Skins.sSkinFactory;
 import Level.sLevel;
 import java.util.HashMap;
+import org.jbox2d.common.Vec2;
 
 /**
  *
@@ -17,20 +18,22 @@ import java.util.HashMap;
 class IntroGrabSection extends IntroSection
 {
     iSkin mSkin;
-    public IntroGrabSection()
+    public IntroGrabSection(Vec2 _position, int _playerNumber)
     {
-        sEvents.unblockEvent("MapClickEventL"+0);
+        super(_position, _playerNumber);
+        sEvents.unblockEvent("MapClickEventL"+mPlayerNumber);
         HashMap params = new HashMap();
-        params.put("ref", "EatIt");
+        params.put("ref", "SignTutorialEat");
         mSkin = sSkinFactory.create("static", params);
     }
 
     @Override
     public IntroSection updateImpl()
     {
-        if (sLevel.getPathInfo(7, 72).equals(sLevel.PathInfo.eAir))
+        Vec2 tile = mPosition.add(new Vec2(4,0));
+        if (sLevel.getPathInfo((int)tile.x,(int)tile.y).equals(sLevel.PathInfo.eAir))
         {
-            return new IntroSmashSection();
+            return new IntroSmashSection(mPosition, mPlayerNumber);
         }
         return this;
     }

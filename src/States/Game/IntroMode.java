@@ -6,15 +6,15 @@ package States.Game;
 
 import Entities.PlayerEntity;
 import Entities.sEntityFactory;
-import Events.WindowResizeEvent;
+import Events.TutorialSpawnEvent;
 import Events.iEvent;
 import Events.iEventListener;
 import Events.sEvents;
 import Graphics.Camera.FreeCamera;
-import Graphics.Camera.iCamera;
 import Graphics.sGraphicsManager;
 import Level.sLevel;
 import World.sWorld;
+import java.util.ArrayList;
 import java.util.HashMap;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
@@ -27,32 +27,40 @@ import org.newdawn.slick.geom.Rectangle;
  */
 public class IntroMode implements iGameMode, iEventListener
 {
-    PlayerEntity mPlayer;
+    ArrayList<PlayerEntity> mPlayers;
+    ArrayList<IntroSection> mSections;
     Body mGroundBody;
-    iCamera mSwitchedCamera;
-    IntroSection mSection;
     public IntroMode()
     {
-        try
-        {
-        }
-        finally
-        {
-            assert(false);
-        }
-        mSection = new IntroStartSection();
+        mPlayers = new ArrayList<PlayerEntity>();
+        mSections = new ArrayList<IntroSection>();
+        sEvents.subscribeToEvent("TutorialSpawnEvent", this);
     }
     boolean inited = false;
     public iGameMode update(float _time)
     {
-        mSection = mSection.update();
-        if (mSection == null)
+        boolean sectionsLeft = false;
+        for (int i = 0; i < mSections.size(); i++)
         {
+            if (mSections.get(i) != null)
+            {
+                mSections.set(i, mSections.get(i).update());
+                if (mSections.get(i) != null)
+                    sectionsLeft = true;
+                mPlayers.get(i).mIntroSection = mSections.get(i);
+            }
+        }
+        if (!sectionsLeft)
+        {
+            Vec2 s = sGraphicsManager.getTrueScreenDimensions();
+            sWorld.switchCamera(new FreeCamera(new Rectangle(0,0,s.x, 0 + s.y)));
+            iGameMode raceMode = new RaceMode();
             cleanup();
-            sWorld.switchCamera(mSwitchedCamera);
             sLevel.loadLevel();
-            sEvents.unsubscribeToEvent("WindowResizeEvent", this);
-            return new RaceMode();
+            if (inited)
+                sEvents.unsubscribeToEvent("WindowResizeEvent", this);
+            sEvents.unsubscribeToEvent("TutorialSpawnEvent", this);
+            return raceMode;
         }
         //sLevel.update();
         sWorld.update(_time);
@@ -62,36 +70,52 @@ public class IntroMode implements iGameMode, iEventListener
     private void cleanup()
     {
         //sWorld.destroyBody(mGroundBody);
-        mPlayer.destroy();
-        sWorld.destroyBody(mPlayer.mBody);
+        if (inited)
+        {
+            for (PlayerEntity player: mPlayers)
+            {
+                player.destroy();
+                sWorld.destroyBody(player.mBody);
+            }
+        }
     }
     public void render(Graphics _graphics)
     {
         if (!inited)
         {
-            Vec2 s = sGraphicsManager.getTrueScreenDimensions();
-            HashMap parameters = new HashMap();
-            mSwitchedCamera = sWorld.switchCamera(new FreeCamera(new Rectangle(0,0,s.x, 0 + s.y))); // 66*64.0f
-            parameters.put("position", new Vec2(4,72));
-            parameters.put("playerNumber", 0);
-            //parameters.put("checkPoint", new PlayerSpawnZone((int)position.x, (int)position.y, (int)position.x+1, (int)position.y+1, startZone));
-            parameters.put("checkPoint", null);
-            mPlayer = (PlayerEntity)sEntityFactory.create("Player",parameters);
-            //sEvents.triggerEvent(new PlayerCreatedEvent(player,1));
-            /*parameters.put("position", new Vec2(5,7.5f));
-            mGroundBody = sWorld.useFactory("GroundBody", parameters);*/
             sEvents.subscribeToEvent("WindowResizeEvent", this);
             inited = true;
         }
         sWorld.getCamera().render();
-        mSection.render();
+        /*for (IntroSection section: mSections)
+        {
+            if (section != null)
+                section.render();
+        }*/
     }
 
     public boolean trigger(iEvent _event)
     {
-        WindowResizeEvent event = (WindowResizeEvent)_event;
-        Vec2 s = sGraphicsManager.getTrueScreenDimensions();
-        mSwitchedCamera.resize(new Rectangle(0, 0, s.x, s.y));
+        if (_event.getName().equals("TutorialSpawnEvent"))
+        {
+            TutorialSpawnEvent event = (TutorialSpawnEvent)_event;
+            IntroSection introSection = new IntroStartSection(event.getPosition(), event.getPlayerNumber());
+            mSections.add(introSection);
+            HashMap parameters = new HashMap();
+            parameters.put("position", event.getPosition());
+            parameters.put("playerNumber", event.getPlayerNumber());
+            //parameters.put("checkPoint", new PlayerSpawnZone((int)position.x, (int)position.y, (int)position.x+1, (int)position.y+1, startZone));
+            parameters.put("checkPoint", null);
+            PlayerEntity player = (PlayerEntity)sEntityFactory.create("Player",parameters);
+            player.mIntroSection = introSection;
+            mPlayers.add(player);
+        }
+        else
+        {
+            /*WindowResizeEvent event = (WindowResizeEvent)_event;
+            Vec2 s = sGraphicsManager.getTrueScreenDimensions();
+            mSwitchedCamera.resize(new Rectangle(0, 0, s.x, s.y));*/
+        }
         return true;
     }
 }

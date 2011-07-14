@@ -44,7 +44,7 @@ public class StartBarrier implements iEventListener
     public StartBarrier()
     {
         sEvents.subscribeToEvent("RaceStartEvent", this);
-        sEvents.subscribeToEvent("RaceEndEvent", this);
+        sEvents.subscribeToEvent("RaceWonEvent", this);
     }
     
     void addTile(int _x, int _y, int _rootId)

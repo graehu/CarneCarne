@@ -5,6 +5,7 @@
 package States.Game;
 
 import Events.sEvents;
+import org.jbox2d.common.Vec2;
 
 /**
  *
@@ -12,11 +13,12 @@ import Events.sEvents;
  */
 class IntroStartSection extends IntroSection
 {
-    public IntroStartSection()
+    public IntroStartSection(Vec2 _position, int _playerNumber)
     {
-        sEvents.blockEvent("MapClickEventL"+0);
-        sEvents.blockEvent("MapClickEventR"+0);
-        sEvents.blockEvent("KeyDownEvent"+'w'+0);
+        super(_position, _playerNumber);
+        sEvents.blockEvent("MapClickEventL"+mPlayerNumber);
+        sEvents.blockEvent("MapClickEventR"+mPlayerNumber);
+        sEvents.blockEvent("KeyDownEvent"+'w'+mPlayerNumber);
     }
 
     @Override
@@ -24,7 +26,7 @@ class IntroStartSection extends IntroSection
     {
         if (mTimer > 60)
         {
-            return new IntroJumpSection();
+            return new IntroJumpSection(mPosition,mPlayerNumber);
         }
         return this;
     }
@@ -33,5 +35,5 @@ class IntroStartSection extends IntroSection
     public void render()
     {
     }
-    
+
 }

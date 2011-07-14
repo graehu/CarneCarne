@@ -29,15 +29,8 @@ public class RaceMode implements iGameMode, iEventListener
     {
         mTimer = 0;
         mRaceState = new RaceState();
-        try
-        {
-            sEvents.subscribeToEvent("PlayerCreatedEvent", this);
-            sEvents.subscribeToEvent("RaceResetEvent", this);
-        }
-        finally
-        {
-            sEvents.unsubscribeToEvent("PlayerCreatedEvent", this);
-        }
+        sEvents.subscribeToEvent("PlayerCreatedEvent", this);
+        sEvents.subscribeToEvent("RaceResetEvent", this);
     }
     public iGameMode update(float _time)
     {

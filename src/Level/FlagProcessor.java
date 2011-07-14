@@ -16,6 +16,7 @@ import Events.AreaEvents.PlayerSpawnZone;
 import Events.AreaEvents.RaceEndZone;
 import Events.AreaEvents.RaceStartZone;
 import Events.PlayerCreatedEvent;
+import Events.TutorialSpawnEvent;
 import Events.sEvents;
 import Level.sLevel.TileType;
 import java.util.HashMap;
@@ -104,6 +105,7 @@ public class FlagProcessor
         int height = _tiledMap.getHeight();
         mLayerIndex = _tiledMap.getLayerIndex("Flags");
         playerPositions = new Stack<Vec2>();
+        int tutorialPlayers = 0;
         HashMap parameters = new HashMap();
         areaEvents = new AreaEvents[width][height];
         eventMap = new HashMap<String, AreaEvents>();
@@ -194,17 +196,12 @@ public class FlagProcessor
                     {
                         mBarrier.addTile(i,ii,_tiledMap.getTileId(i, ii, mLayerIndex));
                     }
-                    else if (spawn.equals("Platform"))
+                    else if (spawn.equals("Tutorial"))
                     {
-                        /*Vec2 dimensions = new Vec2(0,0);
-                        dimensions.x = new Float(_tiledMap.getTileProperty(id, "Width", "3.0"));
-                        dimensions.y = new Float(_tiledMap.getTileProperty(id, "Height", "1.0"));  
-                        parameters.put("dimensions",dimensions);   
-                        parameters.put("ref",_tiledMap.getTileProperty(id, "Image","Error, image not defined")); 
-                        parameters.put("position",new Vec2(i,ii));
-                        parameters.put("Type",_tiledMap.getTileProperty(id, "Type", "Error, platform type not defined"));
-                        sEntityFactory.create("MovingPlatform", parameters)*/
-                        
+                        sEvents.triggerEvent(new TutorialSpawnEvent(i,ii, tutorialPlayers++));
+                    }
+                    else if (spawn.equals("Platform"))
+                    {                        
                         PlatformCaveInSearcher search = new PlatformCaveInSearcher(_tileGrid, _tiledMap, _levelLayerIndex, _levelBody);
                         search.destroy(i,ii, TileType.eEdible);
                         Body platformBody = search.getCreatedBody();

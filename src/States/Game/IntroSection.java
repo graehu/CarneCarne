@@ -4,6 +4,8 @@
  */
 package States.Game;
 
+import org.jbox2d.common.Vec2;
+
 /**
  *
  * @author alasdair
@@ -11,10 +13,13 @@ package States.Game;
 abstract public class IntroSection
 {
     protected int mTimer;
-
-    public IntroSection()
+    protected Vec2 mPosition;
+    protected int mPlayerNumber;
+    public IntroSection(Vec2 _position, int _playerNumber)
     {
         mTimer = 0;
+        mPosition = _position;
+        mPlayerNumber = _playerNumber;
     }
     
     public IntroSection update()

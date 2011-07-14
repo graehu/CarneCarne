@@ -69,12 +69,7 @@ public class sEvents {
         while(i.hasNext())
         {
             iEvent event = i.next();
-            LinkedList<iEventListener> list = mTable.get(event.getName());
-            if (list != null)
-            {
-                for (iEventListener listener: list)
-                    listener.trigger(event);
-            }
+            triggerEvent(event);
             if (event.process())
             {
                 i.remove();

@@ -10,6 +10,7 @@ import Events.sEvents;
 import Graphics.Skins.iSkin;
 import Graphics.Skins.sSkinFactory;
 import java.util.HashMap;
+import org.jbox2d.common.Vec2;
 
 /**
  *
@@ -19,13 +20,14 @@ class IntroJumpSection extends IntroSection implements iEventListener
 {
     IntroSection mReturn;
     iSkin mSkin;
-    public IntroJumpSection()
+    public IntroJumpSection(Vec2 _position, int _playerNumber)
     {
-        sEvents.unblockEvent("KeyDownEvent"+'w'+0);
-        sEvents.subscribeToEvent("KeyDownEvent"+'w'+0, this);
+        super(_position, _playerNumber);
+        sEvents.unblockEvent("KeyDownEvent"+'w'+mPlayerNumber);
+        sEvents.subscribeToEvent("KeyDownEvent"+'w'+mPlayerNumber, this);
         mReturn = this;
         HashMap params = new HashMap();
-        params.put("ref", "JumpYouWhore");
+        params.put("ref", "SignTutorialJump");
         mSkin = sSkinFactory.create("static", params);
     }
 
@@ -42,7 +44,7 @@ class IntroJumpSection extends IntroSection implements iEventListener
 
     public boolean trigger(iEvent _event)
     {
-        mReturn = new IntroGrabSection();
+        mReturn = new IntroGrabSection(mPosition, mPlayerNumber);
         return false;
     }
     
