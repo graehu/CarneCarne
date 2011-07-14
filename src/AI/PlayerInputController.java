@@ -59,6 +59,7 @@ public class PlayerInputController extends iAIController implements iEventListen
         mPlayer = _player;
         mFaceDirAnim = "e";
         sEvents.subscribeToEvent("KeyDownEvent"+'w'+_player, this);
+        sEvents.subscribeToEvent("KeyUpEvent"+'w'+_player, this);
         sEvents.subscribeToEvent("KeyDownEvent"+'a'+_player, this);
         sEvents.subscribeToEvent("KeyDownEvent"+'s'+_player, this);
         sEvents.subscribeToEvent("KeyDownEvent"+'d'+_player, this);

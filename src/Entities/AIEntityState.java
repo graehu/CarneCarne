@@ -16,7 +16,7 @@ import org.jbox2d.common.Vec2;
 class AIEntityState
 {
     static private final int tarStickingTimer = 60;
-    static private final int jumpReload = 15;
+    static private final int jumpReload = 13;
     static private final int jumpBoostTimer = 10;
     static private final int mDoubleJumpTimer = 600000;
     enum State
@@ -31,7 +31,7 @@ class AIEntityState
         eDead,
         eRestartingRace,
         eJumping,
-        eJumpTransistion, /// Between jumping and falling, this is where the button held increased jump is determined
+        eJumpTransition, /// Between jumping and falling, this is where the button held increased jump is determined
         eStatesMax,
     }
     private State mState;
@@ -85,7 +85,7 @@ class AIEntityState
         {
             changeState(State.eFallingDoubleJumped);
         }
-        else if (mState.equals(State.eJumpTransistion))
+        else if (mState.equals(State.eJumpTransition))
         {
             //changeState(State.eJumping);
         }
@@ -100,6 +100,7 @@ class AIEntityState
         changeState(State.eFalling);
         update();
     }
+    //returns -ve for initialial jump, 0.0f while falling and +ve during transition
     public float canJump(float _currentVelocity)
     {
         if (mState.equals(State.eJumping) || mState.equals(State.eFallingDoubleJumped))
@@ -113,11 +114,11 @@ class AIEntityState
                 return 0.0f;
             }
         }
-        if (mState.equals(State.eJumpTransistion))
+        if (mState.equals(State.eJumpTransition))
         {
-            return _currentVelocity-3.0f;
+            return _currentVelocity-5.3f;
         }
-        return -8.5f;
+        return -7.2f;
         
     }
     public int getWaterHeight()
@@ -147,7 +148,7 @@ class AIEntityState
             {
                 if (mTimer == jumpBoostTimer)
                 {
-                    changeState(State.eJumpTransistion);
+                    changeState(State.eJumpTransition);
                 }
                 /*else if (mContactCount == 0)
                 {
@@ -161,7 +162,7 @@ class AIEntityState
                 }*/
                 break;
             }
-            case eJumpTransistion:
+            case eJumpTransition:
             {
                 if (mTimer == jumpBoostTimer+1)
                 {
@@ -257,12 +258,6 @@ class AIEntityState
         mEntity.mSkin.setAlpha(1f);
         switch(_newState)
         {
-            case eJumping:
-            {
-                if (mEntity.mTouchingTile != null)
-                    sParticleManager.createSystem(mEntity.mTouchingTile.getAnimationsName(AnimationType.eJump) + "Jump", sWorld.translateToWorld(mEntity.mBody.getPosition()).sub(sWorld.getPixelTranslation()).add(new Vec2(32,64)), 1f);
-                break;
-            }
             case eDead:
             {
                 mEntity.mSkin.setAlpha(0.5f);
