@@ -18,6 +18,7 @@
     <property name="Animationsname" value="Bone"/>
     <property name="Direction" value="Up"/>
     <property name="Material" value="Swingable"/>
+    <property name="MaxHealth" value="4"/>
     <property name="Size" value="11"/>
     <property name="Type" value="Line"/>
    </properties>
@@ -73,6 +74,7 @@
     <property name="Animationsname" value="Bone"/>
     <property name="Direction" value="Right"/>
     <property name="Material" value="Swingable"/>
+    <property name="MaxHealth" value="4"/>
     <property name="Size" value="11"/>
     <property name="Type" value="Line"/>
    </properties>
@@ -92,6 +94,7 @@
     <property name="Animationsname" value="Bone"/>
     <property name="Direction" value="Down"/>
     <property name="Material" value="Swingable"/>
+    <property name="MaxHealth" value="4"/>
     <property name="Size" value="2"/>
     <property name="Type" value="Edge"/>
    </properties>
@@ -102,6 +105,7 @@
     <property name="Animationsname" value="Bone"/>
     <property name="Direction" value="Up"/>
     <property name="Material" value="Swingable"/>
+    <property name="MaxHealth" value="4"/>
     <property name="Size" value="2"/>
     <property name="Type" value="Edge"/>
    </properties>
@@ -112,6 +116,7 @@
     <property name="Animationsname" value="Bone"/>
     <property name="Direction" value="Right"/>
     <property name="Material" value="Swingable"/>
+    <property name="MaxHealth" value="4"/>
     <property name="Size" value="3"/>
     <property name="Type" value="Edge"/>
    </properties>
@@ -122,6 +127,7 @@
     <property name="Animationsname" value="Bone"/>
     <property name="Direction" value="Left"/>
     <property name="Material" value="Swingable"/>
+    <property name="MaxHealth" value="4"/>
     <property name="Size" value="3"/>
     <property name="Type" value="Edge"/>
    </properties>
@@ -253,6 +259,7 @@
     <property name="Animationsname" value="Meat"/>
     <property name="FireHitAnimation" value="Default"/>
     <property name="Material" value="Edible"/>
+    <property name="MaxHealth" value="2"/>
     <property name="Type" value="Block"/>
    </properties>
   </tile>
