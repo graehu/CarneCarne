@@ -1,1 +1,0 @@
-convert -resize 275x150 SignTutorialSwing.png SignTutorialSwing1.png; rm SignTutorialSwing.png; mv SignTutorialSwing1.png SignTutorialSwing.png

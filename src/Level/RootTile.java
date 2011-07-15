@@ -51,7 +51,7 @@ public abstract class RootTile
         mIsFlammable = _isFlammable;
         mMaxHealth = _maxHealth;
     }
-    public RootTile(TileShape _shape, int _id, sLevel.TileType _tileType, String _animationsNames[], int _slopeType, int _maxHealth)
+    /*public RootTile(TileShape _shape, int _id, sLevel.TileType _tileType, String _animationsNames[], int _slopeType, int _maxHealth)
     {
         mShape = _shape;
         mId = _id;
@@ -62,7 +62,7 @@ public abstract class RootTile
         mAnchor = false;
         mIsFlammable = false;
         mMaxHealth = _maxHealth;
-    }
+    }*/
     
     public TileType getTileType()
     {

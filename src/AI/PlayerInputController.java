@@ -50,7 +50,7 @@ public class PlayerInputController extends iAIController implements iEventListen
     private TongueStateMachine mTongueState;
     protected String mFaceDirAnim;
     public Vec2 mPlayerDir = new Vec2(1,0);
-    int mPlayer;
+    public int mPlayer;
     int actionTimer = 0, actionDelay = 10;
     
     public PlayerInputController(AIEntity _entity, int _player)

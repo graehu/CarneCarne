@@ -100,13 +100,13 @@ public class RootTileList {
                 else if (shape.equals("Slope"))
                 {
                     for (int rootId = i; i < rootId + 4; i++)
-                        mRootTiles.add(new RightDownSlope(i,type, animationsNames, maxHealth)); 
+                        mRootTiles.add(new RightDownSlope(i,type, animationsNames, regrows, anchor, isFlammable, maxHealth)); 
                     for (int rootId = i; i < rootId + 4; i++)
-                        mRootTiles.add(new LeftDownSlope(i,type, animationsNames, maxHealth)); 
+                        mRootTiles.add(new LeftDownSlope(i,type, animationsNames, regrows, anchor, isFlammable, maxHealth)); 
                     for (int rootId = i; i < rootId + 4; i++)
-                        mRootTiles.add(new LeftUpSlope(i,type, animationsNames, maxHealth)); 
+                        mRootTiles.add(new LeftUpSlope(i,type, animationsNames, regrows, anchor, isFlammable, maxHealth)); 
                     for (int rootId = i; i < rootId + 4; i++)
-                        mRootTiles.add(new RightUpSlope(i,type, animationsNames, maxHealth));
+                        mRootTiles.add(new RightUpSlope(i,type, animationsNames, regrows, anchor, isFlammable, maxHealth));
                 }
                 else if (shape.equals("NonEdible"))
                 {
@@ -130,21 +130,26 @@ public class RootTileList {
                 else if (shape.equals("NonEdibleSlope"))
                 {
                     SlopeTile tile;
+                    float bodyScale = Float.valueOf(_tiledMap.getTileProperty(i, "BodyScale", "1.0"));
                     
-                    tile = new RightDownSlope(i,type, animationsNames, maxHealth);
+                    tile = new RightDownSlope(i,type, animationsNames, false, false, false, maxHealth);
                     tile.setImmutable();
+                    tile.setBodyScale(bodyScale);
                     mRootTiles.add(tile);
                     i++;
-                    tile = new LeftDownSlope(i,type, animationsNames, maxHealth);
+                    tile = new LeftDownSlope(i,type, animationsNames, false, false, false, maxHealth);
                     tile.setImmutable();
+                    tile.setBodyScale(bodyScale);
                     mRootTiles.add(tile);
                     i++;
-                    tile = new LeftUpSlope(i,type, animationsNames, maxHealth);
+                    tile = new LeftUpSlope(i,type, animationsNames, false, false, false, maxHealth);
                     tile.setImmutable();
+                    tile.setBodyScale(bodyScale);
                     mRootTiles.add(tile);
                     i++;
-                    tile = new RightUpSlope(i,type, animationsNames, maxHealth);
+                    tile = new RightUpSlope(i,type, animationsNames, false, false, false, maxHealth);
                     tile.setImmutable();
+                    tile.setBodyScale(bodyScale);
                     mRootTiles.add(tile);
                     i++;
                 }

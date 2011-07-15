@@ -9,6 +9,7 @@ import AI.iPathFinding.Command;
 import Entities.AIEntityState.State;
 import Graphics.Particles.sParticleManager;
 import Graphics.Skins.iSkin;
+import Level.RootTile.AnimationType;
 import Level.Tile;
 import Level.sLevel.TileType;
 import World.sWorld;
@@ -251,7 +252,10 @@ public class AIEntity extends Entity {
             mBody.setLinearVelocity(new Vec2(mBody.getLinearVelocity().x, canJump));
             mJumpTimer = mJumpReload;
             mAIEntityState.jump();
-            sParticleManager.createSystem("cloud", sWorld.translateToWorld(mBody.getPosition()).sub(sWorld.getPixelTranslation()).add(new Vec2(32,64)), 1f);
+            if (mTouchingTile == null)
+                sParticleManager.createSystem("cloud", sWorld.translateToWorld(mBody.getPosition()).sub(sWorld.getPixelTranslation()).add(new Vec2(32,64)), 1f);
+            else
+                sParticleManager.createSystem(mTouchingTile.getAnimationsName(AnimationType.eJump) + "Jump", sWorld.translateToWorld(mBody.getPosition()).sub(sWorld.getPixelTranslation()).add(new Vec2(32,64)), 1f);
         }
     }
     public void stopJumping()

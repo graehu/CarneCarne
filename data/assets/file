@@ -1,1 +1,0 @@
-convert -resize 275x150 SignTutorialXXXX.png SignTutorialXXXX1.png; rm SignTutorialXXXX.png; mv SignTutorialXXXX1.png SignTutorialXXXX.png

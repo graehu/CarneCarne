@@ -478,7 +478,7 @@ public class TongueStateMachine {
             }
             case eStuckToBlock:
             {
-                changeState(State.eRetractingTongue);
+                //changeState(State.eRetractingTongue);
                 break;
             }
             case eRetractingWithBlock:

@@ -4,8 +4,10 @@
  */
 package Entities;
 
+import AI.PlayerInputController;
 import Entities.AIEntityState.State;
 import Events.AreaEvents.CheckPointZone;
+import Events.MapClickReleaseEvent;
 import Graphics.Skins.iSkin;
 import Graphics.Sprites.iSprite;
 import Graphics.Sprites.sSpriteFactory;
@@ -117,6 +119,7 @@ public class PlayerEntity extends AIEntity
                 fixture = fixture.getNext();
             }
             mDeathJoint = sWorld.createMouseJoint(mCheckPoint.getPosition(), mBody);
+            ((PlayerInputController)mController).trigger(new MapClickReleaseEvent(mBody.getPosition(), true, ((PlayerInputController)mController).mPlayer));
         }
         mAIEntityState.kill();
     }

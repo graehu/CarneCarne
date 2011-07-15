@@ -107,7 +107,6 @@ public class IntroMode implements iGameMode, iEventListener
             HashMap parameters = new HashMap();
             parameters.put("position", event.getPosition());
             parameters.put("playerNumber", event.getPlayerNumber());
-            //parameters.put("checkPoint", new PlayerSpawnZone((int)position.x, (int)position.y, (int)position.x+1, (int)position.y+1, startZone));
             parameters.put("checkPoint", null);
             PlayerEntity player = (PlayerEntity)sEntityFactory.create("Player",parameters);
             player.mIntroSection = introSection;
@@ -116,7 +115,7 @@ public class IntroMode implements iGameMode, iEventListener
         else if (_event.getName().equals("PlayerEndedTutorialEvent"))
         {
             mEndedPlayers++;
-            if (mEndedPlayers == 2)
+            if (mEndedPlayers == 1)
             {
                 sEvents.triggerEvent(new GenericEvent("AllPlayersTutorialEndedEvent"));
                 return false;

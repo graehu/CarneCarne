@@ -89,7 +89,7 @@ public class sLevel {
     {
         try
         {
-            mTiledMap = new AnimatedTiledMap("assets/DeekTestMap.tmx");
+            mTiledMap = new AnimatedTiledMap("assets/simple_race.tmx");
             //mTiledMap = new AnimatedTiledMap("assets/Graham_Tutorial.tmx");
             //mTiledMap = new AnimatedTiledMap("assets/platforms2.tmx");
         }
@@ -105,6 +105,7 @@ public class sLevel {
             mParralaxXScale[i] = 1.0f;
             mParralaxYScale[i] = 1.0f;
         }
+        flagsLayer = mTiledMap.getLayerIndex("Flags");
     }
     public static void loadLevel()
     {
@@ -119,7 +120,6 @@ public class sLevel {
         }
         mLevelEditor.init();
         midLayer = mTiledMap.getLayerIndex("Level");
-        flagsLayer = mTiledMap.getLayerIndex("Flags");
         for (int i = 0; i < mParralaxXScale.length; i++)
         {
             mParralaxXScale[i] = new Float(mTiledMap.getLayerProperty(i, "ScaleX", "1.0"));

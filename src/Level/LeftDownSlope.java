@@ -13,9 +13,9 @@ import Level.sLevel.TileType;
  */
 public class LeftDownSlope extends SlopeTile
 {
-    public LeftDownSlope(int _id, sLevel.TileType _tileType, String _animationsNames[], int _maxHealth)
+    public LeftDownSlope(int _id, sLevel.TileType _tileType, String _animationsNames[], boolean _regrows, boolean _anchor, boolean _isFlammable, int _maxHealth)
     {
-        super(_id, 1, _tileType, _animationsNames, _maxHealth);
+        super(_id, 1, _tileType, _animationsNames, _regrows, _anchor, _isFlammable, _maxHealth);
     }
     
     public void getEdges(boolean _boundaries[], int _xTile, int _yTile, TileGrid _tileGrid)

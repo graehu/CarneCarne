@@ -17,10 +17,12 @@ import org.jbox2d.dynamics.Fixture;
 abstract public class SlopeTile extends RootTile
 {
     boolean mMutable;
-    public SlopeTile(int _id, int _slopeType, sLevel.TileType _tileType, String _animationsNames[], int _maxHealth)
+    private float mBodyScale = 0.0f;
+    public SlopeTile(int _id, int _slopeType, sLevel.TileType _tileType, String _animationsNames[], boolean _regrows, boolean _anchor, boolean _isFlammable, int _maxHealth)
     {
-        super (TileShape.eSlope, _id, _tileType, _animationsNames, _slopeType, _maxHealth);
+        super (TileShape.eSlope, _id, _tileType, _animationsNames, _regrows, _anchor, _isFlammable, _maxHealth);
         mMutable = true;
+        mSlopeType = _slopeType;
     }
     void setImmutable()
     {
@@ -33,13 +35,19 @@ abstract public class SlopeTile extends RootTile
         shape.m_vertexCount = 3;
         float hx = 0.5f;
         float hy = 0.5f;
+        Vec2 topLeft = new Vec2(-hx, -hy);
+        Vec2 topRight = new Vec2(hx, -hy);
+        Vec2 bottomLeft = new Vec2(-hx, hy);
+        Vec2 bottomRight = new Vec2(hx, hy);
         switch (mSlopeType)
         {
             case 0:
             {
-                shape.m_vertices[0] = new Vec2(-hx, -hy);
-                shape.m_vertices[1] = new Vec2( hx, hy);
-                shape.m_vertices[2] = new Vec2(-hx, hy);
+                topLeft.y += mBodyScale;
+                bottomRight.x -= mBodyScale;
+                shape.m_vertices[0] = topLeft;
+                shape.m_vertices[1] = bottomRight;
+                shape.m_vertices[2] = bottomLeft;
                 shape.m_normals[0] = new Vec2(1.0f/1.414f, -1.0f/1.414f);
                 shape.m_normals[1] = new Vec2(0.0f, 1.0f);
                 shape.m_normals[2] = new Vec2(-1.0f, 0.0f);
@@ -47,9 +55,11 @@ abstract public class SlopeTile extends RootTile
             }
             case 1:
             {
-                shape.m_vertices[0] = new Vec2( hx, -hy);
-                shape.m_vertices[1] = new Vec2( hx, hy);
-                shape.m_vertices[2] = new Vec2(-hx, hy);
+                topRight.y += mBodyScale;
+                bottomLeft.x += mBodyScale;
+                shape.m_vertices[0] = topRight;
+                shape.m_vertices[1] = bottomRight;
+                shape.m_vertices[2] = bottomLeft;
                 shape.m_normals[0] = new Vec2(1.0f, 0.0f);
                 shape.m_normals[1] = new Vec2(0.0f, 1.0f);
                 shape.m_normals[2] = new Vec2(-1.0f/1.414f, -1.0f/1.414f);
@@ -57,9 +67,11 @@ abstract public class SlopeTile extends RootTile
             }
             case 2:
             {
-                shape.m_vertices[0] = new Vec2(-hx, -hy);
-                shape.m_vertices[1] = new Vec2( hx, -hy);
-                shape.m_vertices[2] = new Vec2( hx, hy);
+                topLeft.x += mBodyScale;
+                bottomRight.y -= mBodyScale;
+                shape.m_vertices[0] = topLeft;
+                shape.m_vertices[1] = topRight;
+                shape.m_vertices[2] = bottomRight;
                 shape.m_normals[0] = new Vec2(0.0f, -1.0f);
                 shape.m_normals[1] = new Vec2(1.0f, 0.0f);
                 shape.m_normals[2] = new Vec2(-1.0f/1.414f, 1.0f/1.414f);
@@ -67,9 +79,11 @@ abstract public class SlopeTile extends RootTile
             }
             case 3:
             {
-                shape.m_vertices[0] = new Vec2(-hx, -hy);
-                shape.m_vertices[1] = new Vec2( hx, -hy);
-                shape.m_vertices[2] = new Vec2(-hx, hy);
+                topRight.x -= mBodyScale;
+                bottomLeft.y -= mBodyScale;
+                shape.m_vertices[0] = topLeft;
+                shape.m_vertices[1] = topRight;
+                shape.m_vertices[2] = bottomLeft;
                 shape.m_normals[0] = new Vec2(0.0f, -1.0f);
                 shape.m_normals[1] = new Vec2(1.0f/1.414f, 1.0f/1.414f);
                 shape.m_normals[2] = new Vec2(-1.0f, 0.0f);
@@ -103,5 +117,10 @@ abstract public class SlopeTile extends RootTile
             _stack.push(_yTile);
             _stack.push(mId+textureUnit);
         }
+    }
+
+    void setBodyScale(float _bodyScale)
+    {
+        mBodyScale = 1.0f - _bodyScale;
     }
 }
