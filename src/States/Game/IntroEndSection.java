@@ -20,7 +20,7 @@ import org.jbox2d.common.Vec2;
 class IntroEndSection extends IntroSection implements iEventListener
 {
     iSkin mSkin;
-    IntroEndSection mSection;
+    int mNewTimer = 0;
     public IntroEndSection(Vec2 _position, int _playerNumber)
     {
         super(_position, _playerNumber);
@@ -28,7 +28,6 @@ class IntroEndSection extends IntroSection implements iEventListener
         HashMap params = new HashMap();
         params.put("ref", "SignTutorialFinish");
         mSkin = sSkinFactory.create("static", params);
-        mSection = this;
         sEvents.subscribeToEvent("AllPlayersTutorialEndedEvent", this);
         sEvents.triggerEvent(new PlayerEndedTutorialEvent(mPlayerNumber));
     }
@@ -36,7 +35,15 @@ class IntroEndSection extends IntroSection implements iEventListener
     @Override
     public IntroSection updateImpl()
     {
-        return mSection;
+        if (mNewTimer != 0)
+        {
+            mNewTimer--;
+            if (mNewTimer == 0)
+            {
+                return null;
+            }
+        }
+        return this;
     }
 
     @Override
@@ -47,7 +54,7 @@ class IntroEndSection extends IntroSection implements iEventListener
 
     public boolean trigger(iEvent _event)
     {
-        mSection = null;
+        mNewTimer = 120;
         return false;
     }
     

@@ -87,13 +87,13 @@ public class RootTileList {
                     while (maxHealth > 1)
                     {
                         maxHealth--;
-                        RootTile tile2 = new BlockTile(i, type, animationsNames, regrows, anchor, false, maxHealth);
+                        RootTile tile2 = new BlockTile(i-16, type, animationsNames, regrows, anchor, false, maxHealth);
                         tile.setNext(tile2);
                         tile2.setNext(tile);
-                        for (int rootId = i + 16; i < rootId; i++)
+                        /*for (int rootId = i + 16; i < rootId; i++)
                         {
                             mRootTiles.add(tile2);
-                        }
+                        }*/
                         tile = tile2;
                     }
                 }
@@ -175,10 +175,25 @@ public class RootTileList {
                     int size = Integer.valueOf(_tiledMap.getTileProperty(i, "Size", "1"));
                     for (int ii = 0; ii < size; ii++)
                     {
+                        RootTile tile = new EdgeTile(i, type, direction, animationsNames, regrows, anchor, isFlammable, maxHealth);
                         for (int rootId = i; i < rootId + 2; i++)
                         {
-                            mRootTiles.add(new EdgeTile(i, type, direction, animationsNames, regrows, anchor, isFlammable, maxHealth));
+                            mRootTiles.add(tile);
                         }
+                        int health = maxHealth;
+                        while (maxHealth > 1)
+                        {
+                            maxHealth--;
+                            RootTile tile2 = new EdgeTile(i-2, type, direction, animationsNames, regrows, anchor, false, maxHealth);
+                            tile.setNext(tile2);
+                            tile2.setNext(tile);
+                            /*for (int rootId = i + 16; i < rootId; i++)
+                            {
+                                mRootTiles.add(tile2);
+                            }*/
+                            tile = tile2;
+                        }
+                        maxHealth = health;
                     }
                 }
                 else if (shape.equals("Line"))
@@ -187,10 +202,25 @@ public class RootTileList {
                     int size = Integer.valueOf(_tiledMap.getTileProperty(i, "Size", "1"));
                     for (int ii = 0; ii < size; ii++)
                     {
+                        RootTile tile = new LineTile(i, type, direction, animationsNames, regrows, anchor, isFlammable, maxHealth);
                         for (int rootId = i; i < rootId + 4; i++)
                         {
-                            mRootTiles.add(new LineTile(i, type, direction, animationsNames, regrows, anchor, isFlammable, maxHealth));
+                            mRootTiles.add(tile);
                         }
+                        int health = maxHealth;
+                        while (maxHealth > 1)
+                        {
+                            maxHealth--;
+                            RootTile tile2 = new LineTile(i-4, type, direction, animationsNames, regrows, anchor, false, maxHealth);
+                            tile.setNext(tile2);
+                            tile2.setNext(tile);
+                            /*for (int rootId = i + 16; i < rootId; i++)
+                            {
+                                mRootTiles.add(tile2);
+                            }*/
+                            tile = tile2;
+                        }
+                        maxHealth = health;
                     }
                 }
                 else i++;

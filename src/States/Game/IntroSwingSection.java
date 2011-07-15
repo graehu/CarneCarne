@@ -19,8 +19,9 @@ import org.jbox2d.common.Vec2;
  */
 class IntroSwingSection extends IntroSection implements iEventListener
 {
-    IntroSection mSection;
     iSkin mSkin;
+    int mTimer = 0;
+    IntroSection mSection;
     public IntroSwingSection(Vec2 _position, int _playerNumber)
     {
         super(_position, _playerNumber);
@@ -37,6 +38,15 @@ class IntroSwingSection extends IntroSection implements iEventListener
     @Override
     public IntroSection updateImpl()
     {
+        /*if (mTimer != 0)
+        {
+            mTimer--;
+            if (mTimer == 0)
+            {
+                return 
+            }
+        }
+        return this;*/
         return mSection;
     }
 
