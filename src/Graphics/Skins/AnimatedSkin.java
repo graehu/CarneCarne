@@ -4,10 +4,8 @@
  */
 package Graphics.Skins;
 
-import java.util.HashMap;
 import org.jbox2d.common.Vec2;
 import org.newdawn.slick.Animation;
-import org.newdawn.slick.PackedSpriteSheet;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
 
@@ -20,9 +18,9 @@ public class AnimatedSkin implements iSkin{
     Animation mAnim;
     
     //constructor public to graphics package only
-    AnimatedSkin(String _spriteSheet, int _duration) throws SlickException
+    AnimatedSkin(String _spriteSheet, int _duration, int _tileWidth, int _tileHeight) throws SlickException
     {
-        mAnim = new Animation(new SpriteSheet("data/" + _spriteSheet + ".png", 64, 64), _duration);
+        mAnim = new Animation(new SpriteSheet("data/" + _spriteSheet, _tileWidth, _tileHeight), _duration);
         mAnim.restart();
     }
     //constructor public to graphics package only

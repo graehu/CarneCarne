@@ -4,11 +4,6 @@
  */
 package Entities;
 
-import Graphics.Particles.sParticleManager;
-import Level.RootTile.AnimationType;
-import World.sWorld;
-import org.jbox2d.common.Vec2;
-
 /**
  *
  * @author alasdair

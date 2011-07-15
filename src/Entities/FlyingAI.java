@@ -4,7 +4,6 @@
  */
 package Entities;
 
-import AI.iPathFinding.Command;
 import Graphics.Skins.iSkin;
 import org.jbox2d.common.Vec2;
 

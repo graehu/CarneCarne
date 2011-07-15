@@ -8,6 +8,8 @@ import AI.PlayerInputController;
 import Entities.AIEntityState.State;
 import Events.AreaEvents.CheckPointZone;
 import Events.MapClickReleaseEvent;
+import Events.ShowDirectionEvent;
+import Events.sEvents;
 import Graphics.Skins.iSkin;
 import Graphics.Sprites.iSprite;
 import Graphics.Sprites.sSpriteFactory;
@@ -94,11 +96,13 @@ public class PlayerEntity extends AIEntity
                 if (_checkPoint.getCheckpointNumber() == mCheckPoint.getCheckpointNumber()+1)
                 {
                     mCheckPoint = _checkPoint;
+                    //sEvents.triggerDelayedEvent(new ShowDirectionEvent(this));
                 }
             }
             else if (_checkPoint.getCheckpointNumber() > mCheckPoint.getCheckpointNumber())
             {
                 mCheckPoint = _checkPoint;
+                //sEvents.triggerDelayedEvent(new ShowDirectionEvent(this));
             }
         }
     }

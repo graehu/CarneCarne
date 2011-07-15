@@ -19,8 +19,8 @@ import org.jbox2d.common.Vec2;
 public class CarrotController extends iAIController
 {
      private iPathFinding mPathFinding;
-     private Entity mTarget;
-     private int mTargetX, mTargetY;
+     protected Entity mTarget;
+     protected int mTargetX, mTargetY;
      private float mTimer;
      private Command mCommand;
      private CarrotState mState;
@@ -40,21 +40,25 @@ public class CarrotController extends iAIController
         mPathFinding = new AStar(mEntity, new ShortestDistance());
         mState = CarrotState.ePathing;
         mTimer = 0;
-        
     }
-    
-    public void update()
+    protected void updateTarget()
     {
         mTarget = sPathFinding.getPlayer();
+        mTargetX = (int)(mTarget.mBody.getPosition().x);
+        mTargetY = (int)(mTarget.mBody.getPosition().y);
+    }
+    public void update()
+    {
+        int tx = mTargetX;
+        int ty = mTargetY;
+        updateTarget();
         int x = (int)(mEntity.mBody.getPosition().x);
         int y = (int)(mEntity.mBody.getPosition().y);
-        int tx = (int)(mTarget.mBody.getPosition().x);
-        int ty = (int)(mTarget.mBody.getPosition().y);
         
         if(mTargetY != ty || mTargetX != tx)
         {
-            mTargetX = (int)(mTarget.mBody.getPosition().x);
-            mTargetY = (int)(mTarget.mBody.getPosition().y);
+            /*mTargetX = (int)(mTarget.mBody.getPosition().x);
+            mTargetY = (int)(mTarget.mBody.getPosition().y);*/
             mPathFinding.updatePath(x, y, mTargetX, mTargetY-4);
         }
         

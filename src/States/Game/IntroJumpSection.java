@@ -27,8 +27,11 @@ class IntroJumpSection extends IntroSection implements iEventListener
         sEvents.subscribeToEvent("KeyDownEvent"+'w'+mPlayerNumber, this);
         mReturn = this;
         HashMap params = new HashMap();
-        params.put("ref", "SignTutorialJump");
-        mSkin = sSkinFactory.create("static", params);
+        params.put("ref", "tutorialJumpStart");
+        params.put("width", 448);
+        params.put("height", 300);
+        mSkin = sSkinFactory.create("animated", params);
+        mSkin.setIsLooping(false);
     }
 
     @Override

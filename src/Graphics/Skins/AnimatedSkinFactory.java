@@ -4,7 +4,6 @@
  */
 package Graphics.Skins;
 
-import Graphics.Skins.AnimatedSkin;
 import java.util.HashMap;
 import org.newdawn.slick.SlickException;
 
@@ -17,6 +16,8 @@ class AnimatedSkinFactory implements iSkinFactory {
     public iSkin useFactory(HashMap _params) throws SlickException
     {
         return new AnimatedSkin(_params.containsKey("ref") ? "assets/" + (String)_params.get("ref") + ".png" : null,
-                                _params.containsKey("duration") ? (Integer)_params.get("duration") : 41); //~24fps
+                                _params.containsKey("duration") ? (Integer)_params.get("duration") : 41,
+                                _params.containsKey("width") ? (Integer)_params.get("width") : 64,
+                                _params.containsKey("height") ? (Integer)_params.get("height") : 64); //~24fps
     }
 }

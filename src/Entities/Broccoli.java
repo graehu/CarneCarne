@@ -4,9 +4,7 @@
  */
 package Entities;
 
-import AI.iPathFinding.Command;
 import Graphics.Skins.iSkin;
-import World.sWorld;
 import org.jbox2d.common.Vec2;
 
 /**
@@ -15,7 +13,6 @@ import org.jbox2d.common.Vec2;
  */
 public class Broccoli extends AIEntity
 {
-    private float mMoveSpeed;
     private float mHopTimmer;
     private float mTimer;
     public Broccoli(iSkin _skin) 

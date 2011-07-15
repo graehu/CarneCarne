@@ -341,14 +341,26 @@ public class sWorld
     }
     public static void destroyBody(Body _body)
     {
+        if (mWorld.isLocked())
+        {
+            throw new UnsupportedOperationException("World is locked");
+        }
         mWorld.destroyBody(_body);
     }
     public static void destroyJoint(Joint _joint)
     {
+        if (mWorld.isLocked())
+        {
+            throw new UnsupportedOperationException("World is locked");
+        }
         mWorld.destroyJoint(_joint);
     }
     public static void destroyMouseJoint(Joint _joint)
     {
+        if (mWorld.isLocked())
+        {
+            throw new UnsupportedOperationException("World is locked");
+        }
         mWorld.destroyJoint(_joint);
         //mWorld.destroyBody(groundBody);
     }

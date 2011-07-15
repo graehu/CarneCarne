@@ -17,7 +17,7 @@ public class SimpleSpriteFactory implements iSpriteFactory{
 
     public iSprite useFactory(HashMap _params) throws SlickException {
         
-        Vec2 pos = new Vec2(0,0);
+        Vec2 pos = new Vec2(2,2);
         if(_params.containsKey("pos"))
             pos = (Vec2)_params.get("pos");
         
