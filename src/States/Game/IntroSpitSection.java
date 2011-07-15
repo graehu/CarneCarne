@@ -42,7 +42,8 @@ class IntroSpitSection extends IntroSection implements iEventListener
     @Override
     public void render()
     {
-        mSkin.render(0, 0);
+        mSkin.setDimentions(450, 225);
+        mSkin.render(600,0);
     }
 
     public boolean trigger(iEvent _event)

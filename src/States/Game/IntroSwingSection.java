@@ -38,22 +38,14 @@ class IntroSwingSection extends IntroSection implements iEventListener
     @Override
     public IntroSection updateImpl()
     {
-        /*if (mTimer != 0)
-        {
-            mTimer--;
-            if (mTimer == 0)
-            {
-                return 
-            }
-        }
-        return this;*/
         return mSection;
     }
 
     @Override
     public void render()
     {
-        mSkin.render(0, 0);
+        mSkin.setDimentions(450, 225);
+        mSkin.render(600,0);
     }
 
     public boolean trigger(iEvent _event)
