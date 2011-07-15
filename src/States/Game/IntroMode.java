@@ -115,7 +115,7 @@ public class IntroMode implements iGameMode, iEventListener
         else if (_event.getName().equals("PlayerEndedTutorialEvent"))
         {
             mEndedPlayers++;
-            if (mEndedPlayers == 1)
+            if (mEndedPlayers == mPlayers.size())
             {
                 sEvents.triggerEvent(new GenericEvent("AllPlayersTutorialEndedEvent"));
                 return false;
