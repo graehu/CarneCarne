@@ -6,6 +6,7 @@ package AI;
 
 import Entities.AIEntity;
 import Level.sLevel;
+import Level.sLevel.PathInfo;
 
 /**
  *
@@ -29,14 +30,23 @@ public class PeaController extends iAIController
         
         if(mToggle)
         {
-            mPathFinding.updatePath(x, y, x+2, y);
-            //mPathFinding.updatePath(x, y, 2, 9);
+            //mPathFinding.updatePath(x, y, x+2, y);
+            mEntity.walkLeft();
+            if(sLevel.getPathInfo((int)(mEntity.mBody.getPosition().x), (int)(mEntity.mBody.getPosition().y)) == PathInfo.eNotPassable)
+            {
+                mToggle = false;
+            }
         }
         else if(!mToggle)
         {
-            mPathFinding.updatePath(x, y, x-2, y);
-            //mPathFinding.updatePath(x, y, 2, 9);
+            mEntity.walkRight();
+            if(sLevel.getPathInfo((int)(mEntity.mBody.getPosition().x+1), (int)(mEntity.mBody.getPosition().y)) == PathInfo.eNotPassable)
+            {
+                mToggle = false;
+            }
         }
+        
+
         
         /*switch (mPathFinding.follow())
         {
