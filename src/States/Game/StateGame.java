@@ -21,6 +21,7 @@ import World.sWorld;
 import org.jbox2d.common.Vec2;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
@@ -85,17 +86,17 @@ public class StateGame extends BasicGameState implements iEventListener {
         //update particles
         sParticleManager.update(_delta);
     }
-    
     public void render(GameContainer _gc, StateBasedGame _sbg, Graphics _grphcs)
     {
         Vec2 s = sGraphicsManager.getScreenDimensions();
-        mGameMode.render(_gc.getGraphics());
+        mGameMode.render(_gc.getGraphics());        
     }
     @Override
     //callback for when the game enters this state
     public void enter(GameContainer container, StateBasedGame game) throws SlickException 
     {         
         super.enter(container, game);
+        
         container.setMouseGrabbed(true);
         //sSound.play("ambiance");
     }

@@ -129,7 +129,15 @@ public class AnimatedTiledMap extends TiledMap
         if(_xPos < getWidth() && _yPos < getHeight())
         {
             //no fail - create animation
-            SpriteSheet sheet = mTileMapAnimations.getSpriteSheet(_ref);
+            SpriteSheet sheet = null;
+            try
+            {
+                sheet = mTileMapAnimations.getSpriteSheet(_ref);
+            }
+            catch(Throwable ex)
+            {
+                System.err.println(ex.getMessage());
+            }
             Animation anim = new Animation(sheet,_duration);
 
             //ofset start of animation

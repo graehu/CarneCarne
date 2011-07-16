@@ -15,10 +15,14 @@ import Graphics.Particles.sParticleManager;
 import Graphics.sGraphicsManager;
 import Level.sLevel;
 import World.sWorld;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 import org.newdawn.slick.Color;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.ShapeFill;
+import org.newdawn.slick.SlickException;
 import org.newdawn.slick.fills.GradientFill;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Vector2f;
@@ -41,6 +45,7 @@ public class BodyCamera extends iCamera implements iEventListener{
     float mTimer;
     CaveInEvent mCaveInEvent;
     CameraGrabber mGrabber = null;
+    Image mOverlay = null;
     public BodyCamera(Body _body, Rectangle _viewPort, boolean _topSplit)
     {
         super(_viewPort);
@@ -54,6 +59,11 @@ public class BodyCamera extends iCamera implements iEventListener{
         mLookDirection = false;
         sEvents.subscribeToEvent("CaveInEvent", this);
         mGrabber = new CameraGrabber(new Vec2(34,11));
+        try {
+            mOverlay = new Image("ui/overlay.png");
+        } catch (SlickException ex) {
+            Logger.getLogger(BodyCamera.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
     }
     private static final float directionEpsilon = 0.6f;
@@ -175,8 +185,10 @@ public class BodyCamera extends iCamera implements iEventListener{
             sGraphicsManager.renderManagedSprites();
             sLevel.renderForeground();
             sParticleManager.render((int)getPixelTranslation().x, (int)getPixelTranslation().y, (int)mViewPort.getWidth(), (int)mViewPort.getHeight(),0);
+            mOverlay.draw(0,0, (int)mViewPort.getWidth(), (int)mViewPort.getHeight());
             ((PlayerEntity)mBody.getUserData()).renderHUD();
-        sGraphicsManager.endTransform();      
+        sGraphicsManager.endTransform();   
+        
     }
     
     @Override

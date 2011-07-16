@@ -73,18 +73,26 @@ public class sParticleManager {
             {
                 if (_dive)
                 {
-                    system = createSystemImplementation(_ref + "1", _position, _lifeTime, false, _store).mSystem;
-                    ParticleSystem system2 = createSystemImplementation(_ref + "2", _position, _lifeTime, false, _store).mSystem;
+                    //load first system
+                    ParticleSys sys = createSystemImplementation(_ref + "1", _position, _lifeTime, false, _store);
+                    if(sys == null) return null;
+                    system = sys.mSystem;
+                    
+                    //load second
+                    sys = createSystemImplementation(_ref + "2", _position, _lifeTime, false, _store);
+                    if(sys == null) return null;
+                    ParticleSystem system2 = sys.mSystem;
+                    
+                    //combine them
                     ParticleSys p = new DoubleParticleSys(system,_ref + "1", system2, _ref + "2", _lifeTime);
                     if (_store)
-                    {
                         mInstancedSystems.add(p);
-                    }
                     return p;
                 }
                 else
                 {
-                    Logger.getLogger(sParticleManager.class.getName()).log(Level.SEVERE, null, ex);
+                    System.err.println(ex.getMessage());
+                    return null;
                 }
             }
             putLoadedSystem(_ref, system);

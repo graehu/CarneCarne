@@ -18,6 +18,7 @@ import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.newdawn.slick.AppGameContainer;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.ShapeFill;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
@@ -81,6 +82,7 @@ public class sGraphicsManager {
     {
         mAllowTransform = false;
         mGameContainer.getGraphics().popTransform();
+        //mGameContainer.getGraphics().clearClip();                
     }
     public static void setClip(Rectangle _rect)
     {
@@ -129,9 +131,16 @@ public class sGraphicsManager {
      */
     public static void drawString(String _str, float _x, float _y)
     {
+        drawString(_str, _x, _y, Color.white);
+    }
+    public static void drawString(String _str, float _x, float _y, Color _color)
+    {
         float xPos = (mScreenDimensions.x * _x);
         float yPos = (mScreenDimensions.y * _y);
-        mGameContainer.getGraphics().drawString( _str,xPos, yPos);
+        Color temp = mGameContainer.getGraphics().getColor();
+        mGameContainer.getGraphics().setColor(_color);
+        mGameContainer.getGraphics().drawString(_str, _x, _y);
+        mGameContainer.getGraphics().setColor(temp);
     }
 
     public static void toggleFullscreen()
