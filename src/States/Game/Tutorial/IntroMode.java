@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package States.Game;
+package States.Game.Tutorial;
 
 import Entities.PlayerEntity;
 import Entities.sEntityFactory;
@@ -14,6 +14,8 @@ import Events.sEvents;
 import Graphics.Camera.FreeCamera;
 import Graphics.sGraphicsManager;
 import Level.sLevel;
+import States.Game.RaceMode.RaceMode;
+import States.Game.iGameMode;
 import World.sWorld;
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -139,7 +139,7 @@ public class sGraphicsManager {
         float yPos = (mScreenDimensions.y * _y);
         Color temp = mGameContainer.getGraphics().getColor();
         mGameContainer.getGraphics().setColor(_color);
-        mGameContainer.getGraphics().drawString(_str, _x, _y);
+        mGameContainer.getGraphics().drawString(_str, xPos, yPos);
         mGameContainer.getGraphics().setColor(temp);
     }
 

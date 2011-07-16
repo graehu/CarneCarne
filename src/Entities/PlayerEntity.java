@@ -16,7 +16,7 @@ import Graphics.Sprites.sSpriteFactory;
 import Graphics.sGraphicsManager;
 import HUD.Reticle;
 import Level.sLevel.TileType;
-import States.Game.IntroSection;
+import States.Game.Tutorial.IntroSection;
 import World.sWorld;
 import java.util.HashMap;
 import org.jbox2d.common.Vec2;

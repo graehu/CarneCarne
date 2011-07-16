@@ -2,8 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package States.Game;
+package States.Game.Tutorial;
 
+import Events.MapClickEvent;
 import Events.iEvent;
 import Events.iEventListener;
 import Events.sEvents;
@@ -16,22 +17,20 @@ import org.jbox2d.common.Vec2;
  *
  * @author alasdair
  */
-class IntroJumpSection extends IntroSection implements iEventListener
+class IntroSpitSection extends IntroSection implements iEventListener
 {
-    IntroSection mReturn;
     iSkin mSkin;
-    public IntroJumpSection(Vec2 _position, int _playerNumber)
+    IntroSection mReturn;
+    public IntroSpitSection(Vec2 _position, int _playerNumber)
     {
         super(_position, _playerNumber);
-        sEvents.unblockEvent("KeyDownEvent"+'w'+mPlayerNumber);
-        sEvents.subscribeToEvent("KeyDownEvent"+'w'+mPlayerNumber, this);
-        mReturn = this;
+        sEvents.blockEvent("MapClickEventL"+mPlayerNumber);
+        sEvents.unblockEvent("MapClickEventR"+mPlayerNumber);
         HashMap params = new HashMap();
-        params.put("ref", "tutorialJumpStart");
-        params.put("width", 448);
-        params.put("height", 300);
-        mSkin = sSkinFactory.create("animated", params);
-        mSkin.setIsLooping(false);
+        params.put("ref", "SignTutorialSpit");
+        mSkin = sSkinFactory.create("static", params);
+        sEvents.subscribeToEvent("MapClickEventR"+mPlayerNumber, this);
+        mReturn = this;
     }
 
     @Override
@@ -39,6 +38,7 @@ class IntroJumpSection extends IntroSection implements iEventListener
     {
         return mReturn;
     }
+
     @Override
     public void render()
     {
@@ -48,7 +48,8 @@ class IntroJumpSection extends IntroSection implements iEventListener
 
     public boolean trigger(iEvent _event)
     {
-        mReturn = new IntroGrabSection(mPosition, mPlayerNumber);
+        MapClickEvent event = (MapClickEvent)_event;
+        mReturn = new IntroSwingSection(mPosition, mPlayerNumber);
         return false;
     }
     

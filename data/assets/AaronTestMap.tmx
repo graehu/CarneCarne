@@ -10,28 +10,7 @@
    </properties>
   </tile>
  </tileset>
- <tileset firstgid="5" name="IceSlope" tilewidth="64" tileheight="64">
-  <image source="IceSlope.png" width="256" height="256"/>
-  <tile id="0">
-   <properties>
-    <property name="Material" value="Ice"/>
-    <property name="Type" value="Slope"/>
-   </properties>
-  </tile>
- </tileset>
- <tileset firstgid="21" name="TileTar" tilewidth="64" tileheight="64">
-  <image source="TileTar.png" width="256" height="256"/>
-  <tile id="0">
-   <properties>
-    <property name="Anchor " value="True"/>
-    <property name="Flammable" value="True"/>
-    <property name="Material" value="Tar"/>
-    <property name="Regrows" value="False"/>
-    <property name="Type" value="Block"/>
-   </properties>
-  </tile>
- </tileset>
- <tileset firstgid="37" name="TileBone2" tilewidth="64" tileheight="64">
+ <tileset firstgid="5" name="TileBone2" tilewidth="64" tileheight="64">
   <image source="TileBone2.png" width="256" height="256"/>
   <tile id="0">
    <properties>
@@ -43,13 +22,13 @@
    </properties>
   </tile>
  </tileset>
- <tileset firstgid="53" name="TileBoneSpine" tilewidth="64" tileheight="64">
+ <tileset firstgid="21" name="TileBoneSpine" tilewidth="64" tileheight="64">
   <image source="TileBoneSpine.png" width="256" height="192"/>
  </tileset>
- <tileset firstgid="65" name="TileBoneLarge" tilewidth="64" tileheight="64">
+ <tileset firstgid="33" name="TileBoneLarge" tilewidth="64" tileheight="64">
   <image source="TileBoneLarge.png" width="256" height="256"/>
  </tileset>
- <tileset firstgid="81" name="TileBone2Side" tilewidth="64" tileheight="64">
+ <tileset firstgid="49" name="TileBone2Side" tilewidth="64" tileheight="64">
   <image source="TileBone2Side.png" width="256" height="256"/>
   <tile id="0">
    <properties>
@@ -61,13 +40,13 @@
    </properties>
   </tile>
  </tileset>
- <tileset firstgid="97" name="TileBoneLargeSide" tilewidth="64" tileheight="64">
+ <tileset firstgid="65" name="TileBoneLargeSide" tilewidth="64" tileheight="64">
   <image source="TileBoneLargeSide.png" width="256" height="256"/>
  </tileset>
- <tileset firstgid="113" name="TileBoneSpineSide" tilewidth="64" tileheight="64">
+ <tileset firstgid="81" name="TileBoneSpineSide" tilewidth="64" tileheight="64">
   <image source="TileBoneSpineSide.png" width="256" height="192"/>
  </tileset>
- <tileset firstgid="125" name="TileBoneEnds" tilewidth="64" tileheight="64">
+ <tileset firstgid="93" name="TileBoneEnds" tilewidth="64" tileheight="64">
   <image source="TileBoneEnds.png" width="128" height="640"/>
   <tile id="0">
    <properties>
@@ -103,6 +82,27 @@
     <property name="Material" value="Swingable"/>
     <property name="Size" value="3"/>
     <property name="Type" value="Edge"/>
+   </properties>
+  </tile>
+ </tileset>
+ <tileset firstgid="113" name="IceSlope" tilewidth="64" tileheight="64">
+  <image source="IceSlope.png" width="256" height="256"/>
+  <tile id="0">
+   <properties>
+    <property name="Material" value="Ice"/>
+    <property name="Type" value="Slope"/>
+   </properties>
+  </tile>
+ </tileset>
+ <tileset firstgid="129" name="TileTar" tilewidth="64" tileheight="64">
+  <image source="TileTar.png" width="256" height="256"/>
+  <tile id="0">
+   <properties>
+    <property name="Anchor " value="True"/>
+    <property name="Flammable" value="True"/>
+    <property name="Material" value="Tar"/>
+    <property name="Regrows" value="False"/>
+    <property name="Type" value="Block"/>
    </properties>
   </tile>
  </tileset>
@@ -237,6 +237,11 @@
     <property name="Anchor" value="True"/>
     <property name="Material" value="NonEdible"/>
     <property name="Type" value="NonEdible"/>
+   </properties>
+  </tile>
+  <tile id="1">
+   <properties>
+    <property name="Spawn" value="Tutorial"/>
    </properties>
   </tile>
   <tile id="23">
@@ -412,7 +417,7 @@
  </layer>
  <layer name="Level" width="100" height="100">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC+3SSw7CMAwFQF+r91+x6EG4BYIVigr5ALJVZiRv2iiJ/RIRcVWPqiJ7DlWqiqN7Zc9GHse2mOshe6Znz2N1r5E+s+f/j3n0zsrOoHIe97o0/7ZOvdvr1feqmVTR3qvNZGWv3hnP67JzqJ7HJ5mMvP2R8+Uxn8u+uHfvTHnMZ7LH+lsfXSeP9T5+uV4ea33I4zuyesme/5nzmO07e/byqF9VZM+hSgEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMO8GW5EHZ0CcAAA=
+   H4sIAAAAAAAAC+3TwQ3CMAwF0FwYovtPwQiMwhaonKqqkKRQ2U3fk3whKLH9oZRSnupdWUTvIUtlsdVX9G7ksW0qfTNE73T0PPbe1TJn9P6vmEftregMMucx12N1NlXq212fPs+aSRbrvtaZ7Lmr9sbye9E5ZM/jl95afvst78vjmN6y/ydGz6N17ujdny2P3l57547effY8bpXzljnk8R+1Xo6YJXr3o+fRO3f07s+Yx31xfoXKInoPWQoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgH4vRPMch0CcAAA=
   </data>
  </layer>
  <layer name="Foreground" width="100" height="100">
@@ -427,7 +432,7 @@
  </layer>
  <layer name="Flags" width="100" height="100">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC+3RwQkAIAwEQdN/S1qCPflOBYlhBu5/sGsBAKNE9QH404k86v3S4UYetfToRY9e9AAAAAAAAACAGXbkUUsPAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJjrAX5U1elAnAAA
+   H4sIAAAAAAAAC+3RwQ2AQAwDwUv/LUEJNEIVvNMAvotmJP8t7VoAwCiVPgBnuquPvFM6PNVHlh570WMvegD8600fAAAAAAAAYKyr+sjSAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADm+gB0OpIRQJwAAA==
   </data>
  </layer>
 </map>

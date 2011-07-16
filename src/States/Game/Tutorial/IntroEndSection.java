@@ -2,9 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package States.Game;
+package States.Game.Tutorial;
 
-import Events.MapClickEvent;
+import Events.PlayerEndedTutorialEvent;
 import Events.iEvent;
 import Events.iEventListener;
 import Events.sEvents;
@@ -17,26 +17,33 @@ import org.jbox2d.common.Vec2;
  *
  * @author alasdair
  */
-class IntroSpitSection extends IntroSection implements iEventListener
+class IntroEndSection extends IntroSection implements iEventListener
 {
     iSkin mSkin;
-    IntroSection mReturn;
-    public IntroSpitSection(Vec2 _position, int _playerNumber)
+    int mNewTimer = 0;
+    public IntroEndSection(Vec2 _position, int _playerNumber)
     {
         super(_position, _playerNumber);
-        sEvents.blockEvent("MapClickEventL"+mPlayerNumber);
-        sEvents.unblockEvent("MapClickEventR"+mPlayerNumber);
+        sEvents.unblockAllEvents();
         HashMap params = new HashMap();
-        params.put("ref", "SignTutorialSpit");
+        params.put("ref", "SignTutorialFinish");
         mSkin = sSkinFactory.create("static", params);
-        sEvents.subscribeToEvent("MapClickEventR"+mPlayerNumber, this);
-        mReturn = this;
+        sEvents.subscribeToEvent("AllPlayersTutorialEndedEvent", this);
+        sEvents.triggerEvent(new PlayerEndedTutorialEvent(mPlayerNumber));
     }
 
     @Override
     public IntroSection updateImpl()
     {
-        return mReturn;
+        if (mNewTimer != 0)
+        {
+            mNewTimer--;
+            if (mNewTimer == 0)
+            {
+                return null;
+            }
+        }
+        return this;
     }
 
     @Override
@@ -48,8 +55,7 @@ class IntroSpitSection extends IntroSection implements iEventListener
 
     public boolean trigger(iEvent _event)
     {
-        MapClickEvent event = (MapClickEvent)_event;
-        mReturn = new IntroSwingSection(mPosition, mPlayerNumber);
+        mNewTimer = 120;
         return false;
     }
     

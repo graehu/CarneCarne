@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package States.Game;
+package States.Game.RaceMode;
 
 import Entities.PlayerEntity;
 import Events.PlayerCreatedEvent;
@@ -11,6 +11,7 @@ import Events.iEvent;
 import Events.iEventListener;
 import Events.sEvents;
 import Level.sLevel;
+import States.Game.iGameMode;
 import World.sWorld;
 import java.util.Collection;
 import java.util.LinkedList;

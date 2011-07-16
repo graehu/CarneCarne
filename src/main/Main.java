@@ -33,7 +33,6 @@ public class Main extends StateBasedGame
         {            
             AppGameContainer app = new AppGameContainer(new Main());
             app.setIcon("icon.png");
-            
             app.setDisplayMode(800, 600, false);
             app.setVSync(true);
             app.setSmoothDeltas(true);

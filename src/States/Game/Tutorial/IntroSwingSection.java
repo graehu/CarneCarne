@@ -2,14 +2,14 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package States.Game;
+package States.Game.Tutorial;
 
-import Events.PlayerEndedTutorialEvent;
 import Events.iEvent;
 import Events.iEventListener;
 import Events.sEvents;
 import Graphics.Skins.iSkin;
 import Graphics.Skins.sSkinFactory;
+import Level.sLevel;
 import java.util.HashMap;
 import org.jbox2d.common.Vec2;
 
@@ -17,33 +17,28 @@ import org.jbox2d.common.Vec2;
  *
  * @author alasdair
  */
-class IntroEndSection extends IntroSection implements iEventListener
+class IntroSwingSection extends IntroSection implements iEventListener
 {
     iSkin mSkin;
-    int mNewTimer = 0;
-    public IntroEndSection(Vec2 _position, int _playerNumber)
+    int mTimer = 0;
+    IntroSection mSection;
+    public IntroSwingSection(Vec2 _position, int _playerNumber)
     {
         super(_position, _playerNumber);
-        sEvents.unblockAllEvents();
+        Vec2 tile = mPosition.sub(new Vec2(1,3));
+        sEvents.unblockEvent("MapClickEventL"+mPlayerNumber);
+        sLevel.placeTile((int)tile.x,(int)tile.y, 17);
         HashMap params = new HashMap();
-        params.put("ref", "SignTutorialFinish");
+        params.put("ref", "SignTutorialSwing");
         mSkin = sSkinFactory.create("static", params);
-        sEvents.subscribeToEvent("AllPlayersTutorialEndedEvent", this);
-        sEvents.triggerEvent(new PlayerEndedTutorialEvent(mPlayerNumber));
+        sEvents.subscribeToEvent("PlayerSwingEvent" + mPlayerNumber, this);
+        mSection = this;
     }
 
     @Override
     public IntroSection updateImpl()
     {
-        if (mNewTimer != 0)
-        {
-            mNewTimer--;
-            if (mNewTimer == 0)
-            {
-                return null;
-            }
-        }
-        return this;
+        return mSection;
     }
 
     @Override
@@ -55,7 +50,7 @@ class IntroEndSection extends IntroSection implements iEventListener
 
     public boolean trigger(iEvent _event)
     {
-        mNewTimer = 120;
+        mSection = new IntroEndSection(mPosition, mPlayerNumber);
         return false;
     }
     

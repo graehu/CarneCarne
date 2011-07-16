@@ -194,7 +194,7 @@ public class BodyCamera extends iCamera implements iEventListener{
     @Override
     public iCamera addPlayer(Body _body)
     {
-        return new SplitScreenCamera(mBody, _body, mViewPort, mTopSplit);
+        return new SplitScreenCamera(_body, mBody, mViewPort, mTopSplit);
     }
     protected void calculatePosition()
     {

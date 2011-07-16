@@ -312,9 +312,13 @@ public class TongueStateMachine {
                     float actualLength = mTongueDir.normalize();
                     setTongue(mTongueDir, actualLength); //lock tongue to block
                     if(actualLength < mLastLength)
+                    {
                         mJoint.m_frequencyHz = 0.001f;
+                    }
                     else
-                        mJoint.m_frequencyHz = 4f;
+                    {
+                        mJoint.m_frequencyHz = 3.2f;
+                    }
                      mLastLength = actualLength;
                     if(actualLength > mTargetDistance)
                     {

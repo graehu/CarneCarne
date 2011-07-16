@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package States.Game;
+package States.Game.Tutorial;
 
 import Events.sEvents;
 import Graphics.Skins.iSkin;
@@ -15,28 +15,30 @@ import org.jbox2d.common.Vec2;
  *
  * @author alasdair
  */
-class IntroGrabSection extends IntroSection
+class IntroSmashSection extends IntroSection
 {
     iSkin mSkin;
-    public IntroGrabSection(Vec2 _position, int _playerNumber)
+    public IntroSmashSection(Vec2 _position, int _playerNumber)
     {
         super(_position, _playerNumber);
         sEvents.unblockEvent("MapClickEventL"+mPlayerNumber);
+        sEvents.blockEvent("MapClickEventR"+mPlayerNumber);
         HashMap params = new HashMap();
-        params.put("ref", "SignTutorialEat");
+        params.put("ref", "SignTutorialSmash");
         mSkin = sSkinFactory.create("static", params);
     }
 
     @Override
     public IntroSection updateImpl()
     {
-        Vec2 tile = mPosition.add(new Vec2(4,0));
+        Vec2 tile = mPosition.sub(new Vec2(1,3));
         if (sLevel.getPathInfo((int)tile.x,(int)tile.y).equals(sLevel.PathInfo.eAir))
         {
-            return new IntroSmashSection(mPosition, mPlayerNumber);
+            return new IntroSpitSection(mPosition, mPlayerNumber);
         }
         return this;
     }
+
     @Override
     public void render()
     {

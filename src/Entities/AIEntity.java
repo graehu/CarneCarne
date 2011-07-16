@@ -7,6 +7,7 @@ package Entities;
 import AI.iAIController;
 import AI.iPathFinding.Command;
 import Entities.AIEntityState.State;
+import Graphics.Particles.ParticleSysBase;
 import Graphics.Particles.sParticleManager;
 import Graphics.Skins.iSkin;
 import Level.RootTile.AnimationType;
@@ -36,6 +37,7 @@ public class AIEntity extends Entity {
     protected Command mCommand;
     protected AIEntityState mAIEntityState;
     protected TileType mTileType;
+    protected int mContactParticleTimer = 0;
 
     public RevoluteJoint mJoint;
     
@@ -55,6 +57,8 @@ public class AIEntity extends Entity {
     }
     public void update()
     {
+        mContactParticleTimer++;
+        
         //dampen
         mBody.setAngularDamping(8);
         
@@ -133,7 +137,8 @@ public class AIEntity extends Entity {
                 {
                     if(edge.contact.isTouching() && !other.isSensor())
                     {
-                        mTouchingTile = ((Tile)other.getUserData());
+                        if(((Tile)other.getUserData()) != null)
+                            mTouchingTile = ((Tile)other.getUserData());
                         mJumpContacts++;
                         //set tile type while only touching one type
                         if(numContacts == 1 && other.getUserData() != null)
@@ -145,10 +150,18 @@ public class AIEntity extends Entity {
                 {
                     if(edge.contact.isTouching() && !other.isSensor())
                     {
+                        createContactParticle(collisionNorm);
                         mJumpContacts++; //allow jump on slopes
                         mAllowRoll = true;
                     }
                     mFloorNormal = collisionNorm.clone();
+                }
+                else
+                {
+                    if(edge.contact.isTouching() && !other.isSensor())
+                    {
+                        createContactParticle(collisionNorm);
+                    }
                 }
             }
             edge = edge.next;
@@ -162,6 +175,26 @@ public class AIEntity extends Entity {
 
         mController.update();
         subUpdate();
+    }
+    protected void createContactParticle(Vec2 _dir)
+    {
+        if(mBody.getLinearVelocity().lengthSquared() > 20)
+        {
+            if(mContactParticleTimer > 10) //assumes 60fps
+            {
+                mContactParticleTimer = 0;
+                ParticleSysBase sys = null;
+                if (mTouchingTile == null)
+                    sys = sParticleManager.createSystem("cloud", sWorld.translateToWorld(mBody.getPosition()).sub(sWorld.getPixelTranslation()).add(new Vec2(32,32)).add(_dir.mul(-32)), 1f);
+                else
+                    sys = sParticleManager.createSystem(mTouchingTile.getAnimationsName(AnimationType.eJump) + "Jump", sWorld.translateToWorld(mBody.getPosition()).sub(sWorld.getPixelTranslation()).add(new Vec2(32,32)).add(_dir.mul(-32)), 1f);
+                float angle = (float) Math.acos(Vec2.dot(_dir, new Vec2(0,1)));
+                if(_dir.x >= 0)
+                    sys.setAngularOffset(angle);
+                else
+                    sys.setAngularOffset(-angle);
+            }
+        }
     }
     protected void subUpdate()
     {

@@ -320,8 +320,6 @@ public class sWorld
         def.length = 0.0f;
         def.frequencyHz = 1.0f;
         def.dampingRatio = 1.0f;
-        //def.frequencyHz = 0.5f;
-        //def.dampingRatio = 0.02f; /// Reduce these to make his tongue springy
         return (DistanceJoint)mWorld.createJoint(def);
     }
     public static Body createAreaEvent(int _x, int _y, int _x2, int _y2, AreaEvent _event)
