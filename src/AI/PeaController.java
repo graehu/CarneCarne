@@ -42,7 +42,7 @@ public class PeaController extends iAIController
             mEntity.walkRight();
             if(sLevel.getPathInfo((int)(mEntity.mBody.getPosition().x+1), (int)(mEntity.mBody.getPosition().y)) == PathInfo.eNotPassable)
             {
-                mToggle = false;
+                mToggle = true;
             }
         }
         
