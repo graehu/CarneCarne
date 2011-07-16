@@ -22,6 +22,7 @@ public class Reticle {
     private Vec2 mLastPosition = new Vec2(0,0);
     private float mOffset = 200;
     private float mDistance = 200;
+    private boolean mByPosition = false;
     public Reticle(AIEntity _player)
     {
         mPlayer = _player;
@@ -32,13 +33,19 @@ public class Reticle {
     }
     public void update()
     {
-            Vec2 playerPixelPosition = mPlayer.mBody.getPosition().mul(64);
-            Vec2 reticlePos = playerPixelPosition.add(mCurrentDir.mul(mDistance));
-            mReticleSprite.setPosition(reticlePos); //20,20 offset to center sprite
-            if(mDistance == mOffset)
+            if(mByPosition)
             {
-                //Vec2 pixelPosition = sWorld.translateToWorld(new Vec2(0,0));
-               // sInput.setCursorPos(pixelPosition.sub(reticlePos).sub(mCurrentDir.mul(20)));
+                //translate player to screen space and offset to centre
+                Vec2 playerPos = mPlayer.mBody.getPosition().mul(64).add(sWorld.getPixelTranslation()).add(new Vec2(32,32));
+                mCurrentDir = mLastPosition.sub(playerPos);
+                mDistance = mCurrentDir.normalize();
+                mReticleSprite.setPosition(mLastPosition);
+            }
+            else
+            {
+                Vec2 playerPixelPosition = mPlayer.mBody.getPosition().mul(64);
+                Vec2 reticlePos = playerPixelPosition.add(mCurrentDir.mul(mDistance));
+                mReticleSprite.setPosition(reticlePos); //20,20 offset to center sprite
             }
     }
     public void updateDirection(Vec2 dir)
@@ -46,17 +53,36 @@ public class Reticle {
         mCurrentDir = dir;
         mCurrentDir.normalize();
         mDistance = mOffset;
+        mByPosition = false;
     }
     public void setWorldPosition(Vec2 _pos)
     {
         mCurrentDir = _pos.sub(sWorld.translateToWorld(mPlayer.mBody.getPosition())).sub(new Vec2(32,32));
         mDistance = mCurrentDir.normalize();
         //mDistance = Math.min(mDistance,mOffset);
+        mByPosition = true;
+    }
+    public void setScreenPosition(Vec2 _pos)
+    {
+        mLastPosition = _pos;
+        mByPosition = true;
+    }
+    
+    public Vec2 getPlayerDirection()
+    {
+        return mCurrentDir.clone();
     }
     public void render()
     {
-        Vec2 pixelPosition = sWorld.getPixelTranslation();
-        mReticleSprite.render(pixelPosition.x,pixelPosition.y);
+        if(mByPosition)
+        {
+            mReticleSprite.render(0, 0);
+        }
+        else
+        {
+            Vec2 pixelPosition = sWorld.getPixelTranslation();
+            mReticleSprite.render(pixelPosition.x,pixelPosition.y);
+        }
     }
     
 }

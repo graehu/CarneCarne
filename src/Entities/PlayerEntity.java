@@ -184,7 +184,7 @@ public class PlayerEntity extends AIEntity
                     mArrowSprite.setRotation(rotation*180.0f/(float)Math.PI);
                     mArrowSprite.render(mViewPort.getWidth()*0.5f, 0);
                 }
-
+                    
                 sGraphicsManager.drawString("You have died " + mDeaths + " times", 0f, 0.1f);
             }
             else if (mIntroSection != null)

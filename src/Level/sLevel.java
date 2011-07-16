@@ -92,6 +92,7 @@ public class sLevel {
             mTiledMap = new AnimatedTiledMap("assets/simple_race.tmx");
             //mTiledMap = new AnimatedTiledMap("assets/Graham_Tutorial.tmx");
             //mTiledMap = new AnimatedTiledMap("assets/platforms2.tmx");
+            //mTiledMap = new AnimatedTiledMap("assets/AaronTestMap.tmx");
         }
         catch (SlickException e)
         {

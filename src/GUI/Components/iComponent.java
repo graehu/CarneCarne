@@ -264,7 +264,7 @@ public abstract class iComponent extends AbstractComponent {
     public final void destroy()
     {
         mParent.removeChild(this);
-        destroy();
+        destroyInternal();
     }
     protected final void destroyInternal()
     {
@@ -279,7 +279,6 @@ public abstract class iComponent extends AbstractComponent {
         }
         //remove from parent
         mParent = null;
-        
     }
 
     /*

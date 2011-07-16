@@ -207,9 +207,10 @@ public class PlayerInputController extends iAIController implements iEventListen
         else if (_event.getType().equals("MouseMoveEvent"))
         {
             MouseMoveEvent event = (MouseMoveEvent)_event;
-            mPlayerDir = event.getPhysicsPosition().sub(mEntity.mBody.getPosition().add(new Vec2(0.5f,0.5f))); //offset by half the width and height
-            mPlayerDir.normalize();
-            ((PlayerEntity)mEntity).mReticle.setWorldPosition(event.getWorldPosition());
+            ((PlayerEntity)mEntity).mReticle.setScreenPosition(event.getScreenPosition());
+            mPlayerDir = ((PlayerEntity)mEntity).mReticle.getPlayerDirection();
+            //mPlayerDir = event.getPhysicsPosition().sub(mEntity.mBody.getPosition().add(new Vec2(0.5f,0.5f))); //offset by half the width and height
+            //mPlayerDir.normalize();
             if(mTongueState.mIsTongueActive == false)
             {
                 look(mPlayerDir);
