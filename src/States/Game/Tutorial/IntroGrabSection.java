@@ -38,10 +38,10 @@ class IntroGrabSection extends IntroSection
         return this;
     }
     @Override
-    public void render()
+    protected void renderInternal(float scale)
     {
-        mSkin.setDimentions(450, 225);
-        mSkin.render(600,0);
+        mSkin.setDimentions(450*scale, 225*scale);
+        mSkin.render(600*scale,0);
     }
     
 }

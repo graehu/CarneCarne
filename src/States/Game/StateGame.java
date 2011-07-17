@@ -17,12 +17,12 @@ import Graphics.Skins.sSkinFactory;
 import Graphics.Sprites.sSpriteFactory;
 import Input.sInput;
 import Level.sLevel;
+import Sound.sSound;
 import States.StateChanger;
 import World.sWorld;
 import org.jbox2d.common.Vec2;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
@@ -81,6 +81,9 @@ public class StateGame extends BasicGameState implements iEventListener {
 
     public void update(GameContainer _gc, StateBasedGame _sbg, int _delta) throws SlickException 
     {
+        //update sounds
+        sSound.poll(_delta);
+        
         if(die) _gc.exit();
         sInput.update(_delta);
         mGameMode = mGameMode.update(_delta);
@@ -99,7 +102,7 @@ public class StateGame extends BasicGameState implements iEventListener {
         super.enter(container, game);
         
         container.setMouseGrabbed(true);
-        //sSound.play("ambiance");
+        sSound.playAsMusic("level1", true);
     }
     
     @Override
@@ -108,11 +111,15 @@ public class StateGame extends BasicGameState implements iEventListener {
     {
         super.leave(container, game);
         container.setMouseGrabbed(false);
-        //sSound.stop("ambiance");
+        sSound.stop("level1");
     }
     
     public void init(GameContainer _gc, StateBasedGame _sbg) throws SlickException
     {
+        //initialise sound
+        sSound.loadSound("level1", "assets/music/Level1.ogg");
+        sSound.loadSound("jump", "assets/sfx/fart_4.ogg");
+        sSound.loadSound("tongueFire", "assets/sfx/tongueFire.ogg");
         //createRootPane();
         mGameType = GameType.eRaceGame;
         mGameMode = new IntroMode();
@@ -129,12 +136,6 @@ public class StateGame extends BasicGameState implements iEventListener {
         
         //create state changers
         mChangeToMenu = new StateChanger(4, new BlobbyTransition(), new BlobbyTransition(), _sbg);
-        
-        //Initialise sound
-//        sSound.init();
-//        sSound.loadSound("ambiance", "assets/sound/sfx/level_ambiance.ogg");
-//        sSound.setLooping("ambiance", true);
-
     }
 
 }

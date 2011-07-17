@@ -6,6 +6,7 @@ package States.Menu;
 
 import Events.iEvent;
 import Events.iEventListener;
+import Sound.sSound;
 import States.StateChanger;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
@@ -28,7 +29,7 @@ public class StateMenu extends BasicGameState implements iEventListener{
     public int getID() {
         return 4;
     }
-
+    
     public void init(GameContainer _gc, StateBasedGame _sbg) throws SlickException {
         //do crap
         mChangeToGame = new StateChanger(3, null, new BlobbyTransition(Color.black), _sbg);

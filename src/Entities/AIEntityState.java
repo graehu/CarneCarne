@@ -4,6 +4,9 @@
  */
 package Entities;
 
+import Sound.sSound;
+import org.newdawn.slick.openal.SoundStore;
+
 /**
  *
  * @author alasdair
@@ -34,6 +37,7 @@ class AIEntityState
     private int mWaterHeight;
     private int mTimer;
     private AIEntity mEntity;
+    private String mJumpSound = "jump";
     
     AIEntityState(AIEntity _entity)
     {
@@ -257,7 +261,11 @@ class AIEntityState
             {
                 mEntity.mSkin.setAlpha(0.5f);
                 break;
-            }                    
+            }       
+            case eJumping:
+            {
+                //Sound.play(mJumpSound);
+            }
         }
         mState = _newState;
     }

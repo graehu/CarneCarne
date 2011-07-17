@@ -13,9 +13,9 @@ import GUI.Components.GraphicalComponent;
 import GUI.Components.ScrollableComponent;
 import GUI.Components.TextField;
 import Graphics.sGraphicsManager;
+import Sound.sSound;
 import Utils.sFontLoader;
 import org.jbox2d.common.Vec2;
-import org.lwjgl.opengl.Display;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Font;
 import org.newdawn.slick.GameContainer;
@@ -53,19 +53,21 @@ public class StateTitle extends BasicGameState implements iEventListener{
         eLeft,
         eRight
     }
-    
+
     GameContainer cont = null;
     @Override
     public void enter(GameContainer container, StateBasedGame game) throws SlickException {
         cont = container;
         super.enter(container, game);
-        container.setMouseCursor("ui/title/mouse.png", 0, 62); //FIXME: break in fullscreen
+        //container.setMouseCursor("ui/title/mouse.png", 0, 62); //FIXME: break in fullscreen
+        sSound.playAsMusic("menu1", true);
     }
 
     @Override
     public void leave(GameContainer container, StateBasedGame game) throws SlickException {
         super.leave(container, game);
         container.setDefaultMouseCursor();
+        sSound.stop("menu1");
     }
     
     
@@ -89,6 +91,9 @@ public class StateTitle extends BasicGameState implements iEventListener{
 
     public void init(final GameContainer _gc, final StateBasedGame _sbg) throws SlickException {
         sEvents.subscribeToEvent("WindowResizeEvent", this);
+        
+        //initalise music
+        sSound.loadSound("menu1", "assets/music/Menu1.ogg");
         
         //initialise fonts
         mUIFont = sFontLoader.createFont("manastirka",72);    
@@ -188,7 +193,10 @@ public class StateTitle extends BasicGameState implements iEventListener{
         
     }
 
-    public void update(GameContainer _gc, StateBasedGame _sbg, int _i) throws SlickException {
+    public void update(GameContainer _gc, StateBasedGame _sbg, int _i) throws SlickException 
+    {
+        sSound.poll(_i);
+        
         Input input = _gc.getInput();
         if(input.isKeyDown(Input.KEY_F11))
             sGraphicsManager.toggleFullscreen();  

@@ -36,7 +36,7 @@ public class Reticle {
             if(mByPosition)
             {
                 //translate player to screen space and offset to centre
-                Vec2 playerPos = mPlayer.mBody.getPosition().mul(64).add(sWorld.getPixelTranslation()).add(new Vec2(32,32));
+                Vec2 playerPos = mPlayer.mBody.getPosition().mul(64).add(sWorld.getPixelTranslation());
                 mCurrentDir = mLastPosition.sub(playerPos);
                 mDistance = mCurrentDir.normalize();
                 mReticleSprite.setPosition(mLastPosition);
@@ -57,7 +57,7 @@ public class Reticle {
     }
     public void setWorldPosition(Vec2 _pos)
     {
-        mCurrentDir = _pos.sub(sWorld.translateToWorld(mPlayer.mBody.getPosition())).sub(new Vec2(32,32));
+        mCurrentDir = _pos.sub(sWorld.translateToWorld(mPlayer.mBody.getPosition()));
         mDistance = mCurrentDir.normalize();
         //mDistance = Math.min(mDistance,mOffset);
         mByPosition = true;

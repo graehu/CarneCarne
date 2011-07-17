@@ -31,7 +31,7 @@ public class BroccoliFactory implements iEntityFactory {
         animDef.put("ref", "ss_1");
         animDef.put("anims", Arrays.asList("broc_1", "broc_2", "broc_3"));
         iSkin skin = sSkinFactory.create("character", animDef);
-        skin.startAnim("broc_1", true, 0.5f);
+        skin.activateSubSkin("broc_1", true, 0.5f);
         skin.setOffset("broc_1", new Vec2(-46/2,-46));
         skin.setOffset("broc_2", new Vec2(-46/2,-46));
         skin.setOffset("broc_3", new Vec2(-46/2,-46));

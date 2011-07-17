@@ -4,7 +4,7 @@
  */
 package Graphics.Skins;
 
-import java.lang.Integer;
+import Graphics.Skins.CharacterSkin.CharacterSubSkin;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,9 +23,7 @@ public class CharacterSkinFactory implements iSkinFactory {
     {
         try
         {
-            return new CharacterSkin(   _params.containsKey("ref") ? "assets/" + (String)_params.get("ref") + ".def" : null,
-                                        _params.containsKey("anims") ? (List<String>)_params.get("anims") : new ArrayList(),
-                                        _params.containsKey("duration") ? (Integer)_params.get("duration") : 41); //~24fps
+            return new CharacterSkin(_params.containsKey("subSkins") ? (List<CharacterSubSkin>)_params.get("subSkins") : new ArrayList());
         }
         catch (SlickException e)
         {

@@ -99,18 +99,15 @@ public class PlayerInputController extends iAIController implements iEventListen
         if(mTongueState.mIsTongueActive)
         {
             look(mTongueState.mTongueDir);
-            mEntity.mSkin.stopAnim(mFaceDirAnim);
-            mEntity.mSkin.stopAnim("h"+mFaceDirAnim); //hat animation
-            mEntity.mSkin.startAnim("m"+mFaceDirAnim, false, 0.0f); //mouth animation
-            mEntity.mSkin.startAnim("mh"+mFaceDirAnim, false, 0.0f); //mouthHat animation
+            mEntity.mSkin.deactivateSubSkin("face_"+mFaceDirAnim);
+            mEntity.mSkin.activateSubSkin("faceOpen_"+mFaceDirAnim, false, 0.0f);
         }
         else
         {
-            mEntity.mSkin.startAnim(mFaceDirAnim, false, 0.0f);
-            mEntity.mSkin.startAnim("h"+mFaceDirAnim, false, 0.0f); //hat animation
-            mEntity.mSkin.stopAnim("m"+mFaceDirAnim); //mouth animation
-            mEntity.mSkin.stopAnim("mh"+mFaceDirAnim); //mouthHat animation
+            mEntity.mSkin.activateSubSkin("face_"+mFaceDirAnim, false, 0.0f);
+            mEntity.mSkin.deactivateSubSkin("faceOpen_"+mFaceDirAnim);
         }
+        mEntity.mSkin.activateSubSkin("hat_"+mFaceDirAnim, false, 0.0f); 
     }
     
     public Tile grabBlock(final Vec2 _position)
@@ -325,10 +322,9 @@ public class PlayerInputController extends iAIController implements iEventListen
         //if statement splits left from right for efficiency
         //could further split into quadrents
         //each segment is the sum of half segments either side of each compass direction
-        mEntity.mSkin.stopAnim(mFaceDirAnim);
-        mEntity.mSkin.stopAnim("h"+mFaceDirAnim); //hat animation
-        mEntity.mSkin.stopAnim("m"+mFaceDirAnim); //mouth animation
-        mEntity.mSkin.stopAnim("mh"+mFaceDirAnim);
+        mEntity.mSkin.deactivateSubSkin("face_"+mFaceDirAnim);
+        mEntity.mSkin.deactivateSubSkin("hat_"+mFaceDirAnim); //hat animation
+        mEntity.mSkin.deactivateSubSkin("faceOpen_"+mFaceDirAnim); //mouth animation
         if(angle < Math.PI)
         {
             if(angle < halfSeg)
@@ -408,4 +404,5 @@ public class PlayerInputController extends iAIController implements iEventListen
                 mFaceDirAnim = "nnbw";
         }
     }
+    
 }

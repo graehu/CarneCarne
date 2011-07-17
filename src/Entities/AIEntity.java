@@ -308,16 +308,16 @@ public class AIEntity extends Entity {
     
     public boolean isDead()
     {
-        return mAIEntityState.getState() == AIEntityState.State.eDead;
+        return mAIEntityState.getState() == AIEntityState.State.eDead || mAIEntityState.getState() == AIEntityState.State.eRestartingRace;
     }
     
     public float setAnimation(String _animation)
     {
         if(!_animation.equals(mCurrentAnimation))
         {
-            mSkin.stopAnim(mCurrentAnimation);
+            mSkin.deactivateSubSkin(mCurrentAnimation);
             mCurrentAnimation = _animation;
-            return mSkin.startAnim(_animation, true, mAnimSpeed);
+            return mSkin.activateSubSkin(_animation, true, mAnimSpeed);
         }
         return 0;
     }

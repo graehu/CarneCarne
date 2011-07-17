@@ -12,15 +12,12 @@
  *              "y2" - starting yPos (Integer)
  *              "hScan" - horizontal animation? (boolean)
  *              "duration" - frame duration in ms (Integer)
- * character:   "ref" (data path e.g "char") - prefixes with "data", appends with .def
- *              "anims" (list of animations in the set)
- *              "duration"  - frame duration in ms (Integer)
+ * character:   "subSkins" - a list of CharacterSubSkin instances
  */
 
 package Graphics.Skins;
 
 import java.util.HashMap;
-import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
 /**

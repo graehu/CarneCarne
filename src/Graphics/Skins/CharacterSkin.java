@@ -3,14 +3,17 @@
  */
 package Graphics.Skins;
 
+import Graphics.sGraphicsManager;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
 import org.jbox2d.common.Vec2;
-import org.newdawn.slick.Color;
-import org.newdawn.slick.PackedSpriteSheet;
+import org.newdawn.slick.Animation;
+import org.newdawn.slick.Image;
+import org.newdawn.slick.Renderable;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
 
@@ -20,111 +23,173 @@ import org.newdawn.slick.SpriteSheet;
  */
 public class CharacterSkin implements iSkin
 {
-    List<iSkin> mSkins = new ArrayList<iSkin>();
-    HashMap<String, Integer> mSkinNames = new HashMap<String, Integer>();
-    Queue<Integer> mCurrentSkins = new PriorityQueue<Integer>();
-    List<Vec2> mOffsets = new ArrayList<Vec2>();
-    CharacterSkin(String _packedSpriteSheet, List<String> _spriteSheets, int _frameDuration) throws SlickException
+    static public class CharacterSubSkin
     {
-        //load packed sprite sheet
-        PackedSpriteSheet pss = new PackedSpriteSheet(_packedSpriteSheet, new Color(0,0,0));
-
-        //get spritesheets and create skins
-        int i = 0;
-        for(String string : _spriteSheets)
+        public CharacterSubSkin(String _ref, SubType _type, int _tileWidth, int _tileHeight)
         {
-            SpriteSheet temp = pss.getSpriteSheet(string);
-            //if 1x1 - is staticSkin
-            if(temp.getHorizontalCount() == 1 && temp.getVerticalCount() == 1)
-            {
-                mSkins.add(new StaticSkin(temp.getSprite(0, 0)));
-                mSkinNames.put(string,i);
-            }
-            else //is animatedSkin
-            {
-                mSkins.add(new AnimatedSkin(temp, _frameDuration));
-                mSkinNames.put(string,i);
-            }
-            //initialise offset
-            mOffsets.add(new Vec2(0,0));
-            i++;
+            this(_ref, _type, _tileWidth, _tileHeight, new Vec2(), 41);
         }
-        //if no delcared animations, throw exception
-        if(_spriteSheets.isEmpty())
+        public CharacterSubSkin(String _ref, SubType _type, int _tileWidth, int _tileHeight, Vec2 _offset)
         {
-            throw new SlickException("No animations declared");
+            this(_ref, _type, _tileWidth, _tileHeight, _offset, 41);
+        }
+        public CharacterSubSkin(String _ref, SubType _type, int _tileWidth, int _tileHeight, Vec2 _offset, int _duration)
+        {
+            mRef = _ref;
+            mType= _type;
+            mTileWidth = _tileWidth;
+            mTileHeight = _tileHeight;
+            mOffset = _offset;
+            mDuration = _duration;
+        }
+        public enum SubType
+        {
+            e32Dir,
+            eAnimated,
+            eStatic
+        }
+        SubType mType;
+        String mRef;
+        int mTileWidth = 0, mTileHeight = 0;
+        int mDuration = 0;
+        Vec2 mOffset = null;
+    }
+    
+    CharacterSkin(List<CharacterSubSkin> _subSkins) throws SlickException
+    {
+        for(CharacterSubSkin subSkin : _subSkins)
+        {
+            String absoluteRef = "assets/characters/" + subSkin.mRef + ".png";
+            switch(subSkin.mType)
+            {
+                case e32Dir:
+                {
+                    SpriteSheet ss = new SpriteSheet(absoluteRef, subSkin.mTileWidth, subSkin.mTileHeight);
+                    //ensure 18x2 tiles
+                    int reqWidth = 18;
+                    int reqHeight = 2;
+                    if(ss.getHorizontalCount() != reqWidth || ss.getVerticalCount() != reqHeight)
+                    {
+                        System.err.println(absoluteRef + " MUST BE " + reqWidth + "x" + reqHeight + " TILES");
+                        System.exit(1);
+                    }
+                    for(int y = 0; y < reqHeight; y++)
+                    {
+                        for(int x = 0; x < reqWidth; x++)
+                        {
+                            String name = subSkin.mRef + "_" + mDirections.get(x + (y*reqWidth));
+                            iSkin skin = new StaticSkin(ss.getSprite(x, y));
+                            addSubSkin(skin, name, subSkin.mOffset);
+                        }
+                    }
+                }
+                case eAnimated:
+                {
+                    SpriteSheet ss = new SpriteSheet(absoluteRef, subSkin.mTileWidth, subSkin.mTileHeight);
+                    iSkin skin = new AnimatedSkin(ss, subSkin.mDuration);
+                    addSubSkin(skin, subSkin.mRef, subSkin.mOffset);
+                }
+                case eStatic:
+                {
+                    Image image = new Image(absoluteRef);
+                    iSkin skin = new StaticSkin(image);
+                    addSubSkin(skin, subSkin.mRef, subSkin.mOffset);
+                }
+            }
         }
     }
+    
+    static ArrayList<String> mDirections = /*S->W->N->E->S*/
+            new ArrayList(Arrays.asList("s","ssbw", "sbw","ssw","swbs","sw","swbw","wsw","wbs",
+                                        "w","wbn","wnw","nwbw","nw","nwbn","nnw","nbw", "nnbw",
+                                        "n","nnbe", "nbe","nne","nebn","ne","nebe","ene","ebn", 
+                                        "e","ebs","ese","sebe","se","sebs","sse","sbe", "ssbe"));
+    
+    List<iSkin> mSubSkins = new ArrayList<iSkin>();
+    List<Vec2> mOffsets = new ArrayList<Vec2>();
+    HashMap<String, Integer> mSkinNames = new HashMap<String, Integer>();
+    Queue<Integer> mCurrentSkins = new PriorityQueue<Integer>();
+    
+    float mRotation = 0;
+    
+    
+    protected final void addSubSkin(iSkin _skin, String _name, Vec2 _offset)
+    {
+        int arrayPos = mSubSkins.size();
+        mSubSkins.add(_skin);
+        mSkinNames.put(_name, arrayPos);
+        mOffsets.add(_offset);
+    }
+    
     public void render(float _x, float _y)
     {
         for(Integer i : mCurrentSkins)
-            mSkins.get(i).render(_x + mOffsets.get(i).x, _y + mOffsets.get(i).y);
+        {
+            mSubSkins.get(i).render(_x + mOffsets.get(i).x, _y + mOffsets.get(i).y);
+        }
     }
     
     public void setRotation(float _radians)
     {
-        for(iSkin skin : mSkins)
+        for(iSkin subSkin : mSubSkins)
         {
-            skin.setRotation(_radians);
+            subSkin.setRotation(_radians);
         }
     }
 
-    public final float startAnim(String _animation, boolean _isLooping, float _speed) {    
+    public final float activateSubSkin(String _animation, boolean _isLooping, float _speed) {    
         if(mSkinNames.containsKey(_animation))
         {
             int ref = mSkinNames.get(_animation);
-            if(mCurrentSkins.contains(ref))//return if already playing
+            if(mCurrentSkins.contains(ref))//return if already activated
                 return 0;
-            iSkin skin = mSkins.get(ref);
-            skin.setIsLooping(_isLooping);
-            skin.setSpeed(_speed); 
-            skin.restart();
             mCurrentSkins.add(ref);
+            
+            iSkin skin = mSubSkins.get(ref);
+            skin.restart();
+            skin.setIsLooping(_isLooping);
+            skin.setSpeed(_speed);
+            
             return skin.getDuration();
         }
         else return 0;
     }
 
-    public final void stopAnim(String _animation) {
+    public final void deactivateSubSkin(String _animation) {
         mCurrentSkins.remove(mSkinNames.get(_animation));
-    }
-
-    public void restart(String _animation) {
-        mSkins.get(mSkinNames.get(_animation)).restart();
-    }
-
-    public void setRotation(String _animation, float _radians) {
-        Integer ref = mSkinNames.get(_animation);
-        mSkins.get(ref).setRotation(_radians);
     }
     
     public void restart() {
-        for(iSkin skin : mSkins)
-        {
-            skin.restart();
-        }
+        //do nothing
     }
     
-    public void setDimentions(String _animation, float _w, float _h) {
-        mSkins.get(mSkinNames.get(_animation)).setDimentions(_w, _h);
+    public void setRotation(String _subSkin, float _radians)
+    {
+        if(mSkinNames.containsKey(_subSkin))
+            mSubSkins.get(mSkinNames.get(_subSkin)).setRotation(_radians);
     }
     
-    public void setOffset(String _animation, Vec2 _offset) {
-        Integer ref = mSkinNames.get(_animation);
-        if(ref != null)
-            mOffsets.set(ref, _offset);
+    public void setDimentions(String _subSkin, float _w, float _h) {
+        if(mSkinNames.containsKey(_subSkin))
+            mSubSkins.get(mSkinNames.get(_subSkin)).setDimentions(_w, _h);
     }
-    public Vec2 getOffset(String _animation) {
-        Integer ref = mSkinNames.get(_animation);
+    
+    public void setOffset(String _subSkin, Vec2 _offset) {
+            Integer ref = mSkinNames.get(_subSkin);
+            if(ref != null)
+                mOffsets.set(ref, _offset);
+    }
+    public Vec2 getOffset(String _subSkin) {
+        Integer ref = mSkinNames.get(_subSkin);
         if(ref != null)
             return mOffsets.get(ref);
         else return null;
     }
     
     public void setAlpha(float _alpha) {
-        for(iSkin skin : mSkins)
+        for(iSkin subSkin : mSubSkins)
         {
-            skin.setAlpha(_alpha);
+            subSkin.setAlpha(_alpha);
         }
     }
 

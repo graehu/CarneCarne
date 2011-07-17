@@ -26,9 +26,8 @@ public interface iSkin {
     
     //character methods
     abstract void setRotation(String _animation, float _radians);
-    abstract float startAnim(String _animation, boolean _isLooping, float _speed);
-    abstract void stopAnim(String _animation);
-    abstract void restart(String _animation);
+    abstract float activateSubSkin(String _animation, boolean _isLooping, float _speed);
+    abstract void deactivateSubSkin(String _animation);
     abstract void setDimentions(String _animation, float _w, float _h);
     abstract void setOffset(String _animation, Vec2 _offset);
     abstract Vec2 getOffset(String _animation);

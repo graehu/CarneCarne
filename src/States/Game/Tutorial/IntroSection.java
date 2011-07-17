@@ -4,6 +4,8 @@
  */
 package States.Game.Tutorial;
 
+import Events.iEventListener;
+import Graphics.sGraphicsManager;
 import org.jbox2d.common.Vec2;
 
 /**
@@ -28,5 +30,11 @@ abstract public class IntroSection
         return updateImpl();
     }
     abstract public IntroSection updateImpl();
-    abstract public void render();
+    final public void render()
+    {
+        float screenX = sGraphicsManager.getScreenDimensions().x;
+        float scale = screenX/1680;
+        renderInternal(scale);
+    }
+    abstract protected void renderInternal(float scale);
 }

@@ -13,6 +13,7 @@ import Graphics.Sprites.sSpriteFactory;
 import Level.RootTile.AnimationType;
 import Level.Tile;
 import Level.sLevel.TileType;
+import Sound.sSound;
 import World.TongueAnchor;
 import World.sWorld;
 import java.util.HashMap;
@@ -116,7 +117,7 @@ public class TongueStateMachine {
     }
     private int setAnimation(String _name)
     {
-        mAIController.mEntity.mSkin.startAnim(_name, false, 0.0f);
+        mAIController.mEntity.mSkin.activateSubSkin(_name, false, 0.0f);
         return 1;
     }
     
@@ -597,37 +598,39 @@ public class TongueStateMachine {
                 //set body type
                 ((PlayerEntity)mAIController.mEntity).changeBodyType(TileType.eTileTypesMax);
                 //no tongue
-                mAIController.mEntity.mSkin.stopAnim("tng");
+                mAIController.mEntity.mSkin.deactivateSubSkin("tng");
                 mIsTongueActive = false;
                 mCurrentStateTimer = 0;
                 break;
             }
             case eFiringTongue:
             {
+                //sound 
+                //sSound.play("tongueFire");
                 mTongueDir = mAIController.mPlayerDir; //assume nomalised
                 //render tongue
-                mAIController.mEntity.mSkin.startAnim("tng", false, 0.0f);
+                mAIController.mEntity.mSkin.activateSubSkin("tng", false, 0.0f);
                 mIsTongueActive = true;
                 break;
             }
             case eRetractingTongue:
             {
                 //render tongue
-                mAIController.mEntity.mSkin.startAnim("tng", false, 0.0f);
+                mAIController.mEntity.mSkin.activateSubSkin("tng", false, 0.0f);
                 mIsTongueActive = true;
                 break;
             }
             case eStuckToBlock:
             {
                 //render tongue
-                mAIController.mEntity.mSkin.startAnim("tng", false, 0.0f);
+                mAIController.mEntity.mSkin.activateSubSkin("tng", false, 0.0f);
                 mIsTongueActive = true;
                 break;
             }
             case eRetractingWithBlock:
             {
                 //render tongue
-                mAIController.mEntity.mSkin.startAnim("tng", false, 0.0f);
+                mAIController.mEntity.mSkin.activateSubSkin("tng", false, 0.0f);
                 mIsTongueActive = true;
                 break;
             }
@@ -638,7 +641,7 @@ public class TongueStateMachine {
                 //set body type
                 ((PlayerEntity)mAIController.mEntity).changeBodyType(mTile.getTileType());
                 //no tongue
-                mAIController.mEntity.mSkin.stopAnim("tng");
+                mAIController.mEntity.mSkin.deactivateSubSkin("tng");
                 mIsTongueActive = false;
                 mCurrentStateTimer = 0;
                 break;
@@ -649,14 +652,14 @@ public class TongueStateMachine {
                 //DISPLAY TONGUE END
                 mTongueEndSprite.setVisible(true);
                 //render tongue
-                mAIController.mEntity.mSkin.startAnim("tng", false, 0.0f);
+                mAIController.mEntity.mSkin.activateSubSkin("tng", false, 0.0f);
                 mIsTongueActive = true;
                 break;
             }
             case eRetractingHammer:
             {
                 //render tongue
-                mAIController.mEntity.mSkin.startAnim("tng", false, 0.0f);
+                mAIController.mEntity.mSkin.activateSubSkin("tng", false, 0.0f);
                 mIsTongueActive = true;
                 //mCurrentStateTimer = Math.max(actionDelay, mCurrentStateTimer);
                 break;
@@ -664,7 +667,7 @@ public class TongueStateMachine {
             case eSpittingBlock:
             {
                 //no tongue
-                mAIController.mEntity.mSkin.stopAnim("tng");
+                mAIController.mEntity.mSkin.deactivateSubSkin("tng");
                 mIsTongueActive = false;
                 mCurrentStateTimer = setAnimation("SpittingBlock");
                 mCurrentStateTimer = Math.max(actionDelay, mCurrentStateTimer);
@@ -681,7 +684,7 @@ public class TongueStateMachine {
             case eSpitting:
             {
                 //no tongue
-                mAIController.mEntity.mSkin.stopAnim("tng");
+                mAIController.mEntity.mSkin.deactivateSubSkin("tng");
                 mIsTongueActive = false;
                 mCurrentStateTimer = setAnimation("Spitting");
                 break;
@@ -691,7 +694,7 @@ public class TongueStateMachine {
                 //set body type
                 ((PlayerEntity)mAIController.mEntity).changeBodyType(TileType.eTileTypesMax);
                 //no tongue
-                mAIController.mEntity.mSkin.stopAnim("tng");
+                mAIController.mEntity.mSkin.deactivateSubSkin("tng");
                 mIsTongueActive = false;
                 mCurrentStateTimer = setAnimation("Idle");
                 break;
@@ -699,7 +702,7 @@ public class TongueStateMachine {
             case eSwinging:
             {
                 //render tongue
-                mAIController.mEntity.mSkin.startAnim("tng", false, 0.0f);
+                mAIController.mEntity.mSkin.activateSubSkin("tng", false, 0.0f);
                 mIsTongueActive = true;
                 tongueAttachment = sWorld.getLastTongueHit(mAIController.mPlayer);
                 mTargetDistance = 2;//mTonguePosition.sub(mAIController.mEntity.mBody.getPosition()).length();

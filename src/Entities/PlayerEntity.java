@@ -195,32 +195,32 @@ public class PlayerEntity extends AIEntity
     
     public void changeBodyType(TileType _type)
     {
-        mSkin.stopAnim(mBodyType);
+        mSkin.deactivateSubSkin(mBodyType);
         switch(_type)
         {
             case eEdible:
-                mSkin.startAnim("edi", false, 0.0f);
+                mSkin.activateSubSkin("edi", false, 0.0f);
                 mBodyType = "edi";
                 break;
             case eMelonFlesh:
-                mSkin.startAnim("wtr", false, 0.0f);
+                mSkin.activateSubSkin("wtr", false, 0.0f);
                 mBodyType = "wtr";
                 break;
             case eBouncy:
-                mSkin.startAnim("jly", false, 0.0f);
+                mSkin.activateSubSkin("jly", false, 0.0f);
                 mBodyType = "jly";
                 break;
             case eGum:
-                mSkin.startAnim("gum", false, 0.0f);
+                mSkin.activateSubSkin("gum", false, 0.0f);
                 mBodyType = "gum";
                 break;
             case eChilli:
-                mSkin.startAnim("spi", false, 0.0f);
+                mSkin.activateSubSkin("spi", false, 0.0f);
                 mBodyType = "spi";
                 break;
             default:
             case eTileTypesMax:
-                mSkin.startAnim("bdy", false, 0.0f);
+                mSkin.activateSubSkin("bdy", false, 0.0f);
                 mBodyType = "bdy";
                 break;
         }

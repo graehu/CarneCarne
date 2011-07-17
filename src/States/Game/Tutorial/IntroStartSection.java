@@ -32,8 +32,9 @@ class IntroStartSection extends IntroSection
     }
 
     @Override
-    public void render()
+    protected void renderInternal(float scale)
     {
+        
     }
 
 }

@@ -4,6 +4,7 @@ package main;
 import Events.sEvents;
 import Graphics.sGraphicsManager;
 import Input.sInput;
+import Sound.sSound;
 import org.newdawn.slick.*;
 import States.Game.StateGame;
 import States.Menu.StateMenu;
@@ -33,9 +34,9 @@ public class Main extends StateBasedGame
         {            
             AppGameContainer app = new AppGameContainer(new Main());
             app.setIcon("icon.png");
-            app.setDisplayMode(800, 600, false);
-            app.setVSync(true);
-            app.setSmoothDeltas(true);
+            app.setDisplayMode(1280, 800, false);
+            //app.setVSync(true);
+            //app.setSmoothDeltas(true);
             //app.setTargetFrameRate(60);
             app.start();
         }
@@ -61,6 +62,7 @@ public class Main extends StateBasedGame
         sGraphicsManager.init((AppGameContainer)_gc);
         sInput.init(_gc); 
         sEvents.init();
+        sSound.init();
         //Splash: state1
         mSplashState = new StateSplash();
         addState(mSplashState);
@@ -76,7 +78,7 @@ public class Main extends StateBasedGame
         
         //FIXME: should start on splash
         //enterState(2, null, new BlobbyTransition(new Color(0,0,0)));
-        enterState(2, null, null);
+        enterState(3, null, null);
     }
 
     

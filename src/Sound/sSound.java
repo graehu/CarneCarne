@@ -4,10 +4,12 @@
  */
 package Sound;
 
+import java.io.IOException;
 import java.util.HashMap;
-import org.jbox2d.common.Vec2;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.Sound;
+import org.newdawn.slick.openal.Audio;
 import org.newdawn.slick.openal.SoundStore;
 
 /**
@@ -17,57 +19,94 @@ import org.newdawn.slick.openal.SoundStore;
 
 public class sSound
 {
-    
-    private static HashMap mSounds;    
+    static float mDefaultGain = 0.5f;
+    private static HashMap<String, Audio> mSounds = new HashMap();    
        
     private sSound()
     {
     }
     public static void init()
-    { 
-        mSounds = new HashMap();
+    {
+        SoundStore.get().init();
+    }
+    public static void poll(int _delta)
+    {
+        SoundStore.get().poll(_delta);
+    }
+    protected static Audio getSound(String _soundName)
+    {
+        Audio audio = mSounds.get(_soundName);
+        if(audio == null)
+        {
+            System.err.println("No such sound: " + _soundName);
+            return null;
+        }
+        return audio;
     }
     public static void play(String _soundName)
     {
-        SoundData data = ((SoundData)mSounds.get(_soundName));
-        Sound sound = data.getSound();
-        sound.playAt(data.getPitch(), data.getVolume(), data.getPosition().x, data.getPosition().y, 0);
+        play(_soundName, false, 1.0f, mDefaultGain);
     }
+    public static void play(String _soundName, boolean _loop)
+    {
+        play(_soundName, _loop, 1.0f, mDefaultGain);
+    }
+    public static void play(String _soundName, boolean _loop, float _pitch, float _gain)
+    {
+        Audio audio = getSound(_soundName);
+        if(audio != null)
+        {
+            audio.playAsSoundEffect(_pitch, _gain, _loop);
+        }
+    }
+    public static void play3D(String _soundName, float _x, float _y, float _z)
+    {
+        play3D(_soundName, false, _x, _y, _z);
+    }
+    public static void play3D(String _soundName, boolean _loop, float _x, float _y, float _z)
+    {
+        play3D(_soundName, _loop, 1.0f, mDefaultGain, _x, _y, _z);
+    }
+    public static void play3D(String _soundName, boolean _loop, float _pitch, float _gain, float _x, float _y, float _z)
+    {
+        Audio audio = getSound(_soundName);
+        if(audio != null)
+        {
+            audio.playAsSoundEffect(_pitch, _gain, _loop, _x, _y, _z);
+        }
+    }
+    public static void playAsMusic(String _soundName, boolean _loop)
+    {
+        Audio audio = getSound(_soundName);
+        audio.playAsMusic(1.0f, mDefaultGain, _loop);
+    }   
     public static void stop(String _soundName)
     {
-        SoundData data = ((SoundData)mSounds.get(_soundName));
-        data.getSound().stop();        
+        Audio audio = getSound(_soundName);
+        if(audio != null)
+            mSounds.get(_soundName).stop();
     }
-    public static void setPosition(String _soundName, Vec2 _position)
-    {
-        SoundData data = ((SoundData)mSounds.get(_soundName));
-        data.setPosition(_position);
-    }
-    public static void setPitch(String _soundName, float _pitch)
-    {
-        SoundData data = ((SoundData)mSounds.get(_soundName));
-        data.setPitch(_pitch);
-    }
-    public static void setVolume(String _sound, float _volume)
-    {
-        SoundData data = ((SoundData)mSounds.get(_sound));
-        data.setVolume(_volume);
-    }
-    public static void setLooping(String _soundName, boolean _looping)
-    {
-        SoundData data = ((SoundData)mSounds.get(_soundName));
-        data.setLooping(_looping);
-    }
-    
     public static void loadSound(String _soundName, String _soundFile) throws SlickException
     {
-        SoundData newSound = new SoundData(_soundFile);
-        mSounds.put(_soundName, newSound);
+        Audio newAudio = null;
+        try {newAudio = SoundStore.get().getOggStream(_soundFile);} 
+        catch (IOException ex) {Logger.getLogger(sSound.class.getName()).log(Level.SEVERE, null, ex);}
+        if(newAudio == null)
+        {
+            System.err.println("No such sound resource: " + _soundFile);
+            return;
+        }
+        mSounds.put(_soundName, newAudio);
     }
     public static boolean isPlaying(String _soundName)
     {
-        SoundData data = ((SoundData)mSounds.get(_soundName));
-        return data.getSound().playing();
+        Audio audio = mSounds.get(_soundName);
+        if(audio == null)
+        {
+            System.err.println("No such sound: " + _soundName);
+            return false;
+        }
+        return mSounds.get(_soundName).isPlaying();
     }
     
     public static void setSFXVolume(float _volume)
@@ -78,12 +117,10 @@ public class sSound
     {
         SoundStore.get().setMusicVolume(_volume);
     }
-    
     public static void muteSFX(boolean _mute)
     {
         SoundStore.get().setSoundsOn(_mute);
     }
-    
     public static void muteMusic(boolean _mute)
     {
         SoundStore.get().setMusicOn(_mute);

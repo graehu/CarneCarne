@@ -78,7 +78,7 @@ public class AnimatedSkin implements iSkin{
         }
     }
 
-    public void stopAnim(String _animation) {
+    public void deactivateSubSkin(String _animation) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
@@ -94,7 +94,7 @@ public class AnimatedSkin implements iSkin{
         return ((float)(mAnim.getDuration(0)*mAnim.getFrameCount()))/1000.0f;
     }
 
-    public float startAnim(String _animation, boolean _isLooping, float _speed) {
+    public float activateSubSkin(String _animation, boolean _isLooping, float _speed) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 

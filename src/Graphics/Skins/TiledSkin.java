@@ -90,11 +90,11 @@ public class TiledSkin implements iSkin
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public float startAnim(String _animation, boolean _isLooping, float _speed) {
+    public float activateSubSkin(String _animation, boolean _isLooping, float _speed) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public void stopAnim(String _animation) {
+    public void deactivateSubSkin(String _animation) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 

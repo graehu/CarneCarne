@@ -8,10 +8,12 @@ import AI.PlayerInputController;
 import Events.AreaEvents.CheckPointZone;
 import Events.PlayerCreatedEvent;
 import Events.sEvents;
+import Graphics.Skins.CharacterSkin;
+import Graphics.Skins.CharacterSkin.CharacterSubSkin;
 import Graphics.Skins.iSkin;
+import Graphics.Skins.sSkinFactory;
 import World.sWorld;
 import org.jbox2d.common.Vec2;
-import Graphics.Skins.sSkinFactory;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -41,68 +43,29 @@ public class PlayerFactory implements iEntityFactory {
                                                 "e","ebs","ese","sebe","se","sebs","sse","sbe", "ssbe",
                                                 "s","sbw","ssw","swbs","sw","swbw","wsw","wbs", "ssbw",
                                                 "w","wbn","wnw","nwbw","nw","nwbn","nnw","nbw", "nnbw"));
-            //derive hat names from face
-            ArrayList<String> hat = (ArrayList<String>)face.clone();
-            for(int i = 0; i < hat.size(); i++)
-            {
-                hat.set(i, "h" + hat.get(i));
-            }
-            //derive mouth names from face
-            ArrayList<String> mouth = (ArrayList<String>)face.clone();
-            for(int i = 0; i < mouth.size(); i++)
-            {
-                mouth.set(i, "m" + mouth.get(i));
-            }
-            //derive mouthHat names from face
-            ArrayList<String> mouthHat = (ArrayList<String>)face.clone();
-            for(int i = 0; i < mouthHat.size(); i++)
-            {
-                mouthHat.set(i, "mh" + mouthHat.get(i));
-            }
-            //create final list in render order
-            ArrayList<String> charAnims = new ArrayList(Arrays.asList("bdy", "edi", "gum", "wtr", "flt", "jly", "shn", "spi"));
-            charAnims.addAll(face);
-            charAnims.addAll(hat);
-            charAnims.addAll(mouth);
-            charAnims.addAll(mouthHat);
-            charAnims.add("tng");
-            charAnims.add("tngend");
             
-            HashMap animDef = new HashMap();
-            animDef.put("ref", "ss_1");     //declare name of .def file
-            animDef.put("anims",charAnims); //declare all animations
-            iSkin skin = sSkinFactory.create("character", animDef);
-            //initialise facing, body and tongue animations
-            skin.startAnim("bdy", false, 0.0f);
-            skin.startAnim("he", false, 0.0f);
-            skin.startAnim("e", false, 0.0f);
-            skin.setOffset("tng", new Vec2(32,32));
-            
-            //offsets for sprites bigger than 64x64
-            String[] t = {"","h","m","mh"};                          //prefixes
-            Vec2[] v = {new Vec2(-9,0), new Vec2(-33,-36), new Vec2(-9,0), new Vec2(-33,-36)}; //offsets relative to above
-            String[] p = {"n","s"};     //north and south
-            String[] q = {"e","w"};     //east and west
-            for(int k = 0; k < 4; k++)
+            //create a CharacterSubSkin for each layer of the character skin
+            ArrayList<CharacterSubSkin> subSkins = new ArrayList<CharacterSubSkin>();
+            //they must be in render order
+            ArrayList<String> bodies = new ArrayList(Arrays.asList("bdy","edi","jly","spi","wtr"));
+            for(String body : bodies) 
             {
-                for(int j = 0; j < 2; j++) //for north and south
-                {
-                    for(int i = 0; i < 2; i++) //for east and west
-                    {
-                        //in the format: (prefix + compass direction, offset)
-                        skin.setOffset(t[k] + p[j],                     v[k]);
-                        skin.setOffset(t[k] + p[j] + p[j] +"b" +q[i],   v[k]); //extra about poles
-                        skin.setOffset(t[k] + p[j] + "b"  +q[i],        v[k]);
-                        skin.setOffset(t[k] + p[j] + p[j] +q[i],        v[k]);
-                        skin.setOffset(t[k] + p[j] + q[i] +"b" +p[j],   v[k]);
-                        skin.setOffset(t[k] + p[j] + q[i],              v[k]);
-                        skin.setOffset(t[k] + p[j] + q[i] +"b" +q[i],   v[k]);
-                        skin.setOffset(t[k] + q[i] + p[j] +q[i],        v[k]);
-                        skin.setOffset(t[k] + q[i] + "b"  +p[j],        v[k]);
-                        skin.setOffset(t[k] + q[i],                     v[k]);
-                    }
-                }
+                subSkins.add(new CharacterSkin.CharacterSubSkin(body, CharacterSubSkin.SubType.eStatic, 64, 64));
             }
+            subSkins.add(new CharacterSkin.CharacterSubSkin("face", CharacterSubSkin.SubType.e32Dir, 84, 77, new Vec2(-9,0)));
+            subSkins.add(new CharacterSkin.CharacterSubSkin("hat", CharacterSubSkin.SubType.e32Dir, 130, 115, new Vec2(-33,-36)));
+            //draw tongue last
+            subSkins.add(new CharacterSkin.CharacterSubSkin("tng", CharacterSubSkin.SubType.eStatic, 5, 5, new Vec2(32,32)));
+            
+            
+            HashMap params = new HashMap();
+            
+            params.put("subSkins", subSkins);
+            
+            iSkin skin = sSkinFactory.create("character", params);
+            
+            skin.activateSubSkin("bdy", false, 0);
+
             PlayerEntity entity = new PlayerEntity(skin, checkPoint);
             HashMap parameters = new HashMap();
             parameters.put("position", position);
@@ -117,4 +80,5 @@ public class PlayerFactory implements iEntityFactory {
             return entity;
         }
     }
+
 }

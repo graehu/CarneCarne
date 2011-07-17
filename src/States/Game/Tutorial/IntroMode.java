@@ -62,8 +62,6 @@ public class IntroMode implements iGameMode, iEventListener
             iGameMode raceMode = new RaceMode();
             cleanup();
             sLevel.loadLevel();
-            if (inited)
-                sEvents.unsubscribeToEvent("WindowResizeEvent", this);
             sEvents.unsubscribeToEvent("TutorialSpawnEvent", this);
             return raceMode;
         }
@@ -86,11 +84,6 @@ public class IntroMode implements iGameMode, iEventListener
     }
     public void render(Graphics _graphics)
     {
-        if (!inited)
-        {
-            sEvents.subscribeToEvent("WindowResizeEvent", this);
-            inited = true;
-        }
         sWorld.getCamera().render();
         /*for (IntroSection section: mSections)
         {
@@ -122,12 +115,6 @@ public class IntroMode implements iGameMode, iEventListener
                 sEvents.triggerEvent(new GenericEvent("AllPlayersTutorialEndedEvent"));
                 return false;
             }
-        }
-        else
-        {
-            /*WindowResizeEvent event = (WindowResizeEvent)_event;
-            Vec2 s = sGraphicsManager.getTrueScreenDimensions();
-            mSwitchedCamera.resize(new Rectangle(0, 0, s.x, s.y));*/
         }
         return true;
     }
