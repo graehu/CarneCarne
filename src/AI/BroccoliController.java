@@ -32,15 +32,18 @@ public class BroccoliController extends iAIController
     {
         mTarget = sPathFinding.getPlayer();
         
-        Vec2 myPos = mEntity.mBody.getPosition();
-        Vec2 targetPos = mTarget.mBody.getPosition();
-        
-        
-        if((targetPos.x > myPos.x+mRange) && targetPos.x < myPos.x-mRange)
+        if(mTarget != null)
         {
-            if((targetPos.y > myPos.y+mRange) && targetPos.y < myPos.y-mRange)
+
+            Vec2 myPos = mEntity.mBody.getPosition();
+            Vec2 targetPos = mTarget.mBody.getPosition();
+
+            if((targetPos.x > myPos.x+mRange) && targetPos.x < myPos.x-mRange)
             {
-                mEntity.jump();
+                if((targetPos.y > myPos.y+mRange) && targetPos.y < myPos.y-mRange)
+                {
+                    mEntity.jump();
+                }
             }
         }
                 

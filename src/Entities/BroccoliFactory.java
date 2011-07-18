@@ -5,12 +5,12 @@
 package Entities;
 
 import AI.BroccoliController;
-import AI.CarrotController;
-import Events.PlayerCreatedEvent;
-import Events.sEvents;
+import Graphics.Skins.CharacterSkin;
+import Graphics.Skins.CharacterSkin.CharacterSubSkin;
 import Graphics.Skins.iSkin;
 import Graphics.Skins.sSkinFactory;
 import World.sWorld;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import org.jbox2d.common.Vec2;
@@ -28,8 +28,13 @@ public class BroccoliFactory implements iEntityFactory {
     {
         Vec2 position = (Vec2)_parameters.get("position");
         HashMap animDef = new HashMap();
-        animDef.put("ref", "ss_1");
-        animDef.put("anims", Arrays.asList("broc_1", "broc_2", "broc_3"));
+        
+        ArrayList<CharacterSubSkin> subSkins = new ArrayList<CharacterSubSkin>();
+        subSkins.add(new CharacterSkin.CharacterSubSkin("broc_1", CharacterSubSkin.SubType.eAnimated, 110, 110, new Vec2(0,0)));
+        subSkins.add(new CharacterSkin.CharacterSubSkin("broc_2", CharacterSubSkin.SubType.eAnimated, 110, 110, new Vec2(0,0)));
+        subSkins.add(new CharacterSkin.CharacterSubSkin("broc_3", CharacterSubSkin.SubType.eAnimated, 110, 110, new Vec2(0,0)));
+        
+        animDef.put("subSkins", subSkins);
         iSkin skin = sSkinFactory.create("character", animDef);
         skin.activateSubSkin("broc_1", true, 0.5f);
         skin.setOffset("broc_1", new Vec2(-46/2,-46));

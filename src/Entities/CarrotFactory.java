@@ -5,11 +5,12 @@
 package Entities;
 
 import AI.CarrotController;
-import Events.PlayerCreatedEvent;
-import Events.sEvents;
+import Graphics.Skins.CharacterSkin;
+import Graphics.Skins.CharacterSkin.CharacterSubSkin;
 import Graphics.Skins.iSkin;
 import Graphics.Skins.sSkinFactory;
 import World.sWorld;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import org.jbox2d.common.Vec2;
@@ -27,8 +28,13 @@ class CarrotFactory implements iEntityFactory {
     {
         Vec2 position = (Vec2)_parameters.get("position");
         HashMap animDef = new HashMap();
-        animDef.put("ref", "ss_1");
-        animDef.put("anims", Arrays.asList("car_fly","car_stu", "car_att"));
+        
+        ArrayList<CharacterSubSkin> subSkins = new ArrayList<CharacterSubSkin>();
+        subSkins.add(new CharacterSkin.CharacterSubSkin("car_fly", CharacterSubSkin.SubType.eAnimated, 133, 80, new Vec2(0,0)));
+        subSkins.add(new CharacterSkin.CharacterSubSkin("car_stu", CharacterSubSkin.SubType.eAnimated, 133, 79, new Vec2(0,0)));
+        subSkins.add(new CharacterSkin.CharacterSubSkin("car_att", CharacterSubSkin.SubType.eAnimated, 132, 129, new Vec2(0,0)));
+        
+        animDef.put("subSkins", subSkins);
         iSkin skin = sSkinFactory.create("character", animDef);
         skin.deactivateSubSkin("car_fly");
         skin.activateSubSkin("car_fly", true, 1);
