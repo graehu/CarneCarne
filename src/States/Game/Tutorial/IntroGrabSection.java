@@ -5,7 +5,6 @@
 package States.Game.Tutorial;
 
 import Events.sEvents;
-import Graphics.Skins.iSkin;
 import Graphics.Skins.sSkinFactory;
 import Level.sLevel;
 import java.util.HashMap;
@@ -17,10 +16,9 @@ import org.jbox2d.common.Vec2;
  */
 class IntroGrabSection extends IntroSection
 {
-    iSkin mSkin;
     public IntroGrabSection(Vec2 _position, int _playerNumber)
     {
-        super(_position, _playerNumber);
+        super(_position, _playerNumber, "XBoxTop", "XBoxTopTongue", 1.85f);
         sEvents.unblockEvent("MapClickEventL"+mPlayerNumber);
         HashMap params = new HashMap();
         params.put("ref", "SignTutorialEat");

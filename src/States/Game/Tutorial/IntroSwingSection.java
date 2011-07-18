@@ -19,12 +19,11 @@ import org.jbox2d.common.Vec2;
  */
 class IntroSwingSection extends IntroSection implements iEventListener
 {
-    iSkin mSkin;
     int mTimer = 0;
     IntroSection mSection;
     public IntroSwingSection(Vec2 _position, int _playerNumber)
     {
-        super(_position, _playerNumber);
+        super(_position, _playerNumber, "XBoxTop", "XBoxTopTongue", 1.85f);
         Vec2 tile = mPosition.sub(new Vec2(1,3));
         sEvents.unblockEvent("MapClickEventL"+mPlayerNumber);
         sLevel.placeTile((int)tile.x,(int)tile.y, 17);

@@ -463,8 +463,8 @@
  </tileset>
  <layer name="Background2" width="100" height="100">
   <properties>
-   <property name="ScaleX" value=".2"/>
-   <property name="ScaleY" value=".9"/>
+   <property name="ScaleX" value="0"/>
+   <property name="ScaleY" value="0"/>
   </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAC+3BMQEAAADCoPVP7WULoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgBt5RKnmQJwAAA==
