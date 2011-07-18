@@ -5,6 +5,7 @@
 package Entities;
 
 import Graphics.Skins.iSkin;
+import World.sWorld;
 import org.jbox2d.common.Vec2;
 
 /**
@@ -20,6 +21,7 @@ public class Broccoli extends AIEntity
         super(_skin);
         mMoveSpeed = 1;
         mCurrentAnimation = "broc_1";
+        setAnimation("broc_2");
         mAnimSpeed = 0;
         mHopTimmer = 0;
         mTimer = 0;
@@ -64,9 +66,9 @@ public class Broccoli extends AIEntity
         
     }
 
-    /*public void render()
+    public void render()
     {
         Vec2 pixelPosition = sWorld.translateToWorld(mBody.getPosition());
         mSkin.render(pixelPosition.x,pixelPosition.y);
-    }*/
+    }//*/
 }

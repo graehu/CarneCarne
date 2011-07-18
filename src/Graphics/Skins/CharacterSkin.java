@@ -82,18 +82,21 @@ public class CharacterSkin implements iSkin
                             addSubSkin(skin, name, subSkin.mOffset);
                         }
                     }
+                    break;
                 }
                 case eAnimated:
                 {
                     SpriteSheet ss = new SpriteSheet(absoluteRef, subSkin.mTileWidth, subSkin.mTileHeight);
                     iSkin skin = new AnimatedSkin(ss, subSkin.mDuration);
                     addSubSkin(skin, subSkin.mRef, subSkin.mOffset);
+                    break;
                 }
                 case eStatic:
                 {
                     Image image = new Image(absoluteRef);
                     iSkin skin = new StaticSkin(image);
                     addSubSkin(skin, subSkin.mRef, subSkin.mOffset);
+                    break;
                 }
             }
         }
