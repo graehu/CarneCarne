@@ -36,11 +36,11 @@ public class Broccoli extends AIEntity
         mTouchingTile = null;
         mMoveSpeed = 1;
         mCurrentAnimation = "broc_1";
-        //setAnimation("broc_1_idle");
-        
+
         mSkin.deactivateSubSkin("broc_1_idle");
         //mCurrentAnimation = _animation;
         mSkin.activateSubSkin("broc_1_idle", false, mAnimSpeed);
+
         mAnimSpeed = 1;
         mHopTimmer = 0;
         mTimer = 0;
@@ -83,9 +83,7 @@ public class Broccoli extends AIEntity
         //setAnimation("broc_2_jump");
         //setAnimation("broc_2_air");
         //mAIEntityState.getState();
-        
-        AIEntityState.State silly  = mAIEntityState.getState();
-        
+
         if(mState == brocState.eIdle)
         {
             mSkin.deactivateSubSkin("broc_1_idle");
