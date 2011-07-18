@@ -25,7 +25,7 @@ public class BroccoliController extends iAIController
     {
         super(_entity);
         mPathFinding = new AStar(mEntity, new ShortestDistance());
-        mRange = 15;
+        mRange = 5;
     }
     
     public void update()
@@ -38,11 +38,19 @@ public class BroccoliController extends iAIController
             Vec2 myPos = mEntity.mBody.getPosition();
             Vec2 targetPos = mTarget.mBody.getPosition();
 
-            if((targetPos.x > myPos.x+mRange) && targetPos.x < myPos.x-mRange)
+            if((targetPos.x < myPos.x+mRange) && targetPos.x > myPos.x-mRange)
             {
-                if((targetPos.y > myPos.y+mRange) && targetPos.y < myPos.y-mRange)
+                if((targetPos.y < myPos.y+mRange) && targetPos.y > myPos.y-mRange)
                 {
-                    mEntity.jump();
+                    //mEntity.jump();
+                    if(targetPos.x > myPos.x)
+                    {
+                        ((Broccoli)mEntity).move(1f);
+                    }
+                    else
+                    {
+                        ((Broccoli)mEntity).move(-1f);
+                    }
                 }
             }
         }

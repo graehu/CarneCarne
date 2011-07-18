@@ -30,15 +30,21 @@ public class BroccoliFactory implements iEntityFactory {
         HashMap animDef = new HashMap();
         
         ArrayList<CharacterSubSkin> subSkins = new ArrayList<CharacterSubSkin>();
-        subSkins.add(new CharacterSkin.CharacterSubSkin("broc_1", CharacterSubSkin.SubType.eAnimated, 110, 110, new Vec2(0,0)));
-        subSkins.add(new CharacterSkin.CharacterSubSkin("broc_2", CharacterSubSkin.SubType.eAnimated, 110, 110, new Vec2(0,0)));
+        subSkins.add(new CharacterSkin.CharacterSubSkin("broc_1_idle", CharacterSubSkin.SubType.eAnimated, 110, 110, new Vec2(0,0)));
+        subSkins.add(new CharacterSkin.CharacterSubSkin("broc_1_jump", CharacterSubSkin.SubType.eAnimated, 110, 110, new Vec2(0,0)));
+        subSkins.add(new CharacterSkin.CharacterSubSkin("broc_2_jump", CharacterSubSkin.SubType.eAnimated, 110, 110, new Vec2(0,0)));
+        subSkins.add(new CharacterSkin.CharacterSubSkin("broc_2_air", CharacterSubSkin.SubType.eAnimated, 110, 110, new Vec2(0,0)));
+        subSkins.add(new CharacterSkin.CharacterSubSkin("broc_2_land", CharacterSubSkin.SubType.eAnimated, 110, 110, new Vec2(0,0)));
         subSkins.add(new CharacterSkin.CharacterSubSkin("broc_3", CharacterSubSkin.SubType.eAnimated, 110, 110, new Vec2(0,0)));
         
         animDef.put("subSkins", subSkins);
         iSkin skin = sSkinFactory.create("character", animDef);
-        skin.activateSubSkin("broc_1", true, 0.5f);
-        skin.setOffset("broc_1", new Vec2(-46/2,-46));
-        skin.setOffset("broc_2", new Vec2(-46/2,-46));
+        skin.activateSubSkin("broc_1_idle", true, 0.5f);
+        skin.setOffset("broc_1_idle", new Vec2(-46/2,-46));
+        skin.setOffset("broc_1_jump", new Vec2(-46/2,-46));
+        skin.setOffset("broc_2_jump", new Vec2(-46/2,-46));
+        skin.setOffset("broc_2_air", new Vec2(-46/2,-46));
+        skin.setOffset("broc_2_land", new Vec2(-46/2,-46));
         skin.setOffset("broc_3", new Vec2(-46/2,-46));
         AIEntity entity = new Broccoli(skin);
         HashMap parameters = new HashMap();
