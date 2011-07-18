@@ -5,8 +5,8 @@
 package Events.AreaEvents;
 
 import Entities.PlayerEntity;
+import Events.GenericEvent;
 import Events.RaceResetEvent;
-import Events.RaceStartEvent;
 import Events.iEvent;
 import Events.iEventListener;
 import Events.sEvents;
@@ -30,6 +30,7 @@ public class RaceStartZone extends CheckPointZone implements iEventListener
         mNumPlayers = _numPlayers;
         mRaceHasStarted = false;
         sEvents.subscribeToEvent("RaceResetEvent", this);
+        sEvents.subscribeToEvent("RaceStartEvent", this);
     }
     @Override
     public void enter(PlayerEntity _entity) 
@@ -37,13 +38,23 @@ public class RaceStartZone extends CheckPointZone implements iEventListener
         assert(_entity.getCheckPoint() != this);
         mPlayers.put(_entity, _entity.getCheckPoint());
         _entity.placeCheckPoint(this);
+        if (!mRaceHasStarted && mPlayers.size() == mNumPlayers)
+        {
+            sEvents.triggerEvent(new GenericEvent("RaceCountdownStartEvent"));
+        }
     }
     @Override
     public void leave(PlayerEntity _entity) 
     {
         //_entity.placeCheckPoint(mPlayers.get(_entity));
         if (!mRaceHasStarted)
+        {
             _entity.getToStartingZone();
+        }
+        if (!mRaceHasStarted && mPlayers.size() == mNumPlayers)
+        {
+            sEvents.triggerEvent(new GenericEvent("RaceCountdownInterruptEvent"));
+        }
         mPlayers.remove(_entity);
     }
     @Override
@@ -53,13 +64,26 @@ public class RaceStartZone extends CheckPointZone implements iEventListener
         {
             return true;
         }
-        mRaceHasStarted = mPlayers.size() == mNumPlayers;
-        if (mRaceHasStarted)
+        /*mRaceCountDown = mPlayers.size() == mNumPlayers;
+        if (mRaceCountDown)
         {
-            sEvents.triggerEvent(new RaceStartEvent());
+            mRaceCountDownTimer++;
+            if (mRaceCountDownTimer == 180)
+            {
+                //sEvents.triggerEvent(new RaceStartEvent());
+                mRaceHasStarted = true;
+            }
         }
+        else
+        {
+            mRaceCountDownTimer = -1;
+        }*/
         return mRaceHasStarted;
     }
+    
+    /// Properties for the countdown animation
+    static final int phase1CompleteTime = 20;
+    static final float phase1EndSize = 0.8f; /// Size of the sprite at the end of phase 1
     @Override
     public void renderRaceState(int _raceTimer)
     {
@@ -67,6 +91,9 @@ public class RaceStartZone extends CheckPointZone implements iEventListener
         {
             super.renderRaceState(_raceTimer);
         }
+        /*else if (mRaceCountDown)
+        {
+        }*/
         else
         {
             sGraphicsManager.drawString("Waiting for all players to be ready.", 0f, 0);
@@ -75,8 +102,15 @@ public class RaceStartZone extends CheckPointZone implements iEventListener
 
     public boolean trigger(iEvent _event)
     {
-        RaceResetEvent event = (RaceResetEvent)_event;
-        mRaceHasStarted = false;
+        if (_event.getName().equals("RaceStartEvent"))
+        {
+            mRaceHasStarted = true;
+        }
+        else
+        {
+            RaceResetEvent event = (RaceResetEvent)_event;
+            mRaceHasStarted = false;
+        }
         return true;
     }
 }

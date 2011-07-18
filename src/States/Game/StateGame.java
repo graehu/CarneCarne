@@ -18,6 +18,7 @@ import Graphics.Sprites.sSpriteFactory;
 import Input.sInput;
 import Level.sLevel;
 import Sound.sSound;
+import States.Game.RaceMode.RaceMode;
 import States.StateChanger;
 import World.sWorld;
 import org.jbox2d.common.Vec2;
@@ -66,7 +67,7 @@ public class StateGame extends BasicGameState implements iEventListener {
             if(event.getKey() == 'Q')
             {
                 //FIXME: quit
-                die = true;
+                //die = true;
                 //goto menu
                 //mChangeToMenu.run();
             }
@@ -122,16 +123,15 @@ public class StateGame extends BasicGameState implements iEventListener {
         sSound.loadSound("tongueFire", "assets/sfx/tongueFire.ogg");
         //createRootPane();
         mGameType = GameType.eRaceGame;
-        mGameMode = new IntroMode();
-        
-        //subscribe to events (must be done before further initialisation)
-        sEvents.subscribeToEvent("PlayerCreatedEvent", this);
-        
         sEntityFactory.init();
         sSkinFactory.init();
         sSpriteFactory.init();
         sWorld.init();
-        sLevel.init();
+        mGameMode = new RaceMode(true);
+        
+        //subscribe to events (must be done before further initialisation)
+        sEvents.subscribeToEvent("PlayerCreatedEvent", this);
+        
         //sLevel.loadLevel();
         
         //create state changers

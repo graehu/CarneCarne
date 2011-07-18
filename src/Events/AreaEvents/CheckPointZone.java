@@ -31,6 +31,7 @@ public class CheckPointZone extends AreaEvent
     @Override
     public void leave(PlayerEntity _entity)
     {
+        _entity.placeCheckPoint(this);
     }
     
     public Vec2 getPosition()

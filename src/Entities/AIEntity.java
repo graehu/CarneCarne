@@ -285,10 +285,17 @@ public class AIEntity extends Entity {
             mBody.setLinearVelocity(new Vec2(mBody.getLinearVelocity().x, canJump));
             mJumpTimer = mJumpReload;
             mAIEntityState.jump();
-            if (mTouchingTile == null)
-                sParticleManager.createSystem("cloud", sWorld.translateToWorld(mBody.getPosition()).sub(sWorld.getPixelTranslation()).add(new Vec2(32,64)), 1f);
-            else
-                sParticleManager.createSystem(mTouchingTile.getAnimationsName(AnimationType.eJump) + "Jump", sWorld.translateToWorld(mBody.getPosition()).sub(sWorld.getPixelTranslation()).add(new Vec2(32,64)), 1f);
+            try
+            {
+                if (mTouchingTile == null)
+                    sParticleManager.createSystem("cloud", sWorld.translateToWorld(mBody.getPosition()).sub(sWorld.getPixelTranslation()).add(new Vec2(32,64)), 1f);
+                else
+                    sParticleManager.createSystem(mTouchingTile.getAnimationsName(AnimationType.eJump) + "Jump", sWorld.translateToWorld(mBody.getPosition()).sub(sWorld.getPixelTranslation()).add(new Vec2(32,64)), 1f);
+            }
+            catch (NullPointerException e)
+            {
+                System.err.println("Null pointer rendering jump particle");
+            }
         }
     }
     public void stopJumping()

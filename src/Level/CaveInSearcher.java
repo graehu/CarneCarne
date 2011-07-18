@@ -208,7 +208,7 @@ public class CaveInSearcher {
             lowestX = lowestY = Integer.MAX_VALUE;
             highestX = highestY = Integer.MIN_VALUE;
             mCreatedBody = newTileGrid.mBody;
-            
+            mTileGrid.addCaveIn(newTileGrid);
         }
     }
 }

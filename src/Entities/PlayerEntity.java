@@ -35,6 +35,7 @@ public class PlayerEntity extends AIEntity
     String mBodyType = "bdy";
     private CheckPointZone mOriginalSpawnPoint;
     private CheckPointZone mCheckPoint;
+    private Vec2 mCheckPointPosition;
     public IntroSection mIntroSection;
     private Joint mDeathJoint;
     private Vec2 mDirection;
@@ -48,6 +49,8 @@ public class PlayerEntity extends AIEntity
     {
         super(_skin);
         mOriginalSpawnPoint = mCheckPoint = _spawnPoint;
+        if (mCheckPoint != null)
+            mCheckPointPosition = mCheckPoint.getPosition();
         mReticle = new Reticle(this);
         mDeaths = mRaceTimer = 0;
         HashMap params = new HashMap();
@@ -77,6 +80,7 @@ public class PlayerEntity extends AIEntity
     public void resetRace()
     {
         mCheckPoint = mOriginalSpawnPoint;
+        mCheckPointPosition = mCheckPoint.getPosition();
         mRaceTimer = 0;
         int deaths = mDeaths;
         kill();
@@ -96,12 +100,14 @@ public class PlayerEntity extends AIEntity
                 if (_checkPoint.getCheckpointNumber() == mCheckPoint.getCheckpointNumber()+1)
                 {
                     mCheckPoint = _checkPoint;
+                    mCheckPointPosition = mBody.getPosition().clone();
                     //sEvents.triggerDelayedEvent(new ShowDirectionEvent(this));
                 }
             }
             else if (_checkPoint.getCheckpointNumber() > mCheckPoint.getCheckpointNumber())
             {
                 mCheckPoint = _checkPoint;
+                mCheckPointPosition = mBody.getPosition().clone();
                 //sEvents.triggerDelayedEvent(new ShowDirectionEvent(this));
             }
         }
@@ -122,7 +128,7 @@ public class PlayerEntity extends AIEntity
                 fixture.setSensor(true);
                 fixture = fixture.getNext();
             }
-            mDeathJoint = sWorld.createMouseJoint(mCheckPoint.getPosition(), mBody);
+            mDeathJoint = sWorld.createMouseJoint(mCheckPointPosition, mBody);
             ((PlayerInputController)mController).trigger(new MapClickReleaseEvent(mBody.getPosition(), true, ((PlayerInputController)mController).mPlayer));
         }
         mAIEntityState.kill();
@@ -141,7 +147,7 @@ public class PlayerEntity extends AIEntity
         mReticle.update();
         if (mDeathJoint != null)
         {//when player is within half a tile of checkpoint destroy joint
-            if (compareFloat(mBody.getPosition().x, mCheckPoint.getPosition().x, 0.5f) && compareFloat(mBody.getPosition().y, mCheckPoint.getPosition().y, 0.5f))
+            if (compareFloat(mBody.getPosition().x, mCheckPointPosition.x, 0.5f) && compareFloat(mBody.getPosition().y, mCheckPointPosition.y, 0.5f))
             {
                 sWorld.destroyMouseJoint(mDeathJoint);
                 mDeathJoint = null;

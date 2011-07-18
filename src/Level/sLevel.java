@@ -12,8 +12,8 @@ import org.newdawn.slick.SlickException;
  *
  * @author alasdair
  */
-public class sLevel {
-
+public class sLevel
+{
     public static void placeTile(int _x, int _y, int _rootId)
     {
         mLevelEditor.placeTile(_x, _y, _rootId);
@@ -85,14 +85,12 @@ public class sLevel {
     {
         return mLevelEditor.rootTiles.get(_rootId);
     }
+    static String nextMap = "simple_race";
     public static void init()
     {
         try
         {
-            mTiledMap = new AnimatedTiledMap("assets/simple_race.tmx");
-            //mTiledMap = new AnimatedTiledMap("assets/Graham_Tutorial.tmx");
-            //mTiledMap = new AnimatedTiledMap("assets/platforms2.tmx");
-            //mTiledMap = new AnimatedTiledMap("assets/AaronTestMap.tmx");
+            mTiledMap = new AnimatedTiledMap("assets/tutorial.tmx");
         }
         catch (SlickException e)
         {
@@ -107,19 +105,34 @@ public class sLevel {
             mParralaxYScale[i] = 1.0f;
         }
         flagsLayer = mTiledMap.getLayerIndex("Flags");
+        nextMap = mTiledMap.getMapProperty("NextMap", null);
     }
-    public static void loadLevel()
+    public static void newLevel()
     {
-        //mTiledMap = new AnimatedTiledMap("assets/DeekTestMap.tmx"); /// Nomnom tasty poocake
         try
         {
+            mTiledMap = new AnimatedTiledMap("assets/" + nextMap + ".tmx");
             mTiledMap.initAnimationlayer("assets/TileAnimation.def");
         }
         catch (SlickException e)
         {
             assert(false);
         }
-        mLevelEditor.init();
+        boolean destroy = true;
+        if (mLevelEditor == null)
+        {
+            destroy = false;
+            mLevelEditor = new LevelEditor(mTiledMap);
+        }
+        mParralaxXScale = new float[mTiledMap.getLayerCount()];
+        mParralaxYScale = new float[mTiledMap.getLayerCount()];
+        for (int i = 0; i < mParralaxXScale.length; i++)
+        {
+            mParralaxXScale[i] = 1.0f;
+            mParralaxYScale[i] = 1.0f;
+        }
+        flagsLayer = mTiledMap.getLayerIndex("Flags");
+        mLevelEditor.newLevel(mTiledMap, destroy);
         midLayer = mTiledMap.getLayerIndex("Level");
         for (int i = 0; i < mParralaxXScale.length; i++)
         {

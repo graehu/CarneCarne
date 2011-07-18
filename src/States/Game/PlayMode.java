@@ -16,7 +16,8 @@ public class PlayMode implements iGameMode
 {
     public PlayMode()
     {
-        
+        //sLevel.init();
+        sLevel.newLevel();
     }
     public iGameMode update(float _time)
     {

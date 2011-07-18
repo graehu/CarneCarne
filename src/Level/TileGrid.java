@@ -9,7 +9,6 @@ import Level.sLevel.TileType;
 import World.sWorld;
 import java.util.HashMap;
 import java.util.Stack;
-import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 
 /**
@@ -24,6 +23,7 @@ abstract public class TileGrid {
     TileFire mTileFire;
     private int mWidth, mHeight;
     Body mBody;
+    private Stack<TileGrid> mCavedInBodies = new Stack<TileGrid>();
     abstract int getTileId(int _x, int _y);
     abstract void setTileId(int _x, int _y, int _id);
     abstract void createPhysicsBody(int _x, int _y, Tile _tile);
@@ -231,5 +231,19 @@ abstract public class TileGrid {
         if(tile == null)
             return false;
         return tile.mRootId.boundaryFrom(_direction, _tileType, MaterialEdges.GraphicalEdges);
+    }
+
+    void destroy()
+    {
+        while (!mCavedInBodies.isEmpty())
+        {
+            mCavedInBodies.pop().destroy();
+        }
+        sWorld.destroyBody(mBody);
+    }
+
+    void addCaveIn(TileGrid _newTileGrid)
+    {
+        mCavedInBodies.add(_newTileGrid);
     }
 }

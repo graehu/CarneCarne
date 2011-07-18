@@ -64,6 +64,7 @@ public class PlayerInputController extends iAIController implements iEventListen
         sEvents.subscribeToEvent("KeyDownEvent"+'s'+_player, this);
         sEvents.subscribeToEvent("KeyDownEvent"+'d'+_player, this);
         sEvents.subscribeToEvent("KeyDownEvent"+' '+_player, this);
+        sEvents.subscribeToEvent("KeyDownEvent"+'r'+_player, this);
         sEvents.subscribeToEvent("MapClickEventL"+_player, this);
         sEvents.subscribeToEvent("MapClickEventR"+_player, this);
         sEvents.subscribeToEvent("MapClickReleaseEvent"+_player, this);
@@ -81,6 +82,7 @@ public class PlayerInputController extends iAIController implements iEventListen
         sEvents.unsubscribeToEvent("KeyDownEvent"+'s'+mPlayer, this);
         sEvents.unsubscribeToEvent("KeyDownEvent"+'d'+mPlayer, this);
         sEvents.unsubscribeToEvent("KeyDownEvent"+' '+mPlayer, this);
+        sEvents.unsubscribeToEvent("KeyDownEvent"+'r'+mPlayer, this);
         sEvents.unsubscribeToEvent("MapClickEventL"+mPlayer, this);
         sEvents.unsubscribeToEvent("MapClickEventR"+mPlayer, this);
         sEvents.unsubscribeToEvent("MapClickReleaseEvent"+mPlayer, this);
@@ -245,6 +247,11 @@ public class PlayerInputController extends iAIController implements iEventListen
                 case ' ':
                 {
                     mTongueState.layBlock();
+                    break;
+                }
+                case 'r':
+                {
+                    mEntity.kill();
                     break;
                 }
             }
