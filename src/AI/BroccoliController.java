@@ -16,22 +16,34 @@ import org.jbox2d.common.Vec2;
  */
 public class BroccoliController extends iAIController
 {
-     iPathFinding mPathFinding;
-     Entity mTarget;
-     int mTargetX, mTargetY;
-     Command mCommand;
+     private iPathFinding mPathFinding;
+     private Entity mTarget;
+     private int mTargetX, mTargetY;
+     private Command mCommand;
+     private float mRange;
     public BroccoliController(AIEntity _entity)
     {
         super(_entity);
         mPathFinding = new AStar(mEntity, new ShortestDistance());
+        mRange = 15;
     }
     
     public void update()
     {
         mTarget = sPathFinding.getPlayer();
-        int x = (int)(mEntity.mBody.getPosition().x);
-        int y = (int)(mEntity.mBody.getPosition().y);
-        Vec2 pos = mTarget.mBody.getPosition();
+        
+        Vec2 myPos = mEntity.mBody.getPosition();
+        Vec2 targetPos = mTarget.mBody.getPosition();
+        
+        
+        if((targetPos.x > myPos.x+mRange) && targetPos.x < myPos.x-mRange)
+        {
+            if((targetPos.y > myPos.y+mRange) && targetPos.y < myPos.y-mRange)
+            {
+                mEntity.jump();
+            }
+        }
+                
         
         /*if(mTargetY != (int)(mTarget.mBody.getPosition().y) || mTargetX != (int)(mTarget.mBody.getPosition().x))
         {
@@ -40,14 +52,14 @@ public class BroccoliController extends iAIController
             mPathFinding.updatePath(x, y, mTargetX, mTargetY-4);
         }*/
         
-        if(pos.x < x)
+        /*if(pos.x < x)
         {
             mCommand = Command.eMoveLeft;
         }
         else
         {
             mCommand = Command.eMoveRight;
-        }
+        }*/
         
         
        /* switch (mCommand)

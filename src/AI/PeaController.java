@@ -10,7 +10,7 @@ import Level.sLevel.PathInfo;
 
 /**
  *
- * @author alasdair
+ * @author Graham
  */
 public class PeaController extends iAIController
 {
