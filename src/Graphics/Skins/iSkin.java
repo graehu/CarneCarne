@@ -18,6 +18,9 @@ public interface iSkin {
     abstract void setAlpha(float _alpha);
     
     //Animation methods
+    abstract void stop();
+    abstract void stopAt(int _index); 
+    abstract boolean isAnimating();
     abstract float getDuration();
     abstract void setRotation(float _radians);
     abstract void restart();
@@ -25,6 +28,9 @@ public interface iSkin {
     abstract public void setSpeed(float _speed);
     
     //character methods
+    abstract void stop(String _subSkin);
+    abstract void stopAt(String _subSkin, int _index); 
+    abstract boolean isAnimating(String _subSkin);
     abstract void setRotation(String _animation, float _radians);
     abstract float activateSubSkin(String _animation, boolean _isLooping, float _speed);
     abstract void deactivateSubSkin(String _animation);

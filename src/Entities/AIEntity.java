@@ -310,7 +310,16 @@ public class AIEntity extends Entity {
     
     public boolean isAirBorn()
     {
-        return mAIEntityState.getState().equals(AIEntityState.State.eFalling);
+        switch(mAIEntityState.getState())
+        {
+            case eFalling:
+            case eFallingDoubleJumped:
+            case eJumpTransition:
+            case eJumping:
+                return true;
+        }
+        return false;
+        //return mAIEntityState.getState().equals(AIEntityState.State.eFalling);
     }
     
     public boolean isDead()
@@ -324,7 +333,13 @@ public class AIEntity extends Entity {
         {
             mSkin.deactivateSubSkin(mCurrentAnimation);
             mCurrentAnimation = _animation;
-            return mSkin.activateSubSkin(_animation, true, mAnimSpeed);
+            return mSkin.activateSubSkin(_animation, false, mAnimSpeed);
+        }
+        else if(!mSkin.isAnimating(_animation))
+        {
+            mSkin.deactivateSubSkin(mCurrentAnimation);
+            mCurrentAnimation = _animation;
+            return mSkin.activateSubSkin(_animation, false, mAnimSpeed);
         }
         return 0;
     }
