@@ -32,8 +32,8 @@ public class WorldContactListener implements ContactListener{
         iListener highImpulse = new HighImpulseListener();
         for (int i = 0; i < BodyCategories.eBodyCategoriesMax.ordinal(); i++)
         {
-            set(BodyCategories.eWater.ordinal(),i,waterListener);
             set(BodyCategories.ePlayer.ordinal(),i,highImpulse);
+            set(BodyCategories.eWater.ordinal(),i,waterListener);
         }
         iListener gumListener = new GumListener();
         iListener deathListener = new DeathListener();
@@ -42,6 +42,9 @@ public class WorldContactListener implements ContactListener{
         set(BodyCategories.eGum.ordinal(),BodyCategories.eNonEdibleTiles.ordinal(),gumListener);
         set(BodyCategories.ePlayer.ordinal(),BodyCategories.eSpikes.ordinal(),deathListener);
         set(BodyCategories.ePlayer.ordinal(),BodyCategories.eFire.ordinal(),deathListener);
+            set(BodyCategories.eWater.ordinal(),BodyCategories.ePlayer.ordinal(),waterListener);
+        set(BodyCategories.eEnemy.ordinal(),BodyCategories.eSpikes.ordinal(),deathListener);
+        set(BodyCategories.eEnemy.ordinal(),BodyCategories.eFire.ordinal(),deathListener);
         set(BodyCategories.eCheckPoint.ordinal(), BodyCategories.ePlayer.ordinal(), new CheckPointListener());
     }
     private void set(int _x, int _y, iListener _reaction)

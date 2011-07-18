@@ -72,10 +72,10 @@ public class PlayerFactory implements iEntityFactory {
             parameters.put("aIEntity", entity);
             parameters.put("category", sWorld.BodyCategories.ePlayer);
             int player = (Integer)_parameters.get("playerNumber");
-            entity.mBody = sWorld.useFactory("PlayerFactory",parameters);
+            entity.setBody(sWorld.useFactory("PlayerFactory",parameters));
             PlayerInputController controller = new PlayerInputController(entity, player);
             entity.mController = controller;
-            sWorld.addPlayer(entity.mBody);
+            sWorld.addPlayer(entity.getBody());
             sEvents.triggerEvent(new PlayerCreatedEvent(entity, player));
             return entity;
         }

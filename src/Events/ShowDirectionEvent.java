@@ -36,7 +36,7 @@ public class ShowDirectionEvent extends iEvent
     public boolean process()
     {
         HashMap parameters = new HashMap();
-        parameters.put("position",mEntity.mBody.getPosition());
+        parameters.put("position",mEntity.getBody().getPosition());
         sEntityFactory.create("Carrot",parameters);
         return true;
     }

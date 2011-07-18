@@ -90,6 +90,7 @@ public class PlayerInputController extends iAIController implements iEventListen
         sEvents.unsubscribeToEvent("MouseDragEvent"+mPlayer, this);
         sEvents.unsubscribeToEvent("AnalogueStickEvent"+mPlayer, this);
         sEvents.unsubscribeToEvent("RightStickEvent"+mPlayer, this);
+        super.destroy();
     }
     
     public void update()
@@ -114,12 +115,12 @@ public class PlayerInputController extends iAIController implements iEventListen
     
     public Tile grabBlock(final Vec2 _position)
     {
-        return sWorld.eatTiles(mEntity.mBody.getPosition(),_position);
+        return sWorld.eatTiles(mEntity.getBody().getPosition(),_position);
     }
     
     public boolean hammer(final Vec2 _position)
     {
-        return sWorld.smashTiles(mEntity.mBody.getPosition(),_position);
+        return sWorld.smashTiles(mEntity.getBody().getPosition(),_position);
     }
     
     public void layBlock(final Tile _tile)
@@ -148,7 +149,7 @@ public class PlayerInputController extends iAIController implements iEventListen
         }
         if(dir != -1)
         {
-            Vec2 playerPos = mEntity.mBody.getPosition().add(new Vec2(0.5f,0.5f)); //offset to center
+            Vec2 playerPos = mEntity.getBody().getPosition().add(new Vec2(0.5f,0.5f)); //offset to center
             int playerTileX = (int)playerPos.x; //casting floors value
             int playerTileY = (int)playerPos.y;
             switch(dir)
@@ -173,8 +174,8 @@ public class PlayerInputController extends iAIController implements iEventListen
     {
         HashMap parameters = new HashMap();
         //intialise velocity relative to carne's
-        parameters.put("velocity", mPlayerDir.mul(10.0f).add(mEntity.mBody.getLinearVelocityFromLocalPoint(new Vec2(0,0))));
-        parameters.put("position", mEntity.mBody.getPosition().add(mPlayerDir));
+        parameters.put("velocity", mPlayerDir.mul(10.0f).add(mEntity.getBody().getLinearVelocityFromLocalPoint(new Vec2(0,0))));
+        parameters.put("position", mEntity.getBody().getPosition().add(mPlayerDir));
         parameters.put("tileType",_tile.getTileType());
         parameters.put("rootId",_tile.getRootId());
         sEntityFactory.create("SpatBlock", parameters); 
@@ -184,9 +185,9 @@ public class PlayerInputController extends iAIController implements iEventListen
         HashMap parameters = new HashMap();
         //intialise velocity relative to carne's
         parameters.put("velocity", mPlayerDir.mul(20.0f));
-        parameters.put("position", mEntity.mBody.getPosition().add(mPlayerDir));
+        parameters.put("position", mEntity.getBody().getPosition().add(mPlayerDir));
         sEntityFactory.create("FireParticle", parameters);
-        sParticleManager.createSystem("DragonBreath", mEntity.mBody.getPosition().add(new Vec2(0.5f,0.5f)).add(mPlayerDir.mul(0.5f)).mul(64.0f), 1f)
+        sParticleManager.createSystem("DragonBreath", mEntity.getBody().getPosition().add(new Vec2(0.5f,0.5f)).add(mPlayerDir.mul(0.5f)).mul(64.0f), 1f)
                 .setAngularOffset(((float)Math.atan2(mPlayerDir.y, mPlayerDir.x) * 180.0f/(float)Math.PI)-270.0f);
     }
 

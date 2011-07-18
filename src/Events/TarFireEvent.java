@@ -38,7 +38,7 @@ public class TarFireEvent extends iEvent {
     public boolean process()
     {
         mTile.setOnFire();
-        sWorld.destroyBody(mFireParticle.mBody); /// FIXME memory leak
+        sWorld.destroyBody(mFireParticle.getBody()); /// FIXME memory leak
         return true;
     }
 }

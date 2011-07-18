@@ -41,22 +41,21 @@ public class FireParticle extends Entity
         }
         else
         {
-            mBody.setLinearVelocity(mVelocity);
+            getBody().setLinearVelocity(mVelocity);
             int tileMask = (1 << BodyCategories.eEdibleTiles.ordinal()) |
                 (1 << BodyCategories.eNonEdibleTiles.ordinal()) |
                 (1 << BodyCategories.eWater.ordinal()) |
-                (1 << BodyCategories.eIce.ordinal()) |
                 (1 << BodyCategories.eGum.ordinal()) |
                 (1 << BodyCategories.eTar.ordinal());
-            for (ContactEdge edge = mBody.getContactList(); edge != null; edge = edge.next)
+            for (ContactEdge edge = getBody().getContactList(); edge != null; edge = edge.next)
             {
                 if (edge.contact.isTouching() && (edge.other.m_fixtureList.m_filter.categoryBits & tileMask) != 0)
                 {
                     Tile tile = (Tile)edge.contact.m_fixtureA.getUserData();
                     if (tile == null)
                         tile = (Tile)edge.contact.m_fixtureB.getUserData();
-                    ParticleSysBase system = sParticleManager.createSystem(tile.getAnimationsName(AnimationType.eFireHit) + "FireHit", this.mBody.getPosition().add(new Vec2(0.5f,0.5f)).mul(64.0f), 2);
-                    Vec2 direction = this.mBody.getLinearVelocity();
+                    ParticleSysBase system = sParticleManager.createSystem(tile.getAnimationsName(AnimationType.eFireHit) + "FireHit", this.getBody().getPosition().add(new Vec2(0.5f,0.5f)).mul(64.0f), 2);
+                    Vec2 direction = this.getBody().getLinearVelocity();
                     direction.normalize();
                     float offset = (float)Math.atan2(direction.y, direction.x) * 180.0f/(float)Math.PI;
                     system.setAngularOffset(offset-90.0f);
@@ -70,16 +69,16 @@ public class FireParticle extends Entity
     @Override
     public void render()
     {
-        Vec2 pixelPosition = sWorld.translateToWorld(mBody.getPosition().add(new Vec2(0.0f,0.0f))); /// FIXME
-        Vec2 particlePosition = mBody.getPosition().add(new Vec2(0.5f,0.5f)).mul(64f);
+        Vec2 pixelPosition = sWorld.translateToWorld(getBody().getPosition().add(new Vec2(0.0f,0.0f))); /// FIXME
+        Vec2 particlePosition = getBody().getPosition().add(new Vec2(0.5f,0.5f)).mul(64f);
         mParticles.moveEmittersTo(particlePosition.x, particlePosition.y);
         mSkin.render(pixelPosition.x,pixelPosition.y);
-        mSkin.setRotation(mBody.getAngle()*(180/(float)Math.PI));
+        mSkin.setRotation(getBody().getAngle()*(180/(float)Math.PI));
     }
     @Override
     public void kill()
     {
-        sWorld.destroyBody(mBody);
+        sWorld.destroyBody(getBody());
         mParticles.kill();
     }
 }

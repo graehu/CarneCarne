@@ -34,19 +34,21 @@ public class CaveIn extends Entity
     @Override
     public void update()
     {
+        if (mWaterTiles != 0)
+            buoyancy();
         if (mPlatformController != null)
         {
             mPlatformController.update();
         }
-        ((Tile)mBody.getFixtureList().getUserData()).updateSystems();
+        ((Tile)getBody().getFixtureList().getUserData()).updateSystems();
     }
     @Override
     public void render()
     { 
         sGraphicsManager.beginTransform();
-            Vec2 axis = sWorld.translateToWorld(new Vec2(mBody.getPosition().x+0.5f,mBody.getPosition().y+0.5f));
-            sGraphicsManager.rotate(axis.x, axis.y, mBody.getAngle()*180.0f/(float)Math.PI);
-            mSkin.render(mBody.getPosition().x,mBody.getPosition().y);
+            Vec2 axis = sWorld.translateToWorld(new Vec2(getBody().getPosition().x+0.5f,getBody().getPosition().y+0.5f));
+            sGraphicsManager.rotate(axis.x, axis.y, getBody().getAngle()*180.0f/(float)Math.PI);
+            mSkin.render(getBody().getPosition().x,getBody().getPosition().y);
         sGraphicsManager.endTransform();
     }
     

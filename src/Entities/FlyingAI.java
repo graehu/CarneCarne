@@ -22,8 +22,8 @@ public class FlyingAI extends AIEntity
     
     public void fly(Vec2 _point, float _maxSpeed)
     {
-        mBody.setLinearDamping(0.8f);        
-        Vec2 pos = mBody.getPosition();
+        getBody().setLinearDamping(0.8f);        
+        Vec2 pos = getBody().getPosition();
         Vec2 speed = new Vec2((_point.x-pos.x)/2, (_point.y-pos.y)/2);
 //        mSkin.setRotation(speed.x*20);
         
@@ -40,7 +40,7 @@ public class FlyingAI extends AIEntity
         
         
         
-        mBody.applyLinearImpulse(speed, mBody.getWorldCenter());
+        getBody().applyLinearImpulse(speed, getBody().getWorldCenter());
         
         
        /* if(!(mBody.getLinearVelocity().y < 0))

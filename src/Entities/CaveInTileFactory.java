@@ -22,7 +22,7 @@ public class CaveInTileFactory implements iEntityFactory
         iSkin skin = (iSkin)sSkinFactory.create("static", _parameters);
         CaveInTile entity = new CaveInTile(skin);
         body.setUserData(entity);
-        entity.mBody = body;
+        entity.setBody(body);
         return entity;
     }
     

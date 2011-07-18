@@ -7,7 +7,6 @@ package World;
 import Entities.Entity;
 import Events.EntityDeathEvent;
 import Events.sEvents;
-import Level.Tile;
 import org.jbox2d.callbacks.ContactImpulse;
 import org.jbox2d.collision.Manifold;
 import org.jbox2d.dynamics.contacts.Contact;
@@ -24,8 +23,8 @@ class DeathListener implements iListener
 
     public void beginContact(Contact _contact)
     {
-        Tile tile = (Tile)_contact.m_fixtureA.getUserData();//sLevel.TileType.class.getEnumConstants()[_contact.m_fixtureA.m_filter.groupIndex];
-        if (_contact.m_fixtureB.m_filter.categoryBits == (1 << sWorld.BodyCategories.ePlayer.ordinal()))
+        if (_contact.m_fixtureB.m_filter.categoryBits == (1 << sWorld.BodyCategories.ePlayer.ordinal())||
+                _contact.m_fixtureB.m_filter.categoryBits == (1 << sWorld.BodyCategories.eEnemy.ordinal()))
         {
             sEvents.triggerDelayedEvent(new EntityDeathEvent(((Entity)_contact.m_fixtureB.m_body.m_userData)));
         }

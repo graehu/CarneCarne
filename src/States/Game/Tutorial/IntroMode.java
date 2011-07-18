@@ -76,7 +76,7 @@ public class IntroMode implements iGameMode, iEventListener
         for (PlayerEntity player: mPlayers)
         {
             player.destroy();
-            sWorld.destroyBody(player.mBody);
+            sWorld.destroyBody(player.getBody());
         }
     }
     public void render(Graphics _graphics)

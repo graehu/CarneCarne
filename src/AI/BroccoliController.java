@@ -35,8 +35,8 @@ public class BroccoliController extends iAIController
         if(mTarget != null)
         {
 
-            Vec2 myPos = mEntity.mBody.getPosition();
-            Vec2 targetPos = mTarget.mBody.getPosition();
+            Vec2 myPos = mEntity.getBody().getPosition();
+            Vec2 targetPos = mTarget.getBody().getPosition();
 
             if((targetPos.x < myPos.x+mRange) && targetPos.x > myPos.x-mRange)
             {

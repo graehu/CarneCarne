@@ -51,7 +51,7 @@ public class BroccoliFactory implements iEntityFactory {
         parameters.put("position", position);
         parameters.put("aIEntity", entity);
         parameters.put("category", sWorld.BodyCategories.eEnemy);
-        entity.mBody = sWorld.useFactory("CircleCharFactory",parameters);
+        entity.setBody(sWorld.useFactory("CircleCharFactory",parameters));
         
         BroccoliController controller = new BroccoliController(entity);
         entity.mController = controller;

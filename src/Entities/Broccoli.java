@@ -120,7 +120,7 @@ public class Broccoli extends AIEntity
                     mAIEntityState.getState();
                     jump();
                     stopJumping();
-                    mBody.applyLinearImpulse(new Vec2(_speed,0), mBody.getWorldCenter());
+                    getBody().applyLinearImpulse(new Vec2(_speed,0), getBody().getWorldCenter());
                     //setAnimation("broc_2_air");
                     mSkin.deactivateSubSkin("broc_2_jump");
                     mCurrentAnimation = "broc_2_air";
@@ -171,7 +171,7 @@ public class Broccoli extends AIEntity
 
     public void render()
     {
-        Vec2 pixelPosition = sWorld.translateToWorld(mBody.getPosition());
+        Vec2 pixelPosition = sWorld.translateToWorld(getBody().getPosition());
         mSkin.render(pixelPosition.x,pixelPosition.y);
     }//*/
 }

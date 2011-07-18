@@ -5,7 +5,6 @@
 package Entities;
 
 import AI.PeaController;
-import Entities.Pea;
 import Graphics.Skins.iSkin;
 import Graphics.Skins.sSkinFactory;
 import World.sWorld;
@@ -32,7 +31,7 @@ class PeaFactory implements iEntityFactory {
         parameters.put("position", position);
         parameters.put("aIEntity", entity);
         parameters.put("category", sWorld.BodyCategories.eEnemy);
-        entity.mBody = sWorld.useFactory("CircleCharFactory",parameters);
+        entity.setBody(sWorld.useFactory("CircleCharFactory",parameters));
         PeaController controller = new PeaController(entity);
         entity.mController = controller;
         return entity;

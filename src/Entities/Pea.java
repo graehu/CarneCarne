@@ -16,9 +16,10 @@ public class Pea extends AIEntity
     {
         super(_skin);
     }
+    @Override
     public void render()
     {
-        mSkin.setRotation(mBody.getAngle()*(180/(float)Math.PI));
+        mSkin.setRotation(getBody().getAngle()*(180/(float)Math.PI));
         super.render();
     }
     
