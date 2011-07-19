@@ -4,7 +4,6 @@
  */
 package States.Game;
 
-import States.Game.Tutorial.IntroMode;
 import Entities.sEntityFactory;
 import Events.KeyDownEvent;
 import Events.PlayerCreatedEvent;
@@ -16,20 +15,19 @@ import Graphics.sGraphicsManager;
 import Graphics.Skins.sSkinFactory;
 import Graphics.Sprites.sSpriteFactory;
 import Input.sInput;
-import Level.sLevel;
-import Shader.LightingShader;
-import Shader.Shader;
+import ShaderUtils.LightingShader;
+import ShaderUtils.Shader;
 import Sound.sSound;
 import States.Game.RaceMode.RaceMode;
 import States.StateChanger;
 import World.sWorld;
-import java.nio.FloatBuffer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.jbox2d.common.Vec2;
-import org.lwjgl.BufferUtils;
-import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.BasicGameState;
@@ -68,7 +66,7 @@ public class StateGame extends BasicGameState implements iEventListener {
             PlayerCreatedEvent event = (PlayerCreatedEvent) _event;
             sEvents.subscribeToEvent("KeyDownEvent"+"Q"+event.getPlayerID(), this);
         }
-        if(_event.getType().equals("KeyDownEvent"))
+        else if(_event.getType().equals("KeyDownEvent"))
         {
             KeyDownEvent event = (KeyDownEvent) _event;
             if(event.getKey() == 'Q')
@@ -78,6 +76,15 @@ public class StateGame extends BasicGameState implements iEventListener {
                 //goto menu
                 //mChangeToMenu.run();
             }
+        }
+        else if(_event.getType().equals("WindowResizeEvent"))
+        {
+            Vec2 s = sGraphicsManager.getTrueScreenDimensions();
+            try 
+            {
+                screen = new Image((int)s.x, (int)s.y);
+            } 
+            catch (SlickException ex) {Logger.getLogger(StateGame.class.getName()).log(Level.SEVERE, null, ex);}
         }
         return true;
     }
@@ -89,6 +96,10 @@ public class StateGame extends BasicGameState implements iEventListener {
 
     public void update(GameContainer _gc, StateBasedGame _sbg, int _delta) throws SlickException 
     {
+        //update screen cap
+        //FIXME: 
+        _gc.getGraphics().copyArea(screen, 0, 0);
+        
         //update sounds
         sSound.poll(_delta);
         
@@ -98,24 +109,26 @@ public class StateGame extends BasicGameState implements iEventListener {
         //update particles
         sParticleManager.update(_delta);
     }
-    public void render(GameContainer _gc, StateBasedGame _sbg, Graphics _grphcs)
+    Image screen =null;
+    public void render(GameContainer _gc, StateBasedGame _sbg, Graphics _grphcs) throws SlickException
     {
         Vec2 s = sGraphicsManager.getScreenDimensions();
-        mGameMode.render(_gc.getGraphics());
+        
+        mGameMode.render(_grphcs);
         
         //FIXME: SHADER TEST
         shader.startShader();
         {
             _grphcs.setColor(Color.white);
-            _grphcs.fillRect(0, 0, s.x, s.y);
+            screen.draw(0, 0);
             _grphcs.setColor(Color.white);
         }
         shader.endShader();
 
         Shader.forceFixedShader();
         
-          
-        
+        //cleanup texture data
+        //screen.flushPixelData();
         
 
     }
@@ -140,6 +153,9 @@ public class StateGame extends BasicGameState implements iEventListener {
     LightingShader shader = null;
     public void init(GameContainer _gc, StateBasedGame _sbg) throws SlickException
     {
+        Vec2 s = sGraphicsManager.getScreenDimensions();
+        screen = new Image((int)(s.x), (int)(s.y));
+        
         //initialise sound
         sSound.loadSound("level1", "assets/music/Level1.ogg");
         sSound.loadSound("jump", "assets/sfx/fart_4.ogg");
@@ -154,6 +170,7 @@ public class StateGame extends BasicGameState implements iEventListener {
         
         //subscribe to events (must be done before further initialisation)
         sEvents.subscribeToEvent("PlayerCreatedEvent", this);
+        sEvents.subscribeToEvent("WindowResizeEvent", this);
         
         //sLevel.loadLevel();
         
@@ -163,8 +180,15 @@ public class StateGame extends BasicGameState implements iEventListener {
         
         //FIXME: SHADER TEST
         shader = LightingShader.makeShader("shaders/test.vert", "shaders/test.frag");
-        shader.addLightSource(new Vector2f(0,0));
-        shader.addLightSource(new Vector2f(900,500));
+        shader.addLightSource(new Vector2f(200,300));
+        shader.addLightSource(new Vector2f(600,600));
+        shader.addLightSource(new Vector2f(800,400));
+        shader.addLightSource(new Vector2f(1200,10));
+        shader.addLightSource(new Vector2f(200,300));
+        shader.addLightSource(new Vector2f(600,600));
+        shader.addLightSource(new Vector2f(800,400));
+        shader.addLightSource(new Vector2f(1200,10));
+        //shader.addLightSource(new Vector2f(0.5f,0.5f));
         //shader.addLightSource(new Vector2f(0,0));
     }
 

@@ -20,6 +20,7 @@ import java.util.logging.Logger;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 import org.newdawn.slick.Color;
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.ShapeFill;
 import org.newdawn.slick.SlickException;
@@ -171,23 +172,23 @@ public class BodyCamera extends iCamera implements iEventListener{
             }
         }*/
     }
-    public void render()
+    public void render(Graphics _graphics)
     {
-        sGraphicsManager.beginTransform();
-            sGraphicsManager.translate(mViewPort.getX(),mViewPort.getY());
-            sGraphicsManager.setClip(mViewPort);
+        _graphics.pushTransform();
+            _graphics.translate(mViewPort.getX(),mViewPort.getY());
+            _graphics.setClip(mViewPort);
             calculatePosition();
             ShapeFill fill = new GradientFill(new Vector2f(0,0), new Color(159,111,89), new Vector2f(mViewPort.getMaxX(),mViewPort.getMaxY()), new Color(186, 160, 149), false);
             Rectangle shape = new Rectangle(0,0, mViewPort.getWidth(),mViewPort.getHeight());
-            sGraphicsManager.fill(shape, fill);
-            sLevel.renderBackground();
+            _graphics.fill(shape, fill);
+            sLevel.renderBackground(_graphics);
             sWorld.render();
             sGraphicsManager.renderManagedSprites();
             sLevel.renderForeground();
             sParticleManager.render((int)getPixelTranslation().x, (int)getPixelTranslation().y, (int)mViewPort.getWidth(), (int)mViewPort.getHeight(),0);
             mOverlay.draw(0,0, (int)mViewPort.getWidth(), (int)mViewPort.getHeight());
             ((PlayerEntity)mBody.getUserData()).renderHUD();
-        sGraphicsManager.endTransform();   
+        _graphics.popTransform();  
         
     }
     

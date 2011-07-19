@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package Shader;
+package ShaderUtils;
 
 import Graphics.sGraphicsManager;
 import java.nio.FloatBuffer;
@@ -30,6 +30,9 @@ public class LightingShader extends Shader
     
     ArrayList<LightSource> mLightSources = new ArrayList<LightSource>();
     float mAmbience = 0.5f;
+    FloatBuffer aux = BufferUtils.createFloatBuffer(4);
+    FloatBuffer fbpos = BufferUtils.createFloatBuffer(4);
+    FloatBuffer color = BufferUtils.createFloatBuffer(4);
     
     public LightSource addLightSource(Vector2f _position)
     {
@@ -53,23 +56,27 @@ public class LightingShader extends Shader
     @Override
     public void startShader() 
     {
-        GL11.glEnable(GL11.GL_BLEND);
+        //GL11.glEnable(GL11.GL_BLEND);
+        //GL11.glBlendFunc(GL11.GL_SRC_COLOR, GL11.GL_ZERO);
         GL11.glEnable(GL11.GL_LIGHTING);
         GL11.glShadeModel(GL11.GL_SMOOTH);
         
         Vec2 s = sGraphicsManager.getScreenDimensions();
         
-        FloatBuffer temp = BufferUtils.createFloatBuffer(4);
-        temp.put(new float[]{(float)mLightSources.size(), s.x, s.y, mAmbience}).flip();
+        //WARNING: these buffers are allocated off the heap and are not properly garbage collected
+        //the clear method resets the 'pointer' to the head but doesn't deallocate the memory
+        //use with freak'n care
+        aux.clear();
+        aux.put(new float[]{(float)mLightSources.size(), s.x, s.y, mAmbience}).flip();
         
-        GL11.glLight(GL11.GL_LIGHT0, GL11.GL_SPECULAR, temp);
+        GL11.glLight(GL11.GL_LIGHT0, GL11.GL_SPECULAR, aux);
 
         for(int i = 0; i < mLightSources.size(); i++)
         {
-            FloatBuffer fbpos = BufferUtils.createFloatBuffer(4);
+            fbpos.clear();
             fbpos.put(new float[]{mLightSources.get(i).mPosition.x, mLightSources.get(i).mPosition.y, mLightSources.get(i).mRadius, 0.0f}).flip();
 
-            FloatBuffer color = BufferUtils.createFloatBuffer(4);
+            color.clear();
             color.put(new float[]{  mLightSources.get(i).mColor.a, 
                                     mLightSources.get(i).mColor.g, 
                                     mLightSources.get(i).mColor.b, 
@@ -77,14 +84,16 @@ public class LightingShader extends Shader
         
             GL11.glEnable(GL11.GL_LIGHT0 + i);
             GL11.glLight(GL11.GL_LIGHT0 + i, GL11.GL_POSITION, fbpos);
+            GL11.glLight(i, i, aux);
             GL11.glLight(GL11.GL_LIGHT0 + i, GL11.GL_DIFFUSE, color);
+            
         }
         super.startShader();
     }
          
     public void endShader()
     {
-        GL11.glDisable(GL11.GL_BLEND);
+        //GL11.glDisable(GL11.GL_BLEND);
         GL11.glDisable(GL11.GL_LIGHTING);
     }
     

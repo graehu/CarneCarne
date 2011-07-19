@@ -15,6 +15,7 @@ import World.sWorld;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 import org.newdawn.slick.Color;
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.ShapeFill;
 import org.newdawn.slick.fills.GradientFill;
 import org.newdawn.slick.geom.Rectangle;
@@ -60,7 +61,7 @@ public class FreeCamera extends iCamera implements iEventListener
         Vec2 s = sGraphicsManager.getScreenDimensions();
         return new Vec2((s.x/2)+(-xPixel),(s.y/2)+(-yPixel));        
     }
-    public void render()
+    public void render(Graphics _graphics)
     {
         sGraphicsManager.beginTransform();
             sGraphicsManager.translate(mViewPort.getX(),mViewPort.getY());
@@ -68,7 +69,7 @@ public class FreeCamera extends iCamera implements iEventListener
             ShapeFill fill = new GradientFill(new Vector2f(0,0), new Color(159,111,89), new Vector2f(mViewPort.getMaxX(),mViewPort.getMaxY()), new Color(186, 160, 149), false);
             Rectangle shape = new Rectangle(0,0, mViewPort.getWidth(),mViewPort.getHeight());
             sGraphicsManager.fill(shape, fill);
-            sLevel.renderBackground();
+            sLevel.renderBackground(_graphics);
             sWorld.render();
             sGraphicsManager.renderManagedSprites();
             sParticleManager.render((int)getPixelTranslation().x, (int)getPixelTranslation().y, (int)mViewPort.getWidth(), (int)mViewPort.getHeight(),0);

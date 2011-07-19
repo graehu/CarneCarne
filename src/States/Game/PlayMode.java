@@ -28,7 +28,7 @@ public class PlayMode implements iGameMode
     }
     public void render(Graphics _graphics)
     {
-        sWorld.getCamera().render();
+        sWorld.getCamera().render(_graphics);
         
     }
 }

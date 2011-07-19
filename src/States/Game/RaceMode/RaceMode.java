@@ -56,7 +56,7 @@ public class RaceMode implements iGameMode, iEventListener
     }
     public void render(Graphics _graphics)
     {
-        sWorld.getCamera().render();
+        sWorld.getCamera().render(_graphics);
         mRaceState.renderState();
         if (mRaceRender != null)
         {
