@@ -4,6 +4,7 @@
  */
 package World;
 
+import Entities.AIEntity;
 import World.PhysicsFactories.SeeSawBodyFactory;
 import World.PhysicsFactories.SpatBlockBodyFactory;
 import World.PhysicsFactories.FireParticleBody;
@@ -25,6 +26,7 @@ import Events.sEvents;
 import Graphics.Camera.FreeCamera;
 import Graphics.Camera.iCamera;
 import Graphics.sGraphicsManager;
+import Level.FakeTile;
 import Level.RootTile;
 import Level.Tile;
 import Level.sLevel;
@@ -49,6 +51,7 @@ import org.jbox2d.dynamics.joints.Joint;
 import org.jbox2d.dynamics.joints.PrismaticJointDef;
 import org.jbox2d.structs.collision.RayCastInput;
 import org.jbox2d.structs.collision.RayCastOutput;
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Rectangle;
 /**
  *
@@ -164,7 +167,6 @@ public class sWorld
             }
             return true;
         }
-        
     }
     private static class TongueCallback implements RayCastCallback
     {
@@ -180,6 +182,7 @@ public class sWorld
                     (1 << BodyCategories.eGum.ordinal())|
                     (1 << BodyCategories.eSpatTiles.ordinal())|
                     (1 << BodyCategories.ePlayer.ordinal())|
+                    (1 << BodyCategories.eEnemy.ordinal())|
                     (1 << BodyCategories.eIce.ordinal());
         }
         public float reportFixture(Fixture _fixture, Vec2 _p1, Vec2 _p2, float _fraction)
@@ -224,6 +227,13 @@ public class sWorld
             mWorld.destroyBody(callback.getFixture().getBody());
             return new Tile(id, tile, null, -1, -1);
         }
+        if (callback.getFixture().m_filter.categoryBits == (1 << BodyCategories.ePlayer.ordinal())||
+                callback.getFixture().m_filter.categoryBits == (1 << BodyCategories.eEnemy.ordinal()))
+        {
+            mLastHit = callback.getFixture();
+            mLastTongueAnchor = new PlayerTongueAnchor(mLastHit, new Vec2(0.0f, 0.0f));
+            return new FakeTile(mLastHit.getBody());
+        }
         Tile tile = (Tile)callback.getFixture().getUserData();
         Tile ret = tile;
         if (tile != null)
@@ -248,7 +258,7 @@ public class sWorld
                 case eIndestructible:
                 {
                     Tile hitTile = (Tile)mLastHit.getUserData();
-                    mLastTongueAnchor = new MovingBodyTongueAnchor(hitTile.getTileGrid().getBody(), hitTile.getLocalPosition());
+                    mLastTongueAnchor = new MovingBodyTongueAnchor(hitTile.getFixture(), hitTile.getLocalPosition());
                     break;
                 }
             }
@@ -266,28 +276,38 @@ public class sWorld
         {
             return false;
         }
-        Tile tile = (Tile)callback.getFixture().getUserData();
-        if (tile != null)
+        if (callback.getFixture().m_filter.categoryBits == (1 << BodyCategories.ePlayer.ordinal())||
+                callback.getFixture().m_filter.categoryBits == (1 << BodyCategories.eEnemy.ordinal()))
         {
-            TileType tileType = tile.getTileType();
-            switch (tileType)
+            Vec2 direction = end.sub(start);
+            direction.normalize();
+            ((AIEntity)callback.getFixture().getBody().getUserData()).stun(direction);
+        }
+        else
+        {
+            Tile tile = (Tile)callback.getFixture().getUserData();
+            if (tile != null) /// FIXME might be able to remove this check
             {
-                case eSwingable:
-                case eEdible:
-                case eMelonSkin:
+                TileType tileType = tile.getTileType();
+                switch (tileType)
                 {
-                    if (tile.damageTile())
+                    case eSwingable:
+                    case eEdible:
+                    case eMelonSkin:
                     {
-                        sEvents.triggerEvent(new TileDestroyedEvent((int)callback.getFixture().m_body.getPosition().x, (int)callback.getFixture().m_body.getPosition().y));
-                        tile.destroyFixture();
+                        if (tile.damageTile())
+                        {
+                            sEvents.triggerEvent(new TileDestroyedEvent((int)callback.getFixture().m_body.getPosition().x, (int)callback.getFixture().m_body.getPosition().y));
+                            tile.destroyFixture();
+                        }
+                        break;
                     }
-                    break;
-                }
-                case eIce:
-                case eEmpty:
-                case eIndestructible:
-                {
-                    break;
+                    case eIce:
+                    case eEmpty:
+                    case eIndestructible:
+                    {
+                        break;
+                    }
                 }
             }
         }
@@ -408,7 +428,7 @@ public class sWorld
         parameters.put("aIEntity", _entity);
         return useFactory("CharacterFactory",parameters);
     }*/
-    public static void update(float _time)
+    public static void update(Graphics _graphics, float _time)
     {
         float secondsPerFrame = 16.666f;
         try
@@ -427,23 +447,27 @@ public class sWorld
                 entity.update();
             body = body.getNext();
         }
-        mCamera.update();
+        mCamera.update(_graphics);
     }
 
     public static iCamera getCamera()
     {
         return mCamera;
     }
-    public static void render()
+    private static class RenderCallback implements QueryCallback
     {
-        Body body = mWorld.getBodyList();
-        while (body != null)
+        public boolean reportFixture(Fixture _fixture)
         {
-            Entity entity = (Entity)body.getUserData();
+            Entity entity = (Entity)_fixture.getBody().getUserData();
             if (entity != null)
                 entity.render();
-            body = body.getNext();
+            return true;
         }
+    }
+    public static void render()
+    {
+        AABB aabb = new AABB(sWorld.translateToPhysics(new Vec2(0,0)), sWorld.translateToPhysics(sGraphicsManager.getScreenDimensions()));
+        mWorld.queryAABB(new RenderCallback(), aabb);
         mWorld.drawDebugData();
     }
 }

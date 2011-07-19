@@ -43,7 +43,7 @@ public class IntroMode implements iGameMode, iEventListener
         sEvents.subscribeToEvent("PlayerEndedTutorialEvent", this);
         sLevel.init();
     }
-    public iGameMode update(float _time)
+    public iGameMode update(Graphics _graphics, float _time)
     {
         boolean sectionsLeft = false;
         for (int i = 0; i < mSections.size(); i++)
@@ -66,7 +66,7 @@ public class IntroMode implements iGameMode, iEventListener
             return raceMode;
         }
         //sLevel.update();
-        sWorld.update(_time);
+        sWorld.update(_graphics, _time);
         sEvents.processEvents();
         return this;
     }

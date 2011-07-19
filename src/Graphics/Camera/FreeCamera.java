@@ -61,7 +61,7 @@ public class FreeCamera extends iCamera implements iEventListener
         Vec2 s = sGraphicsManager.getScreenDimensions();
         return new Vec2((s.x/2)+(-xPixel),(s.y/2)+(-yPixel));        
     }
-    public void render(Graphics _graphics)
+    protected void renderInternal(Graphics _graphics)
     {
         sGraphicsManager.beginTransform();
             sGraphicsManager.translate(mViewPort.getX(),mViewPort.getY());
@@ -76,7 +76,7 @@ public class FreeCamera extends iCamera implements iEventListener
             sLevel.renderForeground();
         sGraphicsManager.endTransform();       
     }
-
+    
     public boolean trigger(iEvent _event)
     {
         KeyDownEvent event = (KeyDownEvent)_event;
@@ -111,6 +111,6 @@ public class FreeCamera extends iCamera implements iEventListener
         return new BodyCamera(_body, mViewPort, true);
     }
 
-    public void update() {
+    public void update(Graphics _graphics) {
     }
 }

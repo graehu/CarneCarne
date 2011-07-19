@@ -45,12 +45,12 @@ public class RaceMode implements iGameMode, iEventListener
         }
         sLevel.newLevel();
     }
-    public iGameMode update(float _time)
+    public iGameMode update(Graphics _graphics, float _time)
     {
         mTimer++;
         mRaceState.update();
         sLevel.update();
-        sWorld.update(_time);
+        sWorld.update(_graphics, _time);
         sEvents.processEvents();
         return this;
     }

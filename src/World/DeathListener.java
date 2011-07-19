@@ -5,6 +5,7 @@
 package World;
 
 import Entities.Entity;
+import Entities.FireParticle;
 import Events.EntityDeathEvent;
 import Events.sEvents;
 import org.jbox2d.callbacks.ContactImpulse;
@@ -27,10 +28,14 @@ class DeathListener implements iListener
                 _contact.m_fixtureB.m_filter.categoryBits == (1 << sWorld.BodyCategories.eEnemy.ordinal()))
         {
             sEvents.triggerDelayedEvent(new EntityDeathEvent(((Entity)_contact.m_fixtureB.m_body.m_userData)));
+            if (_contact.m_fixtureA.m_body.m_userData != null)
+                ((FireParticle)_contact.m_fixtureA.m_body.m_userData).killedOpponent();
         }
         else
         {
             sEvents.triggerDelayedEvent(new EntityDeathEvent(((Entity)_contact.m_fixtureA.m_body.m_userData)));
+            if (_contact.m_fixtureA.m_body.m_userData != null)
+                ((FireParticle)_contact.m_fixtureB.m_body.m_userData).killedOpponent();
         }
     }
 

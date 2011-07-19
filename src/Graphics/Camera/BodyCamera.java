@@ -14,6 +14,8 @@ import Events.sEvents;
 import Graphics.Particles.sParticleManager;
 import Graphics.sGraphicsManager;
 import Level.sLevel;
+import ShaderUtils.LightingShader;
+import ShaderUtils.Shader;
 import World.sWorld;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -47,6 +49,8 @@ public class BodyCamera extends iCamera implements iEventListener{
     CaveInEvent mCaveInEvent;
     CameraGrabber mGrabber = null;
     Image mOverlay = null;
+    private Image mLightBlendBase = null;
+    private LightingShader mLightingShader = null;
     public BodyCamera(Body _body, Rectangle _viewPort, boolean _topSplit)
     {
         super(_viewPort);
@@ -60,11 +64,14 @@ public class BodyCamera extends iCamera implements iEventListener{
         mLookDirection = false;
         sEvents.subscribeToEvent("CaveInEvent", this);
         mGrabber = new CameraGrabber(new Vec2(34,11));
-        try {
+        try 
+        {
             mOverlay = new Image("ui/overlay.png");
-        } catch (SlickException ex) {
-            Logger.getLogger(BodyCamera.class.getName()).log(Level.SEVERE, null, ex);
-        }
+            mLightingShader = LightingShader.makeShader("shaders/test.vert", "shaders/test.frag");
+            mLightBlendBase = new Image((int)mViewPort.getWidth(), (int)mViewPort.getHeight());
+        } catch (SlickException ex) {Logger.getLogger(BodyCamera.class.getName()).log(Level.SEVERE, null, ex);}
+        
+        mLightingShader.addLightSource(new Vector2f(200,300)); //FIXME: test light
         
     }
     private static final float directionEpsilon = 0.6f;
@@ -130,6 +137,11 @@ public class BodyCamera extends iCamera implements iEventListener{
     {
         super.resize(_viewPort);
         ((PlayerEntity)mBody.getUserData()).setClip(_viewPort);
+        try 
+        {//resize light blend base
+            mLightBlendBase = new Image((int)mViewPort.getWidth(), (int)mViewPort.getHeight());
+        } 
+        catch (SlickException ex) {Logger.getLogger(iCamera.class.getName()).log(Level.SEVERE, null, ex);}
     }
     
     public Vec2 translateToWorld(Vec2 _physicsSpace)
@@ -154,8 +166,11 @@ public class BodyCamera extends iCamera implements iEventListener{
     {
         return new Vec2(mTranslation.x+(mPosition.x*-64.0f),mTranslation.y+(mPosition.y*-64.0f));
     }
-    public void update()
+    public void update(Graphics _graphics)
     {
+        //update lighting blend base
+        _graphics.copyArea(mLightBlendBase, (int)mViewPort.getX(), (int)mViewPort.getY());
+        
         calculatePosition();
         mTimer += 1.0f;
         /*if (mCaveInEvent != null)
@@ -172,7 +187,7 @@ public class BodyCamera extends iCamera implements iEventListener{
             }
         }*/
     }
-    public void render(Graphics _graphics)
+    protected void renderInternal(Graphics _graphics)
     {
         _graphics.pushTransform();
             _graphics.translate(mViewPort.getX(),mViewPort.getY());
@@ -186,11 +201,26 @@ public class BodyCamera extends iCamera implements iEventListener{
             sGraphicsManager.renderManagedSprites();
             sLevel.renderForeground();
             sParticleManager.render((int)getPixelTranslation().x, (int)getPixelTranslation().y, (int)mViewPort.getWidth(), (int)mViewPort.getHeight(),0);
-            mOverlay.draw(0,0, (int)mViewPort.getWidth(), (int)mViewPort.getHeight());
-            ((PlayerEntity)mBody.getUserData()).renderHUD();
+            //render lighting
+            mLightingShader.startShader();
+                mLightBlendBase.draw(0,0);
+            mLightingShader.endShader();
+            Shader.forceFixedShader();
         _graphics.popTransform();  
         
     }
+
+    @Override
+    protected void renderInternalHUD(Graphics _graphics) 
+    {
+        _graphics.pushTransform();
+            _graphics.translate(mViewPort.getX(),mViewPort.getY());
+            _graphics.setClip(mViewPort);
+            mOverlay.draw(0,0, (int)mViewPort.getWidth(), (int)mViewPort.getHeight());
+            ((PlayerEntity)mBody.getUserData()).renderHUD();
+        _graphics.popTransform();
+    }
+    
     
     @Override
     public iCamera addPlayer(Body _body)

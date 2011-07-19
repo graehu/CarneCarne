@@ -339,7 +339,16 @@ public class AIEntity extends Entity {
         }
         return 0;
     }
-    
+
+    public void stun(Vec2 _direction)
+    {
+        mBody.applyLinearImpulse(_direction.mul(15.0f), getBody().getWorldCenter());
+    }
+    void stun()
+    {
+        mAIEntityState.stun();
+    }
+
     public void crouch()
     {
     }
@@ -349,4 +358,5 @@ public class AIEntity extends Entity {
         Vec2 pixelPosition = sWorld.translateToWorld(getBody().getPosition());
         mSkin.render(pixelPosition.x,pixelPosition.y);
     }
+
 }

@@ -5,7 +5,7 @@
 package World;
 
 import org.jbox2d.common.Vec2;
-import org.jbox2d.dynamics.Body;
+import org.jbox2d.dynamics.Fixture;
 
 /**
  *
@@ -13,24 +13,23 @@ import org.jbox2d.dynamics.Body;
  */
 public class MovingBodyTongueAnchor extends TongueAnchor
 {
-    Body mBody;
+    Fixture mFixture;
     Vec2 mLocalAnchor;
-    public MovingBodyTongueAnchor(Body _body, Vec2 _localAnchor)
+    public MovingBodyTongueAnchor(Fixture _fixture, Vec2 _localAnchor)
     {
-        mBody = _body;
+        mFixture = _fixture;
         mLocalAnchor = _localAnchor;
     }
 
     @Override
     public Vec2 getPosition()
     {
-        return mBody.getWorldPoint(mLocalAnchor);
+        return mFixture.getBody().getWorldPoint(mLocalAnchor);
     }
-    int timer = 0;
     @Override
     public boolean hasContact()
     {
-        if (mBody.m_world == null)
+        if (mFixture.getBody() == null)
             return false;
         return true;
     }

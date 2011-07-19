@@ -4,9 +4,15 @@
  */
 package Entities;
 
+import Graphics.Particles.ParticleSysBase;
+import Graphics.Particles.sParticleManager;
 import Graphics.Skins.iSkin;
+import Level.RootTile.AnimationType;
+import Level.Tile;
 import World.sWorld;
+import World.sWorld.BodyCategories;
 import org.jbox2d.common.Vec2;
+import org.jbox2d.dynamics.contacts.ContactEdge;
 
 /**
  *
@@ -26,6 +32,32 @@ public class SpatBlock extends Entity {
     {
         if (mWaterTiles != 0)
             buoyancy();
+        int tileMask = (1 << BodyCategories.eEdibleTiles.ordinal()) |
+            (1 << BodyCategories.eNonEdibleTiles.ordinal()) |
+            (1 << BodyCategories.ePlayer.ordinal()) |
+            (1 << BodyCategories.eEnemy.ordinal()) |
+            (1 << BodyCategories.eWater.ordinal()) |
+            (1 << BodyCategories.eGum.ordinal()) |
+            (1 << BodyCategories.eTar.ordinal());
+        for (ContactEdge edge = getBody().getContactList(); edge != null; edge = edge.next)
+        {
+            if (edge.contact.isTouching() && (edge.other.m_fixtureList.m_filter.categoryBits & tileMask) != 0)
+            {
+                Entity entity = (Entity)edge.contact.m_fixtureB.getBody().getUserData();
+                if (entity == this)
+                    entity = (Entity)edge.contact.m_fixtureA.getBody().getUserData();
+                try
+                {
+                    ((AIEntity)entity).stun();
+                }
+                catch (Throwable e) /// Null pointer and invalid cast catch
+                {
+                    
+                }
+                kill();
+                break;
+            }
+        }
     }
     public int getRootId()
     {

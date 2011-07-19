@@ -46,12 +46,12 @@ class SplitScreenCamera extends iCamera
         return mActiveCamera.getPixelTranslation();
     }
     
-    public void render(Graphics _graphics)
+    protected void renderInternal(Graphics _graphics)
     {
         mActiveCamera = mCameraA;
-        mActiveCamera.render(_graphics);
+        mActiveCamera.renderInternal(_graphics);
         mActiveCamera = mCameraB;
-        mActiveCamera.render(_graphics);
+        mActiveCamera.renderInternal(_graphics);
     }
     
     public iCamera addPlayer(Body _body)
@@ -63,14 +63,14 @@ class SplitScreenCamera extends iCamera
         lastSplit = !lastSplit;
         return this;
     }
-    public void update()
+    public void update(Graphics _graphics)
     {
-        mCameraA.update();
-        mCameraB.update();
+        mCameraA.update(_graphics);
+        mCameraB.update(_graphics);
     }
     public void resize(Rectangle _viewPort)
     {
-        mViewPort = _viewPort;
+        //super.resize(_viewPort);
         split();
 
         mCameraA.resize(viewPortA);

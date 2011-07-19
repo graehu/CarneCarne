@@ -27,8 +27,9 @@ import org.jbox2d.common.Vec2;
  *
  * @author alasdair
  */
-public class PlayerInputController extends iAIController implements iEventListener {
-
+public class PlayerInputController extends iAIController implements iEventListener
+{
+    int mStunTimer;
     public boolean isSwinging()
     {
         return mTongueState.isSwinging();
@@ -36,6 +37,13 @@ public class PlayerInputController extends iAIController implements iEventListen
     public Vec2 getTongueDir()
     {
         return mTongueState.getTongueDir();
+    }
+
+    public void stun()
+    {
+        mStunTimer = 120;
+        mTongueState.leftRelease(mPlayerDir);
+        mTongueState.rightRelease(mPlayerDir);
     }
     enum Controls
     {
@@ -95,6 +103,10 @@ public class PlayerInputController extends iAIController implements iEventListen
     
     public void update()
     {       
+        if (mStunTimer != 0)
+        {
+            mStunTimer--;
+        }
         actionTimer++;
         mTongueState.tick(mEntity);
         ((PlayerEntity)mEntity).setDirection(mPlayerDir);
@@ -186,6 +198,7 @@ public class PlayerInputController extends iAIController implements iEventListen
         //intialise velocity relative to carne's
         parameters.put("velocity", mPlayerDir.mul(20.0f));
         parameters.put("position", mEntity.getBody().getPosition().add(mPlayerDir));
+        parameters.put("owner", mEntity);
         sEntityFactory.create("FireParticle", parameters);
         sParticleManager.createSystem("DragonBreath", mEntity.getBody().getPosition().add(new Vec2(0.5f,0.5f)).add(mPlayerDir.mul(0.5f)).mul(64.0f), 1f)
                 .setAngularOffset(((float)Math.atan2(mPlayerDir.y, mPlayerDir.x) * 180.0f/(float)Math.PI)-270.0f);
@@ -193,130 +206,133 @@ public class PlayerInputController extends iAIController implements iEventListen
 
     public boolean trigger(final iEvent _event)
     {
-        if (_event.getType().equals("RightStickEvent"))
+        if (mStunTimer == 0)
         {
-            RightStickEvent event = (RightStickEvent)_event;
-            mPlayerDir = event.getDirection();
-            mPlayerDir.normalize();
-            ((PlayerEntity)mEntity).mReticle.updateDirection(mPlayerDir);
-            if(mTongueState.mIsTongueActive == false)
+            if (_event.getType().equals("RightStickEvent"))
             {
-                look(mPlayerDir);
-            }
-        }
-        else if (_event.getType().equals("MouseMoveEvent"))
-        {
-            MouseMoveEvent event = (MouseMoveEvent)_event;
-            ((PlayerEntity)mEntity).mReticle.setScreenPosition(event.getScreenPosition());
-            mPlayerDir = ((PlayerEntity)mEntity).mReticle.getPlayerDirection();
-            //mPlayerDir = event.getPhysicsPosition().sub(mEntity.mBody.getPosition().add(new Vec2(0.5f,0.5f))); //offset by half the width and height
-            //mPlayerDir.normalize();
-            if(mTongueState.mIsTongueActive == false)
-            {
-                look(mPlayerDir);
-            }    
-        }
-        //-------------------------------------------------------
-        else if(mEntity.isDead())
-            return true;// if dead accept only look input
-        //-------------------------------------------------------
-        else if (_event.getType().equals("KeyDownEvent"))
-        {
-            KeyDownEvent event = (KeyDownEvent)_event;
-            switch (event.getKey())
-            {
-                case 'w':
+                RightStickEvent event = (RightStickEvent)_event;
+                mPlayerDir = event.getDirection();
+                mPlayerDir.normalize();
+                ((PlayerEntity)mEntity).mReticle.updateDirection(mPlayerDir);
+                if(mTongueState.mIsTongueActive == false)
                 {
-                    mEntity.jump();
-                    break;
-                }
-                case 'a':
-                {
-                    mEntity.walkLeft();
-                    break;
-                }
-                case 's':
-                {
-                    mEntity.crouch();
-                    break;
-                }
-                case 'd':
-                {
-                    mEntity.walkRight();
-                    break;
-                }
-                case ' ':
-                {
-                    mTongueState.layBlock();
-                    break;
-                }
-                case 'r':
-                {
-                    mEntity.kill();
-                    break;
+                    look(mPlayerDir);
                 }
             }
-        }
-        else if (_event.getType().equals("AnalogueStickEvent"))
-        {
-            AnalogueStickEvent event = (AnalogueStickEvent)_event;
-            mEntity.walk(event.getValue());
-        }
-        else if (_event.getType().equals("KeyUpEvent"))
-        {
-            KeyUpEvent event = (KeyUpEvent)_event;
-            switch (event.getKey())
+            else if (_event.getType().equals("MouseMoveEvent"))
             {
-                case 'w':
+                MouseMoveEvent event = (MouseMoveEvent)_event;
+                ((PlayerEntity)mEntity).mReticle.setScreenPosition(event.getScreenPosition());
+                mPlayerDir = ((PlayerEntity)mEntity).mReticle.getPlayerDirection();
+                //mPlayerDir = event.getPhysicsPosition().sub(mEntity.mBody.getPosition().add(new Vec2(0.5f,0.5f))); //offset by half the width and height
+                //mPlayerDir.normalize();
+                if(mTongueState.mIsTongueActive == false)
                 {
-                    mEntity.stopJumping();
-                    break;
-                }
-                case 'a':
+                    look(mPlayerDir);
+                }    
+            }
+            //-------------------------------------------------------
+            else if(mEntity.isDead())
+                return true;// if dead accept only look input
+            //-------------------------------------------------------
+            else if (_event.getType().equals("KeyDownEvent"))
+            {
+                KeyDownEvent event = (KeyDownEvent)_event;
+                switch (event.getKey())
                 {
-                    break;
-                }
-                case 's':
-                {
-                    break;
-                }
-                case 'd':
-                {
-                    break;
+                    case 'w':
+                    {
+                        mEntity.jump();
+                        break;
+                    }
+                    case 'a':
+                    {
+                        mEntity.walkLeft();
+                        break;
+                    }
+                    case 's':
+                    {
+                        mEntity.crouch();
+                        break;
+                    }
+                    case 'd':
+                    {
+                        mEntity.walkRight();
+                        break;
+                    }
+                    case ' ':
+                    {
+                        mTongueState.layBlock();
+                        break;
+                    }
+                    case 'r':
+                    {
+                        mEntity.kill();
+                        break;
+                    }
                 }
             }
-        }
-        else if (_event.getType().equals("MapClickReleaseEvent"+mPlayer))
-        {
-            MapClickReleaseEvent event = (MapClickReleaseEvent)_event;
-            if (event.leftbutton())
+            else if (_event.getType().equals("AnalogueStickEvent"))
             {
-                mTongueState.leftRelease(event.getPosition());
+                AnalogueStickEvent event = (AnalogueStickEvent)_event;
+                mEntity.walk(event.getValue());
             }
-            else
+            else if (_event.getType().equals("KeyUpEvent"))
             {
-                mTongueState.rightRelease(event.getPosition());
-            }            
+                KeyUpEvent event = (KeyUpEvent)_event;
+                switch (event.getKey())
+                {
+                    case 'w':
+                    {
+                        mEntity.stopJumping();
+                        break;
+                    }
+                    case 'a':
+                    {
+                        break;
+                    }
+                    case 's':
+                    {
+                        break;
+                    }
+                    case 'd':
+                    {
+                        break;
+                    }
+                }
+            }
+            else if (_event.getType().equals("MapClickReleaseEvent"+mPlayer))
+            {
+                MapClickReleaseEvent event = (MapClickReleaseEvent)_event;
+                if (event.leftbutton())
+                {
+                    mTongueState.leftRelease(event.getPosition());
+                }
+                else
+                {
+                    mTongueState.rightRelease(event.getPosition());
+                }            
+            }
+            else if (_event.getType().equals("MapClickEventL"+mPlayer))
+            {
+                if(actionTimer < actionDelay)
+                    return true;
+                else
+                    actionTimer = 0;
+                MapClickEvent event = (MapClickEvent)_event;
+                mTongueState.leftClick(event.getPosition());
+            }
+            else if (_event.getType().equals("MapClickEventR"+mPlayer))
+            {
+                if(actionTimer < actionDelay)
+                    return true;
+                else
+                    actionTimer = 0;
+                MapClickEvent event = (MapClickEvent)_event;
+                mTongueState.rightClick(event.getPosition());
+            }
+            else throw new UnsupportedOperationException();
         }
-        else if (_event.getType().equals("MapClickEventL"+mPlayer))
-        {
-            if(actionTimer < actionDelay)
-                return true;
-            else
-                actionTimer = 0;
-            MapClickEvent event = (MapClickEvent)_event;
-            mTongueState.leftClick(event.getPosition());
-        }
-        else if (_event.getType().equals("MapClickEventR"+mPlayer))
-        {
-            if(actionTimer < actionDelay)
-                return true;
-            else
-                actionTimer = 0;
-            MapClickEvent event = (MapClickEvent)_event;
-            mTongueState.rightClick(event.getPosition());
-        }
-        else throw new UnsupportedOperationException();
         return true;
     }    
     private void look(final Vec2 _direction)

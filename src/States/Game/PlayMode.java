@@ -19,16 +19,15 @@ public class PlayMode implements iGameMode
         //sLevel.init();
         sLevel.newLevel();
     }
-    public iGameMode update(float _time)
+    public iGameMode update(Graphics _graphics, float _time)
     {
         sLevel.update();
-        sWorld.update(_time);
+        sWorld.update(_graphics, _time);
         sEvents.processEvents();
         return this;
     }
     public void render(Graphics _graphics)
     {
         sWorld.getCamera().render(_graphics);
-        
     }
 }

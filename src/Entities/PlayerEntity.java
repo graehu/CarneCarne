@@ -14,10 +14,11 @@ import Graphics.Sprites.sSpriteFactory;
 import Graphics.sGraphicsManager;
 import HUD.Reticle;
 import Level.sLevel.TileType;
+import Score.RaceScoreTracker;
+import Score.ScoreTracker;
 import States.Game.Tutorial.IntroSection;
 import World.sWorld;
 import java.util.HashMap;
-import org.jbox2d.collision.shapes.MassData;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Fixture;
 import org.jbox2d.dynamics.joints.Joint;
@@ -43,10 +44,12 @@ public class PlayerEntity extends AIEntity
     private Rectangle mViewPort;
     private int mRaceTimer;
     private int mDeaths;
+    public ScoreTracker mScoreTracker;
     //private ParticleSys mParticleSys;
     public PlayerEntity(iSkin _skin, CheckPointZone _spawnPoint)
     {
         super(_skin);
+        mScoreTracker = new RaceScoreTracker();
         mOriginalSpawnPoint = mCheckPoint = _spawnPoint;
         if (mCheckPoint != null)
             mCheckPointPosition = mCheckPoint.getPosition();
@@ -81,15 +84,28 @@ public class PlayerEntity extends AIEntity
     {
         return super.calculateArea() * 4.0f;
     }
+    private boolean mWasIReallyKilled = true;
     public void resetRace()
     {
+        if (mDeathJoint != null)
+        {
+            sWorld.destroyMouseJoint(mDeathJoint);
+            mDeathJoint = null;
+            Fixture fixture = getBody().getFixtureList();
+            while (fixture != null)
+            {
+                fixture.setSensor(false);
+                fixture = fixture.getNext();
+            }
+            mAIEntityState.unkill();
+        }
         mCheckPoint = mOriginalSpawnPoint;
         mCheckPointPosition = mCheckPoint.getPosition();
         mRaceTimer = 0;
-        int deaths = mDeaths;
+        mWasIReallyKilled = false;
         kill();
+        mWasIReallyKilled = true;
         mAIEntityState.restartingRace();
-        mDeaths = deaths;
     }
     public void getToStartingZone()
     {
@@ -125,7 +141,11 @@ public class PlayerEntity extends AIEntity
     {
         if (mDeathJoint == null)
         {
-            mDeaths++;
+            if (mWasIReallyKilled)
+            {
+                mDeaths++;
+                mScoreTracker.score(ScoreTracker.ScoreEvent.eDied);
+            }
             Fixture fixture = getBody().getFixtureList();
             while (fixture != null)
             {
@@ -169,6 +189,18 @@ public class PlayerEntity extends AIEntity
             buoyancy();
         }
     }
+    
+    @Override
+    public void stun(Vec2 _direction)
+    {
+        super.stun(_direction);
+    }
+    @Override
+    void stun()
+    {
+        super.stun();
+        ((PlayerInputController)mController).stun();
+    }
 
     @Override
     public void render()
@@ -199,7 +231,9 @@ public class PlayerEntity extends AIEntity
             }
             else if (mIntroSection != null)
                 mIntroSection.render();
+            
             mReticle.render(); //always render ontop
+            mScoreTracker.render();
         }
     }
     
@@ -263,7 +297,4 @@ public class PlayerEntity extends AIEntity
             }
         }
     }
-
-    
-    
 }
