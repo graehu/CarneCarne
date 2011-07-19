@@ -38,7 +38,7 @@ public class Main extends StateBasedGame
             app.setVSync(true);
             app.setSmoothDeltas(true);
             //app.setTargetFrameRate(60);
-            app.start();
+            app.start();            
         }
         catch(SlickException e)
         {

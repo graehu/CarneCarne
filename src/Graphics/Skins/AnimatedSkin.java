@@ -6,6 +6,7 @@ package Graphics.Skins;
 
 import org.jbox2d.common.Vec2;
 import org.newdawn.slick.Animation;
+import org.newdawn.slick.ImageBuffer;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
 

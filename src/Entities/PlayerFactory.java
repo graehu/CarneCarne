@@ -53,6 +53,7 @@ public class PlayerFactory implements iEntityFactory {
                 subSkins.add(new CharacterSkin.CharacterSubSkin(body, CharacterSubSkin.SubType.eStatic, 64, 64));
             }
             subSkins.add(new CharacterSkin.CharacterSubSkin("face", CharacterSubSkin.SubType.e32Dir, 84, 77, new Vec2(-9,0)));
+            subSkins.add(new CharacterSkin.CharacterSubSkin("faceOpen", CharacterSubSkin.SubType.e32Dir, 84, 77, new Vec2(-9,0)));
             subSkins.add(new CharacterSkin.CharacterSubSkin("hat", CharacterSubSkin.SubType.e32Dir, 130, 115, new Vec2(-33,-36)));
             //draw tongue last
             subSkins.add(new CharacterSkin.CharacterSubSkin("tng", CharacterSubSkin.SubType.eStatic, 5, 5, new Vec2(32,32)));

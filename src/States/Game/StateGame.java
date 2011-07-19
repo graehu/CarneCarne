@@ -17,13 +17,20 @@ import Graphics.Skins.sSkinFactory;
 import Graphics.Sprites.sSpriteFactory;
 import Input.sInput;
 import Level.sLevel;
+import Shader.LightingShader;
+import Shader.Shader;
 import Sound.sSound;
 import States.StateChanger;
 import World.sWorld;
+import java.nio.FloatBuffer;
 import org.jbox2d.common.Vec2;
+import org.lwjgl.BufferUtils;
+import org.lwjgl.opengl.GL11;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.BlobbyTransition;
@@ -93,7 +100,23 @@ public class StateGame extends BasicGameState implements iEventListener {
     public void render(GameContainer _gc, StateBasedGame _sbg, Graphics _grphcs)
     {
         Vec2 s = sGraphicsManager.getScreenDimensions();
-        mGameMode.render(_gc.getGraphics());        
+        mGameMode.render(_gc.getGraphics());
+        
+        //FIXME: SHADER TEST
+        shader.startShader();
+        {
+            _grphcs.setColor(Color.white);
+            _grphcs.fillRect(0, 0, s.x, s.y);
+            _grphcs.setColor(Color.white);
+        }
+        shader.endShader();
+
+        Shader.forceFixedShader();
+        
+          
+        
+        
+
     }
     @Override
     //callback for when the game enters this state
@@ -113,7 +136,7 @@ public class StateGame extends BasicGameState implements iEventListener {
         container.setMouseGrabbed(false);
         sSound.stop("level1");
     }
-    
+    LightingShader shader = null;
     public void init(GameContainer _gc, StateBasedGame _sbg) throws SlickException
     {
         //initialise sound
@@ -136,6 +159,13 @@ public class StateGame extends BasicGameState implements iEventListener {
         
         //create state changers
         mChangeToMenu = new StateChanger(4, new BlobbyTransition(), new BlobbyTransition(), _sbg);
+        
+        
+        //FIXME: SHADER TEST
+        shader = LightingShader.makeShader("shaders/test.vert", "shaders/test.frag");
+        shader.addLightSource(new Vector2f(0,0));
+        shader.addLightSource(new Vector2f(900,500));
+        //shader.addLightSource(new Vector2f(0,0));
     }
 
 }

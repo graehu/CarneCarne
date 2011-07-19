@@ -149,6 +149,7 @@ public class CharacterSkin implements iSkin
             mCurrentSkins.add(ref);
             
             iSkin skin = mSubSkins.get(ref);
+            
             skin.restart();
             skin.setIsLooping(_isLooping);
             skin.setSpeed(_speed);
