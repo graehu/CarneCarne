@@ -3,7 +3,6 @@
  */
 package Graphics.Skins;
 
-import Graphics.sGraphicsManager;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -11,9 +10,7 @@ import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
 import org.jbox2d.common.Vec2;
-import org.newdawn.slick.Animation;
 import org.newdawn.slick.Image;
-import org.newdawn.slick.Renderable;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
 
@@ -23,6 +20,8 @@ import org.newdawn.slick.SpriteSheet;
  */
 public class CharacterSkin implements iSkin
 {
+    
+
     static public class CharacterSubSkin
     {
         public CharacterSubSkin(String _ref, SubType _type, int _tileWidth, int _tileHeight)
@@ -197,6 +196,29 @@ public class CharacterSkin implements iSkin
         }
     }
 
+    public boolean isAnimating(String _subSkin) {
+        Integer ref = mSkinNames.get(_subSkin);
+        if(ref != null)
+            return mSubSkins.get(ref).isAnimating();
+        else return false;
+    }
+    
+    public void stop(String _subSkin) {
+        Integer ref = mSkinNames.get(_subSkin);
+        if(ref != null)
+            mSubSkins.get(ref).stop();
+    }
+
+    public void stopAt(String _subSkin, int _index) {
+        Integer ref = mSkinNames.get(_subSkin);
+        if(ref != null)
+            mSubSkins.get(ref).stopAt(_index);
+    }
+    
+    public boolean isAnimating() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+    
     public void setIsLooping(boolean _isLooping) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
@@ -213,5 +235,12 @@ public class CharacterSkin implements iSkin
         throw new UnsupportedOperationException("Not supported yet.");
     }
     
+    public void stop() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void stopAt(int _index) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 
 }

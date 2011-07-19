@@ -21,6 +21,6 @@ abstract public class iAIController {
     
     public void destroy()
     {
-        
+        mEntity = null;
     }
 }

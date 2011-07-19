@@ -15,7 +15,7 @@ class IntroStartSection extends IntroSection
 {
     public IntroStartSection(Vec2 _position, int _playerNumber)
     {
-        super(_position, _playerNumber);
+        super(_position, _playerNumber, null, null, 0.0f);
         sEvents.blockEvent("MapClickEventL"+mPlayerNumber);
         sEvents.blockEvent("MapClickEventR"+mPlayerNumber);
         sEvents.blockEvent("KeyDownEvent"+'w'+mPlayerNumber);

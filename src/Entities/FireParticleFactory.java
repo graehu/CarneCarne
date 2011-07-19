@@ -27,7 +27,7 @@ class FireParticleFactory implements iEntityFactory
         Vec2 velocity = (Vec2)_parameters.get("velocity");
         FireParticle entity = new FireParticle(skin, velocity);
         _parameters.put("userData", entity);
-        entity.mBody = sWorld.useFactory("FireParticleBody", _parameters);
+        entity.setBody(sWorld.useFactory("FireParticleBody", _parameters));
         return entity;
     }
 }

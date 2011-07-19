@@ -4,6 +4,7 @@
  */
 package Level;
 
+import World.sWorld;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.tiled.TiledMap;
 
@@ -31,6 +32,21 @@ public class LevelEditor {
     }
     void init()
     {
+        mFlagProcessor.run();
+        mFlagProcessor = null;
+    }
+    void newLevel(TiledMap _tiledMap, boolean _destroy)
+    {
+        if (_destroy)
+        {
+            tileGrid.destroy();
+            sWorld.destroy();
+        }
+        mTiledMap = _tiledMap;
+        layerIndex = mTiledMap.getLayerIndex("Level");
+        
+        tileGrid = new LevelTileGrid(mTiledMap, rootTiles, layerIndex);
+        mFlagProcessor = new FlagProcessor(mTiledMap, layerIndex, tileGrid.mBody, tileGrid);
         mFlagProcessor.run();
         mFlagProcessor = null;
     }
@@ -84,5 +100,6 @@ public class LevelEditor {
     {
         return tileGrid.damageTile(_x, _y);
     }
+
 
 }

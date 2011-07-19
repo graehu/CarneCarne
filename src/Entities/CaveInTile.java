@@ -26,9 +26,9 @@ public class CaveInTile extends Entity
     }
     public void render()
     {
-        Vec2 pixelPosition = sWorld.translateToWorld(mBody.getPosition());
+        Vec2 pixelPosition = sWorld.translateToWorld(getBody().getPosition());
         mSkin.render(pixelPosition.x,pixelPosition.y);
-        mSkin.setRotation(mBody.getAngle()*(180/(float)Math.PI));
+        mSkin.setRotation(getBody().getAngle()*(180/(float)Math.PI));
     }
     
 }

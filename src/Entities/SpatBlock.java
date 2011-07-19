@@ -5,7 +5,6 @@
 package Entities;
 
 import Graphics.Skins.iSkin;
-import Level.sLevel;
 import World.sWorld;
 import org.jbox2d.common.Vec2;
 
@@ -25,16 +24,18 @@ public class SpatBlock extends Entity {
     }
     public void update()
     {
-        
+        if (mWaterTiles != 0)
+            buoyancy();
     }
     public int getRootId()
     {
         return mRootId;
     }
+    @Override
     public void render()
     {
-        Vec2 pixelPosition = sWorld.translateToWorld(mBody.getPosition().add(new Vec2(0.5f-mRadius,0.5f-mRadius))); /// FIXME
+        Vec2 pixelPosition = sWorld.translateToWorld(getBody().getPosition().add(new Vec2(0.5f-mRadius,0.5f-mRadius))); /// FIXME
         mSkin.render(pixelPosition.x,pixelPosition.y);
-        mSkin.setRotation(mBody.getAngle()*(180/(float)Math.PI));
+        mSkin.setRotation(getBody().getAngle()*(180/(float)Math.PI));
     }
 }

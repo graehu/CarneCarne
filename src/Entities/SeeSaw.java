@@ -35,10 +35,10 @@ public class SeeSaw extends Entity
     {
         //Vec2 axis = sWorld.translateToWorld(new Vec2(mBody.getPosition().x,mBody.getPosition().y+));
         //sGraphicsManager.rotate(mBody.getAngle()*180.0f/(float)Math.PI);
-        Vec2 physPos = mBody.getPosition().clone();
+        Vec2 physPos = getBody().getPosition().clone();
         physPos.x -= 1.0f; //FIXME: offset to compensate 0.5f bug (assumes width = 3)
         Vec2 pos = sWorld.translateToWorld(physPos);
         mSkin.render(pos.x,pos.y); 
-        mSkin.setRotation(mBody.getAngle()*180.0f/(float)Math.PI);
+        mSkin.setRotation(getBody().getAngle()*180.0f/(float)Math.PI);
     }
 }

@@ -114,5 +114,29 @@ public class TiledSkin implements iSkin
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    public boolean isAnimating() {
+        return false;
+    }
+
+    public boolean isAnimating(String _subSkin) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void stop() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void stopAt(int _index) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void stop(String _subSkin) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void stopAt(String _subSkin, int _index) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
     
 }

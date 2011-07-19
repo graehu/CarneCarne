@@ -14,25 +14,23 @@ import Level.sLevel.PathInfo;
  */
 public class PeaController extends iAIController
 {
-    iPathFinding mPathFinding;
     boolean mToggle;
     public PeaController(AIEntity _entity)
     {
         super(_entity);
-        mPathFinding = new AStar(_entity, new ShortestDistance());
         mToggle = true;
         mEntity.setMoveSpeed(0.9f);
     }
     public void update()
     {
-        int x = (int)(mEntity.mBody.getPosition().x);
-        int y = (int)(mEntity.mBody.getPosition().y);
+        int x = (int)(mEntity.getBody().getPosition().x);
+        int y = (int)(mEntity.getBody().getPosition().y);
         
         if(mToggle)
         {
             //mPathFinding.updatePath(x, y, x+2, y);
             mEntity.walkLeft();
-            if(sLevel.getPathInfo((int)(mEntity.mBody.getPosition().x), (int)(mEntity.mBody.getPosition().y)) == PathInfo.eNotPassable)
+            if(sLevel.getPathInfo((int)(mEntity.getBody().getPosition().x), (int)(mEntity.getBody().getPosition().y)) == PathInfo.eNotPassable)
             {
                 mToggle = false;
             }
@@ -40,7 +38,7 @@ public class PeaController extends iAIController
         else if(!mToggle)
         {
             mEntity.walkRight();
-            if(sLevel.getPathInfo((int)(mEntity.mBody.getPosition().x+1), (int)(mEntity.mBody.getPosition().y)) == PathInfo.eNotPassable)
+            if(sLevel.getPathInfo((int)(mEntity.getBody().getPosition().x+1), (int)(mEntity.getBody().getPosition().y)) == PathInfo.eNotPassable)
             {
                 mToggle = true;
             }

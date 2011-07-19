@@ -51,7 +51,7 @@ class SpatBlockFactory implements iEntityFactory{
         _parameters.put("entity", entity);
         Body body = sWorld.useFactory("SpatBlockFactory", _parameters);
         
-        entity.mBody = body;
+        entity.setBody(body);
         
         return entity;
     }

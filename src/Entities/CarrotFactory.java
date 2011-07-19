@@ -47,7 +47,7 @@ class CarrotFactory implements iEntityFactory {
         parameters.put("position", position);
         parameters.put("aIEntity", entity);
         parameters.put("category", sWorld.BodyCategories.eEnemy);
-        entity.mBody = sWorld.useFactory("BoxCharFactory",parameters);
+        entity.setBody(sWorld.useFactory("BoxCharFactory",parameters));
         
         CarrotController controller = new CarrotController(entity);
         entity.mController = controller;

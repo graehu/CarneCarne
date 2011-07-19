@@ -19,11 +19,10 @@ import org.jbox2d.common.Vec2;
  */
 class IntroSpitSection extends IntroSection implements iEventListener
 {
-    iSkin mSkin;
     IntroSection mReturn;
     public IntroSpitSection(Vec2 _position, int _playerNumber)
     {
-        super(_position, _playerNumber);
+        super(_position, _playerNumber, "XBoxTop", "XBoxTopSpit", 1.85f);
         sEvents.blockEvent("MapClickEventL"+mPlayerNumber);
         sEvents.unblockEvent("MapClickEventR"+mPlayerNumber);
         HashMap params = new HashMap();

@@ -60,6 +60,25 @@ public class sWorld
     private static iCamera mCamera;
     private static HashMap<String,iPhysicsFactory> factories;
     private static ResizeListener mResizeListener;
+
+    public static void destroy()
+    {
+        try
+        {
+            while (true)
+            {
+                mWorld.destroyBody(mWorld.getBodyList());
+            }
+        }
+        catch (NullPointerException e)
+        {
+            
+        }
+        mWorld = new World(new Vec2(0,9.8f),true);   
+        mWorld.setContactListener(new WorldContactListener());
+        Vec2 s = sGraphicsManager.getTrueScreenDimensions();
+        mCamera = new FreeCamera(new Rectangle(0,0,s.x, s.y));
+    }
     static class ResizeListener implements iEventListener
     {
         ResizeListener()

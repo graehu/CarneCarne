@@ -26,7 +26,7 @@ class CaveInFactory implements iEntityFactory
         int height = (Integer)_parameters.get("height");
         CaveIn entity = new CaveIn(skin, width, height);
         _parameters.put("entity", entity);
-        entity.mBody = (Body)_parameters.get("body");
+        entity.setBody((Body)_parameters.get("body"));
         return entity;
     }
     

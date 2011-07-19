@@ -74,6 +74,10 @@ public class XBoxController
         {
             sEvents.triggerEvent(new KeyDownEvent('Q', 0)); //menu
         }
+        if(_input.isButtonPressed(6, mPlayer)) //back
+        {
+            sEvents.triggerEvent(new KeyDownEvent('r', mPlayer)); //menu
+        }
         if(_input.isButtonPressed(4, mPlayer)) 
         {
             sEvents.triggerEvent(new MapClickReleaseEvent(rightStick,false, mPlayer));

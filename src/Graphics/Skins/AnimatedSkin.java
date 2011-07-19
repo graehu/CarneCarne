@@ -78,6 +78,10 @@ public class AnimatedSkin implements iSkin{
             mAnim.getImage(i).setAlpha(_alpha);
         }
     }
+    
+    public boolean isAnimating() {
+        return !mAnim.isStopped();
+    }
 
     public void deactivateSubSkin(String _animation) {
         throw new UnsupportedOperationException("Not supported yet.");
@@ -94,6 +98,14 @@ public class AnimatedSkin implements iSkin{
     public float getDuration() {
         return ((float)(mAnim.getDuration(0)*mAnim.getFrameCount()))/1000.0f;
     }
+    
+    public void stop() {
+        mAnim.stop();
+    }
+
+    public void stopAt(int _index) {
+        mAnim.stopAt(_index);
+    }
 
     public float activateSubSkin(String _animation, boolean _isLooping, float _speed) {
         throw new UnsupportedOperationException("Not supported yet.");
@@ -108,6 +120,18 @@ public class AnimatedSkin implements iSkin{
     }
 
     public Vec2 getOffset(String _animation) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public boolean isAnimating(String _subSkin) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+    
+    public void stop(String _subSkin) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void stopAt(String _subSkin, int _index) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 

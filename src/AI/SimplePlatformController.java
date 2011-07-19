@@ -18,7 +18,7 @@ public class SimplePlatformController extends iPlatformController
     @Override
     public void update() 
     {
-        Vec2 pos = mEntity.mBody.getPosition();
+        Vec2 pos = mEntity.getBody().getPosition();
         Vec2 dimes = new Vec2(mEntity.getWidth()-1, mEntity.getHeight()-1);
         if(mToggle == false)
         {
@@ -47,11 +47,11 @@ public class SimplePlatformController extends iPlatformController
         
         if(mToggle)
         {
-            mEntity.mBody.setLinearVelocity(new Vec2(1, 0)); /// changed from mPlatform.getMoveSpeed()
+            mEntity.getBody().setLinearVelocity(new Vec2(1, 0)); /// changed from mPlatform.getMoveSpeed()
         }
         else
         {
-            mEntity.mBody.setLinearVelocity(new Vec2(-1, 0));
+            mEntity.getBody().setLinearVelocity(new Vec2(-1, 0));
         }
     }
     

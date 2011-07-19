@@ -6,6 +6,7 @@ package States.Game.Tutorial;
 
 import Entities.PlayerEntity;
 import Entities.sEntityFactory;
+import Events.AreaEvents.TutorialZone;
 import Events.GenericEvent;
 import Events.TutorialSpawnEvent;
 import Events.iEvent;
@@ -40,8 +41,8 @@ public class IntroMode implements iGameMode, iEventListener
         mSections = new ArrayList<IntroSection>();
         sEvents.subscribeToEvent("TutorialSpawnEvent", this);
         sEvents.subscribeToEvent("PlayerEndedTutorialEvent", this);
+        sLevel.init();
     }
-    boolean inited = false;
     public iGameMode update(float _time)
     {
         boolean sectionsLeft = false;
@@ -59,9 +60,8 @@ public class IntroMode implements iGameMode, iEventListener
         {
             Vec2 s = sGraphicsManager.getTrueScreenDimensions();
             sWorld.switchCamera(new FreeCamera(new Rectangle(0,0,s.x, 0 + s.y)));
-            iGameMode raceMode = new RaceMode();
             cleanup();
-            sLevel.loadLevel();
+            iGameMode raceMode = new RaceMode(false);
             sEvents.unsubscribeToEvent("TutorialSpawnEvent", this);
             return raceMode;
         }
@@ -73,13 +73,10 @@ public class IntroMode implements iGameMode, iEventListener
     private void cleanup()
     {
         //sWorld.destroyBody(mGroundBody);
-        if (inited)
+        for (PlayerEntity player: mPlayers)
         {
-            for (PlayerEntity player: mPlayers)
-            {
-                player.destroy();
-                sWorld.destroyBody(player.mBody);
-            }
+            player.destroy();
+            sWorld.destroyBody(player.getBody());
         }
     }
     public void render(Graphics _graphics)

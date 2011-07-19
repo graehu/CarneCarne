@@ -23,7 +23,7 @@ public class SeeSawFactory implements iEntityFactory
         SeeSaw entity = new SeeSaw(skin);
         _parameters.put("userData", entity);
         Body body = sWorld.useFactory("SeeSawBodyFactory", _parameters);
-        entity.mBody = body;
+        entity.setBody(body);
         return entity;
     }
     

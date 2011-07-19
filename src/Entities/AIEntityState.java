@@ -46,6 +46,11 @@ class AIEntityState
         mTarCount = mIceCount = mWaterHeight = mContactCount = mTimer = 0;
     }
     
+    void destroy()
+    {
+        mEntity = null;
+    }
+    
     State getState()
     {
         return mState;
@@ -88,6 +93,10 @@ class AIEntityState
         {
             //changeState(State.eJumping);
         }
+        else if (mState.equals(State.eSwimming))
+        {
+            
+        }
         else
         {
             changeState(State.eJumping);
@@ -117,6 +126,10 @@ class AIEntityState
         {
             return _currentVelocity-5.3f;
         }
+        if (mState.equals(State.eSwimming))
+        {
+            return _currentVelocity-0.2f;
+        }
         return -7.2f;
         
     }
@@ -136,6 +149,18 @@ class AIEntityState
                 {
                     changeState(State.eStanding);
                     update();
+                }
+                else if (mWaterHeight != 0)
+                {
+                    changeState(State.eSwimming);
+                }
+                else if (mTarCount != 0)
+                {
+                    changeState(State.eStandingOnTar);
+                }
+                else if (mIceCount != 0)
+                {
+                    changeState(State.eIce);
                 }
                 /*if (mTimer == jumpBoostTimer)
                 {

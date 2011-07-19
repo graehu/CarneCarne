@@ -5,8 +5,6 @@
 package World;
 
 import Entities.Entity;
-import Events.EntityDeathEvent;
-import Events.sEvents;
 import Level.Tile;
 import World.sWorld.BodyCategories;
 import org.jbox2d.callbacks.ContactImpulse;

@@ -44,16 +44,16 @@ public class CarrotController extends iAIController
     protected void updateTarget()
     {
         mTarget = sPathFinding.getPlayer();
-        mTargetX = (int)(mTarget.mBody.getPosition().x);
-        mTargetY = (int)(mTarget.mBody.getPosition().y);
+        mTargetX = (int)(mTarget.getBody().getPosition().x);
+        mTargetY = (int)(mTarget.getBody().getPosition().y);
     }
     public void update()
     {
         int tx = mTargetX;
         int ty = mTargetY;
         updateTarget();
-        int x = (int)(mEntity.mBody.getPosition().x);
-        int y = (int)(mEntity.mBody.getPosition().y);
+        int x = (int)(mEntity.getBody().getPosition().x);
+        int y = (int)(mEntity.getBody().getPosition().y);
         
         if(mTargetY != ty || mTargetX != tx)
         {
@@ -65,7 +65,7 @@ public class CarrotController extends iAIController
         //((Carrot)mEntity).Hover();
         
         Vec2 target = mPathFinding.follow();
-        Vec2 pos = mEntity.mBody.getPosition();
+        Vec2 pos = mEntity.getBody().getPosition();
         
         /*if((target.x > pos.x) && (target.y+0.2 > pos.y && target.y-0.2 < pos.y)){mCommand = Command.eMoveRight;}
         else if((target.x < pos.x) && (target.y+0.2 > pos.y && target.y-0.2 < pos.y)){mCommand = Command.eMoveLeft;}
@@ -100,8 +100,8 @@ public class CarrotController extends iAIController
         {
             mEntity.setAnimation("car_att");
             //mEntity.mSkin.stopAnim();
-            mEntity.mBody.applyLinearImpulse(new Vec2(0,1), mEntity.mBody.getWorldCenter());
-            mEntity.mBody.m_fixtureList.setSensor(true);
+            mEntity.getBody().applyLinearImpulse(new Vec2(0,1), mEntity.getBody().getWorldCenter());
+            mEntity.getBody().m_fixtureList.setSensor(true);
             //((Carrot)mEntity).fly(target, 0.5f);
             if(sLevel.getPathInfo((int)pos.x, (int)(pos.y+1.1f)) == sLevel.PathInfo.eNotPassable)
             {
@@ -112,7 +112,7 @@ public class CarrotController extends iAIController
         else if(mState == CarrotState.eStuck)
         {
             mEntity.setAnimation("car_stu");
-            mEntity.mBody.m_fixtureList.setSensor(false);
+            mEntity.getBody().m_fixtureList.setSensor(false);
         }
         
         

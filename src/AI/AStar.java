@@ -52,7 +52,7 @@ public class AStar implements iPathFinding
         if(!mPath.isEmpty())
         {
             Vec2 target = mPath.peekFirst();
-            Vec2 pos  = mEntity.mBody.getPosition();
+            Vec2 pos  = mEntity.getBody().getPosition();
 
             if((target.x+0.25 > pos.x && target.x-0.25 < pos.x) && (target.y+0.25 > pos.y && target.y-0.25 < pos.y))
             {
@@ -80,7 +80,7 @@ public class AStar implements iPathFinding
         
         if(mLastPoint == null)
         {
-            mLastPoint = mEntity.mBody.getPosition();
+            mLastPoint = mEntity.getBody().getPosition();
         }
         return mLastPoint;
     }

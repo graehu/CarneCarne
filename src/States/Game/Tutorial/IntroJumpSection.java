@@ -7,7 +7,6 @@ package States.Game.Tutorial;
 import Events.iEvent;
 import Events.iEventListener;
 import Events.sEvents;
-import Graphics.Skins.iSkin;
 import Graphics.Skins.sSkinFactory;
 import java.util.HashMap;
 import org.jbox2d.common.Vec2;
@@ -19,10 +18,9 @@ import org.jbox2d.common.Vec2;
 class IntroJumpSection extends IntroSection implements iEventListener
 {
     IntroSection mReturn;
-    iSkin mSkin;
     public IntroJumpSection(Vec2 _position, int _playerNumber)
     {
-        super(_position, _playerNumber);
+        super(_position, _playerNumber, "XBoxFront", "XBoxFrontJump", 1.45f);
         sEvents.unblockEvent("KeyDownEvent"+'w'+mPlayerNumber);
         sEvents.subscribeToEvent("KeyDownEvent"+'w'+mPlayerNumber, this);
         mReturn = this;

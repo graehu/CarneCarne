@@ -96,7 +96,7 @@ public class TongueStateMachine {
         setTongue(mTongueDir, currentLength);
         
         Vec2 tongueOffset = mTongueDir.mul(currentLength);
-        mTonguePosition = mAIController.mEntity.mBody.getPosition().add(tongueOffset);
+        mTonguePosition = mAIController.mEntity.getBody().getPosition().add(tongueOffset);
         
         //update end of tongue sprite's position
         mTongueEndSprite.setPosition(mTonguePosition.add(new Vec2(0.25f,0.25f)).mul(64));
@@ -109,7 +109,7 @@ public class TongueStateMachine {
     private boolean hammerCollide()
     {                
         Vec2 tongueOffset = mTongueDir.mul(((float)mCurrentStateTimer/(float)tongueFiringTimeout)*tongueLength);
-        return mAIController.hammer(mAIController.mEntity.mBody.getPosition().add(tongueOffset));
+        return mAIController.hammer(mAIController.mEntity.getBody().getPosition().add(tongueOffset));
     }
     private boolean hasFood()
     {
@@ -309,7 +309,7 @@ public class TongueStateMachine {
                 if (tongueAttachment.hasContact())
                 {
                     //mTongueDir = (mJoint.m_bodyB.getPosition().add(mJoint.m_localAnchor2)).sub((mJoint.m_bodyA.getPosition().add(mJoint.m_localAnchor1)));
-                    mTongueDir = mJoint.m_bodyB.getWorldPoint(mJoint.m_localAnchor2).sub(mAIController.mEntity.mBody.getPosition());
+                    mTongueDir = mJoint.m_bodyB.getWorldPoint(mJoint.m_localAnchor2).sub(mAIController.mEntity.getBody().getPosition());
                     float actualLength = mTongueDir.normalize();
                     setTongue(mTongueDir, actualLength); //lock tongue to block
                     if(actualLength < mLastLength)
@@ -706,7 +706,7 @@ public class TongueStateMachine {
                 mIsTongueActive = true;
                 tongueAttachment = sWorld.getLastTongueHit(mAIController.mPlayer);
                 mTargetDistance = 2;//mTonguePosition.sub(mAIController.mEntity.mBody.getPosition()).length();
-                mJoint = sWorld.createTongueJoint(mAIController.mEntity.mBody);
+                mJoint = sWorld.createTongueJoint(mAIController.mEntity.getBody());
             }
         }
         mState = _state;

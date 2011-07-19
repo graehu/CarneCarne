@@ -55,26 +55,38 @@ public class AIEntity extends Entity {
         mAnimSpeed = 1;
         mTouchingTile = null;
     }
+    @Override
+    public void kill()
+    {
+        if (getBody() != null)
+        {
+            sWorld.destroyBody(getBody());
+            setBody(null);
+            mController.destroy();
+            mController = null;
+            mAIEntityState.destroy();
+            mAIEntityState = null;
+        }
+    }
     public void update()
     {
         mContactParticleTimer++;
         
         //dampen
-        mBody.setAngularDamping(8);
+        getBody().setAngularDamping(8);
         
         //count contacts
         int numContacts = 0;
-        ContactEdge edgeCounter = mBody.m_contactList;
+        ContactEdge edgeCounter = getBody().m_contactList;
         while(edgeCounter != null)
         {
             numContacts++;
             edgeCounter = edgeCounter.next;
         }
         
-        ContactEdge edge = mBody.m_contactList;
+        ContactEdge edge = getBody().m_contactList;
         int mTar = 0;
         int mIce = 0;
-        int mWater = 0;
         int mJumpContacts = 0;
         mAllowRoll = false;
         mTouchingTile = null;
@@ -83,7 +95,7 @@ public class AIEntity extends Entity {
         {
             Fixture other = edge.contact.m_fixtureA;
             boolean AtoB = true;
-            if (other.m_body == mBody)
+            if (other.m_body == getBody())
             {
                 AtoB = false;
                 other = edge.contact.m_fixtureB;
@@ -111,12 +123,6 @@ public class AIEntity extends Entity {
                                 mTar++;
                             }
                             break;
-                        case eWater:
-                        {
-                            mWater = ((Tile)other.getUserData()).getWaterHeight();
-                            mJumpContacts++;
-                            break;
-                        }
                         default:
                             break;
                     }
@@ -166,8 +172,8 @@ public class AIEntity extends Entity {
             }
             edge = edge.next;
         }
-        mAIEntityState.update(mTar, mIce, mWater, mJumpContacts);
-        mBody.applyLinearImpulse(new Vec2(0,0.2f*mBody.getMass()), mBody.getWorldCenter());
+        mAIEntityState.update(mTar, mIce, mWaterHeight, mJumpContacts);
+        getBody().applyLinearImpulse(new Vec2(0,0.2f*getBody().getMass()), getBody().getWorldCenter());
         if (mJumpTimer != 0)
         {
             mJumpTimer--;
@@ -178,16 +184,16 @@ public class AIEntity extends Entity {
     }
     protected void createContactParticle(Vec2 _dir)
     {
-        if(mBody.getLinearVelocity().lengthSquared() > 20)
+        if(getBody().getLinearVelocity().lengthSquared() > 20)
         {
             if(mContactParticleTimer > 10) //assumes 60fps
             {
                 mContactParticleTimer = 0;
                 ParticleSysBase sys = null;
                 if (mTouchingTile == null)
-                    sys = sParticleManager.createSystem("cloud", sWorld.translateToWorld(mBody.getPosition()).sub(sWorld.getPixelTranslation()).add(new Vec2(32,32)).add(_dir.mul(-32)), 1f);
+                    sys = sParticleManager.createSystem("cloud", sWorld.translateToWorld(getBody().getPosition()).sub(sWorld.getPixelTranslation()).add(new Vec2(32,32)).add(_dir.mul(-32)), 1f);
                 else
-                    sys = sParticleManager.createSystem(mTouchingTile.getAnimationsName(AnimationType.eJump) + "Jump", sWorld.translateToWorld(mBody.getPosition()).sub(sWorld.getPixelTranslation()).add(new Vec2(32,32)).add(_dir.mul(-32)), 1f);
+                    sys = sParticleManager.createSystem(mTouchingTile.getAnimationsName(AnimationType.eJump) + "Jump", sWorld.translateToWorld(getBody().getPosition()).sub(sWorld.getPixelTranslation()).add(new Vec2(32,32)).add(_dir.mul(-32)), 1f);
                 float angle = (float) Math.acos(Vec2.dot(_dir, new Vec2(0,1)));
                 if(_dir.x >= 0)
                     sys.setAngularOffset(angle);
@@ -203,20 +209,9 @@ public class AIEntity extends Entity {
             buoyancy();
         }
     }
-    protected void buoyancy()
-    {
-        float waterHeight = mAIEntityState.getWaterHeight();
-        waterHeight = mBody.getPosition().y + 1 - waterHeight;
-        mBody.applyLinearImpulse(new Vec2(0, -waterHeight*1.2f), mBody.getWorldCenter());
-        if (waterHeight > 1.0f)
-        {
-            waterHeight = 1.0f;
-        }
-        mBody.applyLinearImpulse(mBody.getLinearVelocity().mul(-0.3f*waterHeight), mBody.getWorldCenter());
-    }
     protected void airControl(float _value)
     {
-        mBody.applyLinearImpulse(new Vec2(0.8f*_value,0), mBody.getWorldCenter());
+        getBody().applyLinearImpulse(new Vec2(0.8f*_value,0), getBody().getWorldCenter());
     }
     public void walk(float value)
     {
@@ -238,29 +233,29 @@ public class AIEntity extends Entity {
                 if(mAllowRoll)
                 {
                     mBody.m_fixtureList.m_friction = 20;
-                    mBody.applyAngularImpulse(0.7f*value);
+                    getBody().applyAngularImpulse(0.7f*value);
                 }
                 else
                 {
-                    mBody.applyLinearImpulse(new Vec2(1.1f*value,0),mBody.getWorldCenter());
+                    getBody().applyLinearImpulse(new Vec2(1.1f*value,0),getBody().getWorldCenter());
                 }
                 break;
             }
             case eStandingOnTar:
             case eStillCoveredInTar:
             {
-                mBody.applyLinearImpulse(new Vec2(0.5f*value,0),mBody.getWorldCenter());
+                getBody().applyLinearImpulse(new Vec2(0.5f*value,0),getBody().getWorldCenter());
                 break;
             }
             case eIce:
             {
-                mBody.applyAngularImpulse(0.5f*value);
+                getBody().applyAngularImpulse(0.5f*value);
                 break;
             }
             case eSwimming:
             {
-                mBody.applyLinearImpulse(new Vec2(0.5f*value,0),mBody.getWorldCenter());
-                mBody.applyAngularImpulse(0.5f*value);
+                getBody().applyLinearImpulse(new Vec2(0.5f*value,0),getBody().getWorldCenter());
+                getBody().applyAngularImpulse(0.5f*value);
                 break;
             }
             case eDead:
@@ -279,16 +274,24 @@ public class AIEntity extends Entity {
     }
     public void jump()
     {
-        float canJump = mAIEntityState.canJump(mBody.getLinearVelocity().y);
+        float canJump = mAIEntityState.canJump(getBody().getLinearVelocity().y);
         if (canJump != 0.0f)
         {
-            mBody.setLinearVelocity(new Vec2(mBody.getLinearVelocity().x, canJump));
+            getBody().setLinearVelocity(new Vec2(getBody().getLinearVelocity().x, canJump));
             mJumpTimer = mJumpReload;
             mAIEntityState.jump();
-            if (mTouchingTile == null)
-                sParticleManager.createSystem("cloud", sWorld.translateToWorld(mBody.getPosition()).sub(sWorld.getPixelTranslation()).add(new Vec2(32,64)), 1f);
-            else
-                sParticleManager.createSystem(mTouchingTile.getAnimationsName(AnimationType.eJump) + "Jump", sWorld.translateToWorld(mBody.getPosition()).sub(sWorld.getPixelTranslation()).add(new Vec2(32,64)), 1f);
+            if (!mAIEntityState.getState().equals(State.eSwimming))
+                try
+                {
+                    if (mTouchingTile == null)
+                        sParticleManager.createSystem("cloud", sWorld.translateToWorld(getBody().getPosition()).sub(sWorld.getPixelTranslation()).add(new Vec2(32,64)), 1f);
+                    else
+                        sParticleManager.createSystem(mTouchingTile.getAnimationsName(AnimationType.eJump) + "Jump", sWorld.translateToWorld(getBody().getPosition()).sub(sWorld.getPixelTranslation()).add(new Vec2(32,64)), 1f);
+                }
+                catch (NullPointerException e)
+                {
+                    System.err.println("Null pointer rendering jump particle");
+                }
         }
     }
     public void stopJumping()
@@ -303,7 +306,16 @@ public class AIEntity extends Entity {
     
     public boolean isAirBorn()
     {
-        return mAIEntityState.getState().equals(AIEntityState.State.eFalling);
+        switch(mAIEntityState.getState())
+        {
+            case eFalling:
+            case eFallingDoubleJumped:
+            case eJumpTransition:
+            case eJumping:
+                return true;
+        }
+        return false;
+        //return mAIEntityState.getState().equals(AIEntityState.State.eFalling);
     }
     
     public boolean isDead()
@@ -317,7 +329,13 @@ public class AIEntity extends Entity {
         {
             mSkin.deactivateSubSkin(mCurrentAnimation);
             mCurrentAnimation = _animation;
-            return mSkin.activateSubSkin(_animation, true, mAnimSpeed);
+            return mSkin.activateSubSkin(_animation, false, mAnimSpeed);
+        }
+        else if(!mSkin.isAnimating(_animation))
+        {
+            mSkin.deactivateSubSkin(mCurrentAnimation);
+            mCurrentAnimation = _animation;
+            return mSkin.activateSubSkin(_animation, false, mAnimSpeed);
         }
         return 0;
     }
@@ -328,7 +346,7 @@ public class AIEntity extends Entity {
     @Override
     public void render()
     {
-        Vec2 pixelPosition = sWorld.translateToWorld(mBody.getPosition());
+        Vec2 pixelPosition = sWorld.translateToWorld(getBody().getPosition());
         mSkin.render(pixelPosition.x,pixelPosition.y);
     }
 }
