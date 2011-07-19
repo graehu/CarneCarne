@@ -124,10 +124,16 @@ abstract public class Entity {
 
     public void kill()
     {
+        mBody.getWorld().destroyBody(mBody);
+        mBody = null;
     }
     protected float calculateArea()
     {
         float area = 0.0f;
+        if (mBody == null)
+        {
+            return 0.0f;
+        }
         for (Fixture fixture = getBody().getFixtureList(); fixture != null; fixture = fixture.getNext())
         {
             MassData massData = new MassData();

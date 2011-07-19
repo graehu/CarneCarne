@@ -5,6 +5,7 @@
 package Events;
 
 import Entities.PlayerEntity;
+import Score.ScoreTracker.ScoreEvent;
 
 /**
  *
@@ -18,6 +19,7 @@ public class RaceWonEvent extends iEvent
     {
         mEntity = _entity;
         mTime = mEntity.getRaceTimer();
+        mEntity.mScoreTracker.score(ScoreEvent.eWonRace);
     }
     @Override
     public String getName()

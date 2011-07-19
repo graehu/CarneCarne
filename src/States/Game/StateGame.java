@@ -4,7 +4,6 @@
  */
 package States.Game;
 
-import States.Game.Tutorial.IntroMode;
 import Entities.sEntityFactory;
 import Events.KeyDownEvent;
 import Events.PlayerCreatedEvent;
@@ -16,17 +15,13 @@ import Graphics.sGraphicsManager;
 import Graphics.Skins.sSkinFactory;
 import Graphics.Sprites.sSpriteFactory;
 import Input.sInput;
-import Level.sLevel;
 import Shader.LightingShader;
 import Shader.Shader;
 import Sound.sSound;
 import States.Game.RaceMode.RaceMode;
 import States.StateChanger;
 import World.sWorld;
-import java.nio.FloatBuffer;
 import org.jbox2d.common.Vec2;
-import org.lwjgl.BufferUtils;
-import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -104,7 +99,7 @@ public class StateGame extends BasicGameState implements iEventListener {
         mGameMode.render(_gc.getGraphics());
         
         //FIXME: SHADER TEST
-        shader.startShader();
+        /*shader.startShader();
         {
             _grphcs.setColor(Color.white);
             _grphcs.fillRect(0, 0, s.x, s.y);
@@ -112,7 +107,7 @@ public class StateGame extends BasicGameState implements iEventListener {
         }
         shader.endShader();
 
-        Shader.forceFixedShader();
+        Shader.forceFixedShader();*/
         
           
         

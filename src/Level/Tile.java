@@ -50,6 +50,10 @@ public class Tile
     {
         return mRootId.getAnimationsName(_animationType);
     }
+    public Fixture getFixture()
+    {
+        return mFixture;
+    }
     public void setOnFire()
     {
         /*try

@@ -4,7 +4,6 @@
  */
 package World.PhysicsFactories;
 
-import World.PhysicsFactories.iPhysicsFactory;
 import Entities.SeeSaw;
 import World.sWorld;
 import java.util.HashMap;

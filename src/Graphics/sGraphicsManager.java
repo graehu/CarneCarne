@@ -82,8 +82,14 @@ public class sGraphicsManager {
     {
         mAllowTransform = false;
         mGameContainer.getGraphics().popTransform();
-        mGameContainer.getGraphics().setClip(0,0,(int)mNativeScreenDimentions.x,(int)mNativeScreenDimentions.y);
+        
         //mGameContainer.getGraphics().clearClip();                
+    }
+    public static void removeClip()
+    {
+        Rectangle rect = new Rectangle(0,0,(int)mNativeScreenDimentions.x,(int)mNativeScreenDimentions.y);
+        mGameContainer.getGraphics().setClip(rect);
+        mClip = rect;
     }
     public static void setClip(Rectangle _rect)
     {

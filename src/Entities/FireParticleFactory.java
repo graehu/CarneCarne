@@ -25,7 +25,8 @@ class FireParticleFactory implements iEntityFactory
         _parameters.put("ref", "ChilliSpit");
         iSkin skin = sSkinFactory.create("static", _parameters);
         Vec2 velocity = (Vec2)_parameters.get("velocity");
-        FireParticle entity = new FireParticle(skin, velocity);
+        PlayerEntity owner = (PlayerEntity)_parameters.get("owner");
+        FireParticle entity = new FireParticle(skin, velocity, owner);
         _parameters.put("userData", entity);
         entity.setBody(sWorld.useFactory("FireParticleBody", _parameters));
         return entity;
