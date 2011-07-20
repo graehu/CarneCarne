@@ -11,9 +11,9 @@ import Graphics.Skins.iSkin;
 import Graphics.Skins.sSkinFactory;
 import World.sWorld;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import org.jbox2d.common.Vec2;
+import org.jbox2d.dynamics.Fixture;
 
 /**
  *
@@ -31,27 +31,43 @@ public class BroccoliFactory implements iEntityFactory {
         
         ArrayList<CharacterSubSkin> subSkins = new ArrayList<CharacterSubSkin>();
         subSkins.add(new CharacterSkin.CharacterSubSkin("broc_1_idle", CharacterSubSkin.SubType.eAnimated, 110, 110, new Vec2(0,0)));
-        subSkins.add(new CharacterSkin.CharacterSubSkin("broc_1_jump", CharacterSubSkin.SubType.eAnimated, 110, 110, new Vec2(0,0)));
+        subSkins.add(new CharacterSkin.CharacterSubSkin("broc_1_idleout", CharacterSubSkin.SubType.eAnimated, 110, 110, new Vec2(0,0)));
+        subSkins.add(new CharacterSkin.CharacterSubSkin("broc_1_idlein", CharacterSubSkin.SubType.eAnimated, 110, 110, new Vec2(0,0)));
+        
         subSkins.add(new CharacterSkin.CharacterSubSkin("broc_2_jump", CharacterSubSkin.SubType.eAnimated, 110, 110, new Vec2(0,0)));
         subSkins.add(new CharacterSkin.CharacterSubSkin("broc_2_air", CharacterSubSkin.SubType.eAnimated, 110, 110, new Vec2(0,0)));
         subSkins.add(new CharacterSkin.CharacterSubSkin("broc_2_land", CharacterSubSkin.SubType.eAnimated, 110, 110, new Vec2(0,0)));
-        subSkins.add(new CharacterSkin.CharacterSubSkin("broc_3", CharacterSubSkin.SubType.eAnimated, 110, 110, new Vec2(0,0)));
+        
+        subSkins.add(new CharacterSkin.CharacterSubSkin("broc_3_start", CharacterSubSkin.SubType.eAnimated, 110, 110, new Vec2(0,0)));
+        subSkins.add(new CharacterSkin.CharacterSubSkin("broc_3_mid", CharacterSubSkin.SubType.eAnimated, 110, 110, new Vec2(0,0)));
+        subSkins.add(new CharacterSkin.CharacterSubSkin("broc_3_end", CharacterSubSkin.SubType.eAnimated, 110, 110, new Vec2(0,0)));
+
         
         animDef.put("subSkins", subSkins);
         iSkin skin = sSkinFactory.create("character", animDef);
-        skin.activateSubSkin("broc_1_idle", true, 0.5f);
+        
         skin.setOffset("broc_1_idle", new Vec2(-46/2,-46));
-        skin.setOffset("broc_1_jump", new Vec2(-46/2,-46));
+        skin.setOffset("broc_1_idleout", new Vec2(-46/2,-46));
+        skin.setOffset("broc_1_idlein", new Vec2(-46/2,-46));
         skin.setOffset("broc_2_jump", new Vec2(-46/2,-46));
         skin.setOffset("broc_2_air", new Vec2(-46/2,-46));
         skin.setOffset("broc_2_land", new Vec2(-46/2,-46));
-        skin.setOffset("broc_3", new Vec2(-46/2,-46));
+        skin.setOffset("broc_3_start", new Vec2(-46/2,-46));
+        skin.setOffset("broc_3_mid", new Vec2(-46/2,-46));
+        skin.setOffset("broc_3_end", new Vec2(-46/2,-46));
+        
         AIEntity entity = new Broccoli(skin);
         HashMap parameters = new HashMap();
         parameters.put("position", position);
         parameters.put("aIEntity", entity);
         parameters.put("category", sWorld.BodyCategories.eEnemy);
         entity.mBody = sWorld.useFactory("CircleCharFactory",parameters);
+        //entity.mBody.
+        Fixture silly = entity.mBody.getFixtureList();
+        entity.mBody.setFixedRotation(true);
+        silly.setFriction(20);
+        //silly.
+        //silly.
         
         BroccoliController controller = new BroccoliController(entity);
         entity.mController = controller;

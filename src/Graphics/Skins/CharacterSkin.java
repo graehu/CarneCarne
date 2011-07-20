@@ -157,8 +157,14 @@ public class CharacterSkin implements iSkin
         else return 0;
     }
 
-    public final void deactivateSubSkin(String _animation) {
-        mCurrentSkins.remove(mSkinNames.get(_animation));
+    public final void deactivateSubSkin(String _animation) 
+    {
+        Integer ref = mSkinNames.get(_animation);
+        if(ref != null)//return if already activated
+        {
+            mSubSkins.get(ref).stop();
+            mCurrentSkins.remove(ref);
+        }
     }
     
     public void restart() {
