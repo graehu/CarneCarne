@@ -20,12 +20,14 @@ public class BroccoliController extends iAIController
      private Entity mTarget;
      private int mTargetX, mTargetY;
      private Command mCommand;
-     private float mRange;
+     private float mFollowRadius;
+     private float mAttackRadius;
     public BroccoliController(AIEntity _entity)
     {
         super(_entity);
         mPathFinding = new AStar(mEntity, new ShortestDistance());
-        mRange = 5;
+        mFollowRadius = 7.5f;
+        mAttackRadius = 2.5f;
     }
     
     public void update()
@@ -35,25 +37,49 @@ public class BroccoliController extends iAIController
         if(mTarget != null)
         {
 
+/*<<<<<<< HEAD
             Vec2 myPos = mEntity.getBody().getPosition();
             Vec2 targetPos = mTarget.getBody().getPosition();
 
             if((targetPos.x < myPos.x+mRange) && targetPos.x > myPos.x-mRange)
+=======*/
+            Vec2 myPos = mEntity.getBody().getPosition();
+            Vec2 targetPos = mTarget.getBody().getPosition();
+            
+            if ((targetPos.x < myPos.x+mAttackRadius) && targetPos.x > myPos.x-mAttackRadius)
             {
-                if((targetPos.y < myPos.y+mRange) && targetPos.y > myPos.y-mRange)
+                if((targetPos.y < myPos.y+mAttackRadius) && targetPos.y > myPos.y-mAttackRadius)
                 {
-                    //mEntity.jump();
-                    if(targetPos.x > myPos.x)
+                    
+                    ((Broccoli)mEntity).attack();
+                    /*if(targetPos.x > myPos.x)
                     {
-                        ((Broccoli)mEntity).move(1f);
+                        ((Broccoli)mEntity).move(2.5f);
                     }
                     else
                     {
-                        ((Broccoli)mEntity).move(-1f);
+                        ((Broccoli)mEntity).move(-2.5f);
+                    }*/
+                }
+            }
+            else if((targetPos.x < myPos.x+mFollowRadius) && targetPos.x > myPos.x-mFollowRadius)
+//>>>>>>> mawork
+            {
+                if((targetPos.y < myPos.y+mFollowRadius) && targetPos.y > myPos.y-mFollowRadius)
+                {
+                    if(targetPos.x > myPos.x)
+                    {
+                        ((Broccoli)mEntity).move(4.5f);
+                    }
+                    else
+                    {
+                        ((Broccoli)mEntity).move(-4.5f);
                     }
                 }
             }
         }
+    }
+        
                 
         
         /*if(mTargetY != (int)(mTarget.mBody.getPosition().y) || mTargetX != (int)(mTarget.mBody.getPosition().x))
@@ -108,5 +134,3 @@ public class BroccoliController extends iAIController
             }
         }        */
     }
-    
-}

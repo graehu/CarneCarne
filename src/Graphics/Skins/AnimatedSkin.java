@@ -23,12 +23,16 @@ public class AnimatedSkin implements iSkin{
     {
         mAnim = new Animation(new SpriteSheet("data/" + _spriteSheet, _tileWidth, _tileHeight), _duration);
         mAnim.restart();
+        mAnim.stop();
+        mAnim.setLooping(false);
     }
     //constructor public to graphics package only
     AnimatedSkin(SpriteSheet _spriteSheet, int _duration) throws SlickException
     {
         mAnim = new Animation(_spriteSheet, _duration);
         mAnim.restart();
+        mAnim.stop();
+        mAnim.setLooping(false);
     }
     public void render(float _x, float _y)
     {

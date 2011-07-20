@@ -104,7 +104,7 @@ public class StaticSkin implements iSkin
     }
 
     public void stop() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        //throw new UnsupportedOperationException("Not supported yet.");
     }
 
     public void stopAt(int _index) {
