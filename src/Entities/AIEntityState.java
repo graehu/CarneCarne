@@ -4,9 +4,6 @@
  */
 package Entities;
 
-import Sound.sSound;
-import org.newdawn.slick.openal.SoundStore;
-
 /**
  *
  * @author alasdair
@@ -16,7 +13,14 @@ class AIEntityState
     static private final int tarStickingTimer = 60;
     static private final int jumpReload = 13;
     static private final int jumpBoostTimer = 10;
+    static private final int stunTimer = 120;
     static private final int mDoubleJumpTimer = 600000;
+
+    void stun()
+    {
+        changeState(State.eStunned);
+        mTimer = 0;
+    }
     enum State
     {
         eFalling,
@@ -30,6 +34,7 @@ class AIEntityState
         eRestartingRace,
         eJumping,
         eJumpTransition, /// Between jumping and falling, this is where the button held increased jump is determined
+        eStunned,
         eStatesMax,
     }
     private State mState;
@@ -111,7 +116,8 @@ class AIEntityState
     //returns -ve for initialial jump, 0.0f while falling and +ve during transition
     public float canJump(float _currentVelocity)
     {
-        if (mState.equals(State.eJumping) || mState.equals(State.eFallingDoubleJumped))
+        if (mState.equals(State.eJumping) || mState.equals(State.eFallingDoubleJumped)||
+                mState.equals(State.eStunned))
         {
             return 0.0f;
         }
@@ -154,14 +160,14 @@ class AIEntityState
                 {
                     changeState(State.eSwimming);
                 }
-                else if (mTarCount != 0)
+                /*else if (mTarCount != 0)
                 {
                     changeState(State.eStandingOnTar);
                 }
                 else if (mIceCount != 0)
                 {
                     changeState(State.eIce);
-                }
+                }*/
                 /*if (mTimer == jumpBoostTimer)
                 {
                     changeState(State.eJumpTransistion);
@@ -270,6 +276,14 @@ class AIEntityState
                     changeState(State.eStandingOnTar);
                 }
                 break;
+            }
+            case eStunned:
+            {
+                if (mTimer == stunTimer)
+                {
+                    changeState(State.eFalling);
+                    update();
+                }
             }
             case eDead:
             {

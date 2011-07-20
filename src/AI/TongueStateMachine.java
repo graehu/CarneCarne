@@ -13,7 +13,6 @@ import Graphics.Sprites.sSpriteFactory;
 import Level.RootTile.AnimationType;
 import Level.Tile;
 import Level.sLevel.TileType;
-import Sound.sSound;
 import World.TongueAnchor;
 import World.sWorld;
 import java.util.HashMap;
@@ -25,6 +24,7 @@ import org.jbox2d.dynamics.joints.DistanceJoint;
  * @author alasdair
  */
 public class TongueStateMachine {
+
     
     enum State
     {

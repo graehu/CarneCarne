@@ -9,6 +9,7 @@ import Graphics.Particles.sParticleManager;
 import Graphics.Skins.iSkin;
 import Level.RootTile.AnimationType;
 import Level.Tile;
+import Score.ScoreTracker.ScoreEvent;
 import World.sWorld;
 import World.sWorld.BodyCategories;
 import org.jbox2d.common.Vec2;
@@ -23,10 +24,12 @@ public class FireParticle extends Entity
     Vec2 mVelocity;
     ParticleSysBase mParticles;
     int mTimer;
-    public FireParticle(iSkin _skin, Vec2 _velocity)
+    PlayerEntity mOwner;
+    public FireParticle(iSkin _skin, Vec2 _velocity, PlayerEntity _owner)
     {
         super(_skin);
         mVelocity = _velocity;
+        mOwner = _owner;
         mTimer = 10000;
         mParticles = sParticleManager.createSystem("Fire", new Vec2(0, 0),-1);
         mTimer = 100;
@@ -80,5 +83,10 @@ public class FireParticle extends Entity
     {
         sWorld.destroyBody(getBody());
         mParticles.kill();
+    }
+
+    public void killedOpponent()
+    {
+        mOwner.mScoreTracker.score(ScoreEvent.eKilledOpponent);
     }
 }
