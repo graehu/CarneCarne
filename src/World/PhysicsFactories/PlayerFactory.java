@@ -4,7 +4,6 @@
  */
 package World.PhysicsFactories;
 
-import World.PhysicsFactories.iPhysicsFactory;
 import Entities.AIEntity;
 import World.sWorld.BodyCategories;
 import java.util.HashMap;

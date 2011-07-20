@@ -48,14 +48,14 @@ public class FlagProcessor
     private class CheckPoint
     {
         int x,y,x2,y2;
-        int mNumber;
+        //int mNumber;
         public CheckPoint(int _x, int _y, int _x2, int _y2, int _number)
         {
             x = _x;
             y = _y;
             x2 = _x2 + 1;
             y2 = _y2 + 1;
-            mNumber = _number;
+            //mNumber = _number;
         }
     }
     private class PlayerSpawnPoint extends CheckPoint
@@ -144,7 +144,7 @@ public class FlagProcessor
                                 {
                                     checkPoints.setSize(checkPointNumber+1);
                                 }
-                                checkPoints.add(checkPointNumber, zone);
+                                checkPoints.set(checkPointNumber, zone);
                             }
                             break;
                         }

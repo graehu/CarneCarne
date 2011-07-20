@@ -365,7 +365,7 @@ public class sWorld
     public static Body createAreaEvent(int _x, int _y, int _x2, int _y2, AreaEvent _event)
     {
         BodyDef def = new BodyDef();
-        def.position = new Vec2(_x+0.5f, _y+0.5f);
+        def.position = new Vec2(((_x2-_x)*0.5f)+_x+0.5f, ((_y2-_y)*0.5f)+_y+0.5f);
         def.userData = _event;
         FixtureDef fixture = new FixtureDef();
         fixture.filter.categoryBits = (1 << BodyCategories.eCheckPoint.ordinal());

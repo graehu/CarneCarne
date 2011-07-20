@@ -342,7 +342,7 @@ public class AIEntity extends Entity {
 
     public void stun(Vec2 _direction)
     {
-        mBody.applyLinearImpulse(_direction.mul(15.0f), getBody().getWorldCenter());
+        mBody.applyLinearImpulse(_direction.mul(20.0f), getBody().getWorldCenter());
     }
     void stun()
     {
@@ -358,5 +358,4 @@ public class AIEntity extends Entity {
         Vec2 pixelPosition = sWorld.translateToWorld(getBody().getPosition());
         mSkin.render(pixelPosition.x,pixelPosition.y);
     }
-
 }
