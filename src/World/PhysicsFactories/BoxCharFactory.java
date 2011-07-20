@@ -32,6 +32,7 @@ public class BoxCharFactory implements iPhysicsFactory
         def.type = BodyType.DYNAMIC;
         def.userData = entity;
         def.position = position;
+        def.fixedRotation = true;
         Body body = _world.createBody(def);
         FixtureDef fixture = new FixtureDef();
         fixture.density = 1.0f;
