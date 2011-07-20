@@ -18,12 +18,14 @@ import Events.AreaEvents.RaceStartZone;
 import Events.PlayerCreatedEvent;
 import Events.TutorialSpawnEvent;
 import Events.sEvents;
+import Level.Lighting.sLightsManager;
 import Level.sLevel.TileType;
 import java.util.HashMap;
 import java.util.Stack;
 import java.util.Vector;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.tiled.TiledMap;
 
 /**
@@ -161,7 +163,20 @@ public class FlagProcessor
                 }
                 if (!spawn.equals("None"))
                 {
-                    if (spawn.equals("Broccoli"))
+                    if (spawn.equals("Light"))
+                    {
+                        //Vec2 _position, Color _color, float _constantAttentuation, float _radius, float _quadraticAttentuation
+                        float r = new Float(_tiledMap.getTileProperty(id, "R", "0"));
+                        float g = new Float(_tiledMap.getTileProperty(id, "G", "0"));
+                        float b = new Float(_tiledMap.getTileProperty(id, "B", "0"));
+                        Color color = new Color(r,g,b);
+                        float constAtt = new Float(_tiledMap.getTileProperty(id, "ConstAtt", "0"));
+                        float radius = new Float(_tiledMap.getTileProperty(id, "Radius", "200"));
+                        float quadAtt = new Float(_tiledMap.getTileProperty(id, "QuadAtt", "0"));
+                        //create light source translated to world space
+                        sLightsManager.createLightSource(new Vec2(i*64,ii*64), radius, color, constAtt, quadAtt); //FIXME: assumes 64x64 tiles
+                    }
+                    else if (spawn.equals("Broccoli"))
                     {
                         parameters.put("position",new Vec2(i,ii));
                         sEntityFactory.create("Broccoli",parameters);

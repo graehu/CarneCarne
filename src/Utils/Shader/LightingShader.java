@@ -2,9 +2,11 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package ShaderUtils;
+package Utils.Shader;
 
 import Graphics.sGraphicsManager;
+import Level.Lighting.sLightsManager;
+import World.sWorld;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -29,22 +31,18 @@ public class LightingShader extends Shader
     }
     
     ArrayList<LightSource> mLightSources = new ArrayList<LightSource>();
-    float mAmbience = 0.5f;
     FloatBuffer aux = BufferUtils.createFloatBuffer(4);
+    FloatBuffer attenuation = BufferUtils.createFloatBuffer(4);
     FloatBuffer fbpos = BufferUtils.createFloatBuffer(4);
     FloatBuffer color = BufferUtils.createFloatBuffer(4);
     
-    public LightSource addLightSource(Vector2f _position)
-    {
-        return addLightSource(_position, Color.white, 0.0f, 200.0f, 0.0f);
-    }
     //returns null when max lights is reached
-    public LightSource addLightSource(Vector2f _position, Color _color, float _constantAttentuation, float _radius, float _quadraticAttentuation)
+    public LightSource addLightSource(LightSource _source)
     {
         int index = mLightSources.size();
         if(index < maxLights)
         {
-            mLightSources.add(new LightSource(_position, _color, _constantAttentuation, _radius, _quadraticAttentuation));
+            mLightSources.add(_source);
             return mLightSources.get(index);
         }
         else
@@ -52,40 +50,57 @@ public class LightingShader extends Shader
             return null;
         }
     }
+    //clears current lightSource list
+    public void clearSources()
+    {
+        mLightSources.clear();
+    }
 
     @Override
     public void startShader() 
     {
+        
         //GL11.glEnable(GL11.GL_BLEND);
         //GL11.glBlendFunc(GL11.GL_SRC_COLOR, GL11.GL_ZERO);
         GL11.glEnable(GL11.GL_LIGHTING);
         GL11.glShadeModel(GL11.GL_SMOOTH);
         
         Vec2 s = sGraphicsManager.getScreenDimensions();
+        Vec2 pixelTrans = sWorld.getPixelTranslation();
         
         //WARNING: these buffers are allocated off the heap and are not properly garbage collected
         //the clear method resets the 'pointer' to the head but doesn't deallocate the memory
         //use with freak'n care
         aux.clear();
-        aux.put(new float[]{(float)mLightSources.size(), s.x, s.y, mAmbience}).flip();
+        aux.put(new float[]{(float)mLightSources.size(), s.x, s.y, sLightsManager.getAmbience()}).flip();
         
         GL11.glLight(GL11.GL_LIGHT0, GL11.GL_SPECULAR, aux);
 
         for(int i = 0; i < mLightSources.size(); i++)
         {
+            mLightSources.get(i).update(0);
             fbpos.clear();
-            fbpos.put(new float[]{mLightSources.get(i).mPosition.x, mLightSources.get(i).mPosition.y, mLightSources.get(i).mRadius, 0.0f}).flip();
+            fbpos.put(new float[]{  mLightSources.get(i).mPosition.x + pixelTrans.x, 
+                                    mLightSources.get(i).mPosition.y + pixelTrans.y, 
+                                    mLightSources.get(i).mRadius, 
+                                    mLightSources.get(i).getTick()}).flip();
 
             color.clear();
             color.put(new float[]{  mLightSources.get(i).mColor.a, 
                                     mLightSources.get(i).mColor.g, 
                                     mLightSources.get(i).mColor.b, 
                                     0}).flip();
+            
+            attenuation.clear();
+            attenuation.put(new float[]{mLightSources.get(i).mConstantAttentuation, 
+                                        mLightSources.get(i).mQuadraticAttentuation, 
+                                        0, 
+                                        0}).flip();
         
             GL11.glEnable(GL11.GL_LIGHT0 + i);
             GL11.glLight(GL11.GL_LIGHT0 + i, GL11.GL_POSITION, fbpos);
-            GL11.glLight(i, i, aux);
             GL11.glLight(GL11.GL_LIGHT0 + i, GL11.GL_DIFFUSE, color);
+            GL11.glLight(GL11.GL_LIGHT0 + i, GL11.GL_AMBIENT, attenuation);
             
         }
         super.startShader();

@@ -390,7 +390,8 @@
   </tile>
   <tile id="3">
    <properties>
-    <property name="Event" value="RaceEnd"/>
+    <property name="Radius" value="400"/>
+    <property name="Spawn" value="Light"/>
    </properties>
   </tile>
  </tileset>
@@ -529,7 +530,7 @@
  </layer>
  <layer name="Flags" width="100" height="100">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC+3dMQrCUBREUR/uf0naCQq6CitXYGsjRElQYkKcr+fANLGR3MJfhLhaAW9V/9K2+rss/8240yOLHln0yDLUg+/RI8tQj00DTU71vCaNOO+mN/mJHgNa/T3XI4seLMH5KoseWfTIokcWPbLoAQAAGfbV3xS76q9V1+o25rMp9MiiRxY9AAAAAAAAgH829zMKAAAAQOdcz+O79AAAAAAAAAAAAACAth2r21wO1Y1x9MiiRxY9sujxmcf/T3m1qdY/fA//gX7L8I4gAADmdAP304mAQJwAAA==
+   H4sIAAAAAAAAC+3dQWrCYBSFUR/uf0exM6GCrqKjrqDTTiKpJChpQry/ngN3EichH8EMgu52wEM1PvRR431vf2b09MjQ9feKHln0yDLVg+fRI8tUj0MDTS51uybNeN5Nb/ISPSa0+n1+7dDpEcH9wRY8X2XRI4seWfTIokcWPQAAIMNnjbfEscZr1U8Nm/PZEnpk0SOLHgAAAAAAAMA7W/sdBQAAAGDwVbfjufQAAAAAAAAAAAAAgLada9haTjWMefTIokcWPbLo8T9//z/l3pbav/A1fAf6bcNvBAEAsKZfnuA/1ECcAAA=
   </data>
  </layer>
 </map>

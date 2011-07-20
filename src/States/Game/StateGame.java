@@ -15,7 +15,7 @@ import Graphics.Skins.sSkinFactory;
 import Graphics.Sprites.sSpriteFactory;
 import Graphics.sGraphicsManager;
 import Input.sInput;
-import ShaderUtils.LightingShader;
+import Utils.Shader.LightingShader;
 import Sound.sSound;
 import States.Game.RaceMode.RaceMode;
 import States.StateChanger;
@@ -112,7 +112,7 @@ public class StateGame extends BasicGameState implements iEventListener {
         super.enter(container, game);
         
         container.setMouseGrabbed(true);
-        sSound.playAsMusic("level1", true);
+        //sSound.playAsMusic("level1", true);
     }
     
     @Override

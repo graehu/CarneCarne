@@ -40,7 +40,7 @@ public class IntroCamera extends iCamera
     }
 
     @Override
-    protected void renderInternal(Graphics _graphics)
+    public void render(Graphics _graphics)
     {
         sGraphicsManager.beginTransform();
             sGraphicsManager.translate(mViewPort.getX(),mViewPort.getY());

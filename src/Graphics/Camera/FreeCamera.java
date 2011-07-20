@@ -61,7 +61,7 @@ public class FreeCamera extends iCamera implements iEventListener
         Vec2 s = sGraphicsManager.getScreenDimensions();
         return new Vec2((s.x/2)+(-xPixel),(s.y/2)+(-yPixel));        
     }
-    protected void renderInternal(Graphics _graphics)
+    public void render(Graphics _graphics)
     {
         sGraphicsManager.beginTransform();
             sGraphicsManager.translate(mViewPort.getX(),mViewPort.getY());

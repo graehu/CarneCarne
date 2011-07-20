@@ -25,10 +25,12 @@ import org.jbox2d.dynamics.joints.RevoluteJoint;
 public class AIEntity extends Entity {
 
     final static float root2 = (float) Math.sqrt(2);
+    static int mContactParticleDelay = 10;
     public iAIController mController;
     protected boolean mAllowRoll = false;
     protected int mJumpTimer;
     protected Tile mTouchingTile;
+    protected Tile mLastTouchingTile;
     protected String mCurrentAnimation;
     protected float mAnimSpeed;
     protected Vec2 mFloorNormal;
@@ -36,7 +38,6 @@ public class AIEntity extends Entity {
     protected float mMoveSpeed;
     protected Command mCommand;
     protected AIEntityState mAIEntityState;
-    protected TileType mTileType;
     protected int mContactParticleTimer = 0;
 
     public RevoluteJoint mJoint;
@@ -89,6 +90,8 @@ public class AIEntity extends Entity {
         int mIce = 0;
         int mJumpContacts = 0;
         mAllowRoll = false;
+        if(mTouchingTile != null)
+            mLastTouchingTile = mTouchingTile;
         mTouchingTile = null;
         
         while (edge != null)
@@ -138,6 +141,7 @@ public class AIEntity extends Entity {
                 collisionNorm.normalize();
                 if(collisionNorm.y > 1/root2) //up
                 {
+                    createContactParticle(collisionNorm);
                 }
                 else if(collisionNorm.y < - 0.9) //down
                 {
@@ -146,9 +150,7 @@ public class AIEntity extends Entity {
                         if(((Tile)other.getUserData()) != null)
                             mTouchingTile = ((Tile)other.getUserData());
                         mJumpContacts++;
-                        //set tile type while only touching one type
-                        if(numContacts == 1 && other.getUserData() != null)
-                            mTileType = ((Tile)other.getUserData()).getTileType();
+                        createContactParticle(collisionNorm);
                     }
                     mFloorNormal = collisionNorm.clone();
                 }
@@ -156,6 +158,9 @@ public class AIEntity extends Entity {
                 {
                     if(edge.contact.isTouching() && !other.isSensor())
                     {
+                        if(((Tile)other.getUserData()) != null)
+                            mTouchingTile = ((Tile)other.getUserData());
+                        mContactParticleDelay = 5;
                         createContactParticle(collisionNorm);
                         mJumpContacts++; //allow jump on slopes
                         mAllowRoll = true;
@@ -184,7 +189,7 @@ public class AIEntity extends Entity {
     }
     protected void createContactParticle(Vec2 _dir)
     {
-        if(getBody().getLinearVelocity().lengthSquared() > 20)
+        if(mBody.getLinearVelocity().lengthSquared() > 60)
         {
             if(mContactParticleTimer > 10) //assumes 60fps
             {
@@ -194,13 +199,15 @@ public class AIEntity extends Entity {
                     sys = sParticleManager.createSystem("cloud", sWorld.translateToWorld(getBody().getPosition()).sub(sWorld.getPixelTranslation()).add(new Vec2(32,32)).add(_dir.mul(-32)), 1f);
                 else
                     sys = sParticleManager.createSystem(mTouchingTile.getAnimationsName(AnimationType.eJump) + "Jump", sWorld.translateToWorld(getBody().getPosition()).sub(sWorld.getPixelTranslation()).add(new Vec2(32,32)).add(_dir.mul(-32)), 1f);
-                float angle = (float) Math.acos(Vec2.dot(_dir, new Vec2(0,1)));
+                float angle = (float) Math.acos(Vec2.dot(_dir, new Vec2(0,-1)));
                 if(_dir.x >= 0)
                     sys.setAngularOffset(angle);
                 else
                     sys.setAngularOffset(-angle);
             }
         }
+        //reset delay to default = 10
+        mContactParticleDelay = 10;
     }
     protected void subUpdate()
     {
@@ -283,10 +290,10 @@ public class AIEntity extends Entity {
             if (!mAIEntityState.getState().equals(State.eSwimming))
                 try
                 {
-                    if (mTouchingTile == null)
+                    if (mLastTouchingTile == null)
                         sParticleManager.createSystem("cloud", sWorld.translateToWorld(getBody().getPosition()).sub(sWorld.getPixelTranslation()).add(new Vec2(32,64)), 1f);
                     else
-                        sParticleManager.createSystem(mTouchingTile.getAnimationsName(AnimationType.eJump) + "Jump", sWorld.translateToWorld(getBody().getPosition()).sub(sWorld.getPixelTranslation()).add(new Vec2(32,64)), 1f);
+                        sParticleManager.createSystem(mLastTouchingTile.getAnimationsName(AnimationType.eJump) + "Jump", sWorld.translateToWorld(getBody().getPosition()).sub(sWorld.getPixelTranslation()).add(new Vec2(32,64)), 1f);
                 }
                 catch (NullPointerException e)
                 {
