@@ -41,12 +41,13 @@ void main()
 		float tick = gl_LightSource[i].position.w;
 		float constAtt = gl_LightSource[i].ambient.r;
 		float quadAtt = gl_LightSource[i].ambient.g;
+		float radius = gl_LightSource[i].position.z;
 		
 		//calc distance to light source
 		vec2 pos = gl_LightSource[i].position.xy;
 		float dist = length(vec2(x,y) - pos);
 		
-		float temp = dist / gl_LightSource[i].position.z ;
+		float temp = dist / radius;
 		//temp += 1/(quadAtt*dist*dist);
 		
 		float attentuation = temp*tick;

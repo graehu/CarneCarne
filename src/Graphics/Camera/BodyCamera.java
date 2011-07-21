@@ -169,14 +169,6 @@ public class BodyCamera extends iCamera implements iEventListener{
     }
     public void update(Graphics _graphics)
     {
-        //update lighting
-        mLightingShader.clearSources();
-        ArrayList<LightSource> sourceList = sLightsManager.getVisible(mViewPort);
-        for(LightSource source : sourceList)
-        {
-            mLightingShader.addLightSource(source);
-        }
-
         calculatePosition();
         mTimer += 1.0f;
         /*if (mCaveInEvent != null)
@@ -196,32 +188,52 @@ public class BodyCamera extends iCamera implements iEventListener{
     }
     public void render(Graphics _graphics)
     {
+        
         sGraphicsManager.beginTransform();
             sGraphicsManager.translate(mViewPort.getX(),mViewPort.getY());
             sGraphicsManager.setClip(mViewPort);
             calculatePosition();
+            
+            //apply gradient to background
             ShapeFill fill = new GradientFill(new Vector2f(0,0), new Color(159,111,89), new Vector2f(mViewPort.getMaxX(),mViewPort.getMaxY()), new Color(186, 160, 149), false);
             Rectangle shape = new Rectangle(0,0, mViewPort.getWidth(),mViewPort.getHeight());
             _graphics.fill(shape, fill);
+            
+            //render world
             sLevel.renderBackground(_graphics);
             sWorld.render();
             sGraphicsManager.renderManagedSprites();
             sLevel.renderForeground();
-            sParticleManager.render((int)getPixelTranslation().x, (int)getPixelTranslation().y, (int)mViewPort.getWidth(), (int)mViewPort.getHeight(),0);
+            sParticleManager.render((int)getPixelTranslation().x, (int)getPixelTranslation().y, (int)mViewPort.getWidth(), (int)mViewPort.getHeight(),0); 
+            
             //render lighting
-            SlickCallable.enterSafeBlock();
-                _graphics.copyArea(mLightBlendBase, (int)mViewPort.getX(), (int)mViewPort.getY());
-            SlickCallable.leaveSafeBlock();
-            mLightingShader.startShader();
-                mLightBlendBase.draw(0,0);
-            mLightingShader.endShader();
-            Shader.forceFixedShader();
+            renderLighting(_graphics);
+            
+            //render overlay and HUD
             mOverlay.draw(0,0, (int)mViewPort.getWidth(), (int)mViewPort.getHeight());
             ((PlayerEntity)mBody.getUserData()).renderHUD();
         sGraphicsManager.endTransform();  
     }
     
-    
+    protected void renderLighting(Graphics _graphics)
+    {
+        //update visible source list
+        mLightingShader.clearSources();
+        ArrayList<LightSource> sourceList = sLightsManager.getVisible(mViewPort);
+        for(LightSource source : sourceList)
+        {
+            mLightingShader.addLightSource(source);
+        }
+        //copy buffer
+        SlickCallable.enterSafeBlock();
+            _graphics.copyArea(mLightBlendBase, (int)mViewPort.getX(), (int)mViewPort.getY());
+        SlickCallable.leaveSafeBlock();
+        //render visible lights
+        mLightingShader.startShader();
+            mLightBlendBase.draw(0,0);
+        mLightingShader.endShader();
+        Shader.forceFixedShader();
+    }
     @Override
     public iCamera addPlayer(Body _body)
     {

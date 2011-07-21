@@ -174,7 +174,7 @@ public class FlagProcessor
                         float radius = new Float(_tiledMap.getTileProperty(id, "Radius", "200"));
                         float quadAtt = new Float(_tiledMap.getTileProperty(id, "QuadAtt", "0"));
                         //create light source translated to world space
-                        sLightsManager.createLightSource(new Vec2(i*64,ii*64), radius, color, constAtt, quadAtt); //FIXME: assumes 64x64 tiles
+                        sLightsManager.createLightSource(new Vec2(i,ii), radius, color, constAtt, quadAtt); //FIXME: assumes 64x64 tiles
                     }
                     else if (spawn.equals("Broccoli"))
                     {

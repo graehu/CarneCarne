@@ -13,10 +13,8 @@ import java.util.Collection;
 import org.jbox2d.common.Vec2;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL20;
-import org.newdawn.slick.Color;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.geom.Vector2f;
+import org.newdawn.slick.geom.Rectangle;
 
 /**
  *
@@ -65,8 +63,8 @@ public class LightingShader extends Shader
         GL11.glEnable(GL11.GL_LIGHTING);
         GL11.glShadeModel(GL11.GL_SMOOTH);
         
-        Vec2 s = sGraphicsManager.getScreenDimensions();
-        Vec2 pixelTrans = sWorld.getPixelTranslation();
+        Vec2 s = sGraphicsManager.getTrueScreenDimensions();
+        Rectangle viewport = sGraphicsManager.getClip();
         
         //WARNING: these buffers are allocated off the heap and are not properly garbage collected
         //the clear method resets the 'pointer' to the head but doesn't deallocate the memory
@@ -80,15 +78,16 @@ public class LightingShader extends Shader
         {
             mLightSources.get(i).update(0);
             fbpos.clear();
-            fbpos.put(new float[]{  mLightSources.get(i).mPosition.x + pixelTrans.x, 
-                                    mLightSources.get(i).mPosition.y + pixelTrans.y, 
-                                    mLightSources.get(i).mRadius, 
+            Vec2 pos = sWorld.translateToWorld(mLightSources.get(i).getPosition());
+            fbpos.put(new float[]{  pos.x, 
+                                    pos.y, 
+                                    mLightSources.get(i).getRadius(), 
                                     mLightSources.get(i).getTick()}).flip();
 
             color.clear();
-            color.put(new float[]{  mLightSources.get(i).mColor.a, 
-                                    mLightSources.get(i).mColor.g, 
-                                    mLightSources.get(i).mColor.b, 
+            color.put(new float[]{  mLightSources.get(i).getColor().a, 
+                                    mLightSources.get(i).getColor().g, 
+                                    mLightSources.get(i).getColor().b, 
                                     0}).flip();
             
             attenuation.clear();

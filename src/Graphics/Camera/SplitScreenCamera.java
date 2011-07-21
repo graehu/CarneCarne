@@ -70,7 +70,7 @@ class SplitScreenCamera extends iCamera
     }
     public void resize(Rectangle _viewPort)
     {
-        //super.resize(_viewPort);
+        super.resize(_viewPort);
         split();
 
         mCameraA.resize(viewPortA);

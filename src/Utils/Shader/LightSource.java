@@ -25,16 +25,17 @@ public class LightSource
     
     public LightSource clone()
     {
-        return new LightSource(mPosition, mColor, mConstantAttentuation, mRadius, mQuadraticAttentuation);
+        return new LightSource(mPosition.clone(), mColor, mConstantAttentuation, mRadius, mQuadraticAttentuation);
     }
     
-    Vec2 mPosition = null;
-    Color mColor = Color.white;
+    private Vec2 mPosition = null;
+    private Color mColor = Color.white;
     float mConstantAttentuation = 0.5f;
-    float mRadius = 0.0f;
+    private float mRadius = 0.0f;
     float mQuadraticAttentuation = 0.0f;
-    float mTick = 0.95f;
-    Random rand = new Random();
+    private float mTick = 0.95f;
+    private Random rand = new Random();
+    
     public void update(int _delta)
     {
         if(rand.nextBoolean())

@@ -4,6 +4,7 @@
  */
 package Level.Lighting;
 
+import Graphics.sGraphicsManager;
 import Utils.Shader.LightSource;
 import World.sWorld;
 import java.util.ArrayList;
@@ -50,8 +51,8 @@ public class sLightsManager
         ArrayList<LightSource> visibleList = new ArrayList<LightSource>();
         for(LightSource source : mLightSources.values())
         {
-            Vec2 pos = source.getPosition();
-            Circle light = new Circle(pos.x + pixelTrans.x, pos.y + pixelTrans.y, source.getRadius()); 
+            Vec2 pos = sWorld.translateToWorld(source.getPosition());
+            Circle light = new Circle(pos.x + _viewport.getX(), pos.y + _viewport.getY(), source.getRadius()); 
             if(_viewport.intersects(light))
                 visibleList.add(source);
         }
