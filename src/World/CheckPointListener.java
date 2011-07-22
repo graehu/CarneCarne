@@ -22,7 +22,7 @@ class CheckPointListener implements iListener {
 
     public void beginContact(Contact _contact)
     {
-        if (_contact.m_fixtureA.m_filter.categoryBits == (1 << BodyCategories.ePlayer.ordinal()))
+        /*if (_contact.m_fixtureA.m_filter.categoryBits == (1 << BodyCategories.ePlayer.ordinal()))
         {
             //((PlayerEntity)_contact.m_fixtureA.m_body.m_userData).placeCheckPoint(((Vec2)_contact.m_fixtureB.m_body.getPosition()));
             ((AreaEvent)_contact.m_fixtureB.m_body.m_userData).enter((PlayerEntity)_contact.m_fixtureA.m_body.m_userData);
@@ -31,12 +31,12 @@ class CheckPointListener implements iListener {
         {
             //((PlayerEntity)_contact.m_fixtureB.m_body.m_userData).placeCheckPoint(((Vec2)_contact.m_fixtureB.m_body.getPosition()));   
             ((AreaEvent)_contact.m_fixtureA.m_body.m_userData).enter((PlayerEntity)_contact.m_fixtureB.m_body.m_userData);
-        }
+        }*/
     }
 
     public void endContact(Contact _contact)
     {
-        if (_contact.m_fixtureA.m_filter.categoryBits == (1 << BodyCategories.ePlayer.ordinal()))
+        /*if (_contact.m_fixtureA.m_filter.categoryBits == (1 << BodyCategories.ePlayer.ordinal()))
         {
             //((PlayerEntity)_contact.m_fixtureA.m_body.m_userData).placeCheckPoint(((Vec2)_contact.m_fixtureB.m_body.getPosition()));
             ((AreaEvent)_contact.m_fixtureB.m_body.m_userData).leave((PlayerEntity)_contact.m_fixtureA.m_body.m_userData);
@@ -45,7 +45,7 @@ class CheckPointListener implements iListener {
         {
             //((PlayerEntity)_contact.m_fixtureB.m_body.m_userData).placeCheckPoint(((Vec2)_contact.m_fixtureB.m_body.getPosition()));   
             ((AreaEvent)_contact.m_fixtureA.m_body.m_userData).leave((PlayerEntity)_contact.m_fixtureB.m_body.m_userData);
-        }
+        }*/
     }
 
     public void preSolve(Contact _contact, Manifold _manifold)

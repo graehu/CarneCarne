@@ -19,8 +19,10 @@ import Score.ScoreTracker;
 import States.Game.Tutorial.IntroSection;
 import World.sWorld;
 import java.util.HashMap;
+import java.util.HashSet;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Fixture;
+import org.jbox2d.dynamics.contacts.ContactEdge;
 import org.jbox2d.dynamics.joints.Joint;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
@@ -113,6 +115,7 @@ public class PlayerEntity extends AIEntity
     }
     public void placeCheckPoint(CheckPointZone _checkPoint)
     {
+        System.out.println(mCheckPoint.getCheckpointNumber() + " " + _checkPoint.getCheckpointNumber());
         if (mDeathJoint == null)
         {
             if (mCheckPoint == mOriginalSpawnPoint)
@@ -131,6 +134,8 @@ public class PlayerEntity extends AIEntity
                 //sEvents.triggerDelayedEvent(new ShowDirectionEvent(this));
             }
         }
+        System.out.println(mCheckPoint.getCheckpointNumber() + " " + _checkPoint.getCheckpointNumber());
+        System.out.println();
     }
     /*public int getScore()
     {
@@ -153,7 +158,7 @@ public class PlayerEntity extends AIEntity
                 fixture = fixture.getNext();
             }
             mDeathJoint = sWorld.createMouseJoint(mCheckPointPosition, getBody());
-            ((PlayerInputController)mController).trigger(new MapClickReleaseEvent(getBody().getPosition(), true, ((PlayerInputController)mController).mPlayer));
+            ((PlayerInputController)mController).kill();
         }
         mAIEntityState.kill();
     }
@@ -161,6 +166,7 @@ public class PlayerEntity extends AIEntity
     {
         return (a < b + epsilon && a > b - epsilon);
     }
+    HashSet<CheckPointZone> checkpointSet = new HashSet<CheckPointZone>();
     @Override
     protected void subUpdate()
     {
@@ -169,6 +175,31 @@ public class PlayerEntity extends AIEntity
             mRaceTimer++;
         }
         mReticle.update();
+        
+        HashSet<CheckPointZone> newCheckPoints = new HashSet<CheckPointZone>();
+        ContactEdge contact = mBody.getContactList();
+        while (contact != null)
+        {
+            if (contact.other.getFixtureList().getFilterData().categoryBits == (1 << sWorld.BodyCategories.eCheckPoint.ordinal()))
+            {
+                if (!checkpointSet.contains((CheckPointZone)contact.other.getUserData()))
+                {
+                    ((CheckPointZone)contact.other.getUserData()).enter(this);
+                }
+                newCheckPoints.add((CheckPointZone)contact.other.getUserData());
+                //checkpointSet.add((CheckPointZone)contact.other.getUserData());
+                //placeCheckPoint();
+            }
+            contact = contact.next;
+        }
+        for (CheckPointZone checkPoint: checkpointSet)
+        {
+            if (!newCheckPoints.contains(checkPoint))
+            {
+                checkPoint.leave(this);
+            }
+        }
+        checkpointSet = newCheckPoints;
         if (mDeathJoint != null)
         {//when player is within half a tile of checkpoint destroy joint
             if (compareFloat(getBody().getPosition().x, mCheckPointPosition.x, 0.5f) && compareFloat(getBody().getPosition().y, mCheckPointPosition.y, 0.5f))
@@ -189,7 +220,7 @@ public class PlayerEntity extends AIEntity
             buoyancy();
         }
     }
-    
+
     @Override
     public void stun(Vec2 _direction)
     {

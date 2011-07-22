@@ -173,6 +173,10 @@ public class Tile
     }
     public void destroyFixture()
     {
+        if (mTileGrid.mBody.getWorld().isLocked())
+        {
+            throw new UnsupportedOperationException("Error, world is locked");
+        }
         mTileGrid.mBody.destroyFixture(mFixture);
         mFixture = null;
         mTileGrid.destroyTile(mXTile, mYTile);

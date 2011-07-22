@@ -62,6 +62,7 @@ public class RaceMode implements iGameMode, iEventListener
         {
             Vec2 dimensions = new Vec2(272, 269);
             mRaceRender.setDimentions(dimensions.x, dimensions.y);
+            sGraphicsManager.removeClip();
             Vec2 s = sGraphicsManager.getTrueScreenDimensions();
             mRaceRender.render(0.5f*(s.x-dimensions.x), 0.5f*(s.y-dimensions.y));
             if (mTimer == 120)

@@ -7,7 +7,11 @@ package Level;
 import Events.iEvent;
 import Events.iEventListener;
 import Events.sEvents;
+import World.sWorld;
 import java.util.ArrayList;
+import java.util.HashMap;
+import org.jbox2d.common.Vec2;
+import org.jbox2d.dynamics.Body;
 
 /**
  *
@@ -15,7 +19,6 @@ import java.util.ArrayList;
  */
 public class StartBarrier implements iEventListener
 {
-
     public boolean trigger(iEvent _event)
     {
         if (_event.getName().equals("RaceStartEvent"))
@@ -32,11 +35,13 @@ public class StartBarrier implements iEventListener
     {
         int x, y;
         int mRootId;
+        Body mBody;
         public BarrierTile(int _x, int _y, int _rootId)
         {
             x = _x;
             y = _y;
             mRootId = _rootId;
+            mBody = null;
         }
     }
     ArrayList<BarrierTile> tiles = new ArrayList<BarrierTile>();
@@ -55,15 +60,24 @@ public class StartBarrier implements iEventListener
     {
         for (BarrierTile tile: tiles)
         {
-            sLevel.placeTile(tile.x, tile.y, tile.mRootId);
+            sLevel.placeTileNoBody(tile.x, tile.y, tile.mRootId);
+            HashMap params = new HashMap();
+            params.put("position", new Vec2(tile.x,tile.y));
+            tile.mBody = sWorld.useFactory("GroundBody", params);
         }
     }
     public void disable()
     {
         for (BarrierTile tile: tiles)
         {
-            sLevel.getTileGrid().mTiles[tile.x][tile.y].destroyFixture();
-            //sLevel.placeTile(tile.x, tile.y, 0);
+            //sLevel.getTileGrid().mTiles[tile.x][tile.y].destroyFixture();
+            sWorld.destroyBody(tile.mBody);
+            if (tile.mBody.getFixtureList() != null)
+            {
+                throw new UnsupportedOperationException("Body wasn't destroyed");
+            }
+            tile.mBody = null;
+            sLevel.placeTile(tile.x, tile.y, 0);
         }
     }
 }

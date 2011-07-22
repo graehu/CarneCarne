@@ -3,13 +3,13 @@
 <emitter imageName="" name="Default" renderType="inherit" useAdditive="false" useOriented="false">
 <spawnInterval enabled="false" max="100.0" min="100.0"/>
 <spawnCount enabled="true" max="15.0" min="10.0"/>
-<initialLife enabled="true" max="800.0" min="500.0"/>
+<initialLife enabled="true" max="500.0" min="200.0"/>
 <initialSize enabled="true" max="15.0" min="5.0"/>
 <xOffset enabled="true" max="10.0" min="-10.0"/>
 <yOffset enabled="true" max="0.0" min="0.0"/>
 <initialDistance enabled="false" max="0.0" min="0.0"/>
-<speed enabled="true" max="400.0" min="100.0"/>
-<length enabled="true" max="100.0" min="100.0"/>
+<speed enabled="true" max="250.0" min="50.0"/>
+<length enabled="true" max="50.0" min="50.0"/>
 <emitCount enabled="false" max="1000.0" min="1000.0"/>
 <spread type="random" value="11.0"/>
 <angularOffset type="simple" value="0.0"/>

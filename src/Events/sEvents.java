@@ -96,8 +96,6 @@ public class sEvents {
             LinkedList<iEventListener> list = mTable.get(_event.getName());
             if (list != null)
             {
-                /*for (iEventListener listener: list)
-                    listener.trigger(_event);*/
                 Iterator<iEventListener> i = list.iterator();
                 while(i.hasNext())
                 {

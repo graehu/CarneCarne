@@ -85,11 +85,13 @@ public class sGraphicsManager {
         
         //mGameContainer.getGraphics().clearClip();                
     }
-    public static void removeClip()
+    public static Rectangle removeClip()
     {
+        Rectangle clip = mClip;
         Rectangle rect = new Rectangle(0,0,(int)mNativeScreenDimentions.x,(int)mNativeScreenDimentions.y);
         mGameContainer.getGraphics().setClip(rect);
         mClip = rect;
+        return mClip;
     }
     public static void setClip(Rectangle _rect)
     {

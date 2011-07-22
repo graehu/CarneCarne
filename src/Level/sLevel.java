@@ -19,6 +19,10 @@ public class sLevel
     {
         mLevelEditor.placeTile(_x, _y, _rootId);
     }
+    public static void placeTileNoBody(int _x, int _y, int _rootId)
+    {
+        mLevelEditor.placeTileNoBody(_x, _y, _rootId);
+    }
 
     static TileGrid getTileGrid()
     {
@@ -95,7 +99,7 @@ public class sLevel
         }
         catch (SlickException e)
         {
-            assert(false);
+            throw new UnsupportedOperationException(nextMap + " loading failed");
         }
         mLevelEditor = new LevelEditor(mTiledMap);
         mParralaxXScale = new float[mTiledMap.getLayerCount()];
@@ -106,7 +110,7 @@ public class sLevel
             mParralaxYScale[i] = 1.0f;
         }
         flagsLayer = mTiledMap.getLayerIndex("Flags");
-        nextMap = mTiledMap.getMapProperty("NextMap", null);
+        nextMap = mTiledMap.getMapProperty("NextMap", nextMap);
     }
     public static void newLevel()
     {
@@ -117,7 +121,7 @@ public class sLevel
         }
         catch (SlickException e)
         {
-            assert(false);
+            throw new UnsupportedOperationException(nextMap + " loading failed");
         }
         boolean destroy = true;
         if (mLevelEditor == null)

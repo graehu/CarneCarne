@@ -15,19 +15,14 @@ import Graphics.Skins.sSkinFactory;
 import Graphics.Sprites.sSpriteFactory;
 import Graphics.sGraphicsManager;
 import Input.sInput;
-import Utils.Shader.LightingShader;
 import Sound.sSound;
-import States.Game.RaceMode.RaceMode;
+import States.Game.Tutorial.IntroMode;
 import States.StateChanger;
 import World.sWorld;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.jbox2d.common.Vec2;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.BlobbyTransition;
@@ -136,7 +131,7 @@ public class StateGame extends BasicGameState implements iEventListener {
         sSkinFactory.init();
         sSpriteFactory.init();
         sWorld.init();
-        mGameMode = new RaceMode(true);
+        mGameMode = new IntroMode();
         
         //subscribe to events (must be done before further initialisation)
         sEvents.subscribeToEvent("PlayerCreatedEvent", this);

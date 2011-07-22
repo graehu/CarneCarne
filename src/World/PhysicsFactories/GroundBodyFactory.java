@@ -27,7 +27,7 @@ public class GroundBodyFactory implements iPhysicsFactory
         Body body = _world.createBody(bodyDef);
         
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(5f, 0.5f);
+        shape.setAsBox(0.5f, 0.5f);
         
         FixtureDef fixture = new FixtureDef();
         fixture.shape = shape;

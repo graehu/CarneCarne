@@ -42,7 +42,7 @@ public class WorldContactListener implements ContactListener{
         set(BodyCategories.eGum.ordinal(),BodyCategories.eNonEdibleTiles.ordinal(),gumListener);
         set(BodyCategories.ePlayer.ordinal(),BodyCategories.eSpikes.ordinal(),deathListener);
         set(BodyCategories.ePlayer.ordinal(),BodyCategories.eFire.ordinal(),deathListener);
-            set(BodyCategories.eWater.ordinal(),BodyCategories.ePlayer.ordinal(),waterListener);
+        set(BodyCategories.eWater.ordinal(),BodyCategories.ePlayer.ordinal(),waterListener);
         set(BodyCategories.eEnemy.ordinal(),BodyCategories.eSpikes.ordinal(),deathListener);
         set(BodyCategories.eEnemy.ordinal(),BodyCategories.eFire.ordinal(),deathListener);
         set(BodyCategories.eCheckPoint.ordinal(), BodyCategories.ePlayer.ordinal(), new CheckPointListener());
