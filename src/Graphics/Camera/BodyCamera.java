@@ -140,6 +140,8 @@ public class BodyCamera extends iCamera implements iEventListener{
         ((PlayerEntity)mBody.getUserData()).setClip(_viewPort);
         try 
         {//resize light blend base
+            mLightBlendBase.getTexture().release(); //make super sure memory is released
+            mLightBlendBase.destroy();
             mLightBlendBase = new Image((int)_viewPort.getWidth(), (int)_viewPort.getHeight());
         } 
         catch (SlickException ex) {Logger.getLogger(iCamera.class.getName()).log(Level.SEVERE, null, ex);}
@@ -198,14 +200,15 @@ public class BodyCamera extends iCamera implements iEventListener{
             ShapeFill fill = new GradientFill(new Vector2f(0,0), new Color(159,111,89), new Vector2f(mViewPort.getMaxX(),mViewPort.getMaxY()), new Color(186, 160, 149), false);
             Rectangle shape = new Rectangle(0,0, mViewPort.getWidth(),mViewPort.getHeight());
             _graphics.fill(shape, fill);
-            
+
             //render world
+            //sGraphicsManager.scale(0.5f);
             sLevel.renderBackground(_graphics);
             sWorld.render();
             sGraphicsManager.renderManagedSprites();
             sLevel.renderForeground();
             sParticleManager.render((int)getPixelTranslation().x, (int)getPixelTranslation().y, (int)mViewPort.getWidth(), (int)mViewPort.getHeight(),0); 
-            
+
             //render lighting
             renderLighting(_graphics);
             

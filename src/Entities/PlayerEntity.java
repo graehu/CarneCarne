@@ -8,11 +8,13 @@ import AI.PlayerInputController;
 import Entities.AIEntityState.State;
 import Events.AreaEvents.CheckPointZone;
 import Events.MapClickReleaseEvent;
+import GUI.GUIManager;
 import Graphics.Skins.iSkin;
 import Graphics.Sprites.iSprite;
 import Graphics.Sprites.sSpriteFactory;
 import Graphics.sGraphicsManager;
 import HUD.Reticle;
+import HUD.Revolver;
 import Level.sLevel.TileType;
 import Score.RaceScoreTracker;
 import Score.ScoreTracker;
@@ -27,6 +29,7 @@ import org.jbox2d.dynamics.joints.Joint;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
+import org.newdawn.slick.geom.Vector2f;
 
 /**
  *
@@ -42,6 +45,7 @@ public class PlayerEntity extends AIEntity
     private Joint mDeathJoint;
     private Vec2 mDirection;
     public Reticle mReticle;
+    protected Revolver mRevolver;
     private iSprite mArrowSprite;
     private Rectangle mViewPort;
     private int mRaceTimer;
@@ -56,6 +60,8 @@ public class PlayerEntity extends AIEntity
         if (mCheckPoint != null)
             mCheckPointPosition = mCheckPoint.getPosition();
         mReticle = new Reticle(this);
+        mRevolver = new Revolver("ui/revolver.png", new Vector2f(200,200));
+        //GUIManager.get().addRootComponent(mRevolver);
         mDeaths = mRaceTimer = 0;
         HashMap params = new HashMap();
         try

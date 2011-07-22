@@ -9,6 +9,7 @@ import World.sWorld;
 import org.jbox2d.common.Vec2;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.tiled.TiledMap;
 /**
  *
  * @author alasdair
@@ -194,7 +195,7 @@ public class sLevel
                 int transY = (int)myTranslation.y;
                 transX = transX % 64;
                 transY = transY % 64;
-                mTiledMap.render(transX,transY, xStart,yStart, xTiles,yTiles, i, false);
+                mTiledMap.render(transX,transY, xStart,yStart,xTiles,yTiles, i, false);
             }
         }     
         
