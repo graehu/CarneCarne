@@ -11,20 +11,21 @@ import Events.iEvent;
 import Events.iEventListener;
 import Events.sEvents;
 import Graphics.Particles.sParticleManager;
-import Graphics.sGraphicsManager;
 import Graphics.Skins.sSkinFactory;
 import Graphics.Sprites.sSpriteFactory;
+import Graphics.sGraphicsManager;
 import Input.sInput;
-import Shader.LightingShader;
-import Shader.Shader;
+import Utils.Shader.LightingShader;
 import Sound.sSound;
 import States.Game.RaceMode.RaceMode;
 import States.StateChanger;
 import World.sWorld;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.jbox2d.common.Vec2;
-import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.BasicGameState;
@@ -63,7 +64,7 @@ public class StateGame extends BasicGameState implements iEventListener {
             PlayerCreatedEvent event = (PlayerCreatedEvent) _event;
             sEvents.subscribeToEvent("KeyDownEvent"+"Q"+event.getPlayerID(), this);
         }
-        if(_event.getType().equals("KeyDownEvent"))
+        else if(_event.getType().equals("KeyDownEvent"))
         {
             KeyDownEvent event = (KeyDownEvent) _event;
             if(event.getKey() == 'Q')
@@ -83,34 +84,24 @@ public class StateGame extends BasicGameState implements iEventListener {
     }
 
     public void update(GameContainer _gc, StateBasedGame _sbg, int _delta) throws SlickException 
-    {
+    {        
         //update sounds
         sSound.poll(_delta);
         
         if(die) _gc.exit();
         sInput.update(_delta);
-        mGameMode = mGameMode.update(_delta);
+        mGameMode = mGameMode.update(_gc.getGraphics(), _delta);
         //update particles
         sParticleManager.update(_delta);
     }
-    public void render(GameContainer _gc, StateBasedGame _sbg, Graphics _grphcs)
+    public void render(GameContainer _gc, StateBasedGame _sbg, Graphics _grphcs) throws SlickException
     {
         Vec2 s = sGraphicsManager.getScreenDimensions();
-        mGameMode.render(_gc.getGraphics());
         
-        //FIXME: SHADER TEST
-        /*shader.startShader();
-        {
-            _grphcs.setColor(Color.white);
-            _grphcs.fillRect(0, 0, s.x, s.y);
-            _grphcs.setColor(Color.white);
-        }
-        shader.endShader();
-
-        Shader.forceFixedShader();*/
+        mGameMode.render(_grphcs);
         
-          
-        
+        //cleanup texture data
+        //screen.flushPixelData();
         
 
     }
@@ -121,7 +112,7 @@ public class StateGame extends BasicGameState implements iEventListener {
         super.enter(container, game);
         
         container.setMouseGrabbed(true);
-        sSound.playAsMusic("level1", true);
+        //sSound.playAsMusic("level1", true);
     }
     
     @Override
@@ -132,9 +123,9 @@ public class StateGame extends BasicGameState implements iEventListener {
         container.setMouseGrabbed(false);
         sSound.stop("level1");
     }
-    LightingShader shader = null;
     public void init(GameContainer _gc, StateBasedGame _sbg) throws SlickException
     {
+        
         //initialise sound
         sSound.loadSound("level1", "assets/music/Level1.ogg");
         sSound.loadSound("jump", "assets/sfx/fart_4.ogg");
@@ -154,13 +145,6 @@ public class StateGame extends BasicGameState implements iEventListener {
         
         //create state changers
         mChangeToMenu = new StateChanger(4, new BlobbyTransition(), new BlobbyTransition(), _sbg);
-        
-        
-        //FIXME: SHADER TEST
-        shader = LightingShader.makeShader("shaders/test.vert", "shaders/test.frag");
-        shader.addLightSource(new Vector2f(0,0));
-        shader.addLightSource(new Vector2f(900,500));
-        //shader.addLightSource(new Vector2f(0,0));
     }
 
 }

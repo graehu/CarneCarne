@@ -12,6 +12,6 @@ import org.newdawn.slick.Graphics;
  */
 public interface iGameMode {
     
-    public iGameMode update(float _time);
+    public iGameMode update(Graphics _graphics, float _time);
     public void render(Graphics _graphics);
 }

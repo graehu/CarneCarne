@@ -16,7 +16,6 @@ import World.PhysicsFactories.TileFactory;
 import World.PhysicsFactories.iPhysicsFactory;
 import World.PhysicsFactories.BoxCharFactory;
 import Entities.Entity;
-import Entities.PlayerEntity;
 import Entities.SpatBlock;
 import Events.AreaEvents.AreaEvent;
 import Events.PlayerSwingEvent;
@@ -32,7 +31,6 @@ import Level.RootTile;
 import Level.Tile;
 import Level.sLevel;
 import Level.sLevel.TileType;
-import Score.ScoreTracker.ScoreEvent;
 import World.PhysicsFactories.GroundBodyFactory;
 import World.PhysicsFactories.PlayerFactory;
 import java.util.HashMap;
@@ -53,6 +51,7 @@ import org.jbox2d.dynamics.joints.Joint;
 import org.jbox2d.dynamics.joints.PrismaticJointDef;
 import org.jbox2d.structs.collision.RayCastInput;
 import org.jbox2d.structs.collision.RayCastOutput;
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Rectangle;
 /**
  *
@@ -429,7 +428,7 @@ public class sWorld
         parameters.put("aIEntity", _entity);
         return useFactory("CharacterFactory",parameters);
     }*/
-    public static void update(float _time)
+    public static void update(Graphics _graphics, float _time)
     {
         float secondsPerFrame = 16.666f;
         try
@@ -448,7 +447,7 @@ public class sWorld
                 entity.update();
             body = body.getNext();
         }
-        mCamera.update();
+        mCamera.update(_graphics);
     }
 
     public static iCamera getCamera()

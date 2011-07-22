@@ -7,6 +7,7 @@ package Graphics.Camera;
 import Graphics.sGraphicsManager;
 import World.sWorld;
 import org.jbox2d.common.Vec2;
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Rectangle;
 
 /**
@@ -39,7 +40,7 @@ public class IntroCamera extends iCamera
     }
 
     @Override
-    public void render()
+    public void render(Graphics _graphics)
     {
         sGraphicsManager.beginTransform();
             sGraphicsManager.translate(mViewPort.getX(),mViewPort.getY());
@@ -49,7 +50,7 @@ public class IntroCamera extends iCamera
     }
 
     @Override
-    public void update()
+    public void update(Graphics _graphics)
     {
     }
 }

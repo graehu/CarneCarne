@@ -1,4 +1,4 @@
-package Shader;
+package Utils.Shader;
 
 import org.newdawn.slick.SlickException;
 
