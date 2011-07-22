@@ -96,6 +96,7 @@ public class AIEntity extends Entity {
         
         while (edge != null)
         {
+            Vec2 collisionNorm = edge.contact.m_manifold.localNormal;
             Fixture other = edge.contact.m_fixtureA;
             boolean AtoB = true;
             if (other.m_body == getBody())
@@ -107,7 +108,7 @@ public class AIEntity extends Entity {
             //        other.m_filter.categoryBits == (1 << sWorld.BodyCategories.eNonEdibleTiles.ordinal()))
             //if (other.getUserData() != null)
             {
-                Vec2 collisionNorm = edge.contact.m_manifold.localNormal;
+                
                 if (other.getUserData() != null)
                 {
                     TileType tileType = ((Tile)other.getUserData()).getTileType();

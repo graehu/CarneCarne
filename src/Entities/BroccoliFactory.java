@@ -61,15 +61,11 @@ public class BroccoliFactory implements iEntityFactory {
         parameters.put("position", position);
         parameters.put("aIEntity", entity);
         parameters.put("category", sWorld.BodyCategories.eEnemy);
-/*<<<<<<< HEAD
-        entity.setBody(sWorld.useFactory("CircleCharFactory",parameters));
-=======*/
         entity.mBody = sWorld.useFactory("CircleCharFactory",parameters);
         //entity.mBody.
         Fixture silly = entity.mBody.getFixtureList();
         entity.mBody.setFixedRotation(true);
         silly.setFriction(20);
-//>>>>>>> mawork
         
         BroccoliController controller = new BroccoliController(entity);
         entity.mController = controller;
