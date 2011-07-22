@@ -30,11 +30,13 @@ public class CircleCharFactory  implements iPhysicsFactory
         CircleShape wheelShape = new CircleShape();
         FixtureDef circleFixture = new FixtureDef();
         wheelShape.m_radius = 0.45f;
+        //wheelShape.
         circleFixture.density = 4;
         circleFixture.friction = 5;
         circleFixture.filter.categoryBits = (1 << category.ordinal());
         circleFixture.filter.maskBits = Integer.MAX_VALUE;
         circleFixture.shape = wheelShape;
+        //circleFixture.
         
         //PolygonShape axelShape = new PolygonShape();
         //FixtureDef axelFixture = new FixtureDef();
@@ -45,6 +47,7 @@ public class CircleCharFactory  implements iPhysicsFactory
         //axelFixture.filter.groupIndex = -100;
         //axelFixture.shape = axelShape;
         BodyDef def = new BodyDef();
+        //def.
         def.type = BodyType.DYNAMIC;
         def.userData = entity;
         def.position = position;

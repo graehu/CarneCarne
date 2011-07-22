@@ -86,7 +86,7 @@ public class Broccoli extends AIEntity
                  if(!mSkin.isAnimating("broc_1_idlein"))
                  {
                     mSkin.deactivateSubSkin("broc_1_idlein");
-                    // mSkin.stopAt("broc_1_idle",6);
+                    // mSkin.stopAt("broc_1_idle", 6);
                     if(mIdleTick < 0)
                     {
                         if(!mSkin.isAnimating("broc_1_idle"))
@@ -109,192 +109,200 @@ public class Broccoli extends AIEntity
     }
     public void move(float _speed)
     {
-        //setAnimation("broc_2_jump");
-        //setAnimation("broc_2_air");
-        //mAIEntityState.getState();
-        if(mState == brocState.eIdle)
+        switch(mState)
         {
-            mSkin.deactivateSubSkin("broc_1_idlein");
-            mSkin.deactivateSubSkin("broc_1_idle");
-            mCurrentAnimation = "broc_1_idleout";
-            mSkin.activateSubSkin(mCurrentAnimation, false, mAnimSpeed);
-            mState = brocState.eIdleOut;
-        }
-        else if(mState == brocState.eIdleOut)
-        {
-            mSkin.stopAt("broc_1_idleout",3);
-            if(!mSkin.isAnimating("broc_1_idleout"))
+            case eIdle:
             {
                 mSkin.deactivateSubSkin("broc_1_idlein");
-                mSkin.deactivateSubSkin("broc_1_idleout");
-                mCurrentAnimation = "broc_2_jump";
+                mSkin.deactivateSubSkin("broc_1_idle");
+                mCurrentAnimation = "broc_1_idleout";
                 mSkin.activateSubSkin(mCurrentAnimation, false, mAnimSpeed);
-                mState = brocState.eJump;
+                mState = brocState.eIdleOut;
+                break;
             }
-        }
-        else if(mState == brocState.eJump)
-        {
-            mSkin.stopAt("broc_2_land",4);
-            if(!mSkin.isAnimating("broc_2_land"))
+            case eIdleOut:
             {
-                mSkin.deactivateSubSkin("broc_2_land");
-                mCurrentAnimation = "broc_2_jump";
-                mSkin.activateSubSkin(mCurrentAnimation, false, mAnimSpeed);
-                mState = brocState.eAir;
-            }
-        }
-        else if(mState == brocState.eAir)
-        {
-            mSkin.stopAt("broc_2_jump",3);
-            if(!mSkin.isAnimating("broc_2_jump"))
-            {
-                jump();
-                stopJumping();
-                mBody.applyLinearImpulse(new Vec2(_speed,0), mBody.getWorldCenter());
-                mSkin.deactivateSubSkin("broc_2_jump");
-                mCurrentAnimation = "broc_2_air";
-                mSkin.activateSubSkin(mCurrentAnimation, false, mAnimSpeed);
-                mState = brocState.eLand;
-            }
-        }
-        else if(mState == brocState.eLand)
-        {
-            if(!isAirBorn())
-            {
-                mSkin.stopAt("broc_2_air",4);
-                if(!mSkin.isAnimating("broc_2_air"))
+                mSkin.stopAt("broc_1_idleout",3);
+                if(!mSkin.isAnimating("broc_1_idleout"))
                 {
-                    mSkin.deactivateSubSkin("broc_2_air");
-                    mCurrentAnimation = "broc_2_land";
+                    mSkin.deactivateSubSkin("broc_1_idlein");
+                    mSkin.deactivateSubSkin("broc_1_idleout");
+                    mCurrentAnimation = "broc_2_jump";
                     mSkin.activateSubSkin(mCurrentAnimation, false, mAnimSpeed);
                     mState = brocState.eJump;
                 }
+                break;
+            }
+            case eJump:
+            {
+                mSkin.stopAt("broc_2_land",4);
+                if(!mSkin.isAnimating("broc_2_land"))
+                {
+                    mSkin.deactivateSubSkin("broc_2_land");
+                    mCurrentAnimation = "broc_2_jump";
+                    mSkin.activateSubSkin(mCurrentAnimation, false, mAnimSpeed);
+                    mState = brocState.eAir;
+                }
+                break;
+            }
+            case eAir:
+            {
+                mSkin.stopAt("broc_2_jump",3);
+                if(!mSkin.isAnimating("broc_2_jump"))
+                {
+                    jump();
+                    stopJumping();
+                    mBody.applyLinearImpulse(new Vec2(_speed,0), mBody.getWorldCenter());
+                    mSkin.deactivateSubSkin("broc_2_jump");
+                    mCurrentAnimation = "broc_2_air";
+                    mSkin.activateSubSkin(mCurrentAnimation, false, mAnimSpeed);
+                    mState = brocState.eLand;
+                }
+                break;
+            }
+            case eLand:
+            {
+                if(!isAirBorn())
+                {
+                    mSkin.stopAt("broc_2_air",4);
+                    if(!mSkin.isAnimating("broc_2_air"))
+                    {
+                        mSkin.deactivateSubSkin("broc_2_air");
+                        mCurrentAnimation = "broc_2_land";
+                        mSkin.activateSubSkin(mCurrentAnimation, false, mAnimSpeed);
+                        mState = brocState.eJump;
+                    }
+                }
+                break;
             }
         }
         mActive = true;
     }
     public void attack()
     {
-        if(mState == brocState.eLand)
+        switch(mState)
         {
-            if(!isAirBorn())
+            
+            case eLand:
             {
-                mSkin.stopAt("broc_2_air",4);
-                if(!mSkin.isAnimating("broc_2_air"))
+                if(!isAirBorn())
                 {
-/*<<<<<<< HEAD
-                    mAIEntityState.getState();
-                    jump();
-                    stopJumping();
-                    getBody().applyLinearImpulse(new Vec2(_speed,0), getBody().getWorldCenter());
-                    //setAnimation("broc_2_air");
-                    mSkin.deactivateSubSkin("broc_2_jump");
-                    mCurrentAnimation = "broc_2_air";
-                    mSkin.activateSubSkin(mCurrentAnimation, true, mAnimSpeed);
-                    mState = brocState.eLand;
-=======*/
-                    mSkin.deactivateSubSkin("broc_2_air");
+                    mSkin.stopAt("broc_2_air",4);
+                    if(!mSkin.isAnimating("broc_2_air"))
+                    {
+                        mSkin.deactivateSubSkin("broc_2_air");
+                        mCurrentAnimation = "broc_3_start";
+                        mSkin.activateSubSkin(mCurrentAnimation, false, mAnimSpeed);
+                        mState = brocState.eThreaten;
+                    } 
+                }
+                break;
+            }
+            case eJump:
+            {
+                mSkin.stopAt("broc_2_land",5);
+                if(!mSkin.isAnimating("broc_2_land"))
+                {
+                    mSkin.deactivateSubSkin("broc_2_land");
                     mCurrentAnimation = "broc_3_start";
                     mSkin.activateSubSkin(mCurrentAnimation, false, mAnimSpeed);
                     mState = brocState.eThreaten;
-//>>>>>>> mawork
                 }
+                break;
             }
-        }
-        else if(mState == brocState.eJump)
-        {
-            mSkin.stopAt("broc_2_land",5);
-            if(!mSkin.isAnimating("broc_2_land"))
+            case eAir:
             {
-                mSkin.deactivateSubSkin("broc_2_land");
-                mCurrentAnimation = "broc_3_start";
-                mSkin.activateSubSkin(mCurrentAnimation, false, mAnimSpeed);
-                mState = brocState.eThreaten;
+                mSkin.stopAt("broc_2_jump",4);
+                if(!mSkin.isAnimating("broc_2_jump"))
+                {
+                    mSkin.deactivateSubSkin("broc_2_jump");
+                    mCurrentAnimation = "broc_3_start";
+                    mSkin.activateSubSkin(mCurrentAnimation, false, mAnimSpeed);
+                    mState = brocState.eThreaten;
+                }
+                break;
             }
-        }
-        else if(mState == brocState.eAir)
-        {
-            mSkin.stopAt("broc_2_jump",4);
-            if(!mSkin.isAnimating("broc_2_jump"))
+            case eIdle:
             {
-                mSkin.deactivateSubSkin("broc_2_jump");
-                mCurrentAnimation = "broc_3_start";
-                mSkin.activateSubSkin(mCurrentAnimation, false, mAnimSpeed);
-                mState = brocState.eThreaten;
+                if(mSkin.isAnimating("broc_2_land"))
+                {
+                    mSkin.deactivateSubSkin(mCurrentAnimation);
+                    mSkin.deactivateSubSkin("broc_1_idlein");
+                    mSkin.deactivateSubSkin("broc_1_idle");
+                    mCurrentAnimation = "broc_1_idleout";
+                    mSkin.activateSubSkin(mCurrentAnimation, false, mAnimSpeed);
+                    mState = brocState.eIdleOut;
+                }
+                break;
             }
-        }
-        else if(mState == brocState.eIdle)
-        {
-            if(mSkin.isAnimating("broc_2_land"))
+            case eIdleOut:
             {
-                mSkin.deactivateSubSkin(mCurrentAnimation);
-                mSkin.deactivateSubSkin("broc_1_idlein");
-                mSkin.deactivateSubSkin("broc_1_idle");
-                mCurrentAnimation = "broc_1_idleout";
-                mSkin.activateSubSkin(mCurrentAnimation, false, mAnimSpeed);
-                mState = brocState.eIdleOut;
+                mSkin.stopAt("broc_1_idleout",3);
+                if(!mSkin.isAnimating("broc_1_idleout"))
+                {
+                    mSkin.deactivateSubSkin("broc_1_idlein");
+                    mSkin.deactivateSubSkin("broc_1_idleout");
+                    mCurrentAnimation = "broc_3_start";
+                    mSkin.activateSubSkin(mCurrentAnimation, false, mAnimSpeed);
+                    mState = brocState.eThreaten;
+                }
+                break;
             }
-        }
-        else if(mState == brocState.eIdleOut)
-        {
-            mSkin.stopAt("broc_1_idleout",3);
-            if(!mSkin.isAnimating("broc_1_idleout"))
+            case eThreaten:
             {
-                mSkin.deactivateSubSkin("broc_1_idlein");
-                mSkin.deactivateSubSkin("broc_1_idleout");
-                mCurrentAnimation = "broc_3_start";
-                mSkin.activateSubSkin(mCurrentAnimation, false, mAnimSpeed);
-                mState = brocState.eThreaten;
+                mSkin.stopAt("broc_3_start",2);
+                if(!mSkin.isAnimating("broc_3_start"))
+                {
+                    mSkin.deactivateSubSkin("broc_3_start");
+                    mCurrentAnimation = "broc_3_mid";
+                    mSkin.activateSubSkin(mCurrentAnimation, false, mAnimSpeed);
+                    mState = brocState.eSubmerge;
+                    sParticleManager.createSystem("MelonSDamageParticle", 
+                            sWorld.translateToWorld(mBody.getPosition()).sub(sWorld.getPixelTranslation()).add(new Vec2(32,32))
+                            , 1);
+                }
+                break;
             }
-        }
-        else if(mState == brocState.eThreaten)
-        {
-            mSkin.stopAt("broc_3_start",2);
-            if(!mSkin.isAnimating("broc_3_start"))
+            case eSubmerge:
             {
-                mSkin.deactivateSubSkin("broc_3_start");
-                mCurrentAnimation = "broc_3_mid";
-                mSkin.activateSubSkin(mCurrentAnimation, false, mAnimSpeed);
-                mState = brocState.eSubmerge;
-                sParticleManager.createSystem("MelonSDamageParticle", 
-                        sWorld.translateToWorld(mBody.getPosition()).sub(sWorld.getPixelTranslation()).add(new Vec2(32,32))
-                        , 1);
-            }
-        }
-        else if(mState == brocState.eSubmerge)
-        {
-            mSkin.stopAt("broc_3_mid",2);
-            if(!mSkin.isAnimating("broc_3_mid"))
-            {
-                mSkin.deactivateSubSkin("broc_3_mid");
-                mCurrentAnimation = "broc_3_end";
-                mSkin.activateSubSkin(mCurrentAnimation, false, mAnimSpeed);
-                mState = brocState.eExplode;
-                
+                mSkin.stopAt("broc_3_mid",2);
+                if(!mSkin.isAnimating("broc_3_mid"))
+                {
+                    mSkin.deactivateSubSkin("broc_3_mid");
+                    mCurrentAnimation = "broc_3_end";
+                    mSkin.activateSubSkin(mCurrentAnimation, false, mAnimSpeed);
+                    mState = brocState.eExplode;
+
+                    ParticleSysBase sys = sParticleManager.createSystem("broccoliExplode1", 
+                    sWorld.translateToWorld(mBody.getPosition()).sub(sWorld.getPixelTranslation()).add(new Vec2(32,32))
+                    , 0.001f);
+                    sParticleManager.createSystem("broccoliExplode2", 
+                    sWorld.translateToWorld(mBody.getPosition()).sub(sWorld.getPixelTranslation()).add(new Vec2(32,32))
+                    , 0.001f);//*/
                     /*ParticleSysBase sys = sParticleManager.createSystem("broccoliExplode", 
-                    sWorld.translateToWorld(mBody.getPosition()).sub(sWorld.getPixelTranslation()).add(new Vec2(32,32))
-                    , 0.001f);*/
-                /*ParticleSysBase sys = sParticleManager.createSystem("broccoliExplode", 
-                    sWorld.translateToWorld(mBody.getPosition()).sub(sWorld.getPixelTranslation()).add(new Vec2(32,32))
-                    , 1);*/
-                //sys.setWind(10);
-                //sys.setAngularOffset(180);
+                        sWorld.translateToWorld(mBody.getPosition()).sub(sWorld.getPixelTranslation()).add(new Vec2(32,32))
+                        , 1);*/
+                    //sys.setWind(10);
+                    //sys.setAngularOffset(180);
+                }
+                break;
             }
-        }
-        else if(mState == brocState.eExplode)
-        {
-            if(!mSkin.isAnimating("broc_3_end"))
-            { 
-                mSkin.deactivateSubSkin(mCurrentAnimation);
-                mSkin.activateSubSkin(mCurrentAnimation, false, mAnimSpeed);
-                /*ParticleSysBase sys = sParticleManager.createSystem("MelonSDamageParticle", 
-                    sWorld.translateToWorld(mBody.getPosition()).sub(sWorld.getPixelTranslation()).add(new Vec2(32,32))
-                    , 1);*/
-                            ;//*/
-                //sys.setWind(40);
-                //sys.setAngularOffset(270);
+            case eExplode:
+            {
+                if(!mSkin.isAnimating("broc_3_end"))
+                { 
+                    mSkin.deactivateSubSkin(mCurrentAnimation);
+                    mSkin.activateSubSkin(mCurrentAnimation, false, mAnimSpeed);
+                    /*ParticleSysBase sys = sParticleManager.createSystem("MelonSDamageParticle", 
+                        sWorld.translateToWorld(mBody.getPosition()).sub(sWorld.getPixelTranslation()).add(new Vec2(32,32))
+                        , 1);*/
+                                ;//*/
+                    //sys.setWind(40);
+                    //sys.setAngularOffset(270);
+                }
+                break;
+
             }
-            
         }
         mActive = true;        
     }

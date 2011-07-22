@@ -9,6 +9,7 @@ import Graphics.Skins.iSkin;
 import Graphics.Skins.sSkinFactory;
 import World.sWorld;
 import java.util.HashMap;
+import org.jbox2d.collision.shapes.MassData;
 import org.jbox2d.common.Vec2;
 
 /**

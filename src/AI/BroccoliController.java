@@ -37,12 +37,7 @@ public class BroccoliController extends iAIController
         if(mTarget != null)
         {
 
-/*<<<<<<< HEAD
-            Vec2 myPos = mEntity.getBody().getPosition();
-            Vec2 targetPos = mTarget.getBody().getPosition();
 
-            if((targetPos.x < myPos.x+mRange) && targetPos.x > myPos.x-mRange)
-=======*/
             Vec2 myPos = mEntity.getBody().getPosition();
             Vec2 targetPos = mTarget.getBody().getPosition();
             
@@ -52,18 +47,11 @@ public class BroccoliController extends iAIController
                 {
                     
                     ((Broccoli)mEntity).attack();
-                    /*if(targetPos.x > myPos.x)
-                    {
-                        ((Broccoli)mEntity).move(2.5f);
-                    }
-                    else
-                    {
-                        ((Broccoli)mEntity).move(-2.5f);
-                    }*/
+
                 }
             }
             else if((targetPos.x < myPos.x+mFollowRadius) && targetPos.x > myPos.x-mFollowRadius)
-//>>>>>>> mawork
+
             {
                 if((targetPos.y < myPos.y+mFollowRadius) && targetPos.y > myPos.y-mFollowRadius)
                 {

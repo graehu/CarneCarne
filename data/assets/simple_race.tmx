@@ -404,25 +404,31 @@
   <tile id="8">
    <properties>
     <property name="Event" value="RaceCheckPoint"/>
+    <property name="Number" value="2"/>
+   </properties>
+  </tile>
+  <tile id="9">
+   <properties>
+    <property name="Event" value="RaceCheckPoint"/>
     <property name="Number" value="1"/>
    </properties>
   </tile>
   <tile id="11">
    <properties>
     <property name="Event" value="RaceCheckPoint"/>
-    <property name="Number" value="2"/>
+    <property name="Number" value="3"/>
    </properties>
   </tile>
   <tile id="12">
    <properties>
     <property name="Event" value="RaceCheckPoint"/>
-    <property name="Number" value="3"/>
+    <property name="Number" value="4"/>
    </properties>
   </tile>
   <tile id="15">
    <properties>
     <property name="Event" value="RaceCheckPoint"/>
-    <property name="Number" value="4"/>
+    <property name="Number" value="5"/>
    </properties>
   </tile>
  </tileset>
@@ -470,6 +476,105 @@
  <tileset firstgid="2437" name="Backgroundmiddle" tilewidth="64" tileheight="64">
   <image source="Backgroundmiddle.png" width="2982" height="1705"/>
  </tileset>
+ <tileset firstgid="3633" name="CheckpointFlags" tilewidth="64" tileheight="64">
+  <image source="CheckpointFlags.png" width="256" height="256"/>
+  <tile id="0">
+   <properties>
+    <property name="Event" value="RaceCheckPoint"/>
+    <property name="Number" value="1"/>
+   </properties>
+  </tile>
+  <tile id="1">
+   <properties>
+    <property name="Event" value="RaceCheckPoint"/>
+    <property name="Number" value="2"/>
+   </properties>
+  </tile>
+  <tile id="2">
+   <properties>
+    <property name="Event" value="RaceCheckPoint"/>
+    <property name="Number" value="3"/>
+   </properties>
+  </tile>
+  <tile id="3">
+   <properties>
+    <property name="Event" value="RaceCheckPoint"/>
+    <property name="Number" value="4"/>
+   </properties>
+  </tile>
+  <tile id="4">
+   <properties>
+    <property name="Event" value="RaceCheckPoint"/>
+    <property name="Number" value="5"/>
+   </properties>
+  </tile>
+  <tile id="5">
+   <properties>
+    <property name="Event" value="RaceCheckPoint"/>
+    <property name="Number" value="6"/>
+   </properties>
+  </tile>
+  <tile id="6">
+   <properties>
+    <property name="Event" value="RaceCheckPoint"/>
+    <property name="Number" value="7"/>
+   </properties>
+  </tile>
+  <tile id="7">
+   <properties>
+    <property name="Event" value="RaceCheckPoint"/>
+    <property name="Number" value="8"/>
+   </properties>
+  </tile>
+  <tile id="8">
+   <properties>
+    <property name="Event" value="RaceCheckPoint"/>
+    <property name="Number" value="9"/>
+   </properties>
+  </tile>
+  <tile id="9">
+   <properties>
+    <property name="Event" value="RaceCheckPoint"/>
+    <property name="Number" value="10"/>
+   </properties>
+  </tile>
+  <tile id="10">
+   <properties>
+    <property name="Event" value="RaceCheckPoint"/>
+    <property name="Number" value="11"/>
+   </properties>
+  </tile>
+  <tile id="11">
+   <properties>
+    <property name="Event" value="RaceCheckPoint"/>
+    <property name="Number" value="12"/>
+   </properties>
+  </tile>
+  <tile id="12">
+   <properties>
+    <property name="Event" value="RaceCheckPoint"/>
+    <property name="Number" value="13"/>
+   </properties>
+  </tile>
+  <tile id="13">
+   <properties>
+    <property name="Event" value="RaceCheckPoint"/>
+    <property name="Number" value="14"/>
+   </properties>
+  </tile>
+  <tile id="14">
+   <properties>
+    <property name="Event" value="RaceCheckPoint"/>
+    <property name="Number" value="15"/>
+   </properties>
+  </tile>
+  <tile id="15">
+   <properties>
+    <property name="Event" value="RaceCheckPoint"/>
+    <property name="Number" value="16"/>
+   </properties>
+  </tile>
+ </tileset>
  <layer name="Background3" width="100" height="100">
   <properties>
    <property name="ScaleX" value="0.05"/>
@@ -499,7 +604,7 @@
  </layer>
  <layer name="StaticBackground" width="100" height="100">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC+3dS27CMBAA0OT+R+EULFl0wSEKpF8KSN12Fl22DaH+xOE9aVaRnIlHTkZWJHcdwDIMfdc9RTxHvPS1s+E1avAW8R5xVI/qPqIGp4hzxEU9mvU5Urux6wC0Tb87L/rdedHvti1lH6snhnSsJwAAgHY9RAy1kwDu1vo7/pJq7+kxxtkl3MdKPd692cfcHRLOX+rxAAAAAKba1k5gIf67H1jiX7ZV/ls0w7+DAJSS4pvjuwUAQAn6Tn6zqZ0AAEAhemIAAGiD3h3mx7qEMnKtNWt4GvNVVuvz3Xr+Y5b+fABz8tM713sYAAAAAPLJcZaD8yFul+MsB+dDAAAAXOcLOvu0YkCcAAA=
+   H4sIAAAAAAAAC+3dS27DIBAAUHy8njWnyGHSfNt8pWwzi+xa1a0CGNz3pFlZwpgRMEKWSAlgHrZDSruIfcRhmLo3fEQOPiOOESf5mNw5cnCJuEbc5KNb95HcjT0HoG/q3baod9ui3u1bzjpWTQz5mE8AAAAAX62GlN4znpvkbq8Fy2f8JNfZ0zra2WQcv9ztAQAAANC3t6k7MBOvngfW+JdtUf4V3fDvIAC15Nhz7FsAANSg7gQA4L9TEwMAQB/U7tAe8xLqKDXXzOG/MV519T7evfd/zNy/D6Al36251mEAAAAAKKfE3RpzvK+jlhJ3a7ivAwAA4Hce+CzelkCcAAA=
   </data>
  </layer>
  <layer name="Animations" width="100" height="100">
@@ -509,12 +614,12 @@
  </layer>
  <layer name="Level" width="100" height="100">
   <data encoding="base64" compression="gzip">
-   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
+   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
   </data>
  </layer>
  <layer name="StaticForeground" width="100" height="100">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC+3cQW6CQBQGYK5kGk3axkUXLlx40baLXqO3qpNKYsgwguY5I35f8uICHSfzAwMCdh0AAAAAAAAAAAAA3GZ7rLfanXhSr5lanSq3jFirmUUseQAAAMT4rN0BAICFcXzVFnnA8qV7HHLX01N9BH3nd0CbS9lfrbvyddyITH4C2nyWPKIyIW+Yx+FY+7NXmdxm7nxwPua5cV8XlrWk1f3VNfNBKZNLebXiUfNYciYtKuXxcqrDyGeH497v47aZtmQyTRrTl0yNZZD7/KXta0573K6UiRzi7Lrycde12xjz9DmYD+rox3/4HIj5oA7zQXvMBwAA9aXzlvfu/zis9HvW/vQ+55SxNt28Z6Y3dbr5NNJ6n9b5KVmkbcn5TLwpmcjivs7nh2EO/fzC/fW59CUHuK/f2h0gSy5tkkub5AIAAPV9NVwRz20CAADAo9jV7sDCjf0/zFgRb+o9zbBEf8dLHKFAnAAA
+   H4sIAAAAAAAAC+3d3W6CMBgGYG7JLJpsiwc72IEH3uh+3G5jdzW6SUJIqaCr7fB5ki8motj0BQpqtWkAAAAAAAAAAADO81y6AQBUY9vWQ+lG3Kj7SK2OFVtGXquZRV7yAAAAoEZvpRsAAK1DW++D+15KNIQf+r4u8oDlC99xiH2eHuop02vmuBZcyvFq3aQ/x82RyWeGdd5KHrkyIW6Yx76tXe9WJpeZOx70+zzW7+vEsprUerw6ZzxIZXIqr0sc/nBd/zWP2jJZulQed8fajzx32O/dMW4bWZdMpgl9ehepsQxizz+1f81ZH5dLZSKHfMKctNR517n7GPN0ORgPyuj6fzgPxHhQhvGgPsYDAIDywnXLY/N7HpZ6P2t3fJxryrw2zbw505syzbwZYbsP2/yULMK+5HomvymZyOK6+uPDMIdufOH6uly6kgNc11fpBhAllzrJpU5yAQCA8vpzIz/aeq24cszjBAAAgFr5L8e8xn4fZqzIb+p3mmGJvgGRoSOzQJwAAA==
   </data>
  </layer>
  <layer name="Foreground" width="100" height="100">
@@ -529,7 +634,7 @@
  </layer>
  <layer name="Flags" width="100" height="100">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC+3WQQqCUBiF0X7a/5JqFhTUKhq1gcZNAhGNlESvdg7ciSPxg/fc7YCvqvvoWN095n8z3vTIokeWqXo8e85CxuvrwXL0yNLX47CCJrdqbys+3R/pTf6tRzo9sujBHPxfZdEjix5Z9MiiRxY9AAAgw7m6+8WpumM4PbLokUUPAAAAAAAAAAAAAIDtu1d7LEsPAAAAAAAAAAAAAFi3azWbyqWaMY4eWfTIokcWPbLtfcNV0w8AgCFec6SEUUCcAAA=
+   H4sIAAAAAAAAC+3bQWrCUBSG0YTO315srbvXHXQVHXUDjqVQUclLm/pq/GPPgTvJKPBBbngkXQf8qB9e2vXD+Zj/zviiRxY9srT22FeegVyv1oP70SNLrcd2AU3e+st5FGP7I73Jf+uRTo8sejAH71dZ9Gi3KtNmCj3a6fG49MiiBwAAZHgpw2nxXIbDdHpk0QOu8+ScBwAAAPiGswMAauwHAG7BfgGgxn4AGLf2bWuUzx6aZDi20GM+7/3lnDvvock89FgWTbLokUeTPFoAAAAAAAAAAADc3qac5q+8ltPwO3pk0SOLHln0yOa/+WXTDwCAKQ78AAMPQJwAAA==
   </data>
  </layer>
 </map>

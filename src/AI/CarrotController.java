@@ -94,7 +94,7 @@ public class CarrotController extends iAIController
                 mState = CarrotState.eDrillAttack;
             }
             
-            ((Carrot)mEntity).fly(target, 0.5f);
+            ((Carrot)mEntity).fly(target, 0.25f);
         }
         else if(mState == CarrotState.eDrillAttack)
         {

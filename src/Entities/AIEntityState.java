@@ -305,6 +305,10 @@ class AIEntityState
             {
                 //Sound.play(mJumpSound);
             }
+            case eSwimming:
+            {
+                int magic = 0;
+            }
         }
         mState = _newState;
     }
