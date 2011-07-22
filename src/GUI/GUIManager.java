@@ -1,12 +1,16 @@
 
 package GUI;
 
+import Events.iEvent;
+import Events.iEventListener;
+import Events.sEvents;
 import GUI.Components.GraphicalComponent;
 import GUI.Components.iComponent;
-import java.util.Collection;
+import Graphics.sGraphicsManager;
+import Utils.Throw;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
+import org.jbox2d.common.Vec2;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
@@ -15,31 +19,66 @@ import org.newdawn.slick.geom.Vector2f;
  *
  * @author Aaron
  */
-public class GUIManager {
 
-    enum ComponentType
+//FIXME: GUI should be reworked to use relative screen coords
+
+//this class provides multiplue instances o9f itself to allow for persistance GUIs between states
+public class GUIManager implements iEventListener
+{
+    static private int keyCount = 0;
+    static private HashMap<Integer, GUIManager> instances = new HashMap<Integer, GUIManager>();
+    static GUIManager currentInstance = null;
+    float scale = 1.0f;
+    
+    //Gets current instance
+    public static GUIManager get()
+    {
+        return currentInstance;
+    }
+    public static void set(int _inst)
+    {
+        currentInstance = instances.get(_inst);
+    }
+    
+    public static int create(GameContainer _context)
+    {
+        instances.put(keyCount, new GUIManager(_context));
+        return keyCount++;
+    }
+    
+    public enum ComponentType
     {
         eGraphical,
         eComponentTypeCount
     }
     
-    static HashMap<Integer, iComponent> mManagedRoots = new HashMap<Integer, iComponent>();
-    static GameContainer mContainer = null;
-    static int IDCounter = 0;
-    protected GUIManager()
-    {
-        
-    }
-    
-    public static void init(GameContainer _context) throws SlickException
+    HashMap<Integer, iComponent> mManagedRoots = new HashMap<Integer, iComponent>();
+    GameContainer mContainer = null;
+    int IDCounter = 0;
+    public GUIManager(GameContainer _context)
     {
         if(_context != null)
             mContainer = _context;
         else
-            throw new SlickException("Null GUIContext given!");
+            Throw.err("Null GUIContext given!");
+        //subscribe to events
+        sEvents.subscribeToEvent("WindowResizeEvent", this);
     }
     
-    public static Integer createRootComponent(ComponentType _type, Vector2f _position, Vector2f _dimensions)
+    public Integer addRootComponent(iComponent _component)
+    {
+        if(_component.isRoot())
+        {
+            mManagedRoots.put(IDCounter, _component);
+            return IDCounter++;
+        }
+        else
+        {
+            Throw.err("Component is not a root");
+            return null;
+        }
+    }
+    public Integer createRootComponent(ComponentType _type, Vector2f _position, Vector2f _dimensions)
     {
         iComponent component = null;
         switch(_type)
@@ -48,8 +87,7 @@ public class GUIManager {
             {
                 component = new GraphicalComponent(mContainer, _position, _dimensions);
                 mManagedRoots.put(IDCounter, component);
-                IDCounter++;
-                return IDCounter;
+                return IDCounter++;
                 //break;
             }
             default:
@@ -60,7 +98,7 @@ public class GUIManager {
         }
     }
     
-    public static void update(int _delta)
+    public void update(int _delta)
     {
         Iterator<iComponent> itr = mManagedRoots.values().iterator();
         while(itr.hasNext())
@@ -71,12 +109,27 @@ public class GUIManager {
         }
     }
     
-    public static void render(boolean _debug) throws SlickException
+    public void render(boolean _debug) throws SlickException
     {
-//        for(iComponent c :mManagedRoots)
-//        {
-//            c.render(mContainer, mContainer.getGraphics(), _debug);
-//        }
+        Iterator<iComponent> itr = mManagedRoots.values().iterator();
+        while(itr.hasNext())
+        {
+            iComponent c = itr.next();
+            c.setLocalScale(scale);
+            c.render(mContainer, mContainer.getGraphics(), _debug);
+        }
+    }
+    
+    public boolean trigger(iEvent _event) 
+    {
+        if(_event.getType().equals("WindowResizeEvent"))
+        {
+            //calc scale
+            Vec2 screen = sGraphicsManager.getTrueScreenDimensions();
+            //FIXME: assumes native resolution at 1680x1050
+            scale = screen.x / 1680;
+        }
+        return false; //do not unsubscribe
     }
     
 }

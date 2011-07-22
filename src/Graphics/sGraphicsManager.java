@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.jbox2d.common.Vec2;
-import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.newdawn.slick.AppGameContainer;
@@ -23,6 +22,7 @@ import org.newdawn.slick.ShapeFill;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Shape;
+import org.newdawn.slick.gui.GUIContext;
 
 /**
  *
@@ -31,7 +31,7 @@ import org.newdawn.slick.geom.Shape;
 public class sGraphicsManager {
 
     private static Vec2 mNativeScreenDimentions = new Vec2(0,0);
-    private static Vec2 mScreenDimensions = new Vec2(800,600);
+    private static Vec2 mScreenDimensions = new Vec2(0,0);
     private static Rectangle mClip;
     private static boolean mAllowTransform = false;
     private static boolean mIsFullScreen = false;
@@ -40,9 +40,14 @@ public class sGraphicsManager {
     private static ArrayList<iSprite> mManagedSprites = new ArrayList<iSprite>();
     private static AppGameContainer mGameContainer;
     
+    public static GUIContext getGUIContext(){return mGameContainer;}
     public static Vec2 RelativeToAbsoluteScreen(Vec2 _rel)
     {
          return new Vec2(Display.getDisplayMode().getWidth() * _rel.x, Display.getDisplayMode().getHeight() * _rel.y);
+    }
+    public static Vec2 AbsoluteToRelativeScreen(Vec2 _abs)
+    {
+        return new Vec2(_abs.x / Display.getDisplayMode().getWidth(), _abs.y / Display.getDisplayMode().getHeight());
     }
     public static Vec2 getScreenDimensions()
     {
@@ -81,9 +86,8 @@ public class sGraphicsManager {
     public static void endTransform()
     {
         mAllowTransform = false;
-        mGameContainer.getGraphics().popTransform();
-        
-        //mGameContainer.getGraphics().clearClip();                
+        mGameContainer.getGraphics().clearClip(); 
+        mGameContainer.getGraphics().popTransform();              
     }
     public static void removeClip()
     {
@@ -110,9 +114,22 @@ public class sGraphicsManager {
         if(mAllowTransform)
             mGameContainer.getGraphics().rotate(_x, _y, _angle);
     }
-    public static void fill(Shape shape, ShapeFill fill)
+    public static void scale(float _s)
     {
-        mGameContainer.getGraphics().fill(shape, fill);
+        if(mAllowTransform)
+            mGameContainer.getGraphics().scale(_s, _s);
+    }
+    public static void setColor(Color _color)
+    {
+        mGameContainer.getGraphics().setColor(_color);
+    }
+    public static void fill(Shape _shape)
+    {
+        mGameContainer.getGraphics().fill(_shape);
+    }
+    public static void fill(Shape _shape, ShapeFill _fill)
+    {
+        mGameContainer.getGraphics().fill(_shape, _fill);
     }
     public static void addSprite(iSprite _sprite)
     {

@@ -6,7 +6,6 @@ package GUI.Components;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.newdawn.slick.Animation;
 import org.newdawn.slick.BigImage;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;

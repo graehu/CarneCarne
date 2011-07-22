@@ -10,6 +10,7 @@ import Events.PlayerCreatedEvent;
 import Events.iEvent;
 import Events.iEventListener;
 import Events.sEvents;
+import GUI.GUIManager;
 import Graphics.Particles.sParticleManager;
 import Graphics.Skins.sSkinFactory;
 import Graphics.Sprites.sSpriteFactory;
@@ -48,10 +49,12 @@ public class StateGame extends BasicGameState implements iEventListener {
     {
         return mGameType;
     }
+    private int mGUIRef;
     private iGameMode mGameMode; 
     StateChanger mChangeToMenu;
     static private int mPlayers;
     static public Vec2 mMousePos = new Vec2(0,0);
+    
     
     public StateGame()
     {
@@ -85,21 +88,29 @@ public class StateGame extends BasicGameState implements iEventListener {
 
     public void update(GameContainer _gc, StateBasedGame _sbg, int _delta) throws SlickException 
     {        
+        if(die) _gc.exit();
+        
         //update sounds
         sSound.poll(_delta);
         
-        if(die) _gc.exit();
+        //update input
         sInput.update(_delta);
+        
+        //update game
         mGameMode = mGameMode.update(_gc.getGraphics(), _delta);
+        
         //update particles
         sParticleManager.update(_delta);
+        
+        //update GUI
+        GUIManager.get().update(_delta);
     }
     public void render(GameContainer _gc, StateBasedGame _sbg, Graphics _grphcs) throws SlickException
     {
         Vec2 s = sGraphicsManager.getScreenDimensions();
         
         mGameMode.render(_grphcs);
-        
+        GUIManager.get().render(false);
         //cleanup texture data
         //screen.flushPixelData();
         
@@ -110,7 +121,8 @@ public class StateGame extends BasicGameState implements iEventListener {
     public void enter(GameContainer container, StateBasedGame game) throws SlickException 
     {         
         super.enter(container, game);
-        
+        //set GUI to this
+        GUIManager.set(mGUIRef);
         container.setMouseGrabbed(true);
         //sSound.playAsMusic("level1", true);
     }
@@ -125,12 +137,16 @@ public class StateGame extends BasicGameState implements iEventListener {
     }
     public void init(GameContainer _gc, StateBasedGame _sbg) throws SlickException
     {
+        //initialise GUI
+        mGUIRef = GUIManager.create(_gc);
+        GUIManager.set(mGUIRef) ;
         
         //initialise sound
         sSound.loadSound("level1", "assets/music/Level1.ogg");
         sSound.loadSound("jump", "assets/sfx/fart_4.ogg");
         sSound.loadSound("tongueFire", "assets/sfx/tongueFire.ogg");
-        //createRootPane();
+        
+        //initialise game
         mGameType = GameType.eRaceGame;
         sEntityFactory.init();
         sSkinFactory.init();
