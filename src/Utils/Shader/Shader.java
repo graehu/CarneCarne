@@ -1,4 +1,4 @@
-package Shader;
+package Utils.Shader;
 
 import java.nio.FloatBuffer;
 import java.util.ArrayList;

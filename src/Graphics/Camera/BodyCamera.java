@@ -13,19 +13,26 @@ import Events.iEventListener;
 import Events.sEvents;
 import Graphics.Particles.sParticleManager;
 import Graphics.sGraphicsManager;
+import Level.Lighting.sLightsManager;
 import Level.sLevel;
+import Utils.Shader.LightSource;
+import Utils.Shader.LightingShader;
+import Utils.Shader.Shader;
 import World.sWorld;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 import org.newdawn.slick.Color;
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.ShapeFill;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.fills.GradientFill;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Vector2f;
+import org.newdawn.slick.opengl.SlickCallable;
 
 /**
  *
@@ -46,6 +53,8 @@ public class BodyCamera extends iCamera implements iEventListener{
     CaveInEvent mCaveInEvent;
     CameraGrabber mGrabber = null;
     Image mOverlay = null;
+    private Image mLightBlendBase = null;
+    private LightingShader mLightingShader = null;
     public BodyCamera(Body _body, Rectangle _viewPort, boolean _topSplit)
     {
         super(_viewPort);
@@ -59,12 +68,12 @@ public class BodyCamera extends iCamera implements iEventListener{
         mLookDirection = false;
         sEvents.subscribeToEvent("CaveInEvent", this);
         mGrabber = new CameraGrabber(new Vec2(34,11));
-        try {
+        try 
+        {
             mOverlay = new Image("ui/overlay.png");
-        } catch (SlickException ex) {
-            Logger.getLogger(BodyCamera.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
+            mLightingShader = LightingShader.makeShader("shaders/test.vert", "shaders/test.frag");
+            mLightBlendBase = new Image((int)mViewPort.getWidth(), (int)mViewPort.getHeight());
+        } catch (SlickException ex) {Logger.getLogger(BodyCamera.class.getName()).log(Level.SEVERE, null, ex);}        
     }
     private static final float directionEpsilon = 0.6f;
     private static final float maxLookOffset = 0.05f;
@@ -129,6 +138,11 @@ public class BodyCamera extends iCamera implements iEventListener{
     {
         super.resize(_viewPort);
         ((PlayerEntity)mBody.getUserData()).setClip(_viewPort);
+        try 
+        {//resize light blend base
+            mLightBlendBase = new Image((int)_viewPort.getWidth(), (int)_viewPort.getHeight());
+        } 
+        catch (SlickException ex) {Logger.getLogger(iCamera.class.getName()).log(Level.SEVERE, null, ex);}
     }
     
     public Vec2 translateToWorld(Vec2 _physicsSpace)
@@ -153,7 +167,7 @@ public class BodyCamera extends iCamera implements iEventListener{
     {
         return new Vec2(mTranslation.x+(mPosition.x*-64.0f),mTranslation.y+(mPosition.y*-64.0f));
     }
-    public void update()
+    public void update(Graphics _graphics)
     {
         calculatePosition();
         mTimer += 1.0f;
@@ -170,27 +184,56 @@ public class BodyCamera extends iCamera implements iEventListener{
                 mCaveInEvent = null;
             }
         }*/
+        
     }
-    public void render()
+    public void render(Graphics _graphics)
     {
+        
         sGraphicsManager.beginTransform();
             sGraphicsManager.translate(mViewPort.getX(),mViewPort.getY());
             sGraphicsManager.setClip(mViewPort);
             calculatePosition();
+            
+            //apply gradient to background
             ShapeFill fill = new GradientFill(new Vector2f(0,0), new Color(159,111,89), new Vector2f(mViewPort.getMaxX(),mViewPort.getMaxY()), new Color(186, 160, 149), false);
             Rectangle shape = new Rectangle(0,0, mViewPort.getWidth(),mViewPort.getHeight());
-            sGraphicsManager.fill(shape, fill);
-            sLevel.renderBackground();
+            _graphics.fill(shape, fill);
+            
+            //render world
+            sLevel.renderBackground(_graphics);
             sWorld.render();
             sGraphicsManager.renderManagedSprites();
             sLevel.renderForeground();
-            sParticleManager.render((int)getPixelTranslation().x, (int)getPixelTranslation().y, (int)mViewPort.getWidth(), (int)mViewPort.getHeight(),0);
+            sParticleManager.render((int)getPixelTranslation().x, (int)getPixelTranslation().y, (int)mViewPort.getWidth(), (int)mViewPort.getHeight(),0); 
+            
+            //render lighting
+            renderLighting(_graphics);
+            
+            //render overlay and HUD
             mOverlay.draw(0,0, (int)mViewPort.getWidth(), (int)mViewPort.getHeight());
             ((PlayerEntity)mBody.getUserData()).renderHUD();
-        sGraphicsManager.endTransform();   
-        
+        sGraphicsManager.endTransform();  
     }
     
+    protected void renderLighting(Graphics _graphics)
+    {
+        //update visible source list
+        mLightingShader.clearSources();
+        ArrayList<LightSource> sourceList = sLightsManager.getVisible(mViewPort);
+        for(LightSource source : sourceList)
+        {
+            mLightingShader.addLightSource(source);
+        }
+        //copy buffer
+        SlickCallable.enterSafeBlock();
+            _graphics.copyArea(mLightBlendBase, (int)mViewPort.getX(), (int)mViewPort.getY());
+        SlickCallable.leaveSafeBlock();
+        //render visible lights
+        mLightingShader.startShader();
+            mLightBlendBase.draw(0,0);
+        mLightingShader.endShader();
+        Shader.forceFixedShader();
+    }
     @Override
     public iCamera addPlayer(Body _body)
     {

@@ -1,4 +1,4 @@
-package Shader;
+package Utils.Shader;
 
 import java.io.DataInputStream;
 import java.io.IOException;

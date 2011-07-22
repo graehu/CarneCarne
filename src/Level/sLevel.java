@@ -7,6 +7,7 @@ package Level;
 import Graphics.sGraphicsManager;
 import World.sWorld;
 import org.jbox2d.common.Vec2;
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 /**
  *
@@ -144,7 +145,7 @@ public class sLevel
     {
         mLevelEditor.update();
     }
-    public static void renderBackground()
+    public static void renderBackground(Graphics _graphics)
     {
         Vec2 s = sGraphicsManager.getScreenDimensions();
         xTiles = (int)(s.x/64.0f)+2;

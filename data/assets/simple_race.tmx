@@ -381,6 +381,12 @@
     <property name="maxTimeOffset" value="0"/>
    </properties>
   </tile>
+  <tile id="1">
+   <properties>
+    <property name="Radius" value="2000"/>
+    <property name="Spawn" value="Light"/>
+   </properties>
+  </tile>
   <tile id="2">
    <properties>
     <property name="animRef" value="acidbubble"/>
@@ -390,7 +396,8 @@
   </tile>
   <tile id="3">
    <properties>
-    <property name="Event" value="RaceEnd"/>
+    <property name="Radius" value="400"/>
+    <property name="Spawn" value="Light"/>
    </properties>
   </tile>
  </tileset>
@@ -634,7 +641,7 @@
  </layer>
  <layer name="Flags" width="100" height="100">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC+3bQWrCUBSG0YTO315srbvXHXQVHXUDjqVQUclLm/pq/GPPgTvJKPBBbngkXQf8qB9e2vXD+Zj/zviiRxY9srT22FeegVyv1oP70SNLrcd2AU3e+st5FGP7I73Jf+uRTo8sejAH71dZ9Gi3KtNmCj3a6fG49MiiBwAAZHgpw2nxXIbDdHpk0QOu8+ScBwAAAPiGswMAauwHAG7BfgGgxn4AGLf2bWuUzx6aZDi20GM+7/3lnDvvock89FgWTbLokUeTPFoAAAAAAAAAAADc3qac5q+8ltPwO3pk0SOLHln0yOa/+WXTDwCAKQ78AAMPQJwAAA==
+   H4sIAAAAAAAAC+3bXU6DQBSAUYjv7MXf1as7cBU+uQGfDTFNW4vplBngznBOMi/G2MoH3CnRrgOu6rvutT//0nt/ub4KvNTf1yn9/aV/TqnXz7VUD+bRI5bcHt9BrvNWTPVgO3rEMtXjrYImH/35qlUr+93/etjvbqOV6+MvPWKptUdNbrkX2l/Foke++yFtpdAjnx7t0iOWuT22+PwU4TNbhPcAAFDCWvsa+6d0j8PlyvEwXC7S6RGLHjDP3UJz2HyHurhm26InQJoW75dr/E4tHreIHGciWerZAcA15uGvqMfBfABgCeYLAFPMB4ilxLOKqM87avTkb1uLyzk/xx6axHBoocd6Pvvzdeq0hybr0KMummxnau7X0mNPe+pamuyJFsCe5hAAjMw+AGCv7IOA0eFe4J7AkpxfAEBL7G0o6WU4rmtSz73n4bi4zS09Uukxnx6x6BHHOA+W7mG/kyfi/83X1nTL9xuxHwAA8fwAZBEtv0CcAAA=
   </data>
  </layer>
 </map>

@@ -36,7 +36,7 @@ public class Main extends StateBasedGame
             app.setIcon("icon.png");
             app.setDisplayMode(1280, 800, false);
             app.setVSync(true);
-            app.setSmoothDeltas(true);
+            //app.setSmoothDeltas(true);
             //app.setTargetFrameRate(60);
             app.start();            
         }

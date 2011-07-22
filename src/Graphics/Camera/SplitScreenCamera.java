@@ -4,11 +4,9 @@
  */
 package Graphics.Camera;
 
-import Graphics.Camera.iCamera;
-import java.util.ArrayList;
-import java.util.Vector;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Rectangle;
 
 /**
@@ -48,12 +46,12 @@ class SplitScreenCamera extends iCamera
         return mActiveCamera.getPixelTranslation();
     }
     
-    public void render()
+    public void render(Graphics _graphics)
     {
         mActiveCamera = mCameraA;
-        mActiveCamera.render();
+        mActiveCamera.render(_graphics);
         mActiveCamera = mCameraB;
-        mActiveCamera.render();
+        mActiveCamera.render(_graphics);
     }
     
     public iCamera addPlayer(Body _body)
@@ -65,14 +63,14 @@ class SplitScreenCamera extends iCamera
         lastSplit = !lastSplit;
         return this;
     }
-    public void update()
+    public void update(Graphics _graphics)
     {
-        mCameraA.update();
-        mCameraB.update();
+        mCameraA.update(_graphics);
+        mCameraB.update(_graphics);
     }
     public void resize(Rectangle _viewPort)
     {
-        mViewPort = _viewPort;
+        super.resize(_viewPort);
         split();
 
         mCameraA.resize(viewPortA);
