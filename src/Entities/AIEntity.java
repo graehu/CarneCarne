@@ -178,7 +178,7 @@ public class AIEntity extends Entity {
             }
             edge = edge.next;
         }
-        mAIEntityState.update(mTar, mIce, mWaterHeight, mJumpContacts);
+        mAIEntityState.update(mTar, mIce, mWaterHeight, mJumpContacts, getBody().getPosition().y + 1 - mWaterHeight);
         getBody().applyLinearImpulse(new Vec2(0,0.2f*getBody().getMass()), getBody().getWorldCenter());
         if (mJumpTimer != 0)
         {
@@ -212,7 +212,7 @@ public class AIEntity extends Entity {
     }
     protected void subUpdate()
     {
-        if (mAIEntityState.getState().equals(State.eSwimming))
+        if (mWaterHeight != 0)
         {
             buoyancy();
         }

@@ -26,6 +26,7 @@ import org.newdawn.slick.tiled.TiledMap;
 public class CaveInTileGrid extends TileGrid
 {
     private int mXTrans, mYTrans;
+    private int mTotalXTransform, mTotalYTransform;
     int ids[][];
     private TiledMap mTiledMap;
     private int mLayerIndex;
@@ -33,7 +34,7 @@ public class CaveInTileGrid extends TileGrid
     float mAngle;
     Vec2 mLinearVelocity;
     float mAngularVelocity;
-    public CaveInTileGrid(RootTileList _rootTiles, TiledMap _tiledMap, int _xTrans, int _yTrans, int _width, int _height, int _layerIndex, Vec2 _position, float _angle, Vec2 _linearVelocity, float _angularVelocity)
+    public CaveInTileGrid(RootTileList _rootTiles, TiledMap _tiledMap, int _xTrans, int _yTrans, int _width, int _height, int _layerIndex, Vec2 _position, float _angle, Vec2 _linearVelocity, float _angularVelocity, int _totalXTransform, int _totalYTransform)
     {
         super(_rootTiles, _width, _height);
         mPosition = _position;
@@ -45,6 +46,8 @@ public class CaveInTileGrid extends TileGrid
         ids = new int[_width][_height];
         mTiledMap = _tiledMap;
         mLayerIndex = _layerIndex;
+        mTotalXTransform = _totalXTransform;
+        mTotalYTransform = _totalYTransform;
     }
 
     public void setTempId(int _x, int _y, int _id)
@@ -125,11 +128,17 @@ public class CaveInTileGrid extends TileGrid
     }
     public void destroyTile(int _x, int _y)
     {
+        RootTile roottile = mTiles[_x][_y].getRootTile();
+        if (!searching)
+        {
+            sLevel.getTileGrid().regrowingTiles.add(_x + mTotalXTransform, _y + mTotalYTransform, roottile);
+        }
         destroyTileImplementation(_x, _y);
         if (mBody.getFixtureList() == null)
         {
             sWorld.destroyBody(mBody);
             mBody = null;
+            
         }
     }
     boolean searching = false;
@@ -138,7 +147,7 @@ public class CaveInTileGrid extends TileGrid
         if (!searching)
         {
             searching = true;
-            CaveInSearcher search = new CaveInSearcher(this, mTiledMap, mLayerIndex, mBody);
+            CaveInSearcher search = new CaveInSearcher(this, mTiledMap, mLayerIndex, mBody, mTotalXTransform, mTotalYTransform);
             search.destroy(_x, _y, _tileType);
             sWorld.destroyBody(mBody);
             ((Entity)mBody.getUserData()).setBody(null);
