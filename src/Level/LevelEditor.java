@@ -39,6 +39,7 @@ public class LevelEditor {
     {
         if (_destroy)
         {
+            rootTiles = new RootTileList(_tiledMap);
             tileGrid.destroy();
             sWorld.destroy();
         }

@@ -47,10 +47,13 @@ public class AnimatedTiledMap extends TiledMap
     private boolean mIsLoaded = false;
     private Random mRand = new Random();
     
-    AnimatedTiledMap(String mMapRef) throws SlickException
+    AnimatedTiledMap(String _mapRef) throws SlickException
     {
         //construct parent
-        super(mMapRef);  
+        super(_mapRef, "assets/Tiles/Tilesets");
+        //super(_mapRef, true);
+        
+        
         timingTiles = new PriorityQueue<TimingOutTile>(10, new TileComparer());
     }
     

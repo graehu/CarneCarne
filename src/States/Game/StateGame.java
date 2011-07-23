@@ -15,19 +15,14 @@ import Graphics.Skins.sSkinFactory;
 import Graphics.Sprites.sSpriteFactory;
 import Graphics.sGraphicsManager;
 import Input.sInput;
-import Utils.Shader.LightingShader;
 import Sound.sSound;
 import States.Game.RaceMode.RaceMode;
 import States.StateChanger;
 import World.sWorld;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.jbox2d.common.Vec2;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.BlobbyTransition;
@@ -130,7 +125,9 @@ public class StateGame extends BasicGameState implements iEventListener {
         sSound.loadSound("level1", "assets/music/Level1.ogg");
         sSound.loadSound("jump", "assets/sfx/fart_4.ogg");
         sSound.loadSound("tongueFire", "assets/sfx/tongueFire.ogg");
+        
         //createRootPane();
+        
         mGameType = GameType.eRaceGame;
         sEntityFactory.init();
         sSkinFactory.init();

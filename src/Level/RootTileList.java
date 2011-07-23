@@ -79,22 +79,28 @@ public class RootTileList {
             {
                 if (shape.equals("Block"))
                 {
-                    RootTile tile = new BlockTile(i, type, animationsNames, regrows, anchor, isFlammable, maxHealth);
-                    for (int rootId = i + 16; i < rootId; i++)
+                    int size = new Integer(_tiledMap.getTileProperty(i, "Size", "1")).intValue();
+                    for (int ii = 0; ii < size; ii++)
                     {
-                        mRootTiles.add(tile);
-                    }
-                    while (maxHealth > 1)
-                    {
-                        maxHealth--;
-                        RootTile tile2 = new BlockTile(i-16, type, animationsNames, regrows, anchor, false, maxHealth);
-                        tile.setNext(tile2);
-                        tile2.setNext(tile);
-                        /*for (int rootId = i + 16; i < rootId; i++)
+                        RootTile tile = new BlockTile(i, type, animationsNames, regrows, anchor, isFlammable, maxHealth);
+                        for (int rootId = i + 16; i < rootId; i++)
                         {
-                            mRootTiles.add(tile2);
-                        }*/
-                        tile = tile2;
+                            mRootTiles.add(tile);
+                        }
+                        int health = maxHealth;
+                        while (maxHealth > 1)
+                        {
+                            maxHealth--;
+                            RootTile tile2 = new BlockTile(i-16, type, animationsNames, regrows, anchor, false, maxHealth);
+                            tile.setNext(tile2);
+                            tile2.setNext(tile);
+                            /*for (int rootId = i + 16; i < rootId; i++)
+                            {
+                                mRootTiles.add(tile2);
+                            }*/
+                            tile = tile2;
+                        }
+                        maxHealth = health;
                     }
                 }
                 else if (shape.equals("Slope"))

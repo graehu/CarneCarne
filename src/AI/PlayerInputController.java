@@ -86,6 +86,7 @@ public class PlayerInputController extends iAIController implements iEventListen
     public void destroy() /// FIXME more memory leaks to clean up in here
     {
         sEvents.unsubscribeToEvent("KeyDownEvent"+'w'+mPlayer, this);
+        sEvents.unsubscribeToEvent("KeyUpEvent"+'w'+mPlayer, this);
         sEvents.unsubscribeToEvent("KeyDownEvent"+'a'+mPlayer, this);
         sEvents.unsubscribeToEvent("KeyDownEvent"+'s'+mPlayer, this);
         sEvents.unsubscribeToEvent("KeyDownEvent"+'d'+mPlayer, this);
