@@ -19,7 +19,7 @@ abstract public class TileGrid {
     
     Tile[][] mTiles;
     RootTileList rootTiles;
-    private TileRegrowth regrowingTiles;
+    TileRegrowth regrowingTiles;
     TileFire mTileFire;
     private int mWidth, mHeight;
     Body mBody;

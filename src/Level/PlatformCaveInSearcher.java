@@ -19,7 +19,7 @@ public class PlatformCaveInSearcher extends CaveInSearcher
 {
     public PlatformCaveInSearcher(TileGrid _tileGrid, TiledMap _tiledMap, int _layerIndex, Body _body)
     {
-        super(_tileGrid, _tiledMap, _layerIndex, _body);
+        super(_tileGrid, _tiledMap, _layerIndex, _body, 0, 0);
     }
     @Override
     public boolean check(int _x, int _y, Direction _direction, TileType _tileType, Stack<TileIndex> _workingSet, Stack<TileIndex> _thisBlock) /// Returns true if this is an anchor

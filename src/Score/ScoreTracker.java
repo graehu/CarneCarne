@@ -18,6 +18,7 @@ import org.newdawn.slick.Color;
 abstract public class ScoreTracker
 {
     protected int mScore;
+    private int mBestTime;
     private float mRenderedScore;
     private iSkin mSkin;
 
@@ -36,9 +37,18 @@ abstract public class ScoreTracker
         params.put("ref", "taco");
         mSkin = sSkinFactory.create("static", params);
         mRenderedScore = mScore = 0;
+        mBestTime = Integer.MAX_VALUE;
     }
     
     abstract public void score(ScoreEvent _event);
+    public void winRace(int _time)
+    {
+        score(ScoreEvent.eWonRace);
+        if (_time < mBestTime)
+        {
+            mBestTime = _time;
+        }
+    }
     public void render()
     {
         Vec2 s = sGraphicsManager.getScreenDimensions();
