@@ -124,7 +124,6 @@ class RaceState implements iEventListener
             }
             if (mod60 != 0)
             {
-                sGraphicsManager.removeClip();
                 Vec2 dimensions = new Vec2(scale*(float)272, scale*(float)269);
                 mCountDownRender.setDimentions(dimensions.x, dimensions.y);
                 Vec2 s = sGraphicsManager.getTrueScreenDimensions();

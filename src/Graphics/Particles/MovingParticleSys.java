@@ -6,6 +6,7 @@ package Graphics.Particles;
 
 import Level.Tile;
 import org.jbox2d.common.Vec2;
+import org.newdawn.slick.particles.ParticleSystem;
 
 /**
  *
@@ -13,10 +14,10 @@ import org.jbox2d.common.Vec2;
  */
 public class MovingParticleSys implements ParticleSysBase
 {
-    ParticleSys mParticles;
+    ParticleSysBase mParticles;
     Tile mTile;
     Vec2 mOffset;
-    public MovingParticleSys(ParticleSys _particles, Tile _tile)
+    public MovingParticleSys(ParticleSysBase _particles, Tile _tile)
     {
         mParticles = _particles;
         mTile = _tile;
@@ -70,5 +71,9 @@ public class MovingParticleSys implements ParticleSysBase
     public Vec2 getPosition()
     {
         return mTile.getWorldPosition().mul(64).add(new Vec2(32,32));
+    }
+
+    public ParticleSystem getSystem() {
+        return mParticles.getSystem();
     }
 }

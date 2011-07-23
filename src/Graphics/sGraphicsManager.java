@@ -36,6 +36,8 @@ public class sGraphicsManager {
     private static boolean mAllowTransform = false;
     private static boolean mIsFullScreen = false;
     private static DisplayMode mLastDisplayMode = null;
+    private static boolean mAllowShaders = true;
+    private static boolean mAllowParticles = true;
     
     private static ArrayList<iSprite> mManagedSprites = new ArrayList<iSprite>();
     private static AppGameContainer mGameContainer;
@@ -77,6 +79,7 @@ public class sGraphicsManager {
         mNativeScreenDimentions.x = Display.getDesktopDisplayMode().getWidth();
         mNativeScreenDimentions.y = Display.getDesktopDisplayMode().getHeight();
         sFontLoader.setDefaultFont("default");
+        
     }
     public static void beginTransform()
     {
@@ -89,14 +92,8 @@ public class sGraphicsManager {
         mGameContainer.getGraphics().clearClip(); 
         mGameContainer.getGraphics().popTransform();              
     }
-    public static Rectangle removeClip()
-    {
-        Rectangle clip = mClip;
-        Rectangle rect = new Rectangle(0,0,(int)mNativeScreenDimentions.x,(int)mNativeScreenDimentions.y);
-        mGameContainer.getGraphics().setClip(rect);
-        mClip = rect;
-        return mClip;
-    }
+    public static boolean getAllowShaders(){return mAllowShaders;}
+    public static boolean getAllowParticles(){return mAllowParticles;}
     public static void setClip(Rectangle _rect)
     {
         mGameContainer.getGraphics().setClip(_rect);

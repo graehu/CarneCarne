@@ -4,6 +4,7 @@
  */
 package Graphics.Particles;
 
+import Graphics.sGraphicsManager;
 import Level.Tile;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -50,8 +51,11 @@ public class sParticleManager {
     {
         return createSystemImplementation(_ref, _position, _lifeTime, true, true);
     }
-    private static ParticleSys createSystemImplementation(String _ref, Vec2 _position, float _lifeTime, boolean _dive, boolean _store)
+    private static ParticleSysBase createSystemImplementation(String _ref, Vec2 _position, float _lifeTime, boolean _dive, boolean _store)
     {     
+        if(false == sGraphicsManager.getAllowParticles())
+            return new NullParticleSys();
+        
         //if pooled object of same type exists use that
         ParticleSystem system = grabPooledSystem(_ref);
         if(system != null)
@@ -74,14 +78,14 @@ public class sParticleManager {
                 if (_dive)
                 {
                     //load first system
-                    ParticleSys sys = createSystemImplementation(_ref + "1", _position, _lifeTime, false, _store);
+                    ParticleSysBase sys = createSystemImplementation(_ref + "1", _position, _lifeTime, false, _store);
                     if(sys == null) return null;
-                    system = sys.mSystem;
+                    system = sys.getSystem();
                     
                     //load second
                     sys = createSystemImplementation(_ref + "2", _position, _lifeTime, false, _store);
                     if(sys == null) return null;
-                    ParticleSystem system2 = sys.mSystem;
+                    ParticleSystem system2 = sys.getSystem();
                     
                     //combine them
                     ParticleSys p = new DoubleParticleSys(system,_ref + "1", system2, _ref + "2", _lifeTime);

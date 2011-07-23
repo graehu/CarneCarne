@@ -220,22 +220,25 @@ public class BodyCamera extends iCamera implements iEventListener{
     
     protected void renderLighting(Graphics _graphics)
     {
-        //update visible source list
-        mLightingShader.clearSources();
-        ArrayList<LightSource> sourceList = sLightsManager.getVisible(mViewPort);
-        for(LightSource source : sourceList)
+        if(sGraphicsManager.getAllowShaders())
         {
-            mLightingShader.addLightSource(source);
+            //update visible source list
+            mLightingShader.clearSources();
+            ArrayList<LightSource> sourceList = sLightsManager.getVisible(mViewPort);
+            for(LightSource source : sourceList)
+            {
+                mLightingShader.addLightSource(source);
+            }
+            //copy buffer
+            SlickCallable.enterSafeBlock();
+                _graphics.copyArea(mLightBlendBase, (int)mViewPort.getX(), (int)mViewPort.getY());
+            SlickCallable.leaveSafeBlock();
+            //render visible lights
+            mLightingShader.startShader();
+                mLightBlendBase.draw(0,0);
+            mLightingShader.endShader();
+            Shader.forceFixedShader();
         }
-        //copy buffer
-        SlickCallable.enterSafeBlock();
-            _graphics.copyArea(mLightBlendBase, (int)mViewPort.getX(), (int)mViewPort.getY());
-        SlickCallable.leaveSafeBlock();
-        //render visible lights
-        mLightingShader.startShader();
-            mLightBlendBase.draw(0,0);
-        mLightingShader.endShader();
-        Shader.forceFixedShader();
     }
     @Override
     public iCamera addPlayer(Body _body)
