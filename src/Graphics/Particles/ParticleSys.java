@@ -166,4 +166,8 @@ class ParticleSys implements ParticleSysBase
     {
         return new Vec2(mSystem.getPositionX(), mSystem.getPositionY());
     }
+
+    public ParticleSystem getSystem() {
+        return mSystem;
+    }
 }

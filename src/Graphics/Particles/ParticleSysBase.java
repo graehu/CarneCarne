@@ -5,6 +5,7 @@
 package Graphics.Particles;
 
 import org.jbox2d.common.Vec2;
+import org.newdawn.slick.particles.ParticleSystem;
 
 /**
  *
@@ -31,6 +32,8 @@ public interface ParticleSysBase
     public void setGravity(float _gravityFactor);
     
     public void setAngularOffset(float _degrees);
+    
+    public ParticleSystem getSystem();
 
     /*
      * Assumes time step in milliseconds

@@ -25,6 +25,12 @@ import org.jbox2d.dynamics.joints.DistanceJoint;
  */
 public class TongueStateMachine {
 
+    void kill()
+    {
+        tongueAttachment = null;
+        changeState(State.eStart);
+    }
+
     
     enum State
     {

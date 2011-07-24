@@ -18,6 +18,7 @@ import org.newdawn.slick.Animation;
 import org.newdawn.slick.PackedSpriteSheet;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
+import org.newdawn.slick.tiled.TileSet;
 import org.newdawn.slick.tiled.TiledMap;
 
 /**
@@ -59,6 +60,11 @@ public class AnimatedTiledMap extends TiledMap
     
     public void initAnimationlayer(String _packedAnimSheetRef) throws SlickException
     {
+        for(Object obj : tileSets)
+        {
+            TileSet set = (TileSet)obj;
+            //set.tiles.getTexture().setTextureFilter().;
+        }
         if(mIsLoaded == false)
         {
             mIsLoaded = true;

@@ -9,6 +9,7 @@ import World.sWorld;
 import org.jbox2d.common.Vec2;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.tiled.TiledMap;
 /**
  *
  * @author alasdair
@@ -18,6 +19,10 @@ public class sLevel
     public static void placeTile(int _x, int _y, int _rootId)
     {
         mLevelEditor.placeTile(_x, _y, _rootId);
+    }
+    public static void placeTileNoBody(int _x, int _y, int _rootId)
+    {
+        mLevelEditor.placeTileNoBody(_x, _y, _rootId);
     }
 
     static TileGrid getTileGrid()
@@ -114,11 +119,11 @@ public class sLevel
     {
         try
         {
-            mTiledMap = new AnimatedTiledMap("assets/Tiles/Maps/Tutorial.tmx");
+            mTiledMap = new AnimatedTiledMap("assets/Tiles/Maps/tutorial.tmx");
         }
         catch (SlickException e)
         {
-            assert(false);
+            throw new UnsupportedOperationException(nextMap + " loading failed");
         }
         mLevelEditor = new LevelEditor(mTiledMap);
         mParralaxXScale = new float[mTiledMap.getLayerCount()];
@@ -129,7 +134,7 @@ public class sLevel
             mParralaxYScale[i] = 1.0f;
         }
         flagsLayer = mTiledMap.getLayerIndex("Flags");
-        nextMap = mTiledMap.getMapProperty("NextMap", null);
+        nextMap = mTiledMap.getMapProperty("NextMap", nextMap);
     }
     public static void newLevel()
     {
@@ -140,7 +145,7 @@ public class sLevel
         }
         catch (SlickException e)
         {
-            assert(false);
+            throw new UnsupportedOperationException(nextMap + " loading failed");
         }
         boolean destroy = true;
         if (mLevelEditor == null)
@@ -213,7 +218,7 @@ public class sLevel
                 int transY = (int)myTranslation.y;
                 transX = transX % 64;
                 transY = transY % 64;
-                mTiledMap.render(transX,transY, xStart,yStart, xTiles,yTiles, i, false);
+                mTiledMap.render(transX,transY, xStart,yStart,xTiles,yTiles, i, false);
             }
         }     
         

@@ -35,6 +35,7 @@ public class Main extends StateBasedGame
             app.setIcon("icon.png");
             app.setDisplayMode(1280, 800, false);
             app.setVSync(true);
+            //app.setMultiSample(4); 
             //app.setSmoothDeltas(true);
             //app.setTargetFrameRate(60);
             app.start();            
@@ -77,7 +78,7 @@ public class Main extends StateBasedGame
         
         //FIXME: should start on splash
         //enterState(2, null, new BlobbyTransition(new Color(0,0,0)));
-        enterState(3, null, null);
+        enterState(2, null, null);
     }
 
     

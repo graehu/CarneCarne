@@ -83,6 +83,8 @@ public class StateTitle extends BasicGameState implements iEventListener{
     Button mRaceButton = null;
     Button mOptionsButton = null;
     Button mHighScoresButton = null;
+    Button mParticlesToggle = null;
+    Button mLightingToggle = null;
     float mScale = 1.0f;
     float mOffset = 0.0f;
     MenuState mState = MenuState.eCenter;
@@ -154,6 +156,13 @@ public class StateTitle extends BasicGameState implements iEventListener{
         mOptionsButton.addText(_gc, mUIFont, "OptionS", true);
         mHighScoresButton = new Button(_gc, new Vector2f(), buttonDim);
         mHighScoresButton.addText(_gc, mUIFont, "HighScorES", true);
+        mParticlesToggle = new Button(_gc, new Vector2f(), buttonDim);
+        mParticlesToggle.addText(_gc, mUIFont, "ParticlES On", true);
+        mLightingToggle = new Button(_gc, new Vector2f(), buttonDim);
+        mLightingToggle.addText(_gc, mUIFont, "Lighting On", true);
+        
+        mParalax0.addChild(mParticlesToggle);
+        mParalax0.addChild(mLightingToggle);
         
         calcUI();
          
@@ -176,7 +185,7 @@ public class StateTitle extends BasicGameState implements iEventListener{
     }
     
     public void render(GameContainer _gc, StateBasedGame _sbg, Graphics _grphcs) throws SlickException {
-        boolean debug = false;
+        boolean debug = true;
         mBackground.render(_gc, _grphcs, debug);
         //render other stuff here
         mParalax2.render(_gc, _grphcs, debug);

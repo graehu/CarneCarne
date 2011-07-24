@@ -45,6 +45,11 @@ public class PlayerInputController extends iAIController implements iEventListen
         mTongueState.leftRelease(mPlayerDir);
         mTongueState.rightRelease(mPlayerDir);
     }
+
+    public void kill()
+    {
+        mTongueState.kill();
+    }
     enum Controls
     {
         eTongue,
@@ -187,7 +192,7 @@ public class PlayerInputController extends iAIController implements iEventListen
     {
         HashMap parameters = new HashMap();
         //intialise velocity relative to carne's
-        parameters.put("velocity", mPlayerDir.mul(10.0f).add(mEntity.getBody().getLinearVelocityFromLocalPoint(new Vec2(0,0))));
+        parameters.put("velocity", mPlayerDir.mul(20.0f).add(mEntity.getBody().getLinearVelocityFromLocalPoint(new Vec2(0,0))));
         parameters.put("position", mEntity.getBody().getPosition().add(mPlayerDir));
         parameters.put("tileType",_tile.getTileType());
         parameters.put("rootId",_tile.getRootId());

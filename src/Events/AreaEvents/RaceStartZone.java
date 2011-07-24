@@ -35,7 +35,10 @@ public class RaceStartZone extends CheckPointZone implements iEventListener
     @Override
     public void enter(PlayerEntity _entity) 
     {
-        assert(_entity.getCheckPoint() != this);
+        /*if (_entity.getCheckPoint() == this)
+        {
+            throw new UnsupportedOperationException("Dicks");
+        }*/
         mPlayers.put(_entity, _entity.getCheckPoint());
         _entity.placeCheckPoint(this);
         if (!mRaceHasStarted && mPlayers.size() == mNumPlayers)

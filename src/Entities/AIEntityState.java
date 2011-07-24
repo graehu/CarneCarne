@@ -35,11 +35,13 @@ class AIEntityState
         eJumping,
         eJumpTransition, /// Between jumping and falling, this is where the button held increased jump is determined
         eStunned,
+        eWaterJumping,
         eStatesMax,
     }
     private State mState;
     private int mTarCount, mIceCount, mContactCount;
-    private int mWaterHeight;
+    private int mWaterTiles;
+    private float mWaterHeight;
     private int mTimer;
     private AIEntity mEntity;
     private String mJumpSound = "jump";
@@ -48,7 +50,7 @@ class AIEntityState
     {
         mEntity = _entity;
         mState = State.eFalling;
-        mTarCount = mIceCount = mWaterHeight = mContactCount = mTimer = 0;
+        mTarCount = mIceCount = mWaterTiles = mContactCount = mTimer = 0;
     }
     
     void destroy()
@@ -61,12 +63,13 @@ class AIEntityState
         return mState;
     }
     
-    void update(int _tarCount, int _iceCount, int _waterCount, int _contactCount)
+    void update(int _tarCount, int _iceCount, int _waterCount, int _contactCount, float _waterHeight)
     {
         mTarCount = _tarCount;
         mIceCount = _iceCount;
-        mWaterHeight = _waterCount;
+        mWaterTiles = _waterCount;
         mContactCount = _contactCount;
+        mWaterHeight = _waterHeight;
         mTimer++;
         update();
     }
@@ -100,7 +103,8 @@ class AIEntityState
         }
         else if (mState.equals(State.eSwimming))
         {
-            
+            if (mWaterHeight < 1.0f)
+                changeState(State.eWaterJumping);
         }
         else
         {
@@ -117,7 +121,7 @@ class AIEntityState
     public float canJump(float _currentVelocity)
     {
         if (mState.equals(State.eJumping) || mState.equals(State.eFallingDoubleJumped)||
-                mState.equals(State.eStunned))
+                mState.equals(State.eStunned) || mState.equals(State.eWaterJumping))
         {
             return 0.0f;
         }
@@ -134,14 +138,17 @@ class AIEntityState
         }
         if (mState.equals(State.eSwimming))
         {
-            return _currentVelocity-0.2f;
+            if (mWaterHeight < 1.0f)
+                return -7.2f;
+            else
+                return _currentVelocity-0.2f;
         }
         return -7.2f;
         
     }
     public int getWaterHeight()
     {
-        return mWaterHeight;
+        return mWaterTiles;
     }
     
     private void update()
@@ -156,7 +163,7 @@ class AIEntityState
                     changeState(State.eStanding);
                     update();
                 }
-                else if (mWaterHeight != 0)
+                else if (mWaterTiles != 0)
                 {
                     changeState(State.eSwimming);
                 }
@@ -172,6 +179,20 @@ class AIEntityState
                 {
                     changeState(State.eJumpTransistion);
                 }*/
+                break;
+            }
+            case eWaterJumping:
+            {
+                if (mWaterTiles == 0)
+                {
+                    changeState(State.eFalling);
+                    update();
+                }
+                else if (mTimer == jumpBoostTimer-1)
+                {
+                    changeState(State.eSwimming);
+                    update();
+                }
                 break;
             }
             case eJumping:
@@ -208,7 +229,7 @@ class AIEntityState
                     changeState(State.eFalling);
                     update();
                 }
-                else if (mWaterHeight != 0)
+                else if (mWaterTiles != 0)
                 {
                     changeState(State.eSwimming);
                 }
@@ -224,7 +245,7 @@ class AIEntityState
             }
             case eSwimming:
             {
-                if (mWaterHeight == 0)
+                if (mWaterTiles == 0)
                 {
                     changeState(State.eFalling);
                     update();
@@ -238,7 +259,7 @@ class AIEntityState
                     changeState(State.eStillCoveredInTar);
                     mTimer = 0;
                 }
-                else if (mWaterHeight != 0)
+                else if (mWaterTiles != 0)
                 {
                     changeState(State.eSwimming);
                 }
@@ -267,7 +288,7 @@ class AIEntityState
                     changeState(State.eFalling);
                     update();
                 }
-                else if (mWaterHeight != 0)
+                else if (mWaterTiles != 0)
                 {
                     changeState(State.eSwimming);
                 }

@@ -45,7 +45,7 @@ class RaceState implements iEventListener
         sEvents.subscribeToEvent("RaceCountdownInterruptEvent", this);
     }
 
-    public boolean trigger(iEvent _event) 
+    public boolean trigger(iEvent _event)
     {
         if (_event.getType().equals("RaceWonEvent"))
         {
@@ -124,7 +124,6 @@ class RaceState implements iEventListener
             }
             if (mod60 != 0)
             {
-                sGraphicsManager.removeClip();
                 Vec2 dimensions = new Vec2(scale*(float)272, scale*(float)269);
                 mCountDownRender.setDimentions(dimensions.x, dimensions.y);
                 Vec2 s = sGraphicsManager.getTrueScreenDimensions();
@@ -139,6 +138,7 @@ class RaceState implements iEventListener
             case eRaceNotStarted:
             {
                 sEvents.triggerEvent(new RaceResetEvent());
+                mTimer = 0;
                 break;
             }
             case eRaceWon:

@@ -75,6 +75,11 @@ public class LevelEditor {
     {
         tileGrid.placeTile(_x, _y, _rootId);        
     }
+    public void placeTileNoBody(int _x, int _y, int _rootId)
+    {
+        tileGrid.setTileId(_x, _y, _rootId);
+        tileGrid.placeTileNoBody(_x, _y, _rootId);
+    }
     public void destroyTile(int _xTile, int _yTile)
     {
         tileGrid.destroyTile(_xTile, _yTile);

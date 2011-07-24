@@ -6,7 +6,13 @@ package Events.AreaEvents;
 
 import Entities.Entity;
 import Entities.PlayerEntity;
+import Graphics.sGraphicsManager;
 import World.sWorld;
+import org.jbox2d.common.Vec2;
+import org.newdawn.slick.Color;
+import org.newdawn.slick.fills.GradientFill;
+import org.newdawn.slick.geom.Rectangle;
+import org.newdawn.slick.geom.Vector2f;
 
 /**
  *
@@ -31,7 +37,6 @@ abstract public class AreaEvent extends Entity
     @Override
     public final void render()
     {
-        
     }
     public void update()
     {

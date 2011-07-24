@@ -5,7 +5,6 @@
 package Events.AreaEvents;
 
 import Entities.PlayerEntity;
-import Events.RaceResetEvent;
 import Events.RaceWonEvent;
 import Events.iEvent;
 import Events.iEventListener;
@@ -54,7 +53,6 @@ public class RaceEndZone extends CheckPointZone implements iEventListener
 
     public boolean trigger(iEvent _event)
     {
-        RaceResetEvent event = (RaceResetEvent)_event;
         mWinner = null;
         return true;
     }

@@ -4,7 +4,6 @@
  */
 package World.PhysicsFactories;
 
-import World.PhysicsFactories.iPhysicsFactory;
 import Entities.Entity;
 import Level.sLevel;
 import World.sWorld.BodyCategories;
@@ -23,7 +22,8 @@ import org.jbox2d.dynamics.World;
  */
 public class SpatBlockBodyFactory implements iPhysicsFactory {
 
-    public SpatBlockBodyFactory() {
+    public SpatBlockBodyFactory()
+    {
     }
 
     public Body useFactory(HashMap _parameters, World _world)

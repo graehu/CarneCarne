@@ -6,7 +6,6 @@ package GUI.Components;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.newdawn.slick.Animation;
 import org.newdawn.slick.BigImage;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -51,7 +50,7 @@ public class GraphicalComponent extends iComponent{
         try 
         {
             mImage = new Image(_ref);
-            if(mImage.getWidth() > 1024 || mImage.getHeight() > 1024)
+            if(mImage.getWidth() > 512 || mImage.getHeight() > 512)
             {
                 mImage.destroy();
                 mImage = new BigImage(_ref);
