@@ -17,7 +17,6 @@ import Graphics.Sprites.sSpriteFactory;
 import Graphics.sGraphicsManager;
 import Input.sInput;
 import Sound.sSound;
-import States.Game.RaceMode.RaceMode;
 import States.Game.Tutorial.IntroMode;
 import States.StateChanger;
 import World.sWorld;
@@ -142,13 +141,14 @@ public class StateGame extends BasicGameState implements iEventListener {
         sSound.loadSound("jump", "assets/sfx/fart_4.ogg");
         sSound.loadSound("tongueFire", "assets/sfx/tongueFire.ogg");
         
+
         //initialise game
         mGameType = GameType.eRaceGame;
         sEntityFactory.init();
         sSkinFactory.init();
         sSpriteFactory.init();
         sWorld.init();
-        mGameMode = new RaceMode(true);
+        mGameMode = new IntroMode();
         
         //subscribe to events (must be done before further initialisation)
         sEvents.subscribeToEvent("PlayerCreatedEvent", this);

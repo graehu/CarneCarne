@@ -8,7 +8,6 @@ import Entities.AIEntity;
 import Level.sLevel;
 import Level.sLevel.PathInfo;
 import World.sWorld.BodyCategories;
-import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Fixture;
 import org.jbox2d.dynamics.contacts.ContactEdge;
 
@@ -69,29 +68,5 @@ public class PeaController extends iAIController
                 mToggle = true;
             }
         }
-        
-
-        
-        /*switch (mPathFinding.follow())
-        {
-            case eMoveLeft:
-            {
-                mEntity.walkLeft();
-                break;
-            }
-            case eMoveRight:
-            {
-                mEntity.walkRight();
-                break;
-            }
-            case eStandStill:
-            {
-                if(mToggle)
-                    mToggle = false;
-                else if(!mToggle)
-                    mToggle = true;
-                break;
-            }
-        }*/
     }
 }

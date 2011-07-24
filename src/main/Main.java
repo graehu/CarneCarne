@@ -25,7 +25,6 @@ public class Main extends StateBasedGame
         //-Djava.library.path=lib/natives-win32
         NativeLibLoader nativeLibLoader = new NativeLibLoader("org.lwjgl.librarypath");
         nativeLibLoader.init();
-        //nativeLibLoader.setupPath();
         NativeLibLoader nativeLibLoaderJinput = new NativeLibLoader("net.java.games.input.librarypath");
         nativeLibLoaderJinput.init();
         //nativeLibLoaderJinput.setupPath();

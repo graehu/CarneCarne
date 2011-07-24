@@ -15,14 +15,19 @@ import org.jbox2d.common.Vec2;
 public class SimplePlatformController extends iPlatformController
 {
     boolean mToggle = false;
+    float mSpeed;
+    
+    public SimplePlatformController(float _speed)
+    {
+        mSpeed = _speed;
+    }
     @Override
     public void update() 
     {
         Vec2 pos = mEntity.getBody().getPosition();
         Vec2 dimes = new Vec2(mEntity.getWidth()-1, mEntity.getHeight()-1);
         if(mToggle == false)
-        {
-            //if(sLevel.getPathInfo((int)(pos.x-((dimes.x/2)-0.5f)), (int)(pos.y-((dimes.y/2)-0.5f))) == PathInfo.eNotPassable)
+        {   
             for(int i = 0; i < dimes.y+1; i++)
             {
                 if(sLevel.getPathInfo((int)(pos.x), (int)(pos.y+i)) == PathInfo.eNotPassable)
@@ -34,24 +39,22 @@ public class SimplePlatformController extends iPlatformController
         }
         else
         {
-            //if(sLevel.getPathInfo((int)(pos.x+((dimes.x/2)+0.5f)), (int)(pos.y+((dimes.y/2)+0.5f))) == PathInfo.eNotPassable)
             for(int i = 0; i < dimes.y+1; i++)
             {
                 if(sLevel.getPathInfo((int)(pos.x+dimes.x+1), (int)(pos.y+i)) == PathInfo.eNotPassable)
                 {
                     mToggle = false;
                     break;
-                } 
+                }
             }
         }
-        
         if(mToggle)
         {
-            mEntity.getBody().setLinearVelocity(new Vec2(1, 0)); /// changed from mPlatform.getMoveSpeed()
+            mEntity.getBody().setLinearVelocity(new Vec2(mSpeed, 0)); /// changed from mPlatform.getMoveSpeed()
         }
         else
         {
-            mEntity.getBody().setLinearVelocity(new Vec2(-1, 0));
+            mEntity.getBody().setLinearVelocity(new Vec2(-mSpeed, 0));
         }
     }
     

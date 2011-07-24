@@ -202,9 +202,27 @@ public class AIEntity extends Entity {
                     sys = sParticleManager.createSystem(mTouchingTile.getAnimationsName(AnimationType.eJump) + "Jump", sWorld.translateToWorld(getBody().getPosition()).sub(sWorld.getPixelTranslation()).add(new Vec2(32,32)).add(_dir.mul(-32)), 1f);
                 float angle = (float) Math.acos(Vec2.dot(_dir, new Vec2(0,-1)));
                 if(_dir.x >= 0)
-                    sys.setAngularOffset(angle);
+                {
+                    try
+                    {
+                        sys.setAngularOffset(angle);
+                    }
+                    catch(NullPointerException _e)
+                    {
+                        System.err.println(_e);
+                    }
+                }               
                 else
-                    sys.setAngularOffset(-angle);
+                {
+                    try
+                    {
+                        sys.setAngularOffset(angle);
+                    }
+                    catch(NullPointerException _e)
+                    {
+                        System.err.println(_e);
+                    }
+                }
             }
         }
         //reset delay to default = 10

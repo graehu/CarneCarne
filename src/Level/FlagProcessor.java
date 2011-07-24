@@ -222,14 +222,15 @@ public class FlagProcessor
                         Body platformBody = search.getCreatedBody();
                         iPlatformController controller = null;
                         String platformType = _tiledMap.getTileProperty(id, "PlatformType", "Error, platform type not defined");
-                        
+                        String speed = _tiledMap.getTileProperty(id, "Speed", "1");
+                        float speedf = Float.valueOf(speed);
                         if (platformType.equals("Stupid"))
                         {
                             controller = new StupidPlatformController();
                         }
                         else if(platformType.equals("Simple"))
                         {
-                            controller = new SimplePlatformController();
+                            controller = new SimplePlatformController(speedf);
                         }
                         CaveIn cavein = (CaveIn)platformBody.getUserData();
                         cavein.setPlatformController(controller);

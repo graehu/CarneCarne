@@ -212,15 +212,7 @@ public class sWorld
     private static Fixture mLastHit;
     private static TongueAnchor mLastTongueAnchor;
     
-    public static void radiusDestroy()
-    {
-        //mWorld.queryAABB(null, null);
-        /*mWorld;
-        RootTile tile = sLevel.getRootTile(id);
-        mWorld.destroyBody(callback.getFixture().getBody());*/
-        //return new Tile(id, tile, null, -1, -1);
-        
-    }
+
     
     public static Tile eatTiles(Vec2 start, Vec2 end)
     {
