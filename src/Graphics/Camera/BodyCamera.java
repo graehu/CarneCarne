@@ -24,6 +24,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
+import org.newdawn.slick.BigImage;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -145,6 +146,7 @@ public class BodyCamera extends iCamera implements iEventListener{
             mLightBlendBase = new Image((int)_viewPort.getWidth(), (int)_viewPort.getHeight());
         } 
         catch (SlickException ex) {Logger.getLogger(iCamera.class.getName()).log(Level.SEVERE, null, ex);}
+        System.gc();
     }
     
     public Vec2 translateToWorld(Vec2 _physicsSpace)
@@ -203,7 +205,7 @@ public class BodyCamera extends iCamera implements iEventListener{
 
             //render world
             //sGraphicsManager.scale(0.5f);
-            sLevel.renderBackground(_graphics);
+            sLevel.renderBackground(_graphics); //FIXME: breaks on older machines due to texture size restrictions
             sWorld.render();
             sGraphicsManager.renderManagedSprites();
             sLevel.renderForeground();

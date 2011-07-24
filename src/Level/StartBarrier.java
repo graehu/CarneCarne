@@ -71,12 +71,15 @@ public class StartBarrier implements iEventListener
         for (BarrierTile tile: tiles)
         {
             //sLevel.getTileGrid().mTiles[tile.x][tile.y].destroyFixture();
-            sWorld.destroyBody(tile.mBody);
-            if (tile.mBody.getFixtureList() != null)
+            if(tile.mBody != null)
             {
-                throw new UnsupportedOperationException("Body wasn't destroyed");
+                sWorld.destroyBody(tile.mBody);
+                if (tile.mBody.getFixtureList() != null)
+                {
+                    throw new UnsupportedOperationException("Body wasn't destroyed");
+                }
+                tile.mBody = null;
             }
-            tile.mBody = null;
             sLevel.placeTile(tile.x, tile.y, 0);
         }
     }

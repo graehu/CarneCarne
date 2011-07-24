@@ -49,12 +49,7 @@ public class GraphicalComponent extends iComponent{
     {
         try 
         {
-            mImage = new Image(_ref);
-            if(mImage.getWidth() > 512 || mImage.getHeight() > 512)
-            {
-                mImage.destroy();
-                mImage = new BigImage(_ref);
-            }
+            mImage = new BigImage(_ref);
         } 
         catch (SlickException ex) {
             Logger.getLogger(GraphicalComponent.class.getName()).log(Level.SEVERE, null, ex);
