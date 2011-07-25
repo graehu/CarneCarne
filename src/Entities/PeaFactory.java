@@ -25,7 +25,7 @@ class PeaFactory implements iEntityFactory {
     {
         Vec2 position = (Vec2)_parameters.get("position");
         HashMap animDef = new HashMap();
-        animDef.put("ref", "characters/Pea");
+        animDef.put("ref", "characters/pea");
         iSkin skin = sSkinFactory.create("static", animDef);
         AIEntity entity = new Pea(skin);
         HashMap parameters = new HashMap();

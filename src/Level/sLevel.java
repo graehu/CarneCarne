@@ -119,7 +119,7 @@ public class sLevel
     {
         try
         {
-            mTiledMap = new AnimatedTiledMap("assets/Tiles/Maps/tutorial.tmx");
+            mTiledMap = new AnimatedTiledMap("assets/Tiles/Maps/RaceReloaded.tmx");
         }
         catch (SlickException e)
         {
