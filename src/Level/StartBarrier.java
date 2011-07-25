@@ -70,8 +70,7 @@ public class StartBarrier implements iEventListener
     {
         for (BarrierTile tile: tiles)
         {
-            //sLevel.getTileGrid().mTiles[tile.x][tile.y].destroyFixture();
-            if(tile.mBody != null)
+            if (tile.mBody != null)
             {
                 sWorld.destroyBody(tile.mBody);
                 if (tile.mBody.getFixtureList() != null)

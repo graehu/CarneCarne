@@ -41,7 +41,7 @@ public class IntroMode implements iGameMode, iEventListener
         mSections = new ArrayList<IntroSection>();
         sEvents.subscribeToEvent("TutorialSpawnEvent", this);
         sEvents.subscribeToEvent("PlayerEndedTutorialEvent", this);
-        sLevel.init();
+        sLevel.init("tutorial");
     }
     public iGameMode update(Graphics _graphics, float _time)
     {

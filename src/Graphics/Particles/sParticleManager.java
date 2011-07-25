@@ -41,9 +41,15 @@ public class sParticleManager {
      * _y           position in Y (pixels)
      * _lifeTime:   time until death (seconds)
      */
-    public static ParticleSysBase createMovingSystem(String _ref, float _lifeTime, Tile _tile)
+    public static ParticleSysBase createTileMovingSystem(String _ref, float _lifeTime, Tile _tile)
     {
-        ParticleSysBase p = new MovingParticleSys(createSystemImplementation(_ref, _tile.getWorldPosition().mul(64).add(new Vec2(32,32)), _lifeTime, true, false), _tile);
+        ParticleSysBase p = new TileMovingParticleSys(createSystemImplementation(_ref, _tile.getWorldPosition().mul(64).add(new Vec2(32,32)), _lifeTime, true, false), _tile);
+        mInstancedSystems.add(p);
+        return p;
+    }
+    public static ParticleSysBase createFirework(String _colour, Vec2 _position, Vec2 _velocity)
+    {
+        ParticleSysBase p = new Firework(createSystemImplementation("Firework" + _colour + "Rocket", _position, 1.0f, true, false), _position, _velocity, _colour);
         mInstancedSystems.add(p);
         return p;
     }
@@ -159,7 +165,9 @@ public class sParticleManager {
     public static void update(int _delta)
     {
         ParticleSysBase sys = null;
-        for(Iterator<ParticleSysBase> i = mInstancedSystems.iterator(); i.hasNext();)
+        ArrayList<ParticleSysBase> instancedSystems = mInstancedSystems;
+        mInstancedSystems = new ArrayList<ParticleSysBase>();
+        for(Iterator<ParticleSysBase> i = instancedSystems.iterator(); i.hasNext();)
         {
             sys = i.next();
             if(false == sys.update(_delta))
@@ -167,8 +175,12 @@ public class sParticleManager {
                 sys.recycle();
                 i.remove();
             }
-            
         }
+        for (ParticleSysBase particle: mInstancedSystems)
+        {
+            instancedSystems.add(particle);
+        }
+        mInstancedSystems = instancedSystems;
     }
     
     protected static void recycle(ParticleSystem _system, String _ref)

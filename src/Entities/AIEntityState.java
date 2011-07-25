@@ -103,8 +103,8 @@ class AIEntityState
         }
         else if (mState.equals(State.eSwimming))
         {
-            if (mWaterHeight < 1.0f)
-                changeState(State.eWaterJumping);
+            //if (mWaterHeight < 1.0f)
+            //    changeState(State.eWaterJumping);
         }
         else
         {
@@ -138,7 +138,7 @@ class AIEntityState
         }
         if (mState.equals(State.eSwimming))
         {
-            if (mWaterHeight < 1.0f)
+            if (mWaterHeight < 1.0f && _currentVelocity < 0.0f)
                 return -7.2f;
             else
                 return _currentVelocity-0.2f;
