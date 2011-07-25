@@ -100,8 +100,8 @@ public class TileRegrowth
             if (isSupported(tile))
             {
                 Vec2 bottomLeft = new Vec2(tile.x, tile.y);
-                AABB aabb = new AABB(bottomLeft, bottomLeft.add(new Vec2(1,0)));
-                if (sWorld.searchAABB(aabb, (1 << sWorld.BodyCategories.ePlayer.ordinal())) == null)
+                AABB aabb = new AABB(bottomLeft.add(new Vec2(0.05f,0)), bottomLeft.add(new Vec2(0.95f,0)));
+                if (sWorld.searchAABB(aabb) == null)
                 {
                     if (mTileGrid.mTiles[tile.x][tile.y].mRootId.mId == 0)
                     {
@@ -125,8 +125,8 @@ public class TileRegrowth
         {
             RegrowingTile blockedTile = iter.next();
             Vec2 bottomLeft = new Vec2(blockedTile.x, blockedTile.y);
-            AABB aabb = new AABB(bottomLeft, bottomLeft.add(new Vec2(1,0)));
-            if (sWorld.searchAABB(aabb, (1 << sWorld.BodyCategories.ePlayer.ordinal())) == null)
+            AABB aabb = new AABB(bottomLeft.add(new Vec2(0.05f,0)), bottomLeft.add(new Vec2(0.95f,0)));
+            if (sWorld.searchAABB(aabb) == null)
             {
                 placeTile(blockedTile);
                 String name = blockedTile.mRootId.getAnimationsName(RootTile.AnimationType.eSpawn) + "SpawnParticle";

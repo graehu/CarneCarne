@@ -6,7 +6,7 @@ package States.Game.Tutorial;
 
 import Entities.PlayerEntity;
 import Entities.sEntityFactory;
-import Events.AreaEvents.TutorialZone;
+import Events.AreaEvents.PlayerSpawnZone;
 import Events.GenericEvent;
 import Events.TutorialSpawnEvent;
 import Events.iEvent;
@@ -99,7 +99,7 @@ public class IntroMode implements iGameMode, iEventListener
             HashMap parameters = new HashMap();
             parameters.put("position", event.getPosition());
             parameters.put("playerNumber", event.getPlayerNumber());
-            parameters.put("checkPoint", null);
+            parameters.put("checkPoint", new PlayerSpawnZone((int)event.getPosition().x, (int)event.getPosition().y, (int)event.getPosition().x+1, (int)event.getPosition().y+1, null));
             PlayerEntity player = (PlayerEntity)sEntityFactory.create("Player",parameters);
             player.mIntroSection = introSection;
             mPlayers.add(player);

@@ -119,7 +119,7 @@ abstract public class ScoreTracker
         
         if (mWinnerSkin != null)
         {
-            mWinnerSkin.render(0, 0);
+            mWinnerSkin.render(0, 50);
             mWinnerTimer--;
             if (mWinnerTimer == 0)
             {
