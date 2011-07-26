@@ -155,7 +155,7 @@ public class AIEntity extends Entity {
                     }
                     mFloorNormal = collisionNorm.clone();
                 }
-                else if(collisionNorm.y < - 0.3 || collisionNorm.y > 0.3)//slopes
+                else if(collisionNorm.y < -0.3)// slopes -- (collisionNorm.y > 0.3) gives roof slopes
                 {
                     if(edge.contact.isTouching() && !other.isSensor())
                     {
@@ -254,6 +254,7 @@ public class AIEntity extends Entity {
                 airControl(value);
                 break;
             }
+            case eIdle: //fall through to standing (will break from state when moving)
             case eStanding:
             {
                 if(mAllowRoll)
@@ -325,6 +326,11 @@ public class AIEntity extends Entity {
         mAIEntityState.stopJumping();
     }
     
+    public void stopIdle()
+    {
+        mAIEntityState.stopIdle();
+    }
+    
     public void setMoveSpeed(float _moveSpeed)
     {
         mMoveSpeed = _moveSpeed;
@@ -347,6 +353,10 @@ public class AIEntity extends Entity {
     public boolean isDead()
     {
         return mAIEntityState.getState() == AIEntityState.State.eDead || mAIEntityState.getState() == AIEntityState.State.eRestartingRace;
+    }
+    public boolean isIdle()
+    {
+        return mAIEntityState.getState() == AIEntityState.State.eIdle;
     }
     
     public float setAnimation(String _animation)

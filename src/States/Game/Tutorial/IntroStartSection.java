@@ -21,10 +21,6 @@ class IntroStartSection extends IntroSection
         sEvents.blockEvent("MapClickEventL"+mPlayerNumber);
         sEvents.blockEvent("MapClickEventR"+mPlayerNumber);
         sEvents.blockEvent("KeyDownEvent"+'w'+mPlayerNumber);
-        HashMap params = new HashMap();
-        params.put("ref", "tutorialJumpStart");
-        mSkin = sSkinFactory.create("animated", params);
-        mSkin.stopAt(12);
     }
 
     @Override
@@ -40,8 +36,7 @@ class IntroStartSection extends IntroSection
     @Override
     protected void renderInternal(float scale)
     {
-        mSkin.setDimentions(450*scale, 225*scale);
-        mSkin.render(600*scale,0);
+        //nothing this is the start
     }
 
 }

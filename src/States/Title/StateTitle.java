@@ -152,6 +152,24 @@ public class StateTitle extends BasicGameState implements iEventListener{
                 }
             });
         }
+        else
+        {
+            mBackground.setAcceptingInput(true); 
+            mForeground.setAcceptingInput(true);
+            mLogo.setAcceptingInput(true);
+            mParalax0.setAcceptingInput(true);
+            mParalax1.setAcceptingInput(true);
+            mParalax2.setAcceptingInput(true);
+            mCarrotAnimation.setAcceptingInput(true);
+            mBrocAnimation.setAcceptingInput(true);
+            mNameField.setAcceptingInput(true);
+            mAdventureButton.setAcceptingInput(true);
+            mRaceButton.setAcceptingInput(false);
+            mOptionsButton.setAcceptingInput(true);
+            mHighScoresButton.setAcceptingInput(true);
+            mParticlesToggle.setAcceptingInput(true);
+            mLightingToggle.setAcceptingInput(true);
+        }
         cont = _gc;
         super.enter(_gc, _sbg);
         //container.setMouseCursor("ui/title/mouse.png", 0, 62); //FIXME: break in fullscreen
@@ -163,6 +181,21 @@ public class StateTitle extends BasicGameState implements iEventListener{
         super.leave(container, game);
         container.setDefaultMouseCursor();
         sSound.stop("menu1");
+        mBackground.setAcceptingInput(false); 
+        mForeground.setAcceptingInput(false);
+        mLogo.setAcceptingInput(false);
+        mParalax0.setAcceptingInput(false);
+        mParalax1.setAcceptingInput(false);
+        mParalax2.setAcceptingInput(false);
+        mCarrotAnimation.setAcceptingInput(false);
+        mBrocAnimation.setAcceptingInput(false);
+        mNameField.setAcceptingInput(false);
+        mAdventureButton.setAcceptingInput(false);
+        mRaceButton.setAcceptingInput(false);
+        mOptionsButton.setAcceptingInput(false);
+        mHighScoresButton.setAcceptingInput(false);
+        mParticlesToggle.setAcceptingInput(false);
+        mLightingToggle.setAcceptingInput(false);
     }
     
     
@@ -192,7 +225,9 @@ public class StateTitle extends BasicGameState implements iEventListener{
     }
     
     public void render(GameContainer _gc, StateBasedGame _sbg, Graphics _grphcs) throws SlickException {
-        boolean debug = true;
+        boolean debug = false;
+        if(mBackground != null)
+        {
         mBackground.render(_gc, _grphcs, debug);
         //render other stuff here
         mParalax2.render(_gc, _grphcs, debug);
@@ -206,7 +241,7 @@ public class StateTitle extends BasicGameState implements iEventListener{
         mRaceButton.render(_gc, _grphcs, debug);
         mOptionsButton.render(_gc, _grphcs, debug);
         mHighScoresButton.render(_gc, _grphcs, debug);
-        
+        }
     }
 
     public void update(GameContainer _gc, StateBasedGame _sbg, int _i) throws SlickException 

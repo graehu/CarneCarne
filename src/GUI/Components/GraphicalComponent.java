@@ -49,7 +49,8 @@ public class GraphicalComponent extends iComponent{
     {
         try 
         {
-            mImage = new BigImage(_ref);
+            mImage = new Image(_ref);
+            mImage.setFilter(Image.FILTER_LINEAR); //for smooth scaling
         } 
         catch (SlickException ex) {
             Logger.getLogger(GraphicalComponent.class.getName()).log(Level.SEVERE, null, ex);

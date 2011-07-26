@@ -21,6 +21,7 @@ public class sEvents {
     private static Hashtable<String,LinkedList<iEventListener>> mTable = new Hashtable<String,LinkedList<iEventListener>>();
     private static Collection<iEvent> delayedEvents = new LinkedList<iEvent>();
     private static Set<String> blockedEvents = new HashSet<String>();
+    private static Set<iEventListener> blockedListeners = new HashSet<iEventListener>();
 
     public static void addNewAreaEvent(AreaEvent _areaEvent)
     {
@@ -28,7 +29,11 @@ public class sEvents {
 
     public static void unblockAllEvents()
     {
-        blockedEvents = new HashSet<String>();
+        blockedEvents.clear();
+    }
+    public static void unblockAllListeners()
+    {
+        blockedEvents.clear();
     }
     private sEvents()
     {
@@ -89,6 +94,14 @@ public class sEvents {
     {
         blockedEvents.remove(_name);
     }
+    public static void blockListener(iEventListener _listener)
+    {
+        blockedListeners.add(_listener);
+    }
+    public static void unblockListener(iEventListener _listener)
+    {
+        blockedListeners.remove(_listener);
+    }
     public static void triggerEvent(iEvent _event)
     {
         if (!blockedEvents.contains(_event.getName()))
@@ -100,9 +113,12 @@ public class sEvents {
                 while(i.hasNext())
                 {
                     iEventListener listener = i.next();
-                    if (!listener.trigger(_event))
+                    if(!blockedListeners.contains(listener))
                     {
-                        i.remove();
+                        if (!listener.trigger(_event))
+                        {
+                            i.remove();
+                        }
                     }
                 }
             }

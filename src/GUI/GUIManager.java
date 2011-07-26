@@ -24,11 +24,10 @@ import org.newdawn.slick.geom.Vector2f;
 
 //this class provides multiplue instances o9f itself to allow for persistance GUIs between states
 public class GUIManager implements iEventListener
-{
+{    
     static private int keyCount = 0;
     static private HashMap<Integer, GUIManager> instances = new HashMap<Integer, GUIManager>();
     static GUIManager currentInstance = null;
-    float scale = 1.0f;
     
     //Gets current instance
     public static GUIManager get()
@@ -55,8 +54,11 @@ public class GUIManager implements iEventListener
     HashMap<Integer, iComponent> mManagedRoots = new HashMap<Integer, iComponent>();
     GameContainer mContainer = null;
     int IDCounter = 0;
-    public GUIManager(GameContainer _context)
+    float scale = 1.0f;
+    
+    private GUIManager(GameContainer _context)
     {
+        scale = sGraphicsManager.getTrueScreenDimensions().x / 1680; //FIXME: assumes native resolution at 1680x1050
         if(_context != null)
             mContainer = _context;
         else
@@ -67,6 +69,7 @@ public class GUIManager implements iEventListener
     
     public Integer addRootComponent(iComponent _component)
     {
+        _component.setLocalScale(scale);
         if(_component.isRoot())
         {
             mManagedRoots.put(IDCounter, _component);
@@ -86,6 +89,7 @@ public class GUIManager implements iEventListener
             case eGraphical:
             {
                 component = new GraphicalComponent(mContainer, _position, _dimensions);
+                component.setLocalScale(scale);
                 mManagedRoots.put(IDCounter, component);
                 return IDCounter++;
                 //break;
@@ -129,7 +133,7 @@ public class GUIManager implements iEventListener
             //FIXME: assumes native resolution at 1680x1050
             scale = screen.x / 1680;
         }
-        return false; //do not unsubscribe
+        return true; //do not unsubscribe
     }
     
 }

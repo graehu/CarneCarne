@@ -9,7 +9,6 @@ import World.sWorld;
 import org.jbox2d.common.Vec2;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.tiled.TiledMap;
 /**
  *
  * @author alasdair
@@ -119,7 +118,7 @@ public class sLevel
     {
         try
         {
-            mTiledMap = new AnimatedTiledMap("assets/Tiles/Maps/RaceReloaded.tmx");
+            mTiledMap = new AnimatedTiledMap("assets/Tiles/Maps/Tutorial.tmx");
         }
         catch (SlickException e)
         {

@@ -60,8 +60,8 @@ public class PlayerEntity extends AIEntity
         if (mCheckPoint != null)
             mCheckPointPosition = mCheckPoint.getPosition();
         mReticle = new Reticle(this);
-        mRevolver = new Revolver("ui/revolver.png", new Vector2f(200,200));
-        //GUIManager.get().addRootComponent(mRevolver);
+        mRevolver = new Revolver("ui/revolver.png", new Vector2f(1540,900)); //FIXME: assumes native resolution of 1680x1050
+        GUIManager.get().addRootComponent(mRevolver);
         mDeaths = mRaceTimer = 0;
         HashMap params = new HashMap();
         try
@@ -270,7 +270,7 @@ public class PlayerEntity extends AIEntity
                 mIntroSection.render();
             
             mReticle.render(); //always render ontop
-            mScoreTracker.render();
+            //mScoreTracker.render();
         }
     }
     
@@ -305,7 +305,10 @@ public class PlayerEntity extends AIEntity
                 mBodyType = "bdy";
                 break;
         }
+        if(mRevolver != null)
+            mRevolver.setAmmo(_type);
     }
+    
     public void setDirection(Vec2 _dir)
     {
         mDirection = _dir;

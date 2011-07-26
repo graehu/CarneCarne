@@ -6,7 +6,6 @@ package Graphics.Skins;
 
 import org.jbox2d.common.Vec2;
 import org.newdawn.slick.Animation;
-import org.newdawn.slick.ImageBuffer;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
 
@@ -21,9 +20,8 @@ public class AnimatedSkin implements iSkin{
     //constructor public to graphics package only
     AnimatedSkin(String _spriteSheet, int _duration, int _tileWidth, int _tileHeight) throws SlickException
     {
-        mAnim = new Animation(new SpriteSheet("data/" + _spriteSheet, _tileWidth, _tileHeight), _duration);
+        mAnim = new Animation(new SpriteSheet(_spriteSheet, _tileWidth, _tileHeight), _duration);
         mAnim.restart();
-        mAnim.stop();
         mAnim.setLooping(false);
     }
     //constructor public to graphics package only

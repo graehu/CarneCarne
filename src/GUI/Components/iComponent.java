@@ -266,7 +266,7 @@ public abstract class iComponent extends AbstractComponent {
         mParent.removeChild(this);
         destroyInternal();
     }
-    protected final void destroyInternal()
+    protected void destroyInternal()
     {
         //set destroyed flag
         mIsDestroyed = true;

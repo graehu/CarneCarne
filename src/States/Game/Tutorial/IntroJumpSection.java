@@ -29,7 +29,6 @@ class IntroJumpSection extends IntroSection implements iEventListener
         params.put("width", 448);
         params.put("height", 300);
         mSkin = sSkinFactory.create("animated", params);
-        mSkin.setIsLooping(false);
     }
 
     @Override
@@ -40,7 +39,7 @@ class IntroJumpSection extends IntroSection implements iEventListener
     @Override
     protected void renderInternal(float scale)
     {
-        mSkin.setDimentions(450*scale, 225*scale);
+        mSkin.setDimentions(448*scale, 300*scale);
         mSkin.render(600*scale,0);
     }
 
