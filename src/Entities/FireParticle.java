@@ -9,6 +9,7 @@ import Graphics.Particles.sParticleManager;
 import Graphics.Skins.iSkin;
 import Level.RootTile.AnimationType;
 import Level.Tile;
+import Level.sLevel.TileType;
 import Score.ScoreTracker.ScoreEvent;
 import World.sWorld;
 import World.sWorld.BodyCategories;
@@ -52,18 +53,21 @@ public class FireParticle extends Entity
                 (1 << BodyCategories.eTar.ordinal());
             for (ContactEdge edge = getBody().getContactList(); edge != null; edge = edge.next)
             {
-                if (edge.contact.isTouching() && (edge.other.m_fixtureList.m_filter.categoryBits & tileMask) != 0)
-                {
                     Tile tile = (Tile)edge.contact.m_fixtureA.getUserData();
                     if (tile == null)
                         tile = (Tile)edge.contact.m_fixtureB.getUserData();
-                    ParticleSysBase system = sParticleManager.createSystem(tile.getAnimationsName(AnimationType.eFireHit) + "FireHit", this.getBody().getPosition().add(new Vec2(0.5f,0.5f)).mul(64.0f), 2);
+                if (edge.contact.isTouching() && (edge.other.m_fixtureList.m_filter.categoryBits & tileMask) != 0)
+                {
+                    Vec2 position = this.getBody().getPosition();
                     Vec2 direction = this.getBody().getLinearVelocity();
+                    String animationName = tile.getAnimationsName(AnimationType.eFireHit);
+                    if (!tile.getTileType().equals(TileType.eIce))
+                        kill();
+                    tile.setOnFire();
+                    ParticleSysBase system = sParticleManager.createSystem(animationName + "FireHit", position.add(new Vec2(0.5f,0.5f)).mul(64.0f), 2);
                     direction.normalize();
                     float offset = (float)Math.atan2(direction.y, direction.x) * 180.0f/(float)Math.PI;
                     system.setAngularOffset(offset-90.0f);
-                    tile.setOnFire();
-                    kill();
                     break;
                 }
             }

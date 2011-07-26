@@ -114,11 +114,12 @@ public class sLevel
         mLevelEditor.destroyTile(_xTile, _yTile);
     }
     
-    public static void init()
+    public static void init(String _map)
     {
         try
         {
-            mTiledMap = new AnimatedTiledMap("assets/Tiles/Maps/Tutorial.tmx");
+            mTiledMap = new AnimatedTiledMap("assets/Tiles/Maps/" + _map + ".tmx");
+            //mTiledMap = new AnimatedTiledMap("assets/tutorial.tmx");
         }
         catch (SlickException e)
         {

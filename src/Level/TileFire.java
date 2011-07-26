@@ -43,7 +43,7 @@ class TileFire
         if (_tile.mTileGrid.mBody.m_type.equals(BodyType.STATIC))
             sParticleManager.createSystem("TarBurn", new Vec2(_tile.getWorldPosition()).mul(64).add(new Vec2(32,32)), 180/60.0f);
         else
-            sParticleManager.createMovingSystem("TarBurn", 180/60.0f,_tile);
+            sParticleManager.createTileMovingSystem("TarBurn", 180/60.0f,_tile);
     }
     void update()
     {

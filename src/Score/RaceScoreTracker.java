@@ -22,7 +22,7 @@ public class RaceScoreTracker extends ScoreTracker
     private static Integer[] mScoreValues = getScoreValues(); /// These are Integers instead of ints just so they can be null and therefore an error
 
     @Override
-    public void score(ScoreEvent _event)
+    public void scoreimpl(ScoreEvent _event)
     {
         mScore += mScoreValues[_event.ordinal()];
     }

@@ -15,6 +15,7 @@ import Graphics.Sprites.sSpriteFactory;
 import Graphics.sGraphicsManager;
 import HUD.Reticle;
 import HUD.Revolver;
+import HUD.sHud;
 import Level.sLevel.TileType;
 import Score.RaceScoreTracker;
 import Score.ScoreTracker;
@@ -114,6 +115,7 @@ public class PlayerEntity extends AIEntity
         kill();
         mWasIReallyKilled = true;
         mAIEntityState.restartingRace();
+        mScoreTracker.raceEnded();
     }
     public void getToStartingZone()
     {
@@ -188,6 +190,7 @@ public class PlayerEntity extends AIEntity
         {
             if (contact.other.getFixtureList().getFilterData().categoryBits == (1 << sWorld.BodyCategories.eCheckPoint.ordinal()))
             {
+                contact.contact.setEnabled(false);
                 if (!checkpointSet.contains((CheckPointZone)contact.other.getUserData()))
                 {
                     ((CheckPointZone)contact.other.getUserData()).enter(this);
@@ -270,7 +273,9 @@ public class PlayerEntity extends AIEntity
                 mIntroSection.render();
             
             mReticle.render(); //always render ontop
-            //mScoreTracker.render();
+            
+            mScoreTracker.render();
+            sHud.render(((PlayerInputController)mController).mPlayer);
         }
     }
     

@@ -18,6 +18,7 @@ import Events.AreaEvents.RaceStartZone;
 import Events.PlayerCreatedEvent;
 import Events.TutorialSpawnEvent;
 import Events.sEvents;
+import Graphics.Particles.sParticleManager;
 import Level.Lighting.sLightsManager;
 import Level.sLevel.TileType;
 import java.util.HashMap;
@@ -175,6 +176,7 @@ public class FlagProcessor
                         float quadAtt = new Float(_tiledMap.getTileProperty(id, "QuadAtt", "0"));
                         //create light source translated to world space
                         sLightsManager.createLightSource(new Vec2(i,ii), radius, color, constAtt, quadAtt); //FIXME: assumes 64x64 tiles
+                        sParticleManager.createSystem("LightGround", new Vec2(i,ii).mul(64.0f).add(new Vec2(32,32)), -1);
                     }
                     else if (spawn.equals("Broccoli"))
                     {

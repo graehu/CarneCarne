@@ -35,8 +35,8 @@
 <point x="1.0" y="1.0"/>
 </scaleY>
 <color>
-<step b="1.0" g="0.2" offset="0.0" r="0.2"/>
-<step b="1.0" g="0.2" offset="1.0" r="0.2"/>
+<step b="0.4" g="1.0" offset="0.0" r="0.4"/>
+<step b="0.0" g="1.0" offset="1.0" r="0.2"/>
 </color>
 </emitter>
 </system>

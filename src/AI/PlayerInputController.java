@@ -185,7 +185,7 @@ public class PlayerInputController extends iAIController implements iEventListen
     
     public boolean hammer(final Vec2 _position)
     {
-        return sWorld.smashTiles(mEntity.getBody().getPosition(),_position);
+        return sWorld.smashTiles(mEntity.getBody().getPosition(),_position, mPlayer);
     }
     
     public void layBlock(final Tile _tile)

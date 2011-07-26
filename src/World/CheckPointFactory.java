@@ -32,7 +32,7 @@ class CheckPointFactory implements iPhysicsFactory {
         fixture.filter.categoryBits = (1 << BodyCategories.eCheckPoint.ordinal());
         fixture.filter.maskBits = (1 << BodyCategories.ePlayer.ordinal());
         fixture.shape = shape;
-        fixture.isSensor = true;
+        //fixture.isSensor = true;
         BodyDef def = new BodyDef();
         //def.userData = _entity;
         def.position = new Vec2((position.x),(position.y));
@@ -41,5 +41,4 @@ class CheckPointFactory implements iPhysicsFactory {
         body.createFixture(fixture);
         return body;  
     }
-    
 }

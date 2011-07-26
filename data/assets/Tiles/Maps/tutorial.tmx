@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" width="9" height="6" tilewidth="64" tileheight="64">
+<map version="1.0" orientation="orthogonal" width="50" height="50" tilewidth="64" tileheight="64">
  <tileset firstgid="1" source="Tilesets/MeatEdible.tsx"/>
  <tileset firstgid="17" source="Tilesets/BoneVerticalThin.tsx"/>
  <tileset firstgid="33" source="Tilesets/MeatNonEdible.tsx"/>
  <tileset firstgid="97" source="Tilesets/Spawns.tsx"/>
  <tileset firstgid="105" source="Tilesets/Light.tsx"/>
- <layer name="Level" width="9" height="6">
+ <layer name="Level" width="50" height="50">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC1NkYGBQJAILMuAGMDX4AKVqGNHUEMIAhAdPf9gAAAA=
+   H4sIAAAAAAAAC+3TMQoAIAgF0DpCR+j+l4y2lsihEOI9cNLhK1gKAAAAAPCDfqmyzQzt0I/MZDtliNzbHvfsMtSlH5nJ9sufAwAAwCsD4Ttd5hAnAAA=
   </data>
  </layer>
- <layer name="Flags" width="9" height="6">
+ <layer name="Flags" width="50" height="50">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC8tkwA8yCcjTCiRSqB8ATg0gq9gAAAA=
+   H4sIAAAAAAAAC+3MMQ0AAAgEMawy4t8AJhg+pJ0vVwUAAAAAfDAhD0jWRw0AAACQaQGd6cBgECcAAA==
   </data>
  </layer>
 </map>

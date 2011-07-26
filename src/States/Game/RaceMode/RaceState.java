@@ -23,7 +23,6 @@ import org.jbox2d.common.Vec2;
  */
 class RaceState implements iEventListener
 {
-    LinkedList<Integer> raceTimes;
     private enum State
     {
         eRaceNotStarted,
@@ -39,7 +38,6 @@ class RaceState implements iEventListener
     {
         mState = State.eRaceNotStarted;
         mTimer = 0;
-        raceTimes = new LinkedList<Integer>();
         sEvents.subscribeToEvent("RaceWonEvent", this);
         sEvents.subscribeToEvent("RaceCountdownStartEvent", this);
         sEvents.subscribeToEvent("RaceCountdownInterruptEvent", this);
@@ -50,7 +48,7 @@ class RaceState implements iEventListener
         if (_event.getType().equals("RaceWonEvent"))
         {
             RaceWonEvent event = (RaceWonEvent)_event;
-            raceTimes.add(event.getTime());
+            //event.getPlayer().mScoreTracker.winRace(mTimer, mTimer);
             changeState(State.eRaceWon);
         }
         else if (_event.getType().equals("RaceCountdownStartEvent"))

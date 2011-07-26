@@ -4,7 +4,6 @@
  */
 package Graphics.Particles;
 
-import Level.Tile;
 import org.jbox2d.common.Vec2;
 import org.newdawn.slick.particles.ParticleSystem;
 
@@ -12,15 +11,13 @@ import org.newdawn.slick.particles.ParticleSystem;
  *
  * @author alasdair
  */
-public class MovingParticleSys implements ParticleSysBase
+abstract public class MovingParticleSys implements ParticleSysBase
 {
     ParticleSysBase mParticles;
-    Tile mTile;
     Vec2 mOffset;
-    public MovingParticleSys(ParticleSysBase _particles, Tile _tile)
+    public MovingParticleSys(ParticleSysBase _particles)
     {
         mParticles = _particles;
-        mTile = _tile;
     }
 
     public boolean isDead()
@@ -56,22 +53,12 @@ public class MovingParticleSys implements ParticleSysBase
         mParticles.setAngularOffset(_degrees);
     }
 
-    public boolean update(int _delta)
-    {
-        Vec2 position = mTile.getWorldPosition().mul(64).add(new Vec2(32,32));
-        mParticles.moveEmittersTo(position.x, position.y);
-        return mParticles.update(_delta);
-    }
 
     public void render(float _x, float _y)
     {
         mParticles.render(_x, _y);
     }
 
-    public Vec2 getPosition()
-    {
-        return mTile.getWorldPosition().mul(64).add(new Vec2(32,32));
-    }
 
     public ParticleSystem getSystem() {
         return mParticles.getSystem();

@@ -224,7 +224,6 @@ public class CaveInSearcher {
             mTileGrid.set(_x, _y, 0);
         }
     }
-    ArrayList<TempTile> allUsedTiles = new ArrayList<TempTile>();
     protected CaveInTileGrid createTileGrid(RootTileList _rootTiles, TiledMap _tiledMap, int _xTrans, int _yTrans, int _width, int _height, int _layerIndex, Vec2 _position, float _angle, Vec2 _linearVelocity, float _angularVelocity)
     {
         return new CaveInTileGrid(_rootTiles, _tiledMap, _xTrans, _yTrans, _width, _height, _layerIndex, _position, _angle, _linearVelocity, _angularVelocity, mXTransform + _xTrans, mYTransform + _yTrans);
@@ -241,7 +240,6 @@ public class CaveInSearcher {
             CaveInTileGrid newTileGrid = createTileGrid(mTileGrid.rootTiles, mTiledMap, lowestX, lowestY, 1+highestX-lowestX, 1+highestY-lowestY, mLayerIndex, position, mBody.getAngle(), linearVelocity, angularVelocity);
             sEvents.triggerDelayedEvent(new CaveInEvent(newTileGrid, tiles.size()));
             newTileGrid.finish(tiles);
-            allUsedTiles.addAll(tiles);
             tiles = new ArrayList<TempTile>();
             lowestX = lowestY = Integer.MAX_VALUE;
             highestX = highestY = Integer.MIN_VALUE;

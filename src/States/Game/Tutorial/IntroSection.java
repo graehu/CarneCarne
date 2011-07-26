@@ -67,8 +67,8 @@ abstract public class IntroSection
         if (mSkin != null)
         {
             mSkin.setDimentions(0.28f*scale, 0.28f*scale*0.67f);
-            mSkin.render(0.36f*scale,0);
-        }
+            mSkin.render(0.75f*scale,0);
+        }                                                                                                   
     }
     abstract protected void renderInternal(float scale);
 }
