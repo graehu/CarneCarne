@@ -39,11 +39,7 @@ public class RaceMode implements iGameMode, iEventListener
         sEvents.subscribeToEvent("PlayerCreatedEvent", this);
         sEvents.subscribeToEvent("RaceResetEvent", this);
         sEvents.subscribeToEvent("RaceStartEvent", this);
-        if (_initLevel)
-        {
-            sLevel.init("RaceReloaded");
-        }
-        sLevel.newLevel();
+        sLevel.newLevel("RaceReloaded");
     }
     public iGameMode update(Graphics _graphics, float _time)
     {

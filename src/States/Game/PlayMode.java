@@ -17,7 +17,7 @@ public class PlayMode implements iGameMode
     public PlayMode()
     {
         //sLevel.init();
-        sLevel.newLevel();
+        sLevel.newLevel("RaceReloaded");
     }
     public iGameMode update(Graphics _graphics, float _time)
     {

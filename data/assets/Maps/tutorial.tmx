@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="40" height="40" tilewidth="64" tileheight="64">
+ <tileset firstgid="1" source="Tilesets/MeatEdible.tsx"/>
+ <tileset firstgid="17" source="Tilesets/BoneVerticalThin.tsx"/>
+ <tileset firstgid="33" source="Tilesets/MeatNonEdible.tsx"/>
+ <tileset firstgid="97" source="Tilesets/Spawns.tsx"/>
+ <tileset firstgid="105" source="Tilesets/Light.tsx"/>
+ <layer name="Level" width="40" height="40">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+2TsQnAMBADPyNkBO+/pFs1wZ1khTMIXJzBCN2amXVxRu7vfJ8ko389vUkwzf97wkx6/+3RDvEXf91Mev/t0Q7xF3/dTHr/7dEO8Rd/3Ux6/+3RDvEXf91Mev/t0Q7xF3/dTHr/7dEO8fd//m4XMwl4ABkAAA==
+  </data>
+ </layer>
+ <layer name="StaticForeground" width="40" height="40">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+2XOwqAMBBEcxk1WqiV1n7AzvsfxwEDbpNqWVfDPBhwYQykeCQJ4dts4ntFRmRAeqRKs2dnFvOU2YNn5xDzmfnHs7OLeUHalE7Es0N0WLoZkRppFOvQX12H/paNlXf094H+0l8r3nAzKtahv7oO/S0by/OX798b+kt/rfC8G/P8te/QX0L+ywXfseEJABkAAA==
+  </data>
+ </layer>
+ <layer name="Flags" width="40" height="40">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+3OIREAAAgAMaoi6V+ABigOzKZffAQAAMxyqblW3wMAAAC8aR84RO0AGQAA
+  </data>
+ </layer>
+</map>

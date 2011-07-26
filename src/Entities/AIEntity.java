@@ -310,10 +310,12 @@ public class AIEntity extends Entity {
             if (!mAIEntityState.getState().equals(State.eSwimming))
                 try
                 {
-                    if (mLastTouchingTile == null)
-                        sParticleManager.createSystem("cloud", sWorld.translateToWorld(getBody().getPosition()).sub(sWorld.getPixelTranslation()).add(new Vec2(32,64)), 1f);
-                    else
+                    if(mTouchingTile != null)
+                        sParticleManager.createSystem(mTouchingTile.getAnimationsName(AnimationType.eJump) + "Jump", sWorld.translateToWorld(getBody().getPosition()).sub(sWorld.getPixelTranslation()).add(new Vec2(32,64)), 1f);
+                    else if (mLastTouchingTile != null)
                         sParticleManager.createSystem(mLastTouchingTile.getAnimationsName(AnimationType.eJump) + "Jump", sWorld.translateToWorld(getBody().getPosition()).sub(sWorld.getPixelTranslation()).add(new Vec2(32,64)), 1f);
+                    else
+                        sParticleManager.createSystem("cloud", sWorld.translateToWorld(getBody().getPosition()).sub(sWorld.getPixelTranslation()).add(new Vec2(32,64)), 1f);
                 }
                 catch (NullPointerException e)
                 {

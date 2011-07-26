@@ -5,8 +5,6 @@
 package States.Game.Tutorial;
 
 import Events.sEvents;
-import Graphics.Skins.sSkinFactory;
-import java.util.HashMap;
 import org.jbox2d.common.Vec2;
 
 /**

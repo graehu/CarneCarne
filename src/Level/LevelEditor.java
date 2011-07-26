@@ -38,17 +38,16 @@ public class LevelEditor {
             mFlagProcessor = null;
         }
     }
-    void newLevel(TiledMap _tiledMap, boolean _destroy)
+    void newLevel(TiledMap _tiledMap)
     {
-        if (_destroy)
-        {
-            rootTiles = new RootTileList(_tiledMap);
-            if(tileGrid != null)
+        //cleanup old level
+        if(tileGrid != null)
                 tileGrid.destroy();
-            sWorld.destroy();
-        }
+        sWorld.destroy();
+        //init new level
         mTiledMap = _tiledMap;
         layerIndex = mTiledMap.getLayerIndex("Level");
+        rootTiles = new RootTileList(mTiledMap);
         
         tileGrid = new LevelTileGrid(mTiledMap, rootTiles, layerIndex);
         mFlagProcessor = new FlagProcessor(mTiledMap, layerIndex, tileGrid.mBody, tileGrid);

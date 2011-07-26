@@ -45,15 +45,18 @@ public class sLightsManager
         mLightSources.remove(_key);
     }
     
+    public static void destroyAllLightSources()
+    {
+        mLightSources.clear();
+    }
+    
     public static ArrayList<LightSource> getVisible(Rectangle _viewport)
     {
-        Vec2 pixelTrans = sWorld.getPixelTranslation();
         ArrayList<LightSource> visibleList = new ArrayList<LightSource>();
         for(LightSource source : mLightSources.values())
         {
             Vec2 pos = sWorld.translateToWorld(source.getPosition());
             Circle light = new Circle(pos.x + _viewport.getX(), pos.y + _viewport.getY(), source.getRadius(), 10); 
-            sGraphicsManager.fill(light);
             if(_viewport.intersects(light))
                 visibleList.add(source);
         }
