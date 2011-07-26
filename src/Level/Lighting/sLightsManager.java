@@ -52,7 +52,8 @@ public class sLightsManager
         for(LightSource source : mLightSources.values())
         {
             Vec2 pos = sWorld.translateToWorld(source.getPosition());
-            Circle light = new Circle(pos.x + _viewport.getX(), pos.y + _viewport.getY(), source.getRadius()); 
+            Circle light = new Circle(pos.x + _viewport.getX(), pos.y + _viewport.getY(), source.getRadius(), 10); 
+            sGraphicsManager.fill(light);
             if(_viewport.intersects(light))
                 visibleList.add(source);
         }
