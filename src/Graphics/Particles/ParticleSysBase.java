@@ -44,4 +44,6 @@ public interface ParticleSysBase
     void render(float _x, float _y);
     
     public Vec2 getPosition();
+
+    public void setPosition(Vec2 mul);
 }

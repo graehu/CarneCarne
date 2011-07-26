@@ -10,6 +10,7 @@ import Graphics.Particles.ParticleSysBase;
 import Graphics.Particles.sParticleManager;
 import Graphics.Sprites.iSprite;
 import Graphics.Sprites.sSpriteFactory;
+import HUD.sHud;
 import Level.RootTile.AnimationType;
 import Level.Tile;
 import Level.sLevel.TileType;
@@ -27,8 +28,13 @@ public class TongueStateMachine {
 
     void kill()
     {
-        tongueAttachment = null;
-        changeState(State.eStart);
+        ///  This works, I think
+        spitRelease(mTonguePosition);
+        hammerRelease(mTonguePosition);
+        tongueRelease(mTonguePosition);
+        /// Old code, which crashed when you did stuff before you died
+        /*tongueAttachment = null;
+        changeState(State.eStart);*/
     }
 
     
@@ -63,12 +69,14 @@ public class TongueStateMachine {
     private int mCurrentStateTimer;
     private PlayerInputController mAIController;
     private DistanceJoint mJoint = null;
-    private iSprite mTongueEndSprite;
+    private iSprite mCurrentTongueEndSprite;
+    private iSprite mTongueEndSprites[];
     protected Vec2 mTongueDir = new Vec2(1,0);
     private Vec2 mTonguePosition = new Vec2(0,0);
     private float mTargetDistance = 0; //the distance the tongue trys to achieve
     private float mLastLength = 0;
     private int mAmmoLeft;
+    private ParticleSysBase mMouthParticles = null;
     protected boolean mIsTongueActive = false;
     private String mBlockMaterial;
     private Tile mTile;
@@ -91,10 +99,31 @@ public class TongueStateMachine {
         mBlockMaterial = "SomeSoftMaterial";
         mTile = null;
         mAmmoLeft = 0;
+        
+        iSprite chilliHammer, meatHammer, melonHammer, gumHammer;
         HashMap params = new HashMap();
-        params.put("ref", "mouthBlock");
-        mTongueEndSprite = sSpriteFactory.create("simple", params);
-        mTongueEndSprite.setVisible(false);
+        
+        params.put("ref", "chilliHammer");
+        chilliHammer = sSpriteFactory.create("simple", params);
+        chilliHammer.setVisible(false);
+        
+        params.put("ref", "meatHammer");
+        meatHammer = sSpriteFactory.create("simple", params);
+        meatHammer.setVisible(false);
+        
+        params.put("ref", "melonHammer");
+        melonHammer = sSpriteFactory.create("simple", params);
+        melonHammer.setVisible(false);
+        
+        gumHammer = melonHammer;
+        
+        mTongueEndSprites = new iSprite[TileType.eTileTypesMax.ordinal()];
+        mTongueEndSprites[TileType.eChilli.ordinal()] = chilliHammer;
+        mTongueEndSprites[TileType.eEdible.ordinal()] = meatHammer;
+        mTongueEndSprites[TileType.eMelonFlesh.ordinal()] = melonHammer;
+        mTongueEndSprites[TileType.eGum.ordinal()] = gumHammer;
+        
+        mCurrentTongueEndSprite = null;
     }
     private Tile extendTongue(boolean _grabBlock)
     {
@@ -105,7 +134,14 @@ public class TongueStateMachine {
         mTonguePosition = mAIController.mEntity.getBody().getPosition().add(tongueOffset);
         
         //update end of tongue sprite's position
-        mTongueEndSprite.setPosition(mTonguePosition.add(new Vec2(0.25f,0.25f)).mul(64));
+        if (mCurrentTongueEndSprite != null)
+        {
+            mCurrentTongueEndSprite.setPosition(mTonguePosition.add(new Vec2(0.25f,0.25f)).mul(64));
+            if (mMouthParticles != null)
+            {
+                mMouthParticles.setPosition(mTonguePosition.sub(mAIController.mEntity.getBody().getPosition()).add(new Vec2(0.25f,0.25f))); /// This actually sets the offset in this implementation
+            }
+        }
         
         if (_grabBlock)
             return mAIController.grabBlock(mTonguePosition);
@@ -232,6 +268,8 @@ public class TongueStateMachine {
                         mAmmoLeft = 1;
                     }
                     changeState(State.eFoodInMouth);
+                    mAIController.mEntity.getBody().getFixtureList().setDensity(10.0f);
+                    mAIController.mEntity.getBody().resetMassData();
                 }
                 break;
             }
@@ -275,6 +313,8 @@ public class TongueStateMachine {
                     else
                     {
                         changeState(State.eStart);
+                        mAIController.mEntity.getBody().getFixtureList().setDensity(4.0f);
+                        mAIController.mEntity.getBody().resetMassData();
                     }
                 }
                 break;
@@ -354,7 +394,7 @@ public class TongueStateMachine {
             }
         }
     }
-    public void leftClick(Vec2 _position)
+    public void tongueClick(Vec2 _position)
     {
         switch (mState)
         {
@@ -362,6 +402,60 @@ public class TongueStateMachine {
             {
                 mTonguePosition = _position;
                 changeState(State.eFiringTongue);
+                break;
+            }
+            case eFiringTongue:
+            {
+                /// assert(false);
+                break;
+            }
+            case eRetractingTongue:
+            {
+                break;
+            }
+            case eStuckToBlock:
+            {
+                /// assert(false);
+                break;
+            }
+            case eRetractingWithBlock:
+            {
+                break;
+            }
+            case eFoodInMouth:
+            {
+                sHud.addHudElement(mAIController.mPlayer, "TryHammering", new Vec2(0,0), 120, true);
+                break;
+            }
+            case eFiringHammer:
+            {
+                break;
+            }
+            case eRetractingHammer:
+            {
+                break;
+            }
+            case eSpittingBlock:
+            {
+                break;
+            }
+            case eSpitting:
+            {
+                break;
+            }
+            case eIdleAnimation:
+            {
+                break;
+            }
+        }
+    }
+    public void hammerClick(Vec2 _position)
+    {
+        switch (mState)
+        {
+            case eStart:
+            {
+                sHud.addHudElement(mAIController.mPlayer, "TryTonguing", new Vec2(0,0), 120, true);
                 break;
             }
             case eFiringTongue:
@@ -411,7 +505,7 @@ public class TongueStateMachine {
         }
         
     }
-    public void rightClick(Vec2 _position)
+    public void spitClick(Vec2 _position)
     {
         switch (mState)
         {
@@ -469,7 +563,7 @@ public class TongueStateMachine {
             }
         }
     }
-    public void leftRelease(Vec2 _position)
+    public void tongueRelease(Vec2 _position)
     {
         switch (mState)
         {
@@ -527,7 +621,62 @@ public class TongueStateMachine {
             }
         }
     }
-    public void rightRelease(Vec2 _position)
+    public void hammerRelease(Vec2 _position)
+    {
+        switch (mState)
+        {
+            case eStart:
+            {
+                /// assert(false);
+                break;
+            }
+            case eFiringTongue:
+            {
+                break;
+            }
+            case eRetractingTongue:
+            {
+                break;
+            }
+            case eStuckToBlock:
+            {
+                break;
+            }
+            case eRetractingWithBlock:
+            {
+                break;
+            }
+            case eFoodInMouth:
+            {
+                break;
+            }
+            case eFiringHammer:
+            {
+                break;
+            }
+            case eRetractingHammer:
+            {
+                break;
+            }
+            case eSpittingBlock:
+            {
+                break;
+            }
+            case eSpitting:
+            {
+                break;
+            }
+            case eSwinging:
+            {
+                break;
+            }
+            case eIdleAnimation:
+            {
+                break;
+            }
+        }
+    }
+    public void spitRelease(Vec2 _position)
     {
         switch (mState)
         {
@@ -591,6 +740,11 @@ public class TongueStateMachine {
             {
                 sWorld.destroyJoint(mJoint);
                 mJoint = null;
+                break;
+            }
+            case eFoodInMouth:
+            {
+                break;
             }
             default:
             {
@@ -643,20 +797,31 @@ public class TongueStateMachine {
             case eFoodInMouth:
             {
                 //STOP DISPLAYING TONGUE END
-                mTongueEndSprite.setVisible(false);
+                if (mCurrentTongueEndSprite != null)
+                {
+                    mCurrentTongueEndSprite.setVisible(false);
+                    mCurrentTongueEndSprite = null;
+                }
                 //set body type
                 ((PlayerEntity)mAIController.mEntity).changeBodyType(mTile.getTileType());
+                if (mTile.getTileType().equals(TileType.eChilli) && mMouthParticles == null)
+                {
+                    mMouthParticles = sParticleManager.createMovingSystem("CarneFire", -1, mAIController.mEntity.getBody(), new Vec2(0,0), new Vec2(0.5f,0.5f));
+                }
                 //no tongue
                 mAIController.mEntity.mSkin.deactivateSubSkin("tng");
                 mIsTongueActive = false;
                 mCurrentStateTimer = 0;
+                mAIController.mEntity.getBody().getFixtureList().setDensity(10.0f);
+                mAIController.mEntity.getBody().resetMassData();
                 break;
             }
             case eFiringHammer:
             {
                 mTongueDir = mAIController.mPlayerDir; //assume nomalised
                 //DISPLAY TONGUE END
-                mTongueEndSprite.setVisible(true);
+                mCurrentTongueEndSprite = mTongueEndSprites[mTile.getTileType().ordinal()];
+                mCurrentTongueEndSprite.setVisible(true);
                 //render tongue
                 mAIController.mEntity.mSkin.activateSubSkin("tng", false, 0.0f);
                 mIsTongueActive = true;
@@ -678,6 +843,11 @@ public class TongueStateMachine {
                 mCurrentStateTimer = setAnimation("SpittingBlock");
                 mCurrentStateTimer = Math.max(actionDelay, mCurrentStateTimer);
                 spitBlock();
+                if (mMouthParticles != null)
+                {
+                    mMouthParticles.kill();
+                    mMouthParticles = null;
+                }
                 break;
             }
             case ePlacingBlock:

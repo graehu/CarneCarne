@@ -38,6 +38,7 @@ public class FireParticleBody implements iPhysicsFactory
         fixture.shape = shape;
         fixture.filter.categoryBits = (1 << sWorld.BodyCategories.eFire.ordinal());
         fixture.filter.maskBits = Integer.MAX_VALUE;
+        fixture.isSensor = true;
         BodyDef def = new BodyDef();
         def.type = BodyType.DYNAMIC;
         def.userData = entity;

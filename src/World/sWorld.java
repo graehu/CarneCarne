@@ -32,6 +32,7 @@ import Level.RootTile;
 import Level.Tile;
 import Level.sLevel;
 import Level.sLevel.TileType;
+import World.PhysicsFactories.CarcassBodyFactory;
 import World.PhysicsFactories.GroundBodyFactory;
 import World.PhysicsFactories.PlayerFactory;
 import java.util.HashMap;
@@ -116,6 +117,7 @@ public class sWorld
         eSpikes,
         eFire,
         eEtherealEnemy,
+        eCarcass,
         eBodyCategoriesMax;
     }
     private sWorld()
@@ -140,6 +142,7 @@ public class sWorld
         factories.put("MovingPlatformBodyFactory", new MovingPlatformBodyFactory());
         factories.put("FireParticleBody", new FireParticleBody());
         factories.put("GroundBody", new GroundBodyFactory());
+        factories.put("CarcassBody", new CarcassBodyFactory());
         mCamera = new FreeCamera(new Rectangle(0,0,s.x, s.y));        
         resizeViewport(new Rectangle(0,0,s.x, s.y));    
         mResizeListener = new ResizeListener();
@@ -147,6 +150,10 @@ public class sWorld
     
     public static Body useFactory(String _factory, HashMap _parameters)
     {
+        if (mWorld.isLocked())
+        {
+            throw new UnsupportedOperationException("World is locked");
+        }
         return factories.get(_factory).useFactory(_parameters, mWorld);
     }
     private static class AABBCallback implements QueryCallback
@@ -230,7 +237,7 @@ public class sWorld
             int id = ((SpatBlock)callback.getFixture().getBody().getUserData()).getRootId();
             RootTile tile = sLevel.getRootTile(id);
             mWorld.destroyBody(callback.getFixture().getBody());
-            return new Tile(id, tile, null, -1, -1);
+            //return new Tile(id, tile, null, -1, -1);
         }
         if (callback.getFixture().m_filter.categoryBits == (1 << BodyCategories.ePlayer.ordinal())||
                 callback.getFixture().m_filter.categoryBits == (1 << BodyCategories.eEnemy.ordinal()))
@@ -302,12 +309,12 @@ public class sWorld
                     case eGum:
                     case eMelonFlesh:
                     {
-                        sHud.addHudElement(_playerNum, "TooltipSpit", new Vec2(0,0), 120, true);
+                        //sHud.addHudElement(_playerNum, "TooltipSpit", new Vec2(0,0), 120, true);
                         break;
                     }
                     case eSwingable:
                     {
-                        sHud.addHudElement(_playerNum, "TooltipSpit", new Vec2(0,0), 120, true);
+                        //sHud.addHudElement(_playerNum, "TooltipSpit", new Vec2(0,0), 120, true);
                         /// Purposefully not breaking
                     }
                     case eEdible:

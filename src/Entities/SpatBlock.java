@@ -4,14 +4,11 @@
  */
 package Entities;
 
-import Graphics.Particles.ParticleSysBase;
-import Graphics.Particles.sParticleManager;
 import Graphics.Skins.iSkin;
-import Level.RootTile.AnimationType;
-import Level.Tile;
 import World.sWorld;
 import World.sWorld.BodyCategories;
 import org.jbox2d.common.Vec2;
+import org.jbox2d.dynamics.Fixture;
 import org.jbox2d.dynamics.contacts.ContactEdge;
 
 /**
@@ -32,20 +29,27 @@ public class SpatBlock extends Entity {
     {
         if (mWaterTiles != 0)
             buoyancy();
-        int tileMask = (1 << BodyCategories.eEdibleTiles.ordinal()) |
-            (1 << BodyCategories.eNonEdibleTiles.ordinal()) |
-            (1 << BodyCategories.ePlayer.ordinal()) |
-            (1 << BodyCategories.eEnemy.ordinal()) |
-            (1 << BodyCategories.eWater.ordinal()) |
-            (1 << BodyCategories.eGum.ordinal()) |
-            (1 << BodyCategories.eTar.ordinal());
+        int tileMask = (1 << BodyCategories.ePlayer.ordinal()) |
+            (1 << BodyCategories.eEnemy.ordinal());
+        //if (mBody.getLinearVelocity().length() > 100.0f)
+        {
+            tileMask |= (1 << BodyCategories.eEdibleTiles.ordinal()) |
+                (1 << BodyCategories.eNonEdibleTiles.ordinal())|
+                (1 << BodyCategories.eGum.ordinal()) |
+                (1 << BodyCategories.eTar.ordinal());
+        }
         for (ContactEdge edge = getBody().getContactList(); edge != null; edge = edge.next)
         {
-            if (edge.contact.isTouching() && (edge.other.m_fixtureList.m_filter.categoryBits & tileMask) != 0)
+            Entity entity = (Entity)edge.contact.m_fixtureB.getBody().getUserData();
+            Fixture other = null;
+            if (entity == this)
             {
-                Entity entity = (Entity)edge.contact.m_fixtureB.getBody().getUserData();
-                if (entity == this)
-                    entity = (Entity)edge.contact.m_fixtureA.getBody().getUserData();
+                entity = (Entity)edge.contact.m_fixtureA.getBody().getUserData();
+                other = edge.contact.m_fixtureA;
+            }
+            else other = edge.contact.m_fixtureB;
+            if (edge.contact.isTouching() && (other.m_filter.categoryBits & tileMask) != 0)
+            {
                 try
                 {
                     ((AIEntity)entity).stun();
@@ -54,7 +58,7 @@ public class SpatBlock extends Entity {
                 {
                     
                 }
-                kill();
+                kill(CauseOfDeath.eMundane);
                 break;
             }
         }
@@ -67,7 +71,7 @@ public class SpatBlock extends Entity {
     public void render()
     {
         Vec2 pixelPosition = sWorld.translateToWorld(getBody().getPosition().add(new Vec2(0.5f-mRadius,0.5f-mRadius))); /// FIXME
-        mSkin.render(pixelPosition.x,pixelPosition.y);
         mSkin.setRotation(getBody().getAngle()*(180/(float)Math.PI));
+        mSkin.render(pixelPosition.x,pixelPosition.y);
     }
 }

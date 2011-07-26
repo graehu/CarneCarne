@@ -5,6 +5,7 @@
 package Events;
 
 import Entities.Entity;
+import Entities.Entity.CauseOfDeath;
 
 /**
  *
@@ -13,9 +14,11 @@ import Entities.Entity;
 public class EntityDeathEvent extends iEvent {
 
     private Entity mEntity;
-    public EntityDeathEvent(Entity _entity)
+    private CauseOfDeath mCauseOfDeath;
+    public EntityDeathEvent(Entity _entity, CauseOfDeath _causeOfDeath)
     {
         mEntity = _entity;
+        mCauseOfDeath = _causeOfDeath;
     }
     @Override
     public String getName()
@@ -32,7 +35,7 @@ public class EntityDeathEvent extends iEvent {
     @Override
     public boolean process()
     {
-        mEntity.kill();
+        mEntity.kill(mCauseOfDeath);
         return true;
     }
 }

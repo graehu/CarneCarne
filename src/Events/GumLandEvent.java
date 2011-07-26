@@ -62,7 +62,7 @@ public class GumLandEvent extends iEvent
                     tryDiagonal(xPos, yPos, velocity);
                 }
             }
-            //place(xPos, yPos);
+            place(xPos, yPos);
             mTile = null;
         }
         sWorld.destroyBody(mBody);

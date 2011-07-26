@@ -5,6 +5,7 @@
 package World;
 
 import Entities.Entity;
+import Entities.Entity.CauseOfDeath;
 import Events.EntityDeathEvent;
 import Events.sEvents;
 import Graphics.Particles.sParticleManager;
@@ -43,12 +44,12 @@ class HighImpulseListener implements iListener
         {
             if (_contact.m_fixtureA.m_filter.categoryBits != (1 << BodyCategories.ePlayer.ordinal()))
             {
-                sEvents.triggerDelayedEvent(new EntityDeathEvent((Entity)_contact.m_fixtureB.m_body.getUserData()));
+                sEvents.triggerDelayedEvent(new EntityDeathEvent((Entity)_contact.m_fixtureB.m_body.getUserData(),CauseOfDeath.eImpact));
                 sParticleManager.createSystem("ParticleFire", sWorld.translateToWorld(_contact.m_fixtureB.m_body.getPosition()), 0.5f);
             }
             else 
             {
-                sEvents.triggerDelayedEvent(new EntityDeathEvent((Entity)_contact.m_fixtureA.m_body.getUserData()));    
+                sEvents.triggerDelayedEvent(new EntityDeathEvent((Entity)_contact.m_fixtureA.m_body.getUserData(),CauseOfDeath.eImpact));    
                 sParticleManager.createSystem("ParticleFire", sWorld.translateToWorld(_contact.m_fixtureA.m_body.getPosition()), 0.5f);   
             }
         }

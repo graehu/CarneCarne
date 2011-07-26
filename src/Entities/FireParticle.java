@@ -14,6 +14,7 @@ import Score.ScoreTracker.ScoreEvent;
 import World.sWorld;
 import World.sWorld.BodyCategories;
 import org.jbox2d.common.Vec2;
+import org.jbox2d.dynamics.Fixture;
 import org.jbox2d.dynamics.contacts.ContactEdge;
 
 /**
@@ -41,28 +42,34 @@ public class FireParticle extends Entity
         mTimer--;
         if (mTimer == 0)
         {
-            kill();
+            kill(CauseOfDeath.eMundane);
         }
         else
         {
+            //mVelocity.y += 0.2f;
             getBody().setLinearVelocity(mVelocity);
             int tileMask = (1 << BodyCategories.eEdibleTiles.ordinal()) |
                 (1 << BodyCategories.eNonEdibleTiles.ordinal()) |
                 (1 << BodyCategories.eWater.ordinal()) |
                 (1 << BodyCategories.eGum.ordinal()) |
+                (1 << BodyCategories.eIce.ordinal()) |
                 (1 << BodyCategories.eTar.ordinal());
             for (ContactEdge edge = getBody().getContactList(); edge != null; edge = edge.next)
             {
-                    Tile tile = (Tile)edge.contact.m_fixtureA.getUserData();
-                    if (tile == null)
-                        tile = (Tile)edge.contact.m_fixtureB.getUserData();
-                if (edge.contact.isTouching() && (edge.other.m_fixtureList.m_filter.categoryBits & tileMask) != 0)
+                Fixture other = edge.contact.m_fixtureA;
+                Tile tile = (Tile)edge.contact.m_fixtureA.getUserData();
+                if (tile == null)
+                {
+                    tile = (Tile)edge.contact.m_fixtureB.getUserData();
+                    other = edge.contact.m_fixtureB;
+                }
+                if (edge.contact.isTouching() && (other.m_filter.categoryBits & tileMask) != 0)
                 {
                     Vec2 position = this.getBody().getPosition();
                     Vec2 direction = this.getBody().getLinearVelocity();
                     String animationName = tile.getAnimationsName(AnimationType.eFireHit);
                     if (!tile.getTileType().equals(TileType.eIce))
-                        kill();
+                        kill(CauseOfDeath.eMundane);
                     tile.setOnFire();
                     ParticleSysBase system = sParticleManager.createSystem(animationName + "FireHit", position.add(new Vec2(0.5f,0.5f)).mul(64.0f), 2);
                     direction.normalize();
@@ -79,18 +86,28 @@ public class FireParticle extends Entity
         Vec2 pixelPosition = sWorld.translateToWorld(getBody().getPosition().add(new Vec2(0.0f,0.0f))); /// FIXME
         Vec2 particlePosition = getBody().getPosition().add(new Vec2(0.5f,0.5f)).mul(64f);
         mParticles.moveEmittersTo(particlePosition.x, particlePosition.y);
+        /*Vec2 direction = mVelocity.clone(); Y U NO WORK?
+        direction.normalize();
+        mSkin.setRotation((float)Math.atan2(direction.y, direction.x));*/
         mSkin.render(pixelPosition.x,pixelPosition.y);
-        mSkin.setRotation(getBody().getAngle()*(180/(float)Math.PI));
     }
     @Override
-    public void kill()
+    public void kill(CauseOfDeath _causeOfDeath)
     {
         sWorld.destroyBody(getBody());
         mParticles.kill();
     }
 
-    public void killedOpponent()
+    public boolean killedOpponent(Entity _oppononent)
     {
-        mOwner.mScoreTracker.score(ScoreEvent.eKilledOpponent);
+        if (mOwner == _oppononent)
+        {
+            return false;
+        }
+        else
+        {
+            mOwner.mScoreTracker.score(ScoreEvent.eKilledOpponent);
+            return true;
+        }
     }
 }

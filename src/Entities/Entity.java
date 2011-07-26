@@ -121,11 +121,22 @@ abstract public class Entity {
             }
         }*/
     //}
-
-    public void kill()
+    public enum CauseOfDeath
     {
-        mBody.getWorld().destroyBody(mBody);
-        mBody = null;
+        eFire,
+        eSpikes,
+        eAcid,
+        eImpact,
+        eMundane,
+        eCauseOfDeathMax
+    }
+    public void kill(CauseOfDeath _causeOfDeath)
+    {
+        if (mBody != null)
+        {
+            mBody.getWorld().destroyBody(mBody);
+            mBody = null;
+        }
     }
     protected float calculateArea()
     {

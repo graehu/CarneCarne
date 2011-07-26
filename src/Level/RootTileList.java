@@ -23,7 +23,6 @@ public class RootTileList {
     {
         HashMap<String, sLevel.TileType> typeMap = new HashMap<String, sLevel.TileType>();
         typeMap.put("Ice", sLevel.TileType.eIce);
-        typeMap.put("Spikes", sLevel.TileType.eSpikes);
         typeMap.put("Acid", sLevel.TileType.eAcid);
         typeMap.put("Swim", sLevel.TileType.eWater);
         typeMap.put("Edible", sLevel.TileType.eEdible);
@@ -74,7 +73,7 @@ public class RootTileList {
             boolean isFlammable = Boolean.valueOf(_tiledMap.getTileProperty(i, "Flammable", "false")).booleanValue();
             sLevel.TileType type = typeMap.get(typeString);
             int assertion = type.ordinal();
-            assertion = 0xB00B135;
+            //assertion = 0xB00B135;
             if (!shape.equals("None"))
             {
                 if (shape.equals("Block"))
@@ -101,6 +100,15 @@ public class RootTileList {
                             tile = tile2;
                         }
                         maxHealth = health;
+                    }
+                }
+                else if (shape.equals("Spikes"))
+                {
+                    int size = Integer.valueOf(_tiledMap.getTileProperty(i, "Size", "1"));
+                    for (int ii = 0; ii < size; ii++)
+                    {
+                        mRootTiles.add(new SpikeTile(i));
+                        i++;
                     }
                 }
                 else if (shape.equals("Slope"))

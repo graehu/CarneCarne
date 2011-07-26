@@ -4,6 +4,7 @@
  */
 package World;
 
+import Entities.Entity.CauseOfDeath;
 import World.sWorld.BodyCategories;
 import org.jbox2d.callbacks.ContactImpulse;
 import org.jbox2d.callbacks.ContactListener;
@@ -36,15 +37,17 @@ public class WorldContactListener implements ContactListener{
             set(BodyCategories.eWater.ordinal(),i,waterListener);
         }
         iListener gumListener = new GumListener();
-        iListener deathListener = new DeathListener();
+        iListener spikeListener = new DeathListener(CauseOfDeath.eSpikes);
+        iListener fireListener = new DeathListener(CauseOfDeath.eFire);
         
         set(BodyCategories.eGum.ordinal(),BodyCategories.eEdibleTiles.ordinal(),gumListener);
         set(BodyCategories.eGum.ordinal(),BodyCategories.eNonEdibleTiles.ordinal(),gumListener);
-        set(BodyCategories.ePlayer.ordinal(),BodyCategories.eSpikes.ordinal(),deathListener);
-        set(BodyCategories.ePlayer.ordinal(),BodyCategories.eFire.ordinal(),deathListener);
+        set(BodyCategories.ePlayer.ordinal(),BodyCategories.eSpikes.ordinal(),spikeListener);
+        set(BodyCategories.ePlayer.ordinal(),BodyCategories.eFire.ordinal(),fireListener);
         set(BodyCategories.eWater.ordinal(),BodyCategories.ePlayer.ordinal(),waterListener);
-        set(BodyCategories.eEnemy.ordinal(),BodyCategories.eSpikes.ordinal(),deathListener);
-        set(BodyCategories.eEnemy.ordinal(),BodyCategories.eFire.ordinal(),deathListener);
+        set(BodyCategories.eEnemy.ordinal(),BodyCategories.eSpikes.ordinal(),spikeListener);
+        set(BodyCategories.eEnemy.ordinal(),BodyCategories.eFire.ordinal(),fireListener);
+        set(BodyCategories.eCarcass.ordinal(),BodyCategories.eFire.ordinal(),fireListener);
         set(BodyCategories.eCheckPoint.ordinal(), BodyCategories.ePlayer.ordinal(), new CheckPointListener());
     }
     private void set(int _x, int _y, iListener _reaction)

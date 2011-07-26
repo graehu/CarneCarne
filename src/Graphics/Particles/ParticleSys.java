@@ -170,4 +170,8 @@ class ParticleSys implements ParticleSysBase
     public ParticleSystem getSystem() {
         return mSystem;
     }
+
+    public void setPosition(Vec2 mul) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 }

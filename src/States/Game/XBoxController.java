@@ -7,9 +7,9 @@ package States.Game;
 import Events.AnalogueStickEvent;
 import Events.KeyDownEvent;
 import Events.KeyUpEvent;
+import Events.MapClickEvent;
 import Events.MapClickReleaseEvent;
 import Events.RightStickEvent;
-import Events.ShoulderButtonEvent;
 import Events.sEvents;
 import org.jbox2d.common.Vec2;
 import org.newdawn.slick.Input;
@@ -30,16 +30,17 @@ import org.newdawn.slick.Input;
  * 8 - L3
  * 9 - R3
  */
+//// Clean up this class with arrays and shit, so the input can be pluggable FIXME
 public class XBoxController 
 {
     static private float stickEpsilon = 0.3f; /// TWEAK
     static private float shoulderButtonEpsilon = 0.3f;
     private boolean xAxisHit = false;
-    private boolean mLeftShoulderButton = false, mRightShoulderButton = false;
+    private boolean mJumpButton = false, mRightShoulderButton = false;
     //private boolean yAxisHit = false;
     private enum TriggerState
     {
-        eStart, // This is the value for the controller sending out -1 continously because its gay in the butt for gay men
+        eStart, // This is the value for the controller sending out -1 continously because its stupid
         eNotPressed,
         eRightPressed,
         eLeftPressed,
@@ -80,28 +81,28 @@ public class XBoxController
         }
         if(_input.isButtonPressed(4, mPlayer)) 
         {
-            sEvents.triggerEvent(new MapClickReleaseEvent(rightStick,false, mPlayer));
-        } 
+            sEvents.triggerEvent(new MapClickEvent(rightStick,"Hammer", mPlayer));
+        }
         //handle shoulder buttons
         if(_input.isButtonPressed(5, mPlayer))
         {
-            sEvents.triggerEvent(new ShoulderButtonEvent(rightStick,true, mPlayer));
+            sEvents.triggerEvent(new MapClickEvent(rightStick,"Tongue", mPlayer));
             mRightShoulderButton = true;
         }
         else if(mRightShoulderButton)//on release
         {
             mRightShoulderButton = false;
-            sEvents.triggerEvent(new MapClickReleaseEvent(rightStick,true, mPlayer));
+            sEvents.triggerEvent(new MapClickReleaseEvent(rightStick,"Tongue", mPlayer));
         }
         if(_input.isButtonPressed(0, mPlayer)) //jump
         {
             sEvents.triggerEvent(new KeyDownEvent('w', mPlayer));
-            mLeftShoulderButton = true;
+            mJumpButton = true;
         }
-        else if(mLeftShoulderButton)//on release
+        else if(mJumpButton)//on release
         {
             sEvents.triggerEvent(new KeyUpEvent('w', mPlayer));
-            mLeftShoulderButton = false;
+            mJumpButton = false;
             
         }
         
@@ -153,7 +154,7 @@ public class XBoxController
             {
                 if (_newState != TriggerState.eRightPressed)
                 {
-                    sEvents.triggerEvent(new MapClickReleaseEvent(_rightStick,false, mPlayer)); //spit release
+                    sEvents.triggerEvent(new MapClickReleaseEvent(_rightStick,"Spit", mPlayer)); //spit release
                 }
                 break;
             }
@@ -175,7 +176,7 @@ public class XBoxController
             }
             case eRightPressed:
             {
-                sEvents.triggerEvent(new ShoulderButtonEvent(_rightStick,false, mPlayer)); //spit
+                sEvents.triggerEvent(new MapClickEvent(_rightStick,"Spit", mPlayer)); //spit
                 break;
             }
             case eLeftPressed:

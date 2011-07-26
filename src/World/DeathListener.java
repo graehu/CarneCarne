@@ -5,6 +5,7 @@
 package World;
 
 import Entities.Entity;
+import Entities.Entity.CauseOfDeath;
 import Entities.FireParticle;
 import Events.EntityDeathEvent;
 import Events.sEvents;
@@ -18,24 +19,31 @@ import org.jbox2d.dynamics.contacts.Contact;
  */
 class DeathListener implements iListener
 {
-    public DeathListener()
+    private CauseOfDeath mCauseOfDeath;
+    public DeathListener(CauseOfDeath _causeOfDeath)
     {
+        mCauseOfDeath = _causeOfDeath;
     }
 
     public void beginContact(Contact _contact)
     {
         if (_contact.m_fixtureB.m_filter.categoryBits == (1 << sWorld.BodyCategories.ePlayer.ordinal())||
-                _contact.m_fixtureB.m_filter.categoryBits == (1 << sWorld.BodyCategories.eEnemy.ordinal()))
+                _contact.m_fixtureB.m_filter.categoryBits == (1 << sWorld.BodyCategories.eEnemy.ordinal())||
+                _contact.m_fixtureB.m_filter.categoryBits == (1 << sWorld.BodyCategories.eCarcass.ordinal()))
         {
-            sEvents.triggerDelayedEvent(new EntityDeathEvent(((Entity)_contact.m_fixtureB.m_body.m_userData)));
+            boolean kill = true;
             if (_contact.m_fixtureA.m_body.m_userData != null)
-                ((FireParticle)_contact.m_fixtureA.m_body.m_userData).killedOpponent();
+                kill = ((FireParticle)_contact.m_fixtureA.m_body.m_userData).killedOpponent((Entity)_contact.m_fixtureB.m_body.m_userData);
+            if (kill)
+                sEvents.triggerDelayedEvent(new EntityDeathEvent(((Entity)_contact.m_fixtureB.m_body.m_userData), mCauseOfDeath));
         }
         else
         {
-            sEvents.triggerDelayedEvent(new EntityDeathEvent(((Entity)_contact.m_fixtureA.m_body.m_userData)));
+            boolean kill = true;
             if (_contact.m_fixtureA.m_body.m_userData != null)
-                ((FireParticle)_contact.m_fixtureB.m_body.m_userData).killedOpponent();
+                kill = ((FireParticle)_contact.m_fixtureB.m_body.m_userData).killedOpponent((Entity)_contact.m_fixtureB.m_body.m_userData);
+            if (kill)
+                sEvents.triggerDelayedEvent(new EntityDeathEvent(((Entity)_contact.m_fixtureA.m_body.m_userData), mCauseOfDeath));
         }
     }
 

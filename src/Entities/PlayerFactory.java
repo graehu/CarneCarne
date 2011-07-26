@@ -47,7 +47,7 @@ public class PlayerFactory implements iEntityFactory {
             //create a CharacterSubSkin for each layer of the character skin
             ArrayList<CharacterSubSkin> subSkins = new ArrayList<CharacterSubSkin>();
             //they must be in render order
-            ArrayList<String> bodies = new ArrayList(Arrays.asList("bdy","edi","jly","spi","wtr"));
+            ArrayList<String> bodies = new ArrayList(Arrays.asList("bdy","edi","spi","wtr"));
             for(String body : bodies) 
             {
                 subSkins.add(new CharacterSkin.CharacterSubSkin(body, CharacterSubSkin.SubType.eStatic, 64, 64, new Vec2(0,0)));
@@ -58,6 +58,7 @@ public class PlayerFactory implements iEntityFactory {
             subSkins.add(new CharacterSkin.CharacterSubSkin("face", CharacterSubSkin.SubType.e32Dir, 84, 79, new Vec2(-9,-1)));
             subSkins.add(new CharacterSkin.CharacterSubSkin("faceOpen", CharacterSubSkin.SubType.e32Dir, 84, 79, new Vec2(-9,-1)));
             subSkins.add(new CharacterSkin.CharacterSubSkin("hat", CharacterSubSkin.SubType.e32Dir, 130, 115, new Vec2(-33,-36)));
+            subSkins.add(new CharacterSkin.CharacterSubSkin("pea_stun_large", CharacterSubSkin.SubType.eAnimated, 107, 39, new Vec2(-21.5f,0)));
             //draw tongue last
             subSkins.add(new CharacterSkin.CharacterSubSkin("tng", CharacterSubSkin.SubType.eStatic, 5, 5, new Vec2(32,32)));
             

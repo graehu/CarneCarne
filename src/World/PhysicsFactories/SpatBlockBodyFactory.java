@@ -30,6 +30,7 @@ public class SpatBlockBodyFactory implements iPhysicsFactory {
     {
         Vec2 position = (Vec2)_parameters.get("position");
         Vec2 velocity = (Vec2)_parameters.get("velocity");
+        float rotation = (Float)_parameters.get("rotation");
         Entity entity = (Entity)_parameters.get("entity");
         sLevel.TileType tileType = (sLevel.TileType)_parameters.get("tileType");
         CircleShape shape = new CircleShape();
@@ -58,6 +59,7 @@ public class SpatBlockBodyFactory implements iPhysicsFactory {
         def.type = BodyType.DYNAMIC;
         def.userData = entity;
         def.fixedRotation = false;
+        def.angle = rotation;
         def.position = new Vec2((position.x),(position.y));
         def.linearVelocity = velocity;
         

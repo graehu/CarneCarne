@@ -3,9 +3,8 @@
  <image source="Images/Special/Spikes.png" width="64" height="256"/>
  <tile id="0">
   <properties>
-   <property name="Material" value="Spikes"/>
    <property name="Size" value="4"/>
-   <property name="Type" value="NonEdible"/>
+   <property name="Type" value="Spikes"/>
   </properties>
  </tile>
 </tileset>
