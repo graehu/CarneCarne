@@ -27,7 +27,7 @@ public class CarcassFactory implements iEntityFactory
         int cause = ((Entity.CauseOfDeath)_parameters.get("causeOfDeath")).ordinal();
         _parameters.put("ref", mTextures[cause]);
         iSkin skin = sSkinFactory.create("static", _parameters);
-        Entity entity = new Carcass(skin);
+        Entity entity = new Carcass(skin, _parameters.get("killer"));
         
         _parameters.put("userData", entity);
         entity.setBody(sWorld.useFactory("CarcassBody", _parameters));

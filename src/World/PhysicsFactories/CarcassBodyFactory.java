@@ -41,6 +41,8 @@ public class CarcassBodyFactory implements iPhysicsFactory
         def.userData = userData;
         def.position = position;
         def.angle = (Float)_parameters.get("rotation");
+        def.linearVelocity = (Vec2)_parameters.get("linearVelocity");
+        def.angularVelocity = (Float)_parameters.get("angularVelocity");
         
         Body body = _world.createBody(def);
         body.createFixture(circleFixture);

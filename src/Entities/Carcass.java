@@ -13,14 +13,24 @@ import Graphics.Skins.iSkin;
 public class Carcass extends Entity
 {
     int mTimer;
-    public Carcass(iSkin _skin)
+    Object mKilledMe;
+    public Carcass(iSkin _skin, Object _killedMe)
     {
         super(_skin);
         mTimer = 0;
+        mKilledMe = _killedMe;
     }
     @Override
     public void update()
     {
     }
     
+    @Override
+    public void kill(CauseOfDeath _causeOfDeath, Object _killer)
+    {
+        if (mKilledMe != _killer)
+        {
+            super.kill(_causeOfDeath, _killer);
+        }
+    }
 }

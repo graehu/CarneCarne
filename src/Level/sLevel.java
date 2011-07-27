@@ -25,7 +25,7 @@ public class sLevel
         mLevelEditor.placeTileNoBody(_x, _y, _rootId);
     }
 
-    static TileGrid getTileGrid()
+    static public TileGrid getTileGrid()
     {
         return mLevelEditor.tileGrid;
     }

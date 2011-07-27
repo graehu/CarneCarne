@@ -50,7 +50,8 @@ public final class LevelTileGrid extends TileGrid
     @Override
     public void update()
     {
-        super.update();
+        regrowingTiles.update();
+        mTileFire.update();
         tiledMap.update();
     }
     boolean dropChecking = false;

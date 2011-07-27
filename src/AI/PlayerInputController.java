@@ -333,7 +333,7 @@ public class PlayerInputController extends iAIController implements iEventListen
                     }
                     case 'r':
                     {
-                        mEntity.kill(CauseOfDeath.eMundane);
+                        mEntity.kill(CauseOfDeath.eMundane, null);
                         break;
                     }
                 }

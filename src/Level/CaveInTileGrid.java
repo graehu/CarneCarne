@@ -126,10 +126,15 @@ public class CaveInTileGrid extends TileGrid
             //sEntityFactory.create("CaveInTileFactory", parameters);
         }
     }
+    @Override
+    public void update()
+    {
+        mTileFire.update();
+    }
     public void destroyTile(int _x, int _y)
     {
         RootTile roottile = mTiles[_x][_y].getRootTile();
-        if (!searching)
+        if (!searching && mBody.getType().equals(BodyType.DYNAMIC))
         {
             sLevel.getTileGrid().regrowingTiles.add(_x + mTotalXTransform, _y + mTotalYTransform, roottile);
         }

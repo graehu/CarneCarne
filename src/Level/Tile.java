@@ -85,7 +85,7 @@ public class Tile
                 destroyFixture();
                 try
                 {
-                    ((LevelTileGrid)mTileGrid).tiledMap.createTimingOutAnimatedTile(mXTile, mYTile,"iceanimation", 49);
+                    ((LevelTileGrid)mTileGrid).tiledMap.createTimingOutAnimatedTile(mXTile, mYTile,"iceanimation", 47);
                 }
                 catch (ClassCastException e)
                 {

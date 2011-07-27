@@ -2,13 +2,14 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package World;
+package World.ContactListeners;
 
 import Entities.Entity;
 import Entities.Entity.CauseOfDeath;
 import Entities.FireParticle;
 import Events.EntityDeathEvent;
 import Events.sEvents;
+import World.sWorld;
 import org.jbox2d.callbacks.ContactImpulse;
 import org.jbox2d.collision.Manifold;
 import org.jbox2d.dynamics.contacts.Contact;
@@ -17,7 +18,7 @@ import org.jbox2d.dynamics.contacts.Contact;
  *
  * @author alasdair
  */
-class DeathListener implements iListener
+public class DeathListener implements iListener
 {
     private CauseOfDeath mCauseOfDeath;
     public DeathListener(CauseOfDeath _causeOfDeath)
@@ -35,7 +36,7 @@ class DeathListener implements iListener
             if (_contact.m_fixtureA.m_body.m_userData != null)
                 kill = ((FireParticle)_contact.m_fixtureA.m_body.m_userData).killedOpponent((Entity)_contact.m_fixtureB.m_body.m_userData);
             if (kill)
-                sEvents.triggerDelayedEvent(new EntityDeathEvent(((Entity)_contact.m_fixtureB.m_body.m_userData), mCauseOfDeath));
+                sEvents.triggerDelayedEvent(new EntityDeathEvent(((Entity)_contact.m_fixtureB.m_body.m_userData), mCauseOfDeath, _contact.m_fixtureA.m_body.m_userData));
         }
         else
         {
@@ -43,7 +44,7 @@ class DeathListener implements iListener
             if (_contact.m_fixtureA.m_body.m_userData != null)
                 kill = ((FireParticle)_contact.m_fixtureB.m_body.m_userData).killedOpponent((Entity)_contact.m_fixtureB.m_body.m_userData);
             if (kill)
-                sEvents.triggerDelayedEvent(new EntityDeathEvent(((Entity)_contact.m_fixtureA.m_body.m_userData), mCauseOfDeath));
+                sEvents.triggerDelayedEvent(new EntityDeathEvent(((Entity)_contact.m_fixtureA.m_body.m_userData), mCauseOfDeath, _contact.m_fixtureB.m_body.m_userData));
         }
     }
 

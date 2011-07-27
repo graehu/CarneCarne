@@ -112,7 +112,7 @@ public class PlayerEntity extends AIEntity
         mCheckPointPosition = mCheckPoint.getPosition();
         mRaceTimer = 0;
         mWasIReallyKilled = false;
-        kill(CauseOfDeath.eMundane);
+        kill(CauseOfDeath.eMundane, null);
         mWasIReallyKilled = true;
         mAIEntityState.restartingRace();
         mScoreTracker.raceEnded();
@@ -147,7 +147,7 @@ public class PlayerEntity extends AIEntity
         return mScore;
     }*/
     @Override
-    public void kill(CauseOfDeath _causeOfDeath)
+    public void kill(CauseOfDeath _causeOfDeath, Object _killer)
     {
         if (mDeathJoint == null)
         {
@@ -164,7 +164,10 @@ public class PlayerEntity extends AIEntity
                         params.put("causeOfDeath", _causeOfDeath);
                         params.put("position", mBody.getPosition());
                         params.put("rotation", mBody.getAngle());
-                        sEntityFactory.create("Carcass", params);
+                        params.put("linearVelocity", mBody.getLinearVelocity());
+                        params.put("angularVelocity", mBody.getAngularVelocity());
+                        params.put("killer", _killer);
+                        Entity carcass = sEntityFactory.create("Carcass", params);
                         break;
                     }
                     default:

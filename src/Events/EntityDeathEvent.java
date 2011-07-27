@@ -15,10 +15,12 @@ public class EntityDeathEvent extends iEvent {
 
     private Entity mEntity;
     private CauseOfDeath mCauseOfDeath;
-    public EntityDeathEvent(Entity _entity, CauseOfDeath _causeOfDeath)
+    private Object mKiller;
+    public EntityDeathEvent(Entity _entity, CauseOfDeath _causeOfDeath, Object _killer)
     {
         mEntity = _entity;
         mCauseOfDeath = _causeOfDeath;
+        mKiller = _killer;
     }
     @Override
     public String getName()
@@ -35,7 +37,7 @@ public class EntityDeathEvent extends iEvent {
     @Override
     public boolean process()
     {
-        mEntity.kill(mCauseOfDeath);
+        mEntity.kill(mCauseOfDeath, mKiller);
         return true;
     }
 }

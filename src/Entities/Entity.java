@@ -130,7 +130,7 @@ abstract public class Entity {
         eMundane,
         eCauseOfDeathMax
     }
-    public void kill(CauseOfDeath _causeOfDeath)
+    public void kill(CauseOfDeath _causeOfDeath, Object _killer)
     {
         if (mBody != null)
         {

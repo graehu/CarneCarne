@@ -58,7 +58,7 @@ public class SpatBlock extends Entity {
                 {
                     
                 }
-                kill(CauseOfDeath.eMundane);
+                kill(CauseOfDeath.eMundane, null);
                 break;
             }
         }

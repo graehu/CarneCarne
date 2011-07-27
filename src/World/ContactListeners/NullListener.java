@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package World;
+package World.ContactListeners;
 
 import org.jbox2d.callbacks.ContactImpulse;
 import org.jbox2d.collision.Manifold;
@@ -12,7 +12,7 @@ import org.jbox2d.dynamics.contacts.Contact;
  *
  * @author alasdair
  */
-class NullListener implements iListener {
+public class NullListener implements iListener {
 
     public NullListener() {
     }

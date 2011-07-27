@@ -107,11 +107,7 @@ abstract public class TileGrid {
         }
         return true;
     }
-    void update()
-    {
-        regrowingTiles.update();
-        mTileFire.update();
-    }
+    abstract void update();
     
     public void placeTile(int _x, int _y, int _rootId)
     {

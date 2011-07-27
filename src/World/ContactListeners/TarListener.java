@@ -2,13 +2,8 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package World;
+package World.ContactListeners;
 
-import Entities.Entity;
-import Events.EntityDeathEvent;
-import Events.sEvents;
-import Level.Tile;
-import World.sWorld.BodyCategories;
 import org.jbox2d.callbacks.ContactImpulse;
 import org.jbox2d.collision.Manifold;
 import org.jbox2d.dynamics.contacts.Contact;
@@ -17,7 +12,7 @@ import org.jbox2d.dynamics.contacts.Contact;
  *
  * @author alasdair
  */
-class TarListener implements iListener {
+public class TarListener implements iListener {
 
     public TarListener()
     {

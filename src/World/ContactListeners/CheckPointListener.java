@@ -2,11 +2,8 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package World;
+package World.ContactListeners;
 
-import Entities.PlayerEntity;
-import Events.AreaEvents.AreaEvent;
-import World.sWorld.BodyCategories;
 import org.jbox2d.callbacks.ContactImpulse;
 import org.jbox2d.collision.Manifold;
 import org.jbox2d.dynamics.contacts.Contact;
@@ -15,7 +12,7 @@ import org.jbox2d.dynamics.contacts.Contact;
  *
  * @author alasdair
  */
-class CheckPointListener implements iListener {
+public class CheckPointListener implements iListener {
 
     public CheckPointListener() {
     }

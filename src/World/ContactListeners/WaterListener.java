@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package World;
+package World.ContactListeners;
 
 import Entities.Entity;
 import Level.Tile;
@@ -15,7 +15,7 @@ import org.jbox2d.dynamics.contacts.Contact;
  *
  * @author alasdair
  */
-class WaterListener implements iListener {
+public class WaterListener implements iListener {
 
     public WaterListener() {
     }

@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package World;
+package World.ContactListeners;
 
 import Entities.SpatBlock;
 import Events.GumLandEvent;
@@ -17,7 +17,7 @@ import org.jbox2d.dynamics.contacts.Contact;
  *
  * @author alasdair
  */
-class GumListener implements iListener {
+public class GumListener implements iListener {
 
     public GumListener() {
     }

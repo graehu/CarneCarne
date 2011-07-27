@@ -42,7 +42,7 @@ public class FireParticle extends Entity
         mTimer--;
         if (mTimer == 0)
         {
-            kill(CauseOfDeath.eMundane);
+            kill(CauseOfDeath.eMundane, null);
         }
         else
         {
@@ -69,7 +69,7 @@ public class FireParticle extends Entity
                     Vec2 direction = this.getBody().getLinearVelocity();
                     String animationName = tile.getAnimationsName(AnimationType.eFireHit);
                     if (!tile.getTileType().equals(TileType.eIce))
-                        kill(CauseOfDeath.eMundane);
+                        kill(CauseOfDeath.eMundane, null);
                     tile.setOnFire();
                     ParticleSysBase system = sParticleManager.createSystem(animationName + "FireHit", position.add(new Vec2(0.5f,0.5f)).mul(64.0f), 2);
                     direction.normalize();
@@ -92,7 +92,7 @@ public class FireParticle extends Entity
         mSkin.render(pixelPosition.x,pixelPosition.y);
     }
     @Override
-    public void kill(CauseOfDeath _causeOfDeath)
+    public void kill(CauseOfDeath _causeOfDeath, Object _killer)
     {
         sWorld.destroyBody(getBody());
         mParticles.kill();

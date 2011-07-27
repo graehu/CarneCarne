@@ -2,13 +2,14 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package World;
+package World.ContactListeners;
 
 import Entities.Entity;
 import Entities.Entity.CauseOfDeath;
 import Events.EntityDeathEvent;
 import Events.sEvents;
 import Graphics.Particles.sParticleManager;
+import World.sWorld;
 import World.sWorld.BodyCategories;
 import org.jbox2d.callbacks.ContactImpulse;
 import org.jbox2d.collision.Manifold;
@@ -20,7 +21,7 @@ import org.jbox2d.dynamics.contacts.Contact;
  *
  * @author alasdair
  */
-class HighImpulseListener implements iListener
+public class HighImpulseListener implements iListener
 {
     public HighImpulseListener()
     {
@@ -44,12 +45,12 @@ class HighImpulseListener implements iListener
         {
             if (_contact.m_fixtureA.m_filter.categoryBits != (1 << BodyCategories.ePlayer.ordinal()))
             {
-                sEvents.triggerDelayedEvent(new EntityDeathEvent((Entity)_contact.m_fixtureB.m_body.getUserData(),CauseOfDeath.eImpact));
+                sEvents.triggerDelayedEvent(new EntityDeathEvent((Entity)_contact.m_fixtureB.m_body.getUserData(),CauseOfDeath.eImpact, _contact.m_fixtureA.getBody().getUserData()));
                 sParticleManager.createSystem("ParticleFire", sWorld.translateToWorld(_contact.m_fixtureB.m_body.getPosition()), 0.5f);
             }
             else 
             {
-                sEvents.triggerDelayedEvent(new EntityDeathEvent((Entity)_contact.m_fixtureA.m_body.getUserData(),CauseOfDeath.eImpact));    
+                sEvents.triggerDelayedEvent(new EntityDeathEvent((Entity)_contact.m_fixtureA.m_body.getUserData(),CauseOfDeath.eImpact, _contact.m_fixtureB.getBody().getUserData()));    
                 sParticleManager.createSystem("ParticleFire", sWorld.translateToWorld(_contact.m_fixtureA.m_body.getPosition()), 0.5f);   
             }
         }

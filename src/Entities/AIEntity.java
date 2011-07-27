@@ -57,7 +57,7 @@ public class AIEntity extends Entity {
         mTouchingTile = null;
     }
     @Override
-    public void kill(CauseOfDeath _causeOfDeath)
+    public void kill(CauseOfDeath _causeOfDeath, Object _killer)
     {
         if (getBody() != null)
         {
@@ -120,7 +120,7 @@ public class AIEntity extends Entity {
                         case eTar:
                             if (((Tile)other.getUserData()).isOnFire())
                             {
-                                kill(CauseOfDeath.eFire);
+                                kill(CauseOfDeath.eFire, other.getUserData());
                             }
                             else
                             {

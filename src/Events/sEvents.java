@@ -74,8 +74,7 @@ public class sEvents {
         while(i.hasNext())
         {
             iEvent event = i.next();
-            triggerEvent(event);
-            if (event.process())
+            if (triggerEvent(event))
             {
                 i.remove();
             }
@@ -102,7 +101,7 @@ public class sEvents {
     {
         blockedListeners.remove(_listener);
     }
-    public static void triggerEvent(iEvent _event)
+    public static boolean triggerEvent(iEvent _event)
     {
         if (!blockedEvents.contains(_event.getName()))
         {
@@ -122,7 +121,8 @@ public class sEvents {
                     }
                 }
             }
-            _event.process();
+            return _event.process();
         }
+        return false;
     }
 }
