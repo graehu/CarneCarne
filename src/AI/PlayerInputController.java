@@ -139,7 +139,7 @@ public class PlayerInputController extends iAIController implements iEventListen
                         //ensure other animations are deactivated
                         mEntity.mSkin.deactivateSubSkin("face_"+mFaceDirAnim);
                         mEntity.mSkin.deactivateSubSkin("hat_"+mFaceDirAnim);
-                        mEntity.mSkin.deactivateSubSkin("idle_burp2_right");
+                        mEntity.mSkin.deactivateSubSkin("idle_burp2");
                         mEntity.mSkin.activateSubSkin("idle_burp2", false, 1.0f);
                     }
                 }
@@ -150,7 +150,7 @@ public class PlayerInputController extends iAIController implements iEventListen
                         //ensure other animations are deactivated
                         mEntity.mSkin.deactivateSubSkin("face_"+mFaceDirAnim);
                         mEntity.mSkin.deactivateSubSkin("hat_"+mFaceDirAnim);
-                        mEntity.mSkin.deactivateSubSkin("idle_burp2");
+                        mEntity.mSkin.deactivateSubSkin("idle_burp2_right");
                         mEntity.mSkin.activateSubSkin("idle_burp2_right", false, 1.0f);
                     }
                 }

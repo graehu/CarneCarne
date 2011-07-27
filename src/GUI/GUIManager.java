@@ -8,6 +8,7 @@ import GUI.Components.GraphicalComponent;
 import GUI.Components.iComponent;
 import Graphics.sGraphicsManager;
 import Utils.Throw;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import org.jbox2d.common.Vec2;
@@ -28,18 +29,36 @@ public class GUIManager implements iEventListener
     static private int keyCount = 0;
     static private HashMap<Integer, GUIManager> instances = new HashMap<Integer, GUIManager>();
     static GUIManager currentInstance = null;
+    static GameContainer mDefaultContext = null;
     
+    public static void setDefaultContext(GameContainer _gc)
+    {
+        mDefaultContext = _gc;
+    }
     //Gets current instance
     public static GUIManager get()
     {
         return currentInstance;
     }
+    //sets current instance
     public static void set(int _inst)
     {
         currentInstance = instances.get(_inst);
     }
-    
-    public static int create(GameContainer _context)
+    public static GUIManager use(int _inst)
+    {
+        return instances.get(_inst);
+    }
+    //create GUIManager instance using default context
+    public static Integer create()
+    {
+        if(mDefaultContext != null)
+            return create(mDefaultContext);
+        else
+            Throw.err("No Default context set!");
+        return null;
+    }
+    public static Integer create(GameContainer _context)
     {
         instances.put(keyCount, new GUIManager(_context));
         return keyCount++;
@@ -101,6 +120,15 @@ public class GUIManager implements iEventListener
             }       
         }
     }
+    public void removeRootComponent(Integer _ref)
+    {
+        mManagedRoots.remove(_ref);
+    }
+    public void removeRootComponentList(ArrayList<Integer> _list)
+    {
+        for(Integer i : _list)
+            mManagedRoots.remove(i);
+    }
     
     public void update(int _delta)
     {
@@ -113,15 +141,18 @@ public class GUIManager implements iEventListener
         }
     }
     
-    public void render(boolean _debug) throws SlickException
+    public void render(boolean _debug)
     {
-        Iterator<iComponent> itr = mManagedRoots.values().iterator();
-        while(itr.hasNext())
+        try 
         {
-            iComponent c = itr.next();
-            c.setLocalScale(scale);
-            c.render(mContainer, mContainer.getGraphics(), _debug);
-        }
+            Iterator<iComponent> itr = mManagedRoots.values().iterator();
+            while(itr.hasNext())
+            {
+                iComponent c = itr.next();
+                c.setLocalScale(scale);
+                c.render(mContainer, mContainer.getGraphics(), _debug);
+            }
+        } catch (SlickException ex) {Throw.err(ex.toString());}
     }
     
     public boolean trigger(iEvent _event) 
@@ -134,6 +165,16 @@ public class GUIManager implements iEventListener
             scale = screen.x / 1680;
         }
         return true; //do not unsubscribe
+    }
+    
+    public void setAcceptingInput(boolean _isAccepting)
+    {
+        Iterator<iComponent> itr = mManagedRoots.values().iterator();
+        while(itr.hasNext())
+        {
+            iComponent c = itr.next();
+            c.setAcceptingInput(_isAccepting);
+        }
     }
     
 }

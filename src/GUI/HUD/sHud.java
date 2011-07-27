@@ -1,7 +1,7 @@
 /*
  * This class provides 
  */
-package HUD;
+package GUI.HUD;
 
 import Graphics.Skins.sSkinFactory;
 import java.util.HashMap;

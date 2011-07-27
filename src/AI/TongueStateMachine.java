@@ -10,7 +10,7 @@ import Graphics.Particles.ParticleSysBase;
 import Graphics.Particles.sParticleManager;
 import Graphics.Sprites.iSprite;
 import Graphics.Sprites.sSpriteFactory;
-import HUD.sHud;
+import GUI.HUD.sHud;
 import Level.RootTile.AnimationType;
 import Level.Tile;
 import Level.sLevel.TileType;

@@ -19,6 +19,7 @@ import Level.sLevel;
 import Utils.Shader.LightSource;
 import Utils.Shader.LightingShader;
 import Utils.Shader.Shader;
+import Utils.Throw;
 import World.sWorld;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -39,23 +40,32 @@ import org.newdawn.slick.opengl.SlickCallable;
  *
  * @author alasdair
  */
-public class BodyCamera extends iCamera implements iEventListener{
+public class BodyCamera extends iCamera implements iEventListener
+{
+
+    private static final float directionEpsilon = 0.6f;
+    private static final float maxLookOffset = 0.05f;
+    private static final float offsetMoveVelocity = 0.002f;
     
-    Body mBody;
-    Vec2 mPosition = new Vec2(0,0);
-    Vec2 mTranslation = new Vec2(0,0);
-    boolean mLookDirection;
-    Vec2 mLookOffset;
-    float mXLookVelocity;
-    int mLookChangeTimer;
-    Vec2 mShake = new Vec2(0,0);
-    boolean mTopSplit;
-    float mTimer;
+    Body        mBody;
+    Vec2        mPosition = new Vec2(0,0);
+    Vec2        mTranslation = new Vec2(0,0);
+    float       mTimer;
+    
+    boolean     mLookDirection;
+    Vec2        mLookOffset;
+    float       mXLookVelocity;
+    int         mLookChangeTimer;
+    
+    Vec2        mShake = new Vec2(0,0);
+    boolean     mTopSplit;
     CaveInEvent mCaveInEvent;
     CameraGrabber mGrabber = null;
-    Image mOverlay = null;
-    private Image mLightBlendBase = null;
-    private LightingShader mLightingShader = null;
+    
+    Image       mOverlay = null;
+    Image       mLightBlendBase = null;
+    LightingShader mLightingShader = null;
+    
     public BodyCamera(Body _body, Rectangle _viewPort, boolean _topSplit)
     {
         super(_viewPort);
@@ -74,11 +84,9 @@ public class BodyCamera extends iCamera implements iEventListener{
             mOverlay = new Image("ui/overlay.png");
             mLightingShader = LightingShader.makeShader("shaders/test.vert", "shaders/test.frag");
             mLightBlendBase = new Image((int)mViewPort.getWidth(), (int)mViewPort.getHeight());
-        } catch (SlickException ex) {Logger.getLogger(BodyCamera.class.getName()).log(Level.SEVERE, null, ex);}        
+        } catch (SlickException ex) {Logger.getLogger(BodyCamera.class.getName()).log(Level.SEVERE, null, ex);}    
     }
-    private static final float directionEpsilon = 0.6f;
-    private static final float maxLookOffset = 0.05f;
-    private static final float offsetMoveVelocity = 0.002f;
+    
     private void calculateLookOffset()
     {
         mLookOffset.y = 0;
@@ -194,6 +202,7 @@ public class BodyCamera extends iCamera implements iEventListener{
     {
         
         sGraphicsManager.beginTransform();
+        {
             sGraphicsManager.translate(mViewPort.getX(),mViewPort.getY());
             sGraphicsManager.setClip(mViewPort);
             calculatePosition();
@@ -213,14 +222,11 @@ public class BodyCamera extends iCamera implements iEventListener{
 
             //render lighting
             renderLighting(_graphics);
-        try {
-            //render overlay and HUD
-            GUIManager.get().render(false);
-        } catch (SlickException ex) {
-            Logger.getLogger(BodyCamera.class.getName()).log(Level.SEVERE, null, ex);
-        }
-            mOverlay.draw(0,0, (int)mViewPort.getWidth(), (int)mViewPort.getHeight());
+            
+            //render HUD and overlay
             ((PlayerEntity)mBody.getUserData()).renderHUD();
+            mOverlay.draw(0,0, (int)mViewPort.getWidth(), (int)mViewPort.getHeight());
+        }
         sGraphicsManager.endTransform();  
     }
     

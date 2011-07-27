@@ -234,6 +234,7 @@ class AIEntityState
                 if(mTimer > 180) //3 seconds
                 {
                     changeState(State.eIdle);
+                    update();
                 }
                 if (mContactCount == 0)
                 {
@@ -268,6 +269,7 @@ class AIEntityState
                 if(mTimer > 180) //3 seconds
                 {
                     changeState(State.eIdle);
+                    update();
                 }
                 if (mTarCount == 0)
                 {
@@ -282,6 +284,11 @@ class AIEntityState
             }
             case eStillCoveredInTar:
             {
+                if(mTimer > 180) //3 seconds
+                {
+                    changeState(State.eIdle);
+                    update();
+                }
                 if (mTarCount != 0)
                 {
                     changeState(State.eStandingOnTar);
@@ -298,6 +305,11 @@ class AIEntityState
             }
             case eIce:
             {
+                if(mTimer > 180) //3 seconds
+                {
+                    changeState(State.eIdle);
+                    update();
+                }
                 if (mIceCount == 0)
                 {
                     changeState(State.eFalling);
@@ -327,10 +339,10 @@ class AIEntityState
             }
             case eIdle:
             {
-                if(mEntity.mBody.getLinearVelocity().lengthSquared() > 0.01f)
+                if(mEntity.mBody.getLinearVelocity().lengthSquared() > 0.000001f)
                 {
-                    changeState(State.eStanding);
                     mTimer = 0;
+                    changeState(State.eStanding);
                     update();
                 }
                 break;

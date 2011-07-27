@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package HUD;
+package GUI.HUD;
 
 import GUI.Components.GraphicalComponent;
 import Graphics.sGraphicsManager;

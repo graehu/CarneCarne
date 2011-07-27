@@ -29,6 +29,7 @@ public abstract class iComponent extends AbstractComponent {
         setLocalTranslation(_position);
     }
     
+    private String      mName = null; //could be used for searching a hieracrchy by name
     private iComponent  mParent;
     private ArrayList<iComponent> mChildren = new ArrayList<iComponent>();
     private Vector2f    mDimensions = new Vector2f(0,0);
