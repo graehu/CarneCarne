@@ -15,9 +15,10 @@ import Graphics.Particles.sParticleManager;
 import Graphics.Skins.sSkinFactory;
 import Graphics.Sprites.sSpriteFactory;
 import Graphics.sGraphicsManager;
+import HUD.sHud;
 import Input.sInput;
 import Sound.sSound;
-import States.Game.Tutorial.IntroMode;
+import States.Game.RaceMode.RaceMode;
 import States.StateChanger;
 import World.sWorld;
 import org.jbox2d.common.Vec2;
@@ -144,11 +145,14 @@ public class StateGame extends BasicGameState implements iEventListener {
 
         //initialise game
         mGameType = GameType.eRaceGame;
+        sHud.init();
         sEntityFactory.init();
         sSkinFactory.init();
         sSpriteFactory.init();
         sWorld.init();
-        mGameMode = new IntroMode();
+        
+        mGameMode = new RaceMode(true);
+        //mGameMode = new IntroMode();
         
         //subscribe to events (must be done before further initialisation)
         sEvents.subscribeToEvent("PlayerCreatedEvent", this);

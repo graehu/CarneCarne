@@ -26,6 +26,7 @@ import Events.sEvents;
 import Graphics.Camera.FreeCamera;
 import Graphics.Camera.iCamera;
 import Graphics.sGraphicsManager;
+import HUD.sHud;
 import Level.FakeTile;
 import Level.RootTile;
 import Level.Tile;
@@ -150,17 +151,16 @@ public class sWorld
     }
     private static class AABBCallback implements QueryCallback
     {
-        int mCollisionMask;
         Body mBody;
-        public AABBCallback(int _collisionMask)
+        public AABBCallback()
         {
-            mCollisionMask = _collisionMask;
             mBody = null;
         }
         public boolean reportFixture(Fixture _fixture)
         {
-            if ((_fixture.m_filter.categoryBits & mCollisionMask) != 0 ||
-                    _fixture.getBody().getType().equals(BodyType.KINEMATIC))
+            //if ((_fixture.m_filter.categoryBits & mCollisionMask) != 0 ||
+            //        _fixture.getBody().getType().equals(BodyType.KINEMATIC))
+            if (!_fixture.getBody().getType().equals(BodyType.STATIC))
             {
                 mBody = _fixture.getBody();
                 return false;
@@ -266,6 +266,8 @@ public class sWorld
                     mLastTongueAnchor = new MovingBodyTongueAnchor(hitTile.getFixture(), hitTile.getLocalPosition());
                     break;
                 }
+                default:
+                    break;
             }
         }
         else
@@ -273,7 +275,7 @@ public class sWorld
         }
         return ret;
     }
-    public static boolean smashTiles(Vec2 start, Vec2 end)
+    public static boolean smashTiles(Vec2 start, Vec2 end, int _playerNum)
     {
         TongueCallback callback = new TongueCallback(start, end);
         mWorld.raycast(callback, start, end);
@@ -296,7 +298,18 @@ public class sWorld
                 TileType tileType = tile.getTileType();
                 switch (tileType)
                 {
+                    case eChilli:
+                    case eGum:
+                    case eMelonFlesh:
+                    {
+                        sHud.addHudElement(_playerNum, "TooltipSpit", new Vec2(0,0), 120, true);
+                        break;
+                    }
                     case eSwingable:
+                    {
+                        sHud.addHudElement(_playerNum, "TooltipSpit", new Vec2(0,0), 120, true);
+                        /// Purposefully not breaking
+                    }
                     case eEdible:
                     case eMelonSkin:
                     {
@@ -324,9 +337,9 @@ public class sWorld
         mCamera = _newCamera;
         return camera;
     }
-    public static Body searchAABB(AABB _aabb, int _collisionMask)
+    public static Body searchAABB(AABB _aabb)
     {
-        AABBCallback callback = new AABBCallback(_collisionMask);
+        AABBCallback callback = new AABBCallback();
         mWorld.queryAABB(callback, _aabb);
         return callback.mBody;
     }

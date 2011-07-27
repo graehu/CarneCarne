@@ -275,7 +275,12 @@ public class AIEntity extends Entity {
             }
             case eIce:
             {
-                getBody().applyAngularImpulse(0.5f*value);
+                Vec2 v = getBody().getLinearVelocity();
+                if(value > 0 && v.x > 0)
+                    getBody().applyLinearImpulse(new Vec2(0.3f*value,0),getBody().getWorldCenter());
+                else if(value < 0 && v.x < 0)
+                    getBody().applyLinearImpulse(new Vec2(0.3f*value,0),getBody().getWorldCenter());
+                getBody().applyAngularImpulse(0.3f*value);
                 break;
             }
             case eSwimming:

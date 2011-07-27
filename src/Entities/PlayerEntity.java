@@ -15,6 +15,7 @@ import Graphics.Sprites.sSpriteFactory;
 import Graphics.sGraphicsManager;
 import HUD.Reticle;
 import HUD.Revolver;
+import HUD.sHud;
 import Level.sLevel.TileType;
 import Score.RaceScoreTracker;
 import Score.ScoreTracker;
@@ -273,6 +274,7 @@ public class PlayerEntity extends AIEntity
             
             mReticle.render(); //always render ontop
             mScoreTracker.render();
+            sHud.render(((PlayerInputController)mController).mPlayer);
         }
     }
     

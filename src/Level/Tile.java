@@ -173,7 +173,7 @@ public class Tile
     }
     public void destroyFixture()
     {
-        if (mTileGrid.mBody.getWorld().isLocked())
+        if (mTileGrid.mBody.getWorld().isLocked()) /// FIXME this triggers when the worldi sn't locked for some fucking reason, should find out why or remove this exception
         {
             throw new UnsupportedOperationException("Error, world is locked");
         }
