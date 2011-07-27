@@ -122,14 +122,22 @@ public class RootTileList {
                 }
                 else if (shape.equals("Slope"))
                 {
+                    RootTile tile = new RightDownSlope(i,type, animationsNames, regrows, anchor, isFlammable, maxHealth);
                     for (int rootId = i; i < rootId + 4; i++)
-                        mRootTiles.add(new RightDownSlope(i,type, animationsNames, regrows, anchor, isFlammable, maxHealth)); 
+                        mRootTiles.add(tile); 
+                    
+                    tile = new LeftDownSlope(i,type, animationsNames, regrows, anchor, isFlammable, maxHealth);
                     for (int rootId = i; i < rootId + 4; i++)
-                        mRootTiles.add(new LeftDownSlope(i,type, animationsNames, regrows, anchor, isFlammable, maxHealth)); 
+                        mRootTiles.add(tile); 
+                    
+                    tile = new LeftUpSlope(i,type, animationsNames, regrows, anchor, isFlammable, maxHealth);
                     for (int rootId = i; i < rootId + 4; i++)
-                        mRootTiles.add(new LeftUpSlope(i,type, animationsNames, regrows, anchor, isFlammable, maxHealth)); 
+                        mRootTiles.add(tile); 
+                    
+                    tile = new RightUpSlope(i,type, animationsNames, regrows, anchor, isFlammable, maxHealth);
                     for (int rootId = i; i < rootId + 4; i++)
-                        mRootTiles.add(new RightUpSlope(i,type, animationsNames, regrows, anchor, isFlammable, maxHealth));
+                        mRootTiles.add(tile);
+                        
                 }
                 else if (shape.equals("NonEdible"))
                 {

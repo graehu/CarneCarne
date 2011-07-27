@@ -235,7 +235,7 @@ public class FlagProcessor
                     else if (spawn.equals("Platform"))
                     {                        
                         PlatformCaveInSearcher search = new PlatformCaveInSearcher(_tileGrid, _tiledMap, _levelLayerIndex, _levelBody);
-                        search.destroy(i,ii, TileType.eEdible);
+                        search.destroy(i,ii, null, TileType.eEdible);
                         Body platformBody = search.getCreatedBody();
                         iPlatformController controller = null;
                         String platformType = _tiledMap.getTileProperty(id, "PlatformType", "Error, platform type not defined");

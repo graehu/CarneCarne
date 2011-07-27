@@ -61,4 +61,9 @@ public class CaveIn extends Entity
         return mHeight;
     }
     
+    @Override
+    public void kill(CauseOfDeath _cause, Object _killer)
+    {
+    }
+    
 }

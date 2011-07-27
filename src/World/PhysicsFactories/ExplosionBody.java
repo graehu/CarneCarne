@@ -31,7 +31,7 @@ public class ExplosionBody implements iPhysicsFactory
         fixture.isSensor = true;
         
         CircleShape shape = new CircleShape();
-        shape.m_radius = 1.5f;
+        shape.m_radius = 0.75f;
         
         Body body = _world.createBody(def);
         fixture.shape = shape;

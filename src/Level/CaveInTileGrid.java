@@ -153,7 +153,7 @@ public class CaveInTileGrid extends TileGrid
         {
             searching = true;
             CaveInSearcher search = new CaveInSearcher(this, mTiledMap, mLayerIndex, mBody, mTotalXTransform, mTotalYTransform);
-            search.destroy(_x, _y, _tileType);
+            search.destroy(_x, _y, mTiles[_x][_y], _tileType);
             sWorld.destroyBody(mBody);
             ((Entity)mBody.getUserData()).setBody(null);
             mBody.setUserData(null);

@@ -52,7 +52,10 @@ public class GumLandEvent extends iEvent
                 {
                     if (!tryY(xPos, yPos, velocity))
                     {
-                        tryDiagonal(xPos, yPos, velocity);
+                        if (tryDiagonal(xPos, yPos, velocity))
+                        {
+                            sWorld.destroyBody(mBody);
+                        }
                     }
                 }
             }
@@ -60,12 +63,14 @@ public class GumLandEvent extends iEvent
             {
                 if (!tryX(xPos, yPos, velocity))
                 {
-                    tryDiagonal(xPos, yPos, velocity);
+                    if (tryDiagonal(xPos, yPos, velocity))
+                    {
+                        sWorld.destroyBody(mBody);
+                    }
                 }
             }
             mTile = null;
         }
-        sWorld.destroyBody(mBody);
         return false;
     }
     

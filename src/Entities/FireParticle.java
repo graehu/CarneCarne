@@ -95,11 +95,14 @@ public class FireParticle extends Entity
     @Override
     public void kill(CauseOfDeath _causeOfDeath, Object _killer)
     {
-        HashMap params = new HashMap();
-        params.put("position", mBody.getPosition());
-        sEntityFactory.create("Explosion", params);
-        sWorld.destroyBody(getBody());
-        mParticles.kill();
+        if (!_causeOfDeath.equals(CauseOfDeath.eFire))
+        {
+            HashMap params = new HashMap();
+            params.put("position", mBody.getPosition());
+            sEntityFactory.create("Explosion", params);
+            sWorld.destroyBody(getBody());
+            mParticles.kill();
+        }
     }
 
     @Override

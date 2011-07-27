@@ -64,33 +64,36 @@ public class CaveInSearcher {
             mTileType = _tileType;
         }
     }
-    public void destroy(int _x, int _y, TileType _tileType)
+    public void destroy(int _x, int _y, Tile _actualTile, TileType _tileType)
     {
         Stack<TileIndex> workingSetSets = new Stack<TileIndex>();
         Stack<TileIndex> gridSets = new Stack<TileIndex>();
+        Stack<Tile> workingSetActualTiles = new Stack<Tile>();
+        workingSetActualTiles.push(_actualTile);
         //mChecked[_x][_y] = true;
         
-        check(_x-1,_y, Direction.eFromRight,_tileType,workingSetSets,gridSets);
-        calculate(workingSetSets, gridSets);
+        check(_x-1,_y, Direction.eFromRight,_tileType,workingSetSets, workingSetActualTiles,gridSets, _actualTile, Direction.eFromLeft, true);
+        calculate(workingSetSets, workingSetActualTiles, gridSets);
         
-        check(_x+1,_y, Direction.eFromLeft,_tileType,workingSetSets,gridSets);
-        calculate(workingSetSets, gridSets);
+        check(_x+1,_y, Direction.eFromLeft,_tileType,workingSetSets, workingSetActualTiles,gridSets, _actualTile, Direction.eFromRight, true);
+        calculate(workingSetSets, workingSetActualTiles, gridSets);
         
-        check(_x,_y-1, Direction.eFromDown,_tileType,workingSetSets,gridSets);
-        calculate(workingSetSets, gridSets);
+        check(_x,_y-1, Direction.eFromDown,_tileType,workingSetSets, workingSetActualTiles,gridSets, _actualTile, Direction.eFromUp, true);
+        calculate(workingSetSets, workingSetActualTiles, gridSets);
         
-        check(_x,_y+1, Direction.eFromUp,_tileType,workingSetSets,gridSets);
-        calculate(workingSetSets, gridSets);
+        check(_x,_y+1, Direction.eFromUp,_tileType,workingSetSets, workingSetActualTiles,gridSets, _actualTile, Direction.eFromDown, true);
+        calculate(workingSetSets, workingSetActualTiles, gridSets);
     }
-    protected void calculate(Stack<TileIndex> workingSet, Stack<TileIndex> grid)
+    protected void calculate(Stack<TileIndex> workingSet, Stack<Tile> _workingSetActualTiles, Stack<TileIndex> grid)
     {
         while (!workingSet.isEmpty())
         {
             TileIndex tile = workingSet.pop();
-            if (check(tile.x-1,tile.y, Direction.eFromRight, tile.mTileType, workingSet,grid)
-                    || check(tile.x+1,tile.y,Direction.eFromLeft, tile.mTileType,workingSet,grid)
-                    || check(tile.x,tile.y-1,Direction.eFromDown, tile.mTileType,workingSet,grid)
-                    || check(tile.x,tile.y+1,Direction.eFromUp, tile.mTileType,workingSet,grid))
+            Tile actualTile = _workingSetActualTiles.pop();
+            if (check(tile.x-1,tile.y, Direction.eFromRight, tile.mTileType, workingSet, _workingSetActualTiles,grid, actualTile, Direction.eFromLeft, false)
+                    || check(tile.x+1,tile.y,Direction.eFromLeft, tile.mTileType,workingSet, _workingSetActualTiles,grid, actualTile, Direction.eFromRight, false)
+                    || check(tile.x,tile.y-1,Direction.eFromDown, tile.mTileType,workingSet, _workingSetActualTiles,grid, actualTile, Direction.eFromUp, false)
+                    || check(tile.x,tile.y+1,Direction.eFromUp, tile.mTileType,workingSet, _workingSetActualTiles,grid, actualTile, Direction.eFromDown, false))
             {
                 while (!grid.isEmpty())
                 {
@@ -110,7 +113,7 @@ public class CaveInSearcher {
         grid.clear();
     }
     
-    public boolean check(int _x, int _y, Direction _direction, TileType _tileType, Stack<TileIndex> _workingSet, Stack<TileIndex> _thisBlock) /// Returns true if this is an anchor
+    public boolean check(int _x, int _y, Direction _direction, TileType _tileType, Stack<TileIndex> _workingSet, Stack<Tile> _workingSetActualTiles, Stack<TileIndex> _thisBlock, Tile _tileFrom, Direction _otherDirection, boolean _start) /// Returns true if this is an anchor
     {
         Tile tile;
         try
@@ -121,18 +124,22 @@ public class CaveInSearcher {
         {
             return false;
         }
+        boolean boundaryCheck = tile.boundaryFrom(_direction, _tileType, MaterialEdges.AnchorEdges)
+                    && (_start ||
+                        _tileFrom.boundaryFrom(_otherDirection, _tileFrom.getTileType(), MaterialEdges.AnchorEdges));
         if ((tile.mRootId.mAnchor || mChecked[_x][_y].equals(Checked.eAnchor)))
         {
-            if (tile.boundaryFrom(_direction, _tileType, MaterialEdges.AnchorEdges))
+            if (boundaryCheck)
                 return true;
         }
-        if (!mChecked[_x][_y].equals(Checked.eNoAnchor))
+        if (!mChecked[_x][_y].equals(Checked.eNoAnchor) && boundaryCheck)
         {
             mChecked[_x][_y] = Checked.eNoAnchor;
-            if (tile.mFixture != null && tile.boundaryFrom(_direction, _tileType, MaterialEdges.AnchorEdges))
+            if (tile.mFixture != null && boundaryCheck)
             {
                 _workingSet.add(new TileIndex(_x, _y, tile.getTileType()));
                 _thisBlock.add(new TileIndex(_x, _y, tile.getTileType()));
+                _workingSetActualTiles.add(tile);
             }
         }
         return false;
