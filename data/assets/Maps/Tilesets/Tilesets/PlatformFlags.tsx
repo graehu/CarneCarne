@@ -25,4 +25,12 @@
    <property name="Speed" value="1"/>
   </properties>
  </tile>
+ <tile id="3">
+  <properties>
+   <property name="Movement" value="Vertical"/>
+   <property name="PlatformType" value="Simple"/>
+   <property name="Spawn" value="Platform"/>
+   <property name="Speed" value="2"/>
+  </properties>
+ </tile>
 </tileset>
