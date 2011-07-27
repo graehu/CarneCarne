@@ -41,4 +41,10 @@ public class RaceWonEvent extends iEvent
     {
         return mTime;
     }
+    @Override
+    public boolean process()
+    {
+        sEvents.triggerEvent(new GenericStringEvent("BarrierCloseEvent", "StartGate"));
+        return true;
+    }
 }

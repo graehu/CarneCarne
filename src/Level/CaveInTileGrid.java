@@ -68,7 +68,7 @@ public class CaveInTileGrid extends TileGrid
         }
         HashMap<String, Object> parameters = new HashMap<String, Object>();
         parameters.put("bodyType", getBodyType());
-        parameters.put("position", new Vec2(mXTrans, mYTrans).add(mPosition));
+        //parameters.put("position", new Vec2(mXTrans, mYTrans).add(mPosition));
         parameters.put("position", mPosition);
         parameters.put("angle", mAngle);
         parameters.put("linearVelocity", mLinearVelocity);

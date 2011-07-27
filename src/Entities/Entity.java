@@ -63,6 +63,10 @@ abstract public class Entity {
             }
         }
     }
+    public boolean killedOpponent(Entity _oppononent)
+    {
+        return true;
+    }
     /*protected void buoyancy()
     {
         Vec2 areac = new Vec2(0, 0);

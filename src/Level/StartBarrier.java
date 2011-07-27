@@ -19,9 +19,16 @@ import org.jbox2d.dynamics.Body;
  */
 public class StartBarrier implements iEventListener
 {
+    String mBarrierName;
+    public StartBarrier(String _barrierName)
+    {
+        mBarrierName = _barrierName;
+        sEvents.subscribeToEvent("BarrierOpenEvent" + mBarrierName, this);
+        sEvents.subscribeToEvent("BarrierCloseEvent" + mBarrierName, this);
+    }
     public boolean trigger(iEvent _event)
     {
-        if (_event.getName().equals("RaceStartEvent"))
+        if (_event.getType().equals("BarrierOpenEvent"))
         {
             disable();
         }
@@ -46,11 +53,6 @@ public class StartBarrier implements iEventListener
     }
     ArrayList<BarrierTile> tiles = new ArrayList<BarrierTile>();
 
-    public StartBarrier()
-    {
-        sEvents.subscribeToEvent("RaceStartEvent", this);
-        sEvents.subscribeToEvent("RaceWonEvent", this);
-    }
     
     void addTile(int _x, int _y, int _rootId)
     {

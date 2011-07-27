@@ -95,10 +95,10 @@ public class FlagProcessor
     private Vector<RaceCheckPointParameters> checkPoints;
     RaceStartZoneParameters raceStartZone;
     RaceEndZoneParameters raceEndZone;
-    StartBarrier mBarrier;
+    HashMap<String,StartBarrier> mBarriers;
     FlagProcessor(TiledMap _tiledMap, int _levelLayerIndex, Body _levelBody, TileGrid _tileGrid)
     {
-        mBarrier = new StartBarrier();
+        mBarriers = new HashMap<String,StartBarrier>();
         raceStartZone = null;
         spawnPoints = new Stack<PlayerSpawnPoint>();
         checkPoints = new Vector<RaceCheckPointParameters>();
@@ -211,6 +211,21 @@ public class FlagProcessor
                     }
                     else if (spawn.equals("StartBarrier"))
                     {
+                        String barrierName = _tiledMap.getTileProperty(id, "BarrierName", "null");
+                        if (barrierName.equals("null"))
+                        {
+                            throw new UnsupportedOperationException("Set the value of BarrierName"); /// Graham: You'll want to set it to "StartGate"
+                        }
+                        StartBarrier mBarrier;
+                        if (!mBarriers.containsKey(barrierName))
+                        {
+                            mBarrier = new StartBarrier(barrierName);
+                            mBarriers.put(barrierName, mBarrier);
+                        }
+                        else
+                        {
+                            mBarrier = mBarriers.get(barrierName);
+                        }
                         mBarrier.addTile(i,ii,_tiledMap.getTileId(i, ii, mLayerIndex));
                     }
                     else if (spawn.equals("Tutorial"))
@@ -244,7 +259,10 @@ public class FlagProcessor
     }
     public void run()
     {
-        mBarrier.enable();
+        for (StartBarrier mBarrier: mBarriers.values())
+        {
+            mBarrier.enable();
+        }
         HashMap parameters = new HashMap();
         RaceStartZone startZone = null;
         if (raceEndZone != null)

@@ -81,7 +81,7 @@ public class XBoxController
         }
         if(_input.isButtonPressed(4, mPlayer)) 
         {
-            sEvents.triggerEvent(new MapClickEvent(rightStick,"Hammer", mPlayer));
+            //sEvents.triggerEvent(new MapClickEvent(rightStick,"Spit", mPlayer));
         }
         //handle shoulder buttons
         if(_input.isButtonPressed(5, mPlayer))
@@ -124,11 +124,11 @@ public class XBoxController
         float shoulderButtons =_input.getAxisValue(mPlayer,4);
         if (mTriggerState != TriggerState.eStart || shoulderButtons != -1.0f)
         {
-            /*if (shoulderButtons > shoulderButtonEpsilon) //left trigger
+            if (shoulderButtons > shoulderButtonEpsilon) //left trigger
             {
                 changeState(TriggerState.eLeftPressed, rightStick);
             }
-            else */if (shoulderButtons < -shoulderButtonEpsilon) //right trigger
+            else if (shoulderButtons < -shoulderButtonEpsilon) //right trigger
             {
                 changeState(TriggerState.eRightPressed, rightStick);
             }
@@ -154,7 +154,7 @@ public class XBoxController
             {
                 if (_newState != TriggerState.eRightPressed)
                 {
-                    sEvents.triggerEvent(new MapClickReleaseEvent(_rightStick,"Spit", mPlayer)); //spit release
+                    sEvents.triggerEvent(new MapClickReleaseEvent(_rightStick,"Hammer", mPlayer));
                 }
                 break;
             }
@@ -162,7 +162,7 @@ public class XBoxController
             {
                 if (_newState != TriggerState.eLeftPressed)
                 {
-                    
+                    sEvents.triggerEvent(new MapClickReleaseEvent(_rightStick,"Spit", mPlayer));
                 }
                 break;
             }
@@ -176,12 +176,12 @@ public class XBoxController
             }
             case eRightPressed:
             {
-                sEvents.triggerEvent(new MapClickEvent(_rightStick,"Spit", mPlayer)); //spit
+                sEvents.triggerEvent(new MapClickEvent(_rightStick,"Hammer", mPlayer));
                 break;
             }
             case eLeftPressed:
             {
-                sEvents.triggerEvent(new KeyDownEvent(' ', mPlayer)); //lay
+                sEvents.triggerEvent(new MapClickEvent(_rightStick,"Spit", mPlayer));
                 break;
             }
             

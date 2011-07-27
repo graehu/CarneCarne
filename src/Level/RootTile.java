@@ -28,7 +28,13 @@ public abstract class RootTile
     sLevel.TileType mTileType;
     int mMaxHealth;
     boolean mIsFlammable;
+    boolean mIsEverBurning;
     RootTile mNext;
+
+    void setEverburning(boolean _isEverBurning)
+    {
+        mIsEverBurning = _isEverBurning;
+    }
     public enum AnimationType
     {
         eFireHit,
@@ -50,6 +56,7 @@ public abstract class RootTile
         mNext = null;
         mIsFlammable = _isFlammable;
         mMaxHealth = _maxHealth;
+        mIsEverBurning = false;
     }
     /*public RootTile(TileShape _shape, int _id, sLevel.TileType _tileType, String _animationsNames[], int _slopeType, int _maxHealth)
     {

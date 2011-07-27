@@ -13,7 +13,7 @@ import org.newdawn.slick.tiled.TiledMap;
 
 /**
  *
- * @author A203946
+ * @author alasdair
  */
 public class RootTileList {
     
@@ -82,9 +82,22 @@ public class RootTileList {
                     for (int ii = 0; ii < size; ii++)
                     {
                         RootTile tile = new BlockTile(i, type, animationsNames, regrows, anchor, isFlammable, maxHealth);
+                        RootTile everBurning = null;
                         for (int rootId = i + 16; i < rootId; i++)
                         {
-                            mRootTiles.add(tile);
+                            boolean isEverBurning = Boolean.parseBoolean(_tiledMap.getTileProperty(i, "Everburning", "false"));
+                            if (isFlammable && i == rootId-1) /// FIXME don't know why this is needed, tile property isn't working
+                                isEverBurning = true;
+                            if (isEverBurning)
+                            {
+                                if (everBurning == null)
+                                {
+                                    everBurning = new BlockTile(rootId-16, type, animationsNames, regrows, anchor, isFlammable, maxHealth);
+                                    everBurning.setEverburning(true);
+                                }
+                                mRootTiles.add(everBurning);
+                            }
+                            else mRootTiles.add(tile);
                         }
                         int health = maxHealth;
                         while (maxHealth > 1)
@@ -93,10 +106,6 @@ public class RootTileList {
                             RootTile tile2 = new BlockTile(i-16, type, animationsNames, regrows, anchor, false, maxHealth);
                             tile.setNext(tile2);
                             tile2.setNext(tile);
-                            /*for (int rootId = i + 16; i < rootId; i++)
-                            {
-                                mRootTiles.add(tile2);
-                            }*/
                             tile = tile2;
                         }
                         maxHealth = health;

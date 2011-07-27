@@ -48,19 +48,24 @@ public class WorldContactListener implements ContactListener{
         iListener gumListener = new GumListener();
         iListener fireListener = new DeathListener(CauseOfDeath.eFire);
         iListener spikeListener = new DeathListener(CauseOfDeath.eSpikes);
+        iListener acidListener = new DeathListener(CauseOfDeath.eAcid);
         iListener spikeTileListener = new TileBreakListener(1 << BodyCategories.eSpikes.ordinal());
+        iListener acidTileListener = new TileBreakListener(1 << BodyCategories.eAcid.ordinal());
         
         set(BodyCategories.eGum.ordinal(),BodyCategories.eEdibleTiles.ordinal(),gumListener);
         set(BodyCategories.eGum.ordinal(),BodyCategories.eNonEdibleTiles.ordinal(),gumListener);
         set(BodyCategories.ePlayer.ordinal(),BodyCategories.eSpikes.ordinal(),spikeListener);
         set(BodyCategories.ePlayer.ordinal(),BodyCategories.eFire.ordinal(),fireListener);
         set(BodyCategories.eWater.ordinal(),BodyCategories.ePlayer.ordinal(),waterListener);
+        set(BodyCategories.eAcid.ordinal(),BodyCategories.ePlayer.ordinal(),acidListener);
         set(BodyCategories.eEnemy.ordinal(),BodyCategories.eSpikes.ordinal(),spikeListener);
         set(BodyCategories.eEnemy.ordinal(),BodyCategories.eFire.ordinal(),fireListener);
+        set(BodyCategories.eAcid.ordinal(),BodyCategories.eEnemy.ordinal(),acidListener);
         set(BodyCategories.eCarcass.ordinal(),BodyCategories.eFire.ordinal(),fireListener);
         set(BodyCategories.eCheckPoint.ordinal(), BodyCategories.ePlayer.ordinal(), new CheckPointListener());
         
         set(BodyCategories.eEdibleTiles.ordinal(),BodyCategories.eSpikes.ordinal(),spikeTileListener);
+        set(BodyCategories.eEdibleTiles.ordinal(),BodyCategories.eAcid.ordinal(),acidTileListener);
     }
     private void set(int _x, int _y, iListener _reaction)
     {

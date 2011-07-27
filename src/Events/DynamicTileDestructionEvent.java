@@ -21,7 +21,8 @@ public class DynamicTileDestructionEvent extends iEvent
     @Override
     public boolean process()
     {
-        mTile.destroyFixture();
+        if (mTile.getFixture() != null)
+            mTile.destroyFixture();
         return true;
     }
 

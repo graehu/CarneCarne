@@ -26,13 +26,13 @@ import Events.sEvents;
 import Graphics.Camera.FreeCamera;
 import Graphics.Camera.iCamera;
 import Graphics.sGraphicsManager;
-import HUD.sHud;
 import Level.FakeTile;
 import Level.RootTile;
 import Level.Tile;
 import Level.sLevel;
 import Level.sLevel.TileType;
 import World.PhysicsFactories.CarcassBodyFactory;
+import World.PhysicsFactories.ExplosionBody;
 import World.PhysicsFactories.GroundBodyFactory;
 import World.PhysicsFactories.PlayerFactory;
 import java.util.HashMap;
@@ -110,6 +110,7 @@ public class sWorld
         eNonEdibleTiles,
         eSpatTiles,
         eWater,
+        eAcid,
         eIce,
         eGum,
         eTar,
@@ -141,6 +142,7 @@ public class sWorld
         factories.put("SeeSawBodyFactory", new SeeSawBodyFactory());
         factories.put("MovingPlatformBodyFactory", new MovingPlatformBodyFactory());
         factories.put("FireParticleBody", new FireParticleBody());
+        factories.put("ExplosionBody", new ExplosionBody());
         factories.put("GroundBody", new GroundBodyFactory());
         factories.put("CarcassBody", new CarcassBodyFactory());
         mCamera = new FreeCamera(new Rectangle(0,0,s.x, s.y));        

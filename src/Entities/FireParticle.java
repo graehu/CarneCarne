@@ -13,6 +13,7 @@ import Level.sLevel.TileType;
 import Score.ScoreTracker.ScoreEvent;
 import World.sWorld;
 import World.sWorld.BodyCategories;
+import java.util.HashMap;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Fixture;
 import org.jbox2d.dynamics.contacts.ContactEdge;
@@ -94,10 +95,14 @@ public class FireParticle extends Entity
     @Override
     public void kill(CauseOfDeath _causeOfDeath, Object _killer)
     {
+        HashMap params = new HashMap();
+        params.put("position", mBody.getPosition());
+        sEntityFactory.create("Explosion", params);
         sWorld.destroyBody(getBody());
         mParticles.kill();
     }
 
+    @Override
     public boolean killedOpponent(Entity _oppononent)
     {
         if (mOwner == _oppononent)
