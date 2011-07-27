@@ -43,7 +43,7 @@ abstract public class IntroSection
     {
         float scale = sGraphicsManager.getScreenDimensions().x;
         float scaleY = sGraphicsManager.getScreenDimensions().y;
-        if (mTimer > 180 && xBoxAnim1Name != null)
+        if (mTimer > 120 && xBoxAnim1Name != null)
         {
             if (mTimer % 60 == 0)
             {

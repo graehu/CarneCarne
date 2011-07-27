@@ -11,6 +11,7 @@ import Events.CaveInEvent;
 import Events.iEvent;
 import Events.iEventListener;
 import Events.sEvents;
+import GUI.GUIManager;
 import Graphics.Particles.sParticleManager;
 import Graphics.sGraphicsManager;
 import Level.Lighting.sLightsManager;
@@ -24,7 +25,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
-import org.newdawn.slick.BigImage;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -213,8 +213,12 @@ public class BodyCamera extends iCamera implements iEventListener{
 
             //render lighting
             renderLighting(_graphics);
-            
+        try {
             //render overlay and HUD
+            GUIManager.get().render(false);
+        } catch (SlickException ex) {
+            Logger.getLogger(BodyCamera.class.getName()).log(Level.SEVERE, null, ex);
+        }
             mOverlay.draw(0,0, (int)mViewPort.getWidth(), (int)mViewPort.getHeight());
             ((PlayerEntity)mBody.getUserData()).renderHUD();
         sGraphicsManager.endTransform();  

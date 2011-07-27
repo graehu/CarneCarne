@@ -8,6 +8,7 @@ import Graphics.Particles.sParticleManager;
 import java.util.LinkedList;
 import java.util.Queue;
 import org.jbox2d.common.Vec2;
+import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyType;
 
 /**
@@ -43,7 +44,11 @@ class TileFire
         if (_tile.mTileGrid.mBody.m_type.equals(BodyType.STATIC))
             sParticleManager.createSystem("TarBurn", new Vec2(_tile.getWorldPosition()).mul(64).add(new Vec2(32,32)), 180/60.0f);
         else
-            sParticleManager.createTileMovingSystem("TarBurn", 180/60.0f,_tile);
+        {
+            Body body = _tile.getTileGrid().getBody();
+            Vec2 localPosition = _tile.getLocalPosition();
+            sParticleManager.createMovingSystem("TarBurn", 180/60.0f,body, localPosition, new Vec2(0,0));
+        }
     }
     void update()
     {

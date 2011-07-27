@@ -20,8 +20,20 @@ public class LeftUpSlope extends SlopeTile
 
     public void getEdges(boolean _boundaries[], int _xTile, int _yTile, TileGrid _tileGrid)
     {
-        _boundaries[0] = _tileGrid.boundaryFrom(_xTile, _yTile-1, Direction.eFromDown, mTileType);
-        _boundaries[1] = _tileGrid.boundaryFrom(_xTile+1, _yTile, Direction.eFromLeft, mTileType);
+        try
+        {
+            _boundaries[0] = _tileGrid.boundaryFrom(_xTile, _yTile-1, Direction.eFromDown, mTileType);
+        }
+        catch (ArrayIndexOutOfBoundsException e)
+        {
+        }
+        try
+        {
+            _boundaries[1] = _tileGrid.boundaryFrom(_xTile+1, _yTile, Direction.eFromLeft, mTileType);
+        }
+        catch (ArrayIndexOutOfBoundsException e)
+        {
+        }
     }
 
     boolean boundaryFrom(Direction _direction, TileType _tileType, MaterialEdges _materialEdges)

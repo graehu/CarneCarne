@@ -63,4 +63,7 @@ abstract public class MovingParticleSys implements ParticleSysBase
     public ParticleSystem getSystem() {
         return mParticles.getSystem();
     }
+    public void setPosition(Vec2 mul) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 }

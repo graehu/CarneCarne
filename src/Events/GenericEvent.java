@@ -10,21 +10,21 @@ package Events;
  */
 public class GenericEvent extends iEvent
 {
-    String mName;
-    public GenericEvent(String _name)
+    private String mType;
+    public GenericEvent(String _type)
     {
-        mName = _name;
+        mType = _type;
     }
 
     @Override
     public String getName()
     {
-        return mName;
+        return mType;
     }
 
     @Override
     public String getType()
     {
-        return mName;
+        return mType;
     }
 }

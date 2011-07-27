@@ -23,6 +23,7 @@ class AIEntityState
     }
     enum State
     {
+        eIdle,
         eFalling,
         eFallingDoubleJumped,
         eStanding,
@@ -115,6 +116,12 @@ class AIEntityState
     void stopJumping()
     {
         changeState(State.eFalling);
+        update();
+    }
+    void stopIdle()
+    {
+        mTimer = 0;
+        changeState(State.eStanding);
         update();
     }
     //returns -ve for initialial jump, 0.0f while falling and +ve during transition
@@ -224,6 +231,10 @@ class AIEntityState
             }
             case eStanding:
             {
+                if(mTimer > 180) //3 seconds
+                {
+                    changeState(State.eIdle);
+                }
                 if (mContactCount == 0)
                 {
                     changeState(State.eFalling);
@@ -254,6 +265,10 @@ class AIEntityState
             }
             case eStandingOnTar:
             {
+                if(mTimer > 180) //3 seconds
+                {
+                    changeState(State.eIdle);
+                }
                 if (mTarCount == 0)
                 {
                     changeState(State.eStillCoveredInTar);
@@ -308,6 +323,16 @@ class AIEntityState
             }
             case eDead:
             {
+                break;
+            }
+            case eIdle:
+            {
+                if(mEntity.mBody.getLinearVelocity().lengthSquared() > 0.01f)
+                {
+                    changeState(State.eStanding);
+                    mTimer = 0;
+                    update();
+                }
                 break;
             }
         }

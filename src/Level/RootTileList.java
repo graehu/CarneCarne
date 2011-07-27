@@ -13,7 +13,7 @@ import org.newdawn.slick.tiled.TiledMap;
 
 /**
  *
- * @author A203946
+ * @author alasdair
  */
 public class RootTileList {
     
@@ -23,7 +23,6 @@ public class RootTileList {
     {
         HashMap<String, sLevel.TileType> typeMap = new HashMap<String, sLevel.TileType>();
         typeMap.put("Ice", sLevel.TileType.eIce);
-        typeMap.put("Spikes", sLevel.TileType.eSpikes);
         typeMap.put("Acid", sLevel.TileType.eAcid);
         typeMap.put("Swim", sLevel.TileType.eWater);
         typeMap.put("Edible", sLevel.TileType.eEdible);
@@ -74,7 +73,7 @@ public class RootTileList {
             boolean isFlammable = Boolean.valueOf(_tiledMap.getTileProperty(i, "Flammable", "false")).booleanValue();
             sLevel.TileType type = typeMap.get(typeString);
             int assertion = type.ordinal();
-            assertion = 0xB00B135;
+            //assertion = 0xB00B135;
             if (!shape.equals("None"))
             {
                 if (shape.equals("Block"))
@@ -83,9 +82,22 @@ public class RootTileList {
                     for (int ii = 0; ii < size; ii++)
                     {
                         RootTile tile = new BlockTile(i, type, animationsNames, regrows, anchor, isFlammable, maxHealth);
+                        RootTile everBurning = null;
                         for (int rootId = i + 16; i < rootId; i++)
                         {
-                            mRootTiles.add(tile);
+                            boolean isEverBurning = Boolean.parseBoolean(_tiledMap.getTileProperty(i, "Everburning", "false"));
+                            if (isFlammable && i == rootId-1) /// FIXME don't know why this is needed, tile property isn't working
+                                isEverBurning = true;
+                            if (isEverBurning)
+                            {
+                                if (everBurning == null)
+                                {
+                                    everBurning = new BlockTile(rootId-16, type, animationsNames, regrows, anchor, isFlammable, maxHealth);
+                                    everBurning.setEverburning(true);
+                                }
+                                mRootTiles.add(everBurning);
+                            }
+                            else mRootTiles.add(tile);
                         }
                         int health = maxHealth;
                         while (maxHealth > 1)
@@ -94,25 +106,38 @@ public class RootTileList {
                             RootTile tile2 = new BlockTile(i-16, type, animationsNames, regrows, anchor, false, maxHealth);
                             tile.setNext(tile2);
                             tile2.setNext(tile);
-                            /*for (int rootId = i + 16; i < rootId; i++)
-                            {
-                                mRootTiles.add(tile2);
-                            }*/
                             tile = tile2;
                         }
                         maxHealth = health;
                     }
                 }
+                else if (shape.equals("Spikes"))
+                {
+                    int size = Integer.valueOf(_tiledMap.getTileProperty(i, "Size", "1"));
+                    for (int ii = 0; ii < size; ii++)
+                    {
+                        mRootTiles.add(new SpikeTile(i));
+                        i++;
+                    }
+                }
                 else if (shape.equals("Slope"))
                 {
+                    RootTile tile = new RightDownSlope(i,type, animationsNames, regrows, anchor, isFlammable, maxHealth);
                     for (int rootId = i; i < rootId + 4; i++)
-                        mRootTiles.add(new RightDownSlope(i,type, animationsNames, regrows, anchor, isFlammable, maxHealth)); 
+                        mRootTiles.add(tile); 
+                    
+                    tile = new LeftDownSlope(i,type, animationsNames, regrows, anchor, isFlammable, maxHealth);
                     for (int rootId = i; i < rootId + 4; i++)
-                        mRootTiles.add(new LeftDownSlope(i,type, animationsNames, regrows, anchor, isFlammable, maxHealth)); 
+                        mRootTiles.add(tile); 
+                    
+                    tile = new LeftUpSlope(i,type, animationsNames, regrows, anchor, isFlammable, maxHealth);
                     for (int rootId = i; i < rootId + 4; i++)
-                        mRootTiles.add(new LeftUpSlope(i,type, animationsNames, regrows, anchor, isFlammable, maxHealth)); 
+                        mRootTiles.add(tile); 
+                    
+                    tile = new RightUpSlope(i,type, animationsNames, regrows, anchor, isFlammable, maxHealth);
                     for (int rootId = i; i < rootId + 4; i++)
-                        mRootTiles.add(new RightUpSlope(i,type, animationsNames, regrows, anchor, isFlammable, maxHealth));
+                        mRootTiles.add(tile);
+                        
                 }
                 else if (shape.equals("NonEdible"))
                 {

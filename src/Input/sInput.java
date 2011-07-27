@@ -149,7 +149,7 @@ final class MouseStateMachine
     }
     void changeState(States _state)
     {
-        Vec2 physicsPos = sWorld.translateToPhysics(new Vec2(mNewMouseX, mNewMouseY));
+        /*Vec2 physicsPos = sWorld.translateToPhysics(new Vec2(mNewMouseX, mNewMouseY));
         switch(mState) //old
         {
             case eRightPressed:
@@ -174,7 +174,7 @@ final class MouseStateMachine
                 sEvents.triggerEvent(new MapClickEvent(physicsPos,true,0));
                 break;
         }
-        mState = _state;
+        mState = _state;*/
     }
 
 }

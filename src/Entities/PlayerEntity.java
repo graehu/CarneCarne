@@ -61,8 +61,8 @@ public class PlayerEntity extends AIEntity
         if (mCheckPoint != null)
             mCheckPointPosition = mCheckPoint.getPosition();
         mReticle = new Reticle(this);
-        mRevolver = new Revolver("ui/revolver.png", new Vector2f(200,200));
-        //GUIManager.get().addRootComponent(mRevolver);
+        mRevolver = new Revolver("ui/revolver.png", new Vector2f(1540,900)); //FIXME: assumes native resolution of 1680x1050
+        GUIManager.get().addRootComponent(mRevolver);
         mDeaths = mRaceTimer = 0;
         HashMap params = new HashMap();
         try
@@ -112,7 +112,7 @@ public class PlayerEntity extends AIEntity
         mCheckPointPosition = mCheckPoint.getPosition();
         mRaceTimer = 0;
         mWasIReallyKilled = false;
-        kill();
+        kill(CauseOfDeath.eMundane, null);
         mWasIReallyKilled = true;
         mAIEntityState.restartingRace();
         mScoreTracker.raceEnded();
@@ -123,7 +123,6 @@ public class PlayerEntity extends AIEntity
     }
     public void placeCheckPoint(CheckPointZone _checkPoint)
     {
-        System.out.println(mCheckPoint.getCheckpointNumber() + " " + _checkPoint.getCheckpointNumber());
         if (mDeathJoint == null)
         {
             if (mCheckPoint == mOriginalSpawnPoint)
@@ -142,15 +141,13 @@ public class PlayerEntity extends AIEntity
                 //sEvents.triggerDelayedEvent(new ShowDirectionEvent(this));
             }
         }
-        System.out.println(mCheckPoint.getCheckpointNumber() + " " + _checkPoint.getCheckpointNumber());
-        System.out.println();
     }
     /*public int getScore()
     {
         return mScore;
     }*/
     @Override
-    public void kill()
+    public void kill(CauseOfDeath _causeOfDeath, Object _killer)
     {
         if (mDeathJoint == null)
         {
@@ -158,6 +155,26 @@ public class PlayerEntity extends AIEntity
             {
                 mDeaths++;
                 mScoreTracker.score(ScoreTracker.ScoreEvent.eDied);
+                switch (_causeOfDeath)
+                {
+                    case eFire:
+                    case eSpikes:
+                    {
+                        HashMap params = new HashMap();
+                        params.put("causeOfDeath", _causeOfDeath);
+                        params.put("position", mBody.getPosition());
+                        params.put("rotation", mBody.getAngle());
+                        params.put("linearVelocity", mBody.getLinearVelocity());
+                        params.put("angularVelocity", mBody.getAngularVelocity());
+                        params.put("killer", _killer);
+                        Entity carcass = sEntityFactory.create("Carcass", params);
+                        break;
+                    }
+                    default:
+                    {
+                        break;
+                    }
+                }
             }
             Fixture fixture = getBody().getFixtureList();
             while (fixture != null)
@@ -169,6 +186,7 @@ public class PlayerEntity extends AIEntity
             ((PlayerInputController)mController).kill();
         }
         mAIEntityState.kill();
+        ((PlayerInputController)mController).kill();
     }
     boolean compareFloat(float a, float b, float epsilon)
     {
@@ -224,9 +242,9 @@ public class PlayerEntity extends AIEntity
                 mAIEntityState.unkill();
             }
         }
-        else if (mAIEntityState.getState().equals(State.eSwimming))
+        else
         {
-            buoyancy();
+            super.subUpdate();
         }
     }
 
@@ -240,6 +258,7 @@ public class PlayerEntity extends AIEntity
     {
         super.stun();
         ((PlayerInputController)mController).stun();
+        mSkin.activateSubSkin("pea_stun_large", true, 0.0f);
     }
 
     @Override
@@ -269,10 +288,11 @@ public class PlayerEntity extends AIEntity
                     
                 sGraphicsManager.drawString("You have died " + mDeaths + " times", 0f, 0.1f);
             }
-            else if (mIntroSection != null)
+            if (mIntroSection != null)
                 mIntroSection.render();
             
             mReticle.render(); //always render ontop
+            
             mScoreTracker.render();
             sHud.render(((PlayerInputController)mController).mPlayer);
         }
@@ -309,7 +329,10 @@ public class PlayerEntity extends AIEntity
                 mBodyType = "bdy";
                 break;
         }
+        if(mRevolver != null)
+            mRevolver.setAmmo(_type);
     }
+    
     public void setDirection(Vec2 _dir)
     {
         mDirection = _dir;

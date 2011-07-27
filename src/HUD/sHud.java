@@ -3,13 +3,11 @@
  */
 package HUD;
 
-import GUI.GUIManager;
 import Graphics.Skins.sSkinFactory;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Vector;
 import org.jbox2d.common.Vec2;
-import org.newdawn.slick.geom.Vector2f;
 
 /**
  *
@@ -34,6 +32,7 @@ public class sHud
         {
             mHudElements.get(_player).put(_skin, new HudElement(sSkinFactory.create("static", params), _position, _timer));
         }
+        else mHudElements.get(_player).get(_skin).mTimer = _timer;
     }
     public static void render(int _player)
     {

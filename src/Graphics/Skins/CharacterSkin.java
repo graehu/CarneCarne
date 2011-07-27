@@ -24,15 +24,17 @@ public class CharacterSkin implements iSkin
 
     static public class CharacterSubSkin
     {
-        public CharacterSubSkin(String _ref, SubType _type, int _tileWidth, int _tileHeight)
-        {
-            this(_ref, _type, _tileWidth, _tileHeight, new Vec2(), 41);
-        }
         public CharacterSubSkin(String _ref, SubType _type, int _tileWidth, int _tileHeight, Vec2 _offset)
         {
-            this(_ref, _type, _tileWidth, _tileHeight, _offset, 41);
+            this(_ref, _type, _tileWidth, _tileHeight, _offset, false, false,  41);
         }
-        public CharacterSubSkin(String _ref, SubType _type, int _tileWidth, int _tileHeight, Vec2 _offset, int _duration)
+        //flipping the skin will postfix "_h" and "_v" to the name respectively
+        public CharacterSubSkin(String _ref, SubType _type, int _tileWidth, int _tileHeight, Vec2 _offset, boolean _hFlipped,  boolean _vFlipped)
+        {
+            this(_ref, _type, _tileWidth, _tileHeight, _offset, _hFlipped, _vFlipped,  41);
+        }
+        //flipping the skin will postfix "_h" and "_v" to the name respectively
+        public CharacterSubSkin(String _ref, SubType _type, int _tileWidth, int _tileHeight, Vec2 _offset, boolean _hFlipped, boolean _vFlipped, int _duration)
         {
             mRef = _ref;
             mType= _type;
@@ -40,6 +42,8 @@ public class CharacterSkin implements iSkin
             mTileHeight = _tileHeight;
             mOffset = _offset;
             mDuration = _duration;
+            mHFlipped = _hFlipped;
+            mVFlipped = _vFlipped;
         }
         public enum SubType
         {
@@ -52,6 +56,8 @@ public class CharacterSkin implements iSkin
         int mTileWidth = 0, mTileHeight = 0;
         int mDuration = 0;
         Vec2 mOffset = null;
+        boolean mHFlipped = false;
+        boolean mVFlipped = false;
     }
     
     CharacterSkin(List<CharacterSubSkin> _subSkins) throws SlickException
@@ -85,9 +91,18 @@ public class CharacterSkin implements iSkin
                 }
                 case eAnimated:
                 {
-                    SpriteSheet ss = new SpriteSheet(absoluteRef, subSkin.mTileWidth, subSkin.mTileHeight);
+                    SpriteSheet ss = new SpriteSheet(absoluteRef, subSkin.mTileWidth, subSkin.mTileHeight);;
+                    String postFix = "";
+                    if(subSkin.mHFlipped || subSkin.mVFlipped)
+                    {
+                        ss = new SpriteSheet(ss.getFlippedCopy(subSkin.mHFlipped, subSkin.mVFlipped), subSkin.mTileWidth, subSkin.mTileHeight);
+                        if(subSkin.mHFlipped)
+                            postFix += "_h";
+                        if(subSkin.mVFlipped)
+                            postFix += "_v";
+                    }
                     iSkin skin = new AnimatedSkin(ss, subSkin.mDuration);
-                    addSubSkin(skin, subSkin.mRef, subSkin.mOffset);
+                    addSubSkin(skin, subSkin.mRef+postFix, subSkin.mOffset);
                     break;
                 }
                 case eStatic:
@@ -114,13 +129,16 @@ public class CharacterSkin implements iSkin
     
     float mRotation = 0;
     
-    
+    //will ignore subskins being added with same name as existing ones
     protected final void addSubSkin(iSkin _skin, String _name, Vec2 _offset)
     {
-        int arrayPos = mSubSkins.size();
-        mSubSkins.add(_skin);
-        mSkinNames.put(_name, arrayPos);
-        mOffsets.add(_offset);
+        if(!mSkinNames.containsKey(_name))
+        {
+            int arrayPos = mSubSkins.size();
+            mSubSkins.add(_skin);
+            mSkinNames.put(_name, arrayPos);
+            mOffsets.add(_offset);
+        }
     }
     
     public void render(float _x, float _y)

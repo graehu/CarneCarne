@@ -163,10 +163,14 @@ public class TileRegrowth
         {
             return true;
         }
-        return (mTileGrid.boundaryFrom(_tile.x, _tile.y-1, Direction.eFromDown, _tile.mRootId.mTileType) ||
-                (mTileGrid.boundaryFrom(_tile.x-1, _tile.y, Direction.eFromRight, _tile.mRootId.mTileType)) ||
-                (mTileGrid.boundaryFrom(_tile.x, _tile.y+1, Direction.eFromUp, _tile.mRootId.mTileType)) ||
-                (mTileGrid.boundaryFrom(_tile.x+1, _tile.y, Direction.eFromLeft, _tile.mRootId.mTileType)));
+        return ((mTileGrid.boundaryFrom(_tile.x, _tile.y-1, Direction.eFromDown, _tile.mRootId.mTileType) &&
+                    _tile.mRootId.boundaryFrom(Direction.eFromUp, _tile.mRootId.getTileType(), MaterialEdges.AnchorEdges)) ||
+                ((mTileGrid.boundaryFrom(_tile.x-1, _tile.y, Direction.eFromRight, _tile.mRootId.mTileType) &&
+                    _tile.mRootId.boundaryFrom(Direction.eFromLeft, _tile.mRootId.getTileType(), MaterialEdges.AnchorEdges))) ||
+                ((mTileGrid.boundaryFrom(_tile.x, _tile.y+1, Direction.eFromUp, _tile.mRootId.mTileType) &&
+                    _tile.mRootId.boundaryFrom(Direction.eFromDown, _tile.mRootId.getTileType(), MaterialEdges.AnchorEdges))) ||
+                ((mTileGrid.boundaryFrom(_tile.x+1, _tile.y, Direction.eFromLeft, _tile.mRootId.mTileType) && 
+                    _tile.mRootId.boundaryFrom(Direction.eFromRight, _tile.mRootId.getTileType(), MaterialEdges.AnchorEdges))));
     }
     private class RegrowingTile {
 

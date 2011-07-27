@@ -4,8 +4,8 @@
  */
 package States.Game.RaceMode;
 
+import Events.GenericStringEvent;
 import Events.RaceResetEvent;
-import Events.RaceStartEvent;
 import Events.RaceWonEvent;
 import Events.iEvent;
 import Events.iEventListener;
@@ -14,7 +14,6 @@ import Graphics.Skins.iSkin;
 import Graphics.Skins.sSkinFactory;
 import Graphics.sGraphicsManager;
 import java.util.HashMap;
-import java.util.LinkedList;
 import org.jbox2d.common.Vec2;
 
 /**
@@ -88,7 +87,7 @@ class RaceState implements iEventListener
                 if (mTimer == 180)
                 {
                     changeState(State.eRaceInProgress);
-                    sEvents.triggerEvent(new RaceStartEvent());
+                    sEvents.triggerEvent(new GenericStringEvent("BarrierOpenEvent", "StartGate"));
                 }
                 else
                 {

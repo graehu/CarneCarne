@@ -68,7 +68,7 @@ public class CaveInTileGrid extends TileGrid
         }
         HashMap<String, Object> parameters = new HashMap<String, Object>();
         parameters.put("bodyType", getBodyType());
-        parameters.put("position", new Vec2(mXTrans, mYTrans).add(mPosition));
+        //parameters.put("position", new Vec2(mXTrans, mYTrans).add(mPosition));
         parameters.put("position", mPosition);
         parameters.put("angle", mAngle);
         parameters.put("linearVelocity", mLinearVelocity);
@@ -126,10 +126,15 @@ public class CaveInTileGrid extends TileGrid
             //sEntityFactory.create("CaveInTileFactory", parameters);
         }
     }
+    @Override
+    public void update()
+    {
+        mTileFire.update();
+    }
     public void destroyTile(int _x, int _y)
     {
         RootTile roottile = mTiles[_x][_y].getRootTile();
-        if (!searching)
+        if (!searching && mBody.getType().equals(BodyType.DYNAMIC))
         {
             sLevel.getTileGrid().regrowingTiles.add(_x + mTotalXTransform, _y + mTotalYTransform, roottile);
         }
@@ -148,7 +153,7 @@ public class CaveInTileGrid extends TileGrid
         {
             searching = true;
             CaveInSearcher search = new CaveInSearcher(this, mTiledMap, mLayerIndex, mBody, mTotalXTransform, mTotalYTransform);
-            search.destroy(_x, _y, _tileType);
+            search.destroy(_x, _y, mTiles[_x][_y], _tileType);
             sWorld.destroyBody(mBody);
             ((Entity)mBody.getUserData()).setBody(null);
             mBody.setUserData(null);

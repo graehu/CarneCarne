@@ -5,13 +5,13 @@
 package Graphics.Particles;
 
 import Graphics.sGraphicsManager;
-import Level.Tile;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.jbox2d.common.Vec2;
+import org.jbox2d.dynamics.Body;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.particles.ParticleIO;
 import org.newdawn.slick.particles.ParticleSystem;
@@ -41,9 +41,9 @@ public class sParticleManager {
      * _y           position in Y (pixels)
      * _lifeTime:   time until death (seconds)
      */
-    public static ParticleSysBase createTileMovingSystem(String _ref, float _lifeTime, Tile _tile)
+    public static ParticleSysBase createMovingSystem(String _ref, float _lifeTime, Body _body, Vec2 _localPosition, Vec2 _offset)
     {
-        ParticleSysBase p = new TileMovingParticleSys(createSystemImplementation(_ref, _tile.getWorldPosition().mul(64).add(new Vec2(32,32)), _lifeTime, true, false), _tile);
+        ParticleSysBase p = new BodyMovingParticleSys(createSystemImplementation(_ref, _body.getWorldPoint(_localPosition).add(_offset).mul(64), _lifeTime, true, false), _body, _localPosition, _offset);
         mInstancedSystems.add(p);
         return p;
     }

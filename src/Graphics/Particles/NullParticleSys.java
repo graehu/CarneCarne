@@ -60,5 +60,8 @@ public class NullParticleSys implements ParticleSysBase
     public ParticleSystem getSystem() {
         return null;
     }
+    public void setPosition(Vec2 mul) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
     
 }

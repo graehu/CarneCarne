@@ -6,14 +6,13 @@ package States;
 
 import Graphics.sGraphicsManager;
 import States.Menu.StateMenu;
-import java.nio.ByteBuffer;
-import java.nio.MappedByteBuffer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.jbox2d.common.Vec2;
+import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.opengl.ImageData;
+import org.newdawn.slick.state.GameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.Transition;
 
@@ -22,8 +21,8 @@ import org.newdawn.slick.state.transition.Transition;
  * @author a203945
  */
 public class StateChanger implements Runnable{
-    private static StateBasedGame mSbg;
-    private static int mID = 0;
+    private StateBasedGame mSbg;
+    private int mID = 0;
     private Transition mEnter,mLeave;
     public StateChanger(int _id, Transition _leave, Transition _enter, StateBasedGame _sbg)
     {
@@ -32,19 +31,19 @@ public class StateChanger implements Runnable{
         mEnter = _enter;
         mSbg = _sbg;
     }
-
-    public void run() {
+    public void setTransitions(Transition _leave, Transition _enter)
+    {
+        mLeave = _leave;
+        mEnter = _enter;
+    }
+    public void run() 
+    {
         if(mID == 4) //menu
         {
-            try {
-                int sx = (int)sGraphicsManager.getTrueScreenDimensions().x;
-                int sy = (int)sGraphicsManager.getTrueScreenDimensions().y;
-                Image screenShot = new Image(sx, sy);
-                mSbg.getContainer().getGraphics().copyArea(screenShot, 0, 0);
-                ((StateMenu)mSbg.getState(mID)).setScreenShot(screenShot);
-            } catch (SlickException ex) {
-                Logger.getLogger(StateChanger.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            Image screenShot = ((StateMenu)mSbg.getState(mID)).getScreenShot();
+            screenShot.flushPixelData();
+            mSbg.getContainer().getGraphics().copyArea(screenShot, 0, 0);
+            screenShot.setAlpha(0.5f);
         }
         mSbg.enterState(mID,mLeave,mEnter);
     }

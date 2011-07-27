@@ -63,6 +63,10 @@ abstract public class Entity {
             }
         }
     }
+    public boolean killedOpponent(Entity _oppononent)
+    {
+        return true;
+    }
     /*protected void buoyancy()
     {
         Vec2 areac = new Vec2(0, 0);
@@ -121,11 +125,22 @@ abstract public class Entity {
             }
         }*/
     //}
-
-    public void kill()
+    public enum CauseOfDeath
     {
-        mBody.getWorld().destroyBody(mBody);
-        mBody = null;
+        eFire,
+        eSpikes,
+        eAcid,
+        eImpact,
+        eMundane,
+        eCauseOfDeathMax
+    }
+    public void kill(CauseOfDeath _causeOfDeath, Object _killer)
+    {
+        if (mBody != null)
+        {
+            mBody.getWorld().destroyBody(mBody);
+            mBody = null;
+        }
     }
     protected float calculateArea()
     {

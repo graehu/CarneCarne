@@ -5,11 +5,11 @@
 package Level;
 
 import Graphics.sGraphicsManager;
+import Level.Lighting.sLightsManager;
 import World.sWorld;
 import org.jbox2d.common.Vec2;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.tiled.TiledMap;
 /**
  *
  * @author alasdair
@@ -25,7 +25,7 @@ public class sLevel
         mLevelEditor.placeTileNoBody(_x, _y, _rootId);
     }
 
-    static TileGrid getTileGrid()
+    static public TileGrid getTileGrid()
     {
         return mLevelEditor.tileGrid;
     }
@@ -90,10 +90,7 @@ public class sLevel
     public static RootTile getRootTile(int _rootId)
     {
         return mLevelEditor.rootTiles.get(_rootId);
-    }
-    
-    static String nextMap = "Tiles/Maps/RaceReloaded";
-    
+    }    
     
     void radiusDestroy(Vec2 _position, float _radius)
     {
@@ -124,7 +121,7 @@ public class sLevel
         }
         catch (SlickException e)
         {
-            throw new UnsupportedOperationException(nextMap + " loading failed");
+            throw new UnsupportedOperationException(_map+ " loading failed");
         }
         mLevelEditor = new LevelEditor(mTiledMap);
         mParralaxXScale = new float[mTiledMap.getLayerCount()];
@@ -135,40 +132,36 @@ public class sLevel
             mParralaxYScale[i] = 1.0f;
         }
         flagsLayer = mTiledMap.getLayerIndex("Flags");
-        nextMap = mTiledMap.getMapProperty("NextMap", nextMap);
     }
-    public static void newLevel()
+    
+    public static void newLevel(String _map)
     {
+        //clean up old level
+        sLightsManager.destroyAllLightSources();
         try
         {
-            mTiledMap = new AnimatedTiledMap("assets/" + nextMap + ".tmx");
+            mTiledMap = null; //this should encourage the gc to hupto.
+            mTiledMap = new AnimatedTiledMap("assets/Maps/" + _map + ".tmx");
             mTiledMap.initAnimationlayer("assets/TileAnimation.def");
         }
         catch (SlickException e)
         {
-            throw new UnsupportedOperationException(nextMap + " loading failed");
+            throw new UnsupportedOperationException(_map + " loading failed");
         }
-        boolean destroy = true;
+        //initialise level editor if null
         if (mLevelEditor == null)
-        {
-            destroy = false;
             mLevelEditor = new LevelEditor(mTiledMap);
-        }
+        
         mParralaxXScale = new float[mTiledMap.getLayerCount()];
         mParralaxYScale = new float[mTiledMap.getLayerCount()];
-        for (int i = 0; i < mParralaxXScale.length; i++)
-        {
-            mParralaxXScale[i] = 1.0f;
-            mParralaxYScale[i] = 1.0f;
-        }
-        flagsLayer = mTiledMap.getLayerIndex("Flags");
-        mLevelEditor.newLevel(mTiledMap, destroy);
-        midLayer = mTiledMap.getLayerIndex("Level");
         for (int i = 0; i < mParralaxXScale.length; i++)
         {
             mParralaxXScale[i] = new Float(mTiledMap.getLayerProperty(i, "ScaleX", "1.0"));
             mParralaxYScale[i] = new Float(mTiledMap.getLayerProperty(i, "ScaleY", "1.0"));
         }
+        flagsLayer = mTiledMap.getLayerIndex("Flags");
+        midLayer = mTiledMap.getLayerIndex("Level");
+        mLevelEditor.newLevel(mTiledMap);
     }
     public static void update()
     {

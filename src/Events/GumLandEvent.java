@@ -5,6 +5,7 @@
 package Events;
 
 import Level.Tile;
+import Level.sLevel;
 import Level.sLevel.TileType;
 import World.sWorld;
 import org.jbox2d.common.Vec2;
@@ -40,10 +41,10 @@ public class GumLandEvent extends iEvent
     {
         if (mTile != null)
         {
-            Vec2 position = mTile.getTileGrid().getBody().getWorldPoint(mTile.getLocalPosition());//mBody.getPosition();
+            //Vec2 position = mTile.getTileGrid().getBody().getWorldPoint(mTile.getLocalPosition());//mBody.getPosition();
             Vec2 velocity = mBody.getLinearVelocity();
-            int xPos = (int)position.x;
-            int yPos = (int)position.y;
+            int xPos = (int)mBody.getPosition().x;
+            int yPos = (int)mBody.getPosition().y;
             
             if (velocity.x* velocity.x > velocity.y*velocity.y)
             {
@@ -51,7 +52,10 @@ public class GumLandEvent extends iEvent
                 {
                     if (!tryY(xPos, yPos, velocity))
                     {
-                        tryDiagonal(xPos, yPos, velocity);
+                        if (tryDiagonal(xPos, yPos, velocity))
+                        {
+                            sWorld.destroyBody(mBody);
+                        }
                     }
                 }
             }
@@ -59,13 +63,14 @@ public class GumLandEvent extends iEvent
             {
                 if (!tryX(xPos, yPos, velocity))
                 {
-                    tryDiagonal(xPos, yPos, velocity);
+                    if (tryDiagonal(xPos, yPos, velocity))
+                    {
+                        sWorld.destroyBody(mBody);
+                    }
                 }
             }
-            //place(xPos, yPos);
             mTile = null;
         }
-        sWorld.destroyBody(mBody);
         return false;
     }
     
@@ -99,9 +104,9 @@ public class GumLandEvent extends iEvent
     }
     private boolean place(int _x, int _y)
     {
-        if (mTile.getTileGrid().get(_x, _y).getRootTile().getTileType().equals(TileType.eEmpty))
+        if (sLevel.getTileGrid().get(_x, _y).getRootTile().getTileType().equals(TileType.eEmpty))
         {
-            mTile.getTileGrid().placeTile(_x, _y, mRootId);
+            sLevel.getTileGrid().placeTile(_x, _y, mRootId);
             return true;
         }
         else return false;

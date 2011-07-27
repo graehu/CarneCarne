@@ -104,7 +104,9 @@ abstract public class SlopeTile extends RootTile
         if (mMutable)
         {
             boolean boundaries[] = new boolean[2];
-
+            boundaries[0] = false;
+            boundaries[1] = false;
+            
             getEdges(boundaries, _xTile, _yTile, _tileGrid);
 
             int textureUnit = 0;

@@ -29,4 +29,8 @@ public class KeyDownEvent extends iEvent{
     {
         return mKey;
     }
+    public int getPlayer()
+    {
+        return mPlayer;
+    }
 }

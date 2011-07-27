@@ -5,11 +5,8 @@
 package Level;
 
 import Level.sLevel.TileType;
-import World.sWorld;
 import java.util.HashMap;
-import java.util.Stack;
 import org.jbox2d.common.Vec2;
-import org.jbox2d.dynamics.Body;
 import org.newdawn.slick.tiled.TiledMap;
 
 /**
@@ -50,7 +47,8 @@ public final class LevelTileGrid extends TileGrid
     @Override
     public void update()
     {
-        super.update();
+        regrowingTiles.update();
+        mTileFire.update();
         tiledMap.update();
     }
     boolean dropChecking = false;
@@ -59,7 +57,7 @@ public final class LevelTileGrid extends TileGrid
         if (!dropChecking)
         {
             CaveInSearcher search = new CaveInSearcher(this, tiledMap, layerIndex, mBody, 0, 0);
-            search.destroy(_x, _y, _tileType);
+            search.destroy(_x, _y, mTiles[_x][_y], _tileType);
         }
     }
     void dropCheck(int _x, int _y)

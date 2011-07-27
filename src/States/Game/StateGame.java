@@ -19,9 +19,11 @@ import HUD.sHud;
 import Input.sInput;
 import Sound.sSound;
 import States.Game.RaceMode.RaceMode;
+import States.Menu.StateMenu;
 import States.StateChanger;
 import World.sWorld;
 import org.jbox2d.common.Vec2;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
@@ -71,7 +73,10 @@ public class StateGame extends BasicGameState implements iEventListener {
                 //FIXME: quit
                 //die = true;
                 //goto menu
-                //mChangeToMenu.run();
+                StateMenu.setPlayerInControl(event.getPlayer());
+                mChangeToMenu.setTransitions(null, new BlobbyTransition(Color.black));
+                mChangeToMenu.run();
+                sEvents.blockListener(this);
             }
         }
         return true;
@@ -106,7 +111,6 @@ public class StateGame extends BasicGameState implements iEventListener {
         Vec2 s = sGraphicsManager.getScreenDimensions();
         
         mGameMode.render(_grphcs);
-        GUIManager.get().render(false);
         //cleanup texture data
         //screen.flushPixelData();
         
@@ -115,21 +119,23 @@ public class StateGame extends BasicGameState implements iEventListener {
     @Override
     //callback for when the game enters this state
     public void enter(GameContainer container, StateBasedGame game) throws SlickException 
-    {         
-        super.enter(container, game);
+    {
         //set GUI to this
         GUIManager.set(mGUIRef);
         container.setMouseGrabbed(true);
         //sSound.playAsMusic("level1", true);
+        sEvents.unblockListener(this);
+        super.enter(container, game);
     }
     
     @Override
     //callback for when the game leaves this state
     public void leave(GameContainer container, StateBasedGame game) throws SlickException 
     {
-        super.leave(container, game);
+        sEvents.blockListener(this);
         container.setMouseGrabbed(false);
         sSound.stop("level1");
+        super.leave(container, game);
     }
     public void init(GameContainer _gc, StateBasedGame _sbg) throws SlickException
     {
@@ -160,7 +166,7 @@ public class StateGame extends BasicGameState implements iEventListener {
         //sLevel.loadLevel();
         
         //create state changers
-        mChangeToMenu = new StateChanger(4, new BlobbyTransition(), new BlobbyTransition(), _sbg);
+        mChangeToMenu = new StateChanger(4, null, new BlobbyTransition(Color.black), _sbg);
     }
 
 }

@@ -6,6 +6,7 @@ package AI;
 
 import Events.MouseMoveEvent;
 import Entities.AIEntity;
+import Entities.Entity.CauseOfDeath;
 import Entities.PlayerEntity;
 import Entities.sEntityFactory;
 import Events.AnalogueStickEvent;
@@ -21,6 +22,7 @@ import Graphics.Particles.sParticleManager;
 import Level.Tile;
 import World.sWorld;
 import java.util.HashMap;
+import java.util.Random;
 import org.jbox2d.common.Vec2;
 
 /**
@@ -42,8 +44,9 @@ public class PlayerInputController extends iAIController implements iEventListen
     public void stun()
     {
         mStunTimer = 120;
-        mTongueState.leftRelease(mPlayerDir);
-        mTongueState.rightRelease(mPlayerDir);
+        mTongueState.tongueRelease(mPlayerDir);
+        mTongueState.hammerRelease(mPlayerDir);
+        mTongueState.spitRelease(mPlayerDir);
     }
 
     public void kill()
@@ -65,6 +68,8 @@ public class PlayerInputController extends iAIController implements iEventListen
     public Vec2 mPlayerDir = new Vec2(1,0);
     public int mPlayer;
     int actionTimer = 0, actionDelay = 10;
+    int idleTimer = 0, idleDelay = 0;
+    Random rand = new Random();
     
     public PlayerInputController(AIEntity _entity, int _player)
     {
@@ -78,9 +83,12 @@ public class PlayerInputController extends iAIController implements iEventListen
         sEvents.subscribeToEvent("KeyDownEvent"+'d'+_player, this);
         sEvents.subscribeToEvent("KeyDownEvent"+' '+_player, this);
         sEvents.subscribeToEvent("KeyDownEvent"+'r'+_player, this);
-        sEvents.subscribeToEvent("MapClickEventL"+_player, this);
-        sEvents.subscribeToEvent("MapClickEventR"+_player, this);
-        sEvents.subscribeToEvent("MapClickReleaseEvent"+_player, this);
+        sEvents.subscribeToEvent("MapClickEvent" + "Tongue"+mPlayer, this);
+        sEvents.subscribeToEvent("MapClickEvent" + "Hammer"+mPlayer, this);
+        sEvents.subscribeToEvent("MapClickEvent" + "Spit"+mPlayer, this);
+        sEvents.subscribeToEvent("MapClickReleaseEvent" + "Tongue" +mPlayer, this);
+        sEvents.subscribeToEvent("MapClickReleaseEvent" + "Hammer" +mPlayer, this);
+        sEvents.subscribeToEvent("MapClickReleaseEvent" + "Spit" +mPlayer, this);
         sEvents.subscribeToEvent("MouseMoveEvent"+_player, this);
         sEvents.subscribeToEvent("MouseDragEvent"+_player, this);
         sEvents.subscribeToEvent("AnalogueStickEvent"+_player, this);
@@ -97,9 +105,12 @@ public class PlayerInputController extends iAIController implements iEventListen
         sEvents.unsubscribeToEvent("KeyDownEvent"+'d'+mPlayer, this);
         sEvents.unsubscribeToEvent("KeyDownEvent"+' '+mPlayer, this);
         sEvents.unsubscribeToEvent("KeyDownEvent"+'r'+mPlayer, this);
-        sEvents.unsubscribeToEvent("MapClickEventL"+mPlayer, this);
-        sEvents.unsubscribeToEvent("MapClickEventR"+mPlayer, this);
-        sEvents.unsubscribeToEvent("MapClickReleaseEvent"+mPlayer, this);
+        sEvents.unsubscribeToEvent("MapClickEvent" + "Tongue"+mPlayer, this);
+        sEvents.unsubscribeToEvent("MapClickEvent" + "Hammer"+mPlayer, this);
+        sEvents.unsubscribeToEvent("MapClickEvent" + "Spit"+mPlayer, this);
+        sEvents.unsubscribeToEvent("MapClickReleaseEvent" + "Tongue" +mPlayer, this);
+        sEvents.unsubscribeToEvent("MapClickReleaseEvent" + "Hammer" +mPlayer, this);
+        sEvents.unsubscribeToEvent("MapClickReleaseEvent" + "Spit" +mPlayer, this);
         sEvents.unsubscribeToEvent("MouseMoveEvent"+mPlayer, this);
         sEvents.unsubscribeToEvent("MouseDragEvent"+mPlayer, this);
         sEvents.unsubscribeToEvent("AnalogueStickEvent"+mPlayer, this);
@@ -109,26 +120,70 @@ public class PlayerInputController extends iAIController implements iEventListen
     
     public void update()
     {       
+        if(idleTimer == -1)
+            mEntity.stopIdle();
         if (mStunTimer != 0)
-        {
             mStunTimer--;
-        }
         actionTimer++;
         mTongueState.tick(mEntity);
         ((PlayerEntity)mEntity).setDirection(mPlayerDir);
-    
-        if(mTongueState.mIsTongueActive)
+        idleTimer++;
+        if(mEntity.isIdle())
         {
-            look(mTongueState.mTongueDir);
-            mEntity.mSkin.deactivateSubSkin("face_"+mFaceDirAnim);
-            mEntity.mSkin.activateSubSkin("faceOpen_"+mFaceDirAnim, false, 0.0f);
+            if(idleTimer >= idleDelay)
+            {
+                if(mPlayerDir.x < 0) //looking left
+                {
+                    if(!mEntity.mSkin.isAnimating("idle_burp2"))
+                    {
+                        //ensure other animations are deactivated
+                        mEntity.mSkin.deactivateSubSkin("face_"+mFaceDirAnim);
+                        mEntity.mSkin.deactivateSubSkin("hat_"+mFaceDirAnim);
+                        mEntity.mSkin.deactivateSubSkin("idle_burp2_right");
+                        mEntity.mSkin.activateSubSkin("idle_burp2", false, 1.0f);
+                    }
+                }
+                else
+                {
+                    if(!mEntity.mSkin.isAnimating("idle_burp2_right"))
+                    {
+                        //ensure other animations are deactivated
+                        mEntity.mSkin.deactivateSubSkin("face_"+mFaceDirAnim);
+                        mEntity.mSkin.deactivateSubSkin("hat_"+mFaceDirAnim);
+                        mEntity.mSkin.deactivateSubSkin("idle_burp2");
+                        mEntity.mSkin.activateSubSkin("idle_burp2_right", false, 1.0f);
+                    }
+                }
+                idleDelay = rand.nextInt(360) + 180; //min 5 second
+                idleTimer = 0;
+            }
         }
-        else
+        else //idle animation overrides all others
         {
-            mEntity.mSkin.activateSubSkin("face_"+mFaceDirAnim, false, 0.0f);
-            mEntity.mSkin.deactivateSubSkin("faceOpen_"+mFaceDirAnim);
+            idleTimer = 0;
+            mEntity.mSkin.deactivateSubSkin("idle_burp2");
+            mEntity.mSkin.deactivateSubSkin("idle_burp2_right");
+            if(mEntity.isDead())
+            {
+                mEntity.mSkin.deactivateSubSkin("hat_"+mFaceDirAnim); //only allow hat when not dead
+                mEntity.mSkin.activateSubSkin("carne_fly", true, 1.0f);
+            }
+            else
+            {
+                mEntity.mSkin.activateSubSkin("hat_"+mFaceDirAnim, false, 0.0f); 
+                mEntity.mSkin.deactivateSubSkin("carne_fly");
+            }
+            if(mTongueState.mIsTongueActive)
+            {
+                look(mTongueState.getTongueDir()); //updates look direction while swinging
+                mEntity.mSkin.activateSubSkin("hat_"+mFaceDirAnim, false, 0.0f); //activate hat because look deactivates it
+                mEntity.mSkin.activateSubSkin("faceOpen_"+mFaceDirAnim, false, 0.0f);
+            }
+            else
+            {
+                mEntity.mSkin.activateSubSkin("face_"+mFaceDirAnim, false, 0.0f);
+            }
         }
-        mEntity.mSkin.activateSubSkin("hat_"+mFaceDirAnim, false, 0.0f); 
     }
     
     public Tile grabBlock(final Vec2 _position)
@@ -143,6 +198,7 @@ public class PlayerInputController extends iAIController implements iEventListen
     
     public void layBlock(final Tile _tile)
     {
+        /*
         //determine tile to grow block
         mPlayerDir.normalize(); //ensure it's normalised
         int dir = -1; //N:0 E:1 S:2 W:3
@@ -185,7 +241,7 @@ public class PlayerInputController extends iAIController implements iEventListen
                     _tile.getTileGrid().placeTile(playerTileX-1, playerTileY, _tile.getRootId());
                     break;
             }
-        }     
+        }    */ 
     }
     
     public void spitBlock(final Tile _tile)
@@ -196,13 +252,14 @@ public class PlayerInputController extends iAIController implements iEventListen
         parameters.put("position", mEntity.getBody().getPosition().add(mPlayerDir));
         parameters.put("tileType",_tile.getTileType());
         parameters.put("rootId",_tile.getRootId());
+        parameters.put("rotation", (float)Math.atan2(mPlayerDir.y, mPlayerDir.x));
         sEntityFactory.create("SpatBlock", parameters); 
     }
     public void breathFire()
     {
         HashMap parameters = new HashMap();
         //intialise velocity relative to carne's
-        parameters.put("velocity", mPlayerDir.mul(20.0f));
+        parameters.put("velocity", mPlayerDir.mul(20.0f));//.add(mEntity.getBody().getLinearVelocity()));
         parameters.put("position", mEntity.getBody().getPosition().add(mPlayerDir));
         parameters.put("owner", mEntity);
         sEntityFactory.create("FireParticle", parameters);
@@ -212,8 +269,11 @@ public class PlayerInputController extends iAIController implements iEventListen
 
     public boolean trigger(final iEvent _event)
     {
+        if(mEntity.isIdle())
+            ((PlayerEntity)mEntity).stopIdle();
         if (mStunTimer == 0)
         {
+            mEntity.mSkin.deactivateSubSkin("pea_stun_large");
             if (_event.getType().equals("RightStickEvent"))
             {
                 RightStickEvent event = (RightStickEvent)_event;
@@ -273,7 +333,7 @@ public class PlayerInputController extends iAIController implements iEventListen
                     }
                     case 'r':
                     {
-                        mEntity.kill();
+                        mEntity.kill(CauseOfDeath.eMundane, null);
                         break;
                     }
                 }
@@ -307,35 +367,41 @@ public class PlayerInputController extends iAIController implements iEventListen
                     }
                 }
             }
-            else if (_event.getType().equals("MapClickReleaseEvent"+mPlayer))
+            else if (_event.getType().equals("MapClickReleaseEvent"))
             {
                 MapClickReleaseEvent event = (MapClickReleaseEvent)_event;
-                if (event.leftbutton())
+                if (event.getName().equals("MapClickReleaseEvent" + "Spit" + mPlayer))
                 {
-                    mTongueState.leftRelease(event.getPosition());
+                    mTongueState.spitRelease(event.getPosition());
                 }
-                else
+                else if (event.getName().equals("MapClickReleaseEvent" + "Hammer" + mPlayer))
                 {
-                    mTongueState.rightRelease(event.getPosition());
-                }            
+                    mTongueState.hammerRelease(event.getPosition());
+                }
+                else if (event.getName().equals("MapClickReleaseEvent" + "Tongue" + mPlayer))
+                {
+                    mTongueState.tongueRelease(event.getPosition());
+                }
             }
-            else if (_event.getType().equals("MapClickEventL"+mPlayer))
+            else if (_event.getType().equals("MapClickEvent"))
             {
                 if(actionTimer < actionDelay)
                     return true;
                 else
                     actionTimer = 0;
                 MapClickEvent event = (MapClickEvent)_event;
-                mTongueState.leftClick(event.getPosition());
-            }
-            else if (_event.getType().equals("MapClickEventR"+mPlayer))
-            {
-                if(actionTimer < actionDelay)
-                    return true;
-                else
-                    actionTimer = 0;
-                MapClickEvent event = (MapClickEvent)_event;
-                mTongueState.rightClick(event.getPosition());
+                if (event.getName().equals("MapClickEvent" + "Spit" + mPlayer))
+                {
+                    mTongueState.spitClick(event.getPosition());
+                }
+                else if (event.getName().equals("MapClickEvent" + "Hammer" + mPlayer))
+                {
+                    mTongueState.hammerClick(event.getPosition());
+                }
+                else if (event.getName().equals("MapClickEvent" + "Tongue" + mPlayer))
+                {
+                    mTongueState.tongueClick(event.getPosition());
+                }
             }
             else throw new UnsupportedOperationException();
         }

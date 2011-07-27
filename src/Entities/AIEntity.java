@@ -57,7 +57,7 @@ public class AIEntity extends Entity {
         mTouchingTile = null;
     }
     @Override
-    public void kill()
+    public void kill(CauseOfDeath _causeOfDeath, Object _killer)
     {
         if (getBody() != null)
         {
@@ -120,7 +120,7 @@ public class AIEntity extends Entity {
                         case eTar:
                             if (((Tile)other.getUserData()).isOnFire())
                             {
-                                kill();
+                                kill(CauseOfDeath.eFire, other.getUserData());
                             }
                             else
                             {
@@ -155,7 +155,7 @@ public class AIEntity extends Entity {
                     }
                     mFloorNormal = collisionNorm.clone();
                 }
-                else if(collisionNorm.y < - 0.3 || collisionNorm.y > 0.3)//slopes
+                else if(collisionNorm.y < -0.3)// slopes -- (collisionNorm.y > 0.3) gives roof slopes
                 {
                     if(edge.contact.isTouching() && !other.isSensor())
                     {
@@ -254,6 +254,7 @@ public class AIEntity extends Entity {
                 airControl(value);
                 break;
             }
+            case eIdle: //fall through to standing (will break from state when moving)
             case eStanding:
             {
                 if(mAllowRoll)
@@ -314,10 +315,12 @@ public class AIEntity extends Entity {
             if (!mAIEntityState.getState().equals(State.eSwimming))
                 try
                 {
-                    if (mLastTouchingTile == null)
-                        sParticleManager.createSystem("cloud", sWorld.translateToWorld(getBody().getPosition()).sub(sWorld.getPixelTranslation()).add(new Vec2(32,64)), 1f);
-                    else
+                    if(mTouchingTile != null)
+                        sParticleManager.createSystem(mTouchingTile.getAnimationsName(AnimationType.eJump) + "Jump", sWorld.translateToWorld(getBody().getPosition()).sub(sWorld.getPixelTranslation()).add(new Vec2(32,64)), 1f);
+                    else if (mLastTouchingTile != null)
                         sParticleManager.createSystem(mLastTouchingTile.getAnimationsName(AnimationType.eJump) + "Jump", sWorld.translateToWorld(getBody().getPosition()).sub(sWorld.getPixelTranslation()).add(new Vec2(32,64)), 1f);
+                    else
+                        sParticleManager.createSystem("cloud", sWorld.translateToWorld(getBody().getPosition()).sub(sWorld.getPixelTranslation()).add(new Vec2(32,64)), 1f);
                 }
                 catch (NullPointerException e)
                 {
@@ -328,6 +331,11 @@ public class AIEntity extends Entity {
     public void stopJumping()
     {
         mAIEntityState.stopJumping();
+    }
+    
+    public void stopIdle()
+    {
+        mAIEntityState.stopIdle();
     }
     
     public void setMoveSpeed(float _moveSpeed)
@@ -352,6 +360,10 @@ public class AIEntity extends Entity {
     public boolean isDead()
     {
         return mAIEntityState.getState() == AIEntityState.State.eDead || mAIEntityState.getState() == AIEntityState.State.eRestartingRace;
+    }
+    public boolean isIdle()
+    {
+        return mAIEntityState.getState() == AIEntityState.State.eIdle;
     }
     
     public float setAnimation(String _animation)

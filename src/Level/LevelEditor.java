@@ -22,29 +22,32 @@ public class LevelEditor {
     
     public LevelEditor(TiledMap _tiledMap)
     {
-        mTiledMap = _tiledMap;
-        layerIndex = mTiledMap.getLayerIndex("Level");
-        
-        rootTiles = new RootTileList(mTiledMap);
-        tileGrid = new LevelTileGrid(mTiledMap, rootTiles, layerIndex);
-        mFlagProcessor = new FlagProcessor(mTiledMap, layerIndex, tileGrid.mBody, tileGrid);
+        //Why??? done in new level - deek made an oopsy
+//        mTiledMap = _tiledMap;
+//        layerIndex = mTiledMap.getLayerIndex("Level");
+//        rootTiles = new RootTileList(mTiledMap);
+//        tileGrid = new LevelTileGrid(mTiledMap, rootTiles, layerIndex);
+//        mFlagProcessor = new FlagProcessor(mTiledMap, layerIndex, tileGrid.mBody, tileGrid);  //Why??? done in new level - deek made an oopsy
         
     }
     void init()
     {
-        mFlagProcessor.run();
-        mFlagProcessor = null;
-    }
-    void newLevel(TiledMap _tiledMap, boolean _destroy)
-    {
-        if (_destroy)
+        if(mFlagProcessor != null)
         {
-            rootTiles = new RootTileList(_tiledMap);
-            tileGrid.destroy();
-            sWorld.destroy();
+            mFlagProcessor.run();
+            mFlagProcessor = null;
         }
+    }
+    void newLevel(TiledMap _tiledMap)
+    {
+        //cleanup old level
+        if(tileGrid != null)
+                tileGrid.destroy();
+        sWorld.destroy();
+        //init new level
         mTiledMap = _tiledMap;
         layerIndex = mTiledMap.getLayerIndex("Level");
+        rootTiles = new RootTileList(mTiledMap);
         
         tileGrid = new LevelTileGrid(mTiledMap, rootTiles, layerIndex);
         mFlagProcessor = new FlagProcessor(mTiledMap, layerIndex, tileGrid.mBody, tileGrid);

@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.Stack;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
+import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.Fixture;
 
 /**
@@ -37,6 +38,17 @@ public class Tile
         mXTile = _xTile;
         mYTile = _yTile;
         isOnFire = false;
+        if (mRootId.mIsEverBurning)
+        {
+            isOnFire = true;
+            if (mTileGrid.mBody.m_type.equals(BodyType.STATIC))
+                sParticleManager.createSystem("TarBurn", new Vec2(getWorldPosition()).mul(64).add(new Vec2(32,32)), -1);
+            else
+            {
+                Body body = mTileGrid.getBody();
+                sParticleManager.createMovingSystem("TarBurn", -1,body, getLocalPosition(), new Vec2(0,0));
+            } 
+        }
     }
     public RootTile getRootTile()
     {
@@ -85,7 +97,7 @@ public class Tile
                 destroyFixture();
                 try
                 {
-                    ((LevelTileGrid)mTileGrid).tiledMap.createTimingOutAnimatedTile(mXTile, mYTile,"iceanimation", 49);
+                    ((LevelTileGrid)mTileGrid).tiledMap.createTimingOutAnimatedTile(mXTile, mYTile,"iceanimation", 47);
                 }
                 catch (ClassCastException e)
                 {

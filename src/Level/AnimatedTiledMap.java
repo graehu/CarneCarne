@@ -51,7 +51,7 @@ public class AnimatedTiledMap extends TiledMap
     AnimatedTiledMap(String _mapRef) throws SlickException
     {
         //construct parent
-        super(_mapRef, "assets/Tiles/Maps/Tilesets");
+        super(_mapRef, "assets/Maps/Tilesets");
         //super(_mapRef, true);
         
         

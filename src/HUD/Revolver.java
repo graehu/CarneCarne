@@ -6,8 +6,11 @@ package HUD;
 
 import GUI.Components.GraphicalComponent;
 import Graphics.sGraphicsManager;
+import Level.sLevel.TileType;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
 import org.newdawn.slick.geom.Vector2f;
@@ -21,63 +24,63 @@ public class Revolver extends GraphicalComponent
 {
     static int framesPerAmmo = 2;
     static int AmmoCount = 6;
-    static int fps = 24;
+    static int fps = 18;
     static int timer = 0;
     
     public Revolver(String _ref, Vector2f _position) {
         super(sGraphicsManager.getGUIContext(), _position, new Vector2f());
         try {
-            mSpriteSheet = new SpriteSheet(_ref, 64,64);
+            mSpriteSheet = new SpriteSheet(_ref, 190,181);
         } catch (SlickException ex) {
             Logger.getLogger(Revolver.class.getName()).log(Level.SEVERE, null, ex);
         }
+        mSpriteSheet.setFilter(Image.FILTER_LINEAR); //for improved scaling
         mImage = mSpriteSheet.getSprite(0,0);
         setDimentionsToImage();
     }
     public Revolver(String _ref)  {
         super(sGraphicsManager.getGUIContext());
         try {
-            mSpriteSheet = new SpriteSheet(_ref, 64,64);
+            mSpriteSheet = new SpriteSheet(_ref, 190,181);
         } catch (SlickException ex) {
             Logger.getLogger(Revolver.class.getName()).log(Level.SEVERE, null, ex);
         }
+        mSpriteSheet.setFilter(Image.FILTER_LINEAR); //for improved scaling
         mImage = mSpriteSheet.getSprite(0,0);
         setDimentionsToImage();
-    }
-    
-    enum Ammo
-    {
-        eDefault,
-        eMeat,
-        eChilli,
-        eWaterMellon,
-        eGum
     }
     
     int mTargetFrame = 0;
     int mCurrentFrame = 0;
     SpriteSheet mSpriteSheet = null;
     
-    public void setAmmo(Ammo _ammo)
+    public void setAmmo(TileType _type)
     {
-        switch(_ammo)
+        switch(_type)
         {
-            case eDefault:
-                mTargetFrame = 0;
-            case eMeat:
+            case eEdible:
                 mTargetFrame = 1 * framesPerAmmo;
+                break;
+            case eMelonFlesh:
+                mTargetFrame = 3 * framesPerAmmo;
+                break;
+            case eGum:
+                mTargetFrame = 4 * framesPerAmmo;            
+                break;
             case eChilli:
                 mTargetFrame = 2 * framesPerAmmo;
-            case eWaterMellon:
-                mTargetFrame = 3 * framesPerAmmo;
-            case eGum:
-                mTargetFrame = 4 * framesPerAmmo;              
+                break;
+            default:
+            case eTileTypesMax:
+                mTargetFrame = 0;
+                break;            
         }
     }
 
     @Override
     protected boolean updateSelf(int _delta) 
     {
+        setLocalScale(1);
         //rotate the sprite relative to current position etc
         if(mCurrentFrame != mTargetFrame)
         {
@@ -93,6 +96,15 @@ public class Revolver extends GraphicalComponent
         mImage = mSpriteSheet.getSprite(mCurrentFrame, 0);
         return super.updateSelf(_delta);
     }
+
+    @Override
+    protected void renderSelf(GUIContext guic, Graphics grphcs, Vector2f _globalPos) throws SlickException 
+    {
+        super.renderSelf(guic, grphcs, _globalPos);
+    }
+    
+    
+    
     
     
 }

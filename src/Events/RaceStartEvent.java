@@ -10,7 +10,7 @@ package Events;
  */
 public class RaceStartEvent extends iEvent
 {
-    public RaceStartEvent()
+    protected RaceStartEvent()
     {
         
     }
@@ -24,6 +24,13 @@ public class RaceStartEvent extends iEvent
     public String getType()
     {
         return "RaceStartEvent";
+    }
+    
+    @Override
+    public boolean process()
+    {
+        sEvents.triggerEvent(new GenericStringEvent("BarrierOpenEvent", "StartGate"));
+        return true;
     }
     
 }
