@@ -161,8 +161,7 @@ final class MouseStateMachine
             case eLeftPressed:
                 if(_state != States.eLeftPressed)
                 {
-                    sEvents.triggerEvent(new MapClickReleaseEvent(physicsPos,"Hammer", 0));
-                    sEvents.triggerEvent(new MapClickReleaseEvent(physicsPos,"Tongue", 0));
+                    sEvents.triggerEvent(new MapClickReleaseEvent(physicsPos,"TongueHammer", 0));
                 }
                 break;
         }
@@ -172,8 +171,7 @@ final class MouseStateMachine
                 sEvents.triggerEvent(new MapClickEvent(physicsPos,"Spit",0));
                 break;
             case eLeftPressed:
-                sEvents.triggerEvent(new MapClickEvent(physicsPos,"Hammer",0));
-                sEvents.triggerEvent(new MapClickEvent(physicsPos,"Tongue",0));
+                sEvents.triggerEvent(new MapClickEvent(physicsPos,"TongueHammer",0));
                 break;
         }
         mState = _state;

@@ -19,13 +19,11 @@ import Events.AreaEvents.RaceEndZone;
 import Events.AreaEvents.RaceStartZone;
 import Events.FootballSpawnEvent;
 import Events.GoalSpawnEvent;
-import Events.PlayerCreatedEvent;
 import Events.TutorialSpawnEvent;
 import Events.sEvents;
 import Graphics.Particles.sParticleManager;
 import Level.Lighting.sLightsManager;
 import Level.sLevel.TileType;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Stack;
 import java.util.Vector;
@@ -346,9 +344,9 @@ public class FlagProcessor
     {
         if (areaEvents[_x][_y] == null)
         {
-            areaEvents[_x][_y] = _event;
             Stack<Tile> tiles = new Stack<Tile>();
             tiles.add(new Tile(_x, _y));
+            check(_tiledMap, _event, _x, _y, tiles);
             while (!tiles.isEmpty())
             {
                 Tile tile = tiles.pop();

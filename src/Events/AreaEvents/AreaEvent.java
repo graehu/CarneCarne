@@ -6,7 +6,14 @@ package Events.AreaEvents;
 
 import Entities.AIEntity;
 import Entities.Entity;
+import Graphics.sGraphicsManager;
 import World.sWorld;
+import org.jbox2d.common.Vec2;
+import org.newdawn.slick.Color;
+import org.newdawn.slick.fills.GradientFill;
+import org.newdawn.slick.geom.Rectangle;
+import org.newdawn.slick.geom.Shape;
+import org.newdawn.slick.geom.Vector2f;
 
 /**
  *
@@ -31,6 +38,10 @@ abstract public class AreaEvent extends Entity
     @Override
     public final void render()
     {
+        /*Vec2 topLeft = sWorld.translateToWorld(mBody.getFixtureList().getAABB().lowerBound);
+        Vec2 dims = sWorld.translateToWorld(mBody.getFixtureList().getAABB().upperBound).sub(topLeft);
+        Shape shape = new Rectangle(topLeft.x, topLeft.y, dims.x, dims.y);
+        sGraphicsManager.fill(shape);*/
     }
     public void update()
     {

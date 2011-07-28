@@ -58,12 +58,6 @@ public class PlayerInputController extends iAIController implements iEventListen
     {
         mTongueState.kill();
     }
-    enum Controls
-    {
-        eTongue,
-        eSpit,
-        eControlsMax
-    }
     //constants
     final static float root2 = (float) Math.sqrt(2);
     
@@ -91,9 +85,11 @@ public class PlayerInputController extends iAIController implements iEventListen
         sEvents.subscribeToEvent("MapClickEvent" + "Tongue"+mPlayer, this);
         sEvents.subscribeToEvent("MapClickEvent" + "Hammer"+mPlayer, this);
         sEvents.subscribeToEvent("MapClickEvent" + "Spit"+mPlayer, this);
+        sEvents.subscribeToEvent("MapClickEvent" + "TongueHammer"+mPlayer, this);
         sEvents.subscribeToEvent("MapClickReleaseEvent" + "Tongue" +mPlayer, this);
         sEvents.subscribeToEvent("MapClickReleaseEvent" + "Hammer" +mPlayer, this);
         sEvents.subscribeToEvent("MapClickReleaseEvent" + "Spit" +mPlayer, this);
+        sEvents.subscribeToEvent("MapClickReleaseEvent" + "TongueHammer" +mPlayer, this);
         sEvents.subscribeToEvent("MouseMoveEvent"+_player, this);
         sEvents.subscribeToEvent("MouseDragEvent"+_player, this);
         sEvents.subscribeToEvent("AnalogueStickEvent"+_player, this);
@@ -113,9 +109,11 @@ public class PlayerInputController extends iAIController implements iEventListen
         sEvents.unsubscribeToEvent("MapClickEvent" + "Tongue"+mPlayer, this);
         sEvents.unsubscribeToEvent("MapClickEvent" + "Hammer"+mPlayer, this);
         sEvents.unsubscribeToEvent("MapClickEvent" + "Spit"+mPlayer, this);
+        sEvents.unsubscribeToEvent("MapClickEvent" + "TongueHammer"+mPlayer, this);
         sEvents.unsubscribeToEvent("MapClickReleaseEvent" + "Tongue" +mPlayer, this);
         sEvents.unsubscribeToEvent("MapClickReleaseEvent" + "Hammer" +mPlayer, this);
         sEvents.unsubscribeToEvent("MapClickReleaseEvent" + "Spit" +mPlayer, this);
+        sEvents.unsubscribeToEvent("MapClickReleaseEvent" + "TongueHammer" +mPlayer, this);
         sEvents.unsubscribeToEvent("MouseMoveEvent"+mPlayer, this);
         sEvents.unsubscribeToEvent("MouseDragEvent"+mPlayer, this);
         sEvents.unsubscribeToEvent("AnalogueStickEvent"+mPlayer, this);
@@ -391,6 +389,11 @@ public class PlayerInputController extends iAIController implements iEventListen
                 {
                     mTongueState.tongueRelease(event.getPosition());
                 }
+                else if (event.getName().equals("MapClickReleaseEvent" + "TongueHammer" + mPlayer))
+                {
+                    mTongueState.tongueRelease(event.getPosition());
+                    mTongueState.hammerRelease(event.getPosition());
+                }
             }
             else if (_event.getType().equals("MapClickEvent"))
             {
@@ -409,6 +412,11 @@ public class PlayerInputController extends iAIController implements iEventListen
                 }
                 else if (event.getName().equals("MapClickEvent" + "Tongue" + mPlayer))
                 {
+                    mTongueState.tongueClick(event.getPosition());
+                }
+                else if (event.getName().equals("MapClickEvent" + "TongueHammer" + mPlayer))
+                {
+                    mTongueState.hammerClick(event.getPosition());
                     mTongueState.tongueClick(event.getPosition());
                 }
             }
