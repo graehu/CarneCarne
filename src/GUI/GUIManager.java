@@ -5,6 +5,7 @@ import Events.iEvent;
 import Events.iEventListener;
 import Events.sEvents;
 import GUI.Components.GraphicalComponent;
+import GUI.Components.Text;
 import GUI.Components.iComponent;
 import Graphics.sGraphicsManager;
 import Utils.Throw;
@@ -63,10 +64,15 @@ public class GUIManager implements iEventListener
         instances.put(keyCount, new GUIManager(_context));
         return keyCount++;
     }
-    
+    public static void destroy(int _inst)
+    {
+        instances.get(_inst).destroyAllComponents();
+        instances.remove(_inst);
+    }
     public enum ComponentType
     {
         eGraphical,
+        eText,
         eComponentTypeCount
     }
     
@@ -74,6 +80,7 @@ public class GUIManager implements iEventListener
     GameContainer mContainer = null;
     int IDCounter = 0;
     float scale = 1.0f;
+    Vector2f mDimensions = null;
     
     private GUIManager(GameContainer _context)
     {
@@ -86,21 +93,20 @@ public class GUIManager implements iEventListener
         sEvents.subscribeToEvent("WindowResizeEvent", this);
     }
     
-    public Integer addRootComponent(iComponent _component)
+    public void addRootComponent(iComponent _component)
     {
         _component.setLocalScale(scale);
         if(_component.isRoot())
         {
             mManagedRoots.put(IDCounter, _component);
-            return IDCounter++;
+            IDCounter++;
         }
         else
         {
             Throw.err("Component is not a root");
-            return null;
         }
     }
-    public Integer createRootComponent(ComponentType _type, Vector2f _position, Vector2f _dimensions)
+    public iComponent createRootComponent(ComponentType _type, Vector2f _position, Vector2f _dimensions)
     {
         iComponent component = null;
         switch(_type)
@@ -110,8 +116,17 @@ public class GUIManager implements iEventListener
                 component = new GraphicalComponent(mContainer, _position, _dimensions);
                 component.setLocalScale(scale);
                 mManagedRoots.put(IDCounter, component);
-                return IDCounter++;
+                IDCounter++;
+                return component;
                 //break;
+            }
+            case eText:
+            {
+                component = new Text(mContainer, null, "", null);
+                component.setLocalScale(scale);
+                mManagedRoots.put(IDCounter, component);
+                IDCounter++;
+                return component;
             }
             default:
             {
@@ -141,6 +156,11 @@ public class GUIManager implements iEventListener
         }
     }
     
+    public void setDimensions(Vector2f _dimensions)
+    {
+        mDimensions = _dimensions;
+        scale = mDimensions.x / 1680; //FIXME: assumes native resolution at 1680x1050
+    }
     public void render(boolean _debug)
     {
         try 
@@ -159,10 +179,15 @@ public class GUIManager implements iEventListener
     {
         if(_event.getType().equals("WindowResizeEvent"))
         {
-            //calc scale
-            Vec2 screen = sGraphicsManager.getTrueScreenDimensions();
-            //FIXME: assumes native resolution at 1680x1050
-            scale = screen.x / 1680;
+            if(mDimensions == null)
+            {
+                Vec2 screen = sGraphicsManager.getTrueScreenDimensions();
+                scale = screen.x / 1680; //FIXME: assumes native resolution at 1680x1050
+            }
+            else
+            {
+                scale = mDimensions.x / 1680; //FIXME: assumes native resolution at 1680x1050
+            }
         }
         return true; //do not unsubscribe
     }
@@ -174,6 +199,16 @@ public class GUIManager implements iEventListener
         {
             iComponent c = itr.next();
             c.setAcceptingInput(_isAccepting);
+        }
+    }
+    
+    private void destroyAllComponents()
+    {
+        Iterator<iComponent> itr = mManagedRoots.values().iterator();
+        while(itr.hasNext())
+        {
+            iComponent c = itr.next();
+            c.destroy();
         }
     }
     

@@ -12,6 +12,11 @@ package Score;
 /// I say race score tracker, I'm just using this for everything now since its persistant
 public class RaceScoreTracker extends ScoreTracker
 {
+    public RaceScoreTracker(int _GUIManager)
+    {
+        super(_GUIManager);
+    }
+    
     private static Integer[] getScoreValues()
     {
         Integer[] scoreValues = new Integer[ScoreEvent.eScoreEventsMax.ordinal()];

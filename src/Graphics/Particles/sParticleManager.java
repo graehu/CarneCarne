@@ -34,6 +34,16 @@ public class sParticleManager {
     public static void warmUp()
     {
         //warm the pool here
+        //FIXME: these are warmed due to icefirehit spawning too many
+        for(int i = 0; i < 20; i++)
+            createSystem("IceFireHit1", new Vec2(-1000,-1000),0);
+        for(int i = 0; i < 20; i++)
+            createSystem("IceFireHit2", new Vec2(-1000,-1000),0);
+        
+        for(int i = 0; i < 4; i++)
+            createSystem("Fire1", new Vec2(-1000,-1000),0);
+        for(int i = 0; i < 4; i++)
+            createSystem("Fire2", new Vec2(-1000,-1000),0);
     }
     /*
      * _ref:        classpath dir of system's .xml
