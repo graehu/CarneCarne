@@ -107,9 +107,9 @@ public class AIEntity extends Entity
                 AtoB = false;
                 other = edge.contact.m_fixtureB;
             }
-            if (other.m_filter.categoryBits == (1 << sWorld.BodyCategories.eEnemy.ordinal())||
-                other.m_filter.categoryBits == (1 << sWorld.BodyCategories.ePlayer.ordinal()))
-                mJumpContacts++;
+//            if (other.m_filter.categoryBits == (1 << sWorld.BodyCategories.eEnemy.ordinal())||
+//                other.m_filter.categoryBits == (1 << sWorld.BodyCategories.ePlayer.ordinal()))
+//                mJumpContacts++;
                 
             //if (other.getUserData() != null)
             {

@@ -5,20 +5,24 @@
   <properties>
    <property name="Anchor" value="True"/>
    <property name="Animationsname" value="Bone"/>
-   <property name="Direction" value="Right"/>
    <property name="Material" value="Swingable"/>
-   <property name="MaxHealth" value="4"/>
-   <property name="Type" value="Line"/>
+   <property name="Type" value="NonEdible"/>
   </properties>
  </tile>
- <tile id="6">
+ <tile id="4">
   <properties>
    <property name="Anchor" value="True"/>
    <property name="Animationsname" value="Bone"/>
-   <property name="Direction" value="Right"/>
    <property name="Material" value="Swingable"/>
-   <property name="MaxHealth" value="4"/>
-   <property name="Type" value="Line"/>
+   <property name="Type" value="NonEdible"/>
+  </properties>
+ </tile>
+ <tile id="5">
+  <properties>
+   <property name="Anchor" value="True"/>
+   <property name="Animationsname" value="Bone"/>
+   <property name="Material" value="Swingable"/>
+   <property name="Type" value="NonEdible"/>
   </properties>
  </tile>
 </tileset>

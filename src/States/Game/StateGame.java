@@ -162,7 +162,7 @@ public class StateGame extends BasicGameState implements iEventListener {
         //mGameMode = new RaceMode();
         //mGameMode = new IntroMode();
         
-        //subscribe to events (must be done before further initialisation)
+        //subscribe to events (must be done before further initialisation)  
         sEvents.subscribeToEvent("PlayerCreatedEvent", this);
         
         //sLevel.loadLevel();

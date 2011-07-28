@@ -270,22 +270,25 @@ public class FlagProcessor
                         PlatformCaveInSearcher search = new PlatformCaveInSearcher(_tileGrid, _tiledMap, _levelLayerIndex, _levelBody);
                         search.destroy(i,ii, null, TileType.eEdible);
                         Body platformBody = search.getCreatedBody();
-                        iPlatformController controller = null;
-                        String platformType = _tiledMap.getTileProperty(id, "PlatformType", "Error, platform type not defined");
-                        String speed = _tiledMap.getTileProperty(id, "Speed", "1");
-                        String movement = _tiledMap.getTileProperty(id,"Movement", "Horizontal");
-                        float speedf = Float.valueOf(speed);
-                        if (platformType.equals("Stupid"))
+                        if (platformBody != null)
                         {
-                            controller = new StupidPlatformController();
+                            iPlatformController controller = null;
+                            String platformType = _tiledMap.getTileProperty(id, "PlatformType", "Error, platform type not defined");
+                            String speed = _tiledMap.getTileProperty(id, "Speed", "1");
+                            String movement = _tiledMap.getTileProperty(id,"Movement", "Horizontal");
+                            float speedf = Float.valueOf(speed);
+                            if (platformType.equals("Stupid"))
+                            {
+                                controller = new StupidPlatformController();
+                            }
+                            else if(platformType.equals("Simple"))
+                            {
+                                controller = new SimplePlatformController(speedf, movement);
+                            }
+                            CaveIn cavein = (CaveIn)platformBody.getUserData();
+                            cavein.setPlatformController(controller);
+                            controller.setTileGrid(cavein);
                         }
-                        else if(platformType.equals("Simple"))
-                        {
-                            controller = new SimplePlatformController(speedf, movement);
-                        }
-                        CaveIn cavein = (CaveIn)platformBody.getUserData();
-                        cavein.setPlatformController(controller);
-                        controller.setTileGrid(cavein);
                     }
                 }
             }
