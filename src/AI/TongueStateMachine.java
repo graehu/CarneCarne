@@ -153,6 +153,32 @@ public class TongueStateMachine {
         Vec2 tongueOffset = mTongueDir.mul(((float)mCurrentStateTimer/(float)tongueFiringTimeout)*tongueLength);
         return mAIController.hammer(mAIController.mEntity.getBody().getPosition().add(tongueOffset));
     }
+    protected float getWeight()
+    {
+        if(hasFood())
+        {
+            switch(mTile.getTileType())
+            {
+                case eEdible:
+                {
+                    return 1.2f;
+                }
+                case eChilli:
+                {
+                    return 1.1f;
+                }
+                case eMelonFlesh:
+                {
+                    return 1.1f + (mAmmoLeft*mAmmoLeft*0.01f);
+                }
+                case eGum:
+                {
+                    return 1.2f;
+                }
+            }
+        }
+        return 1.0f;
+    }
     private boolean hasFood()
     {
         return mAmmoLeft != 0;
@@ -268,8 +294,6 @@ public class TongueStateMachine {
                         mAmmoLeft = 1;
                     }
                     changeState(State.eFoodInMouth);
-                    mAIController.mEntity.getBody().getFixtureList().setDensity(10.0f);
-                    mAIController.mEntity.getBody().resetMassData();
                 }
                 break;
             }
@@ -313,8 +337,6 @@ public class TongueStateMachine {
                     else
                     {
                         changeState(State.eStart);
-                        mAIController.mEntity.getBody().getFixtureList().setDensity(4.0f);
-                        mAIController.mEntity.getBody().resetMassData();
                     }
                 }
                 break;
@@ -812,8 +834,6 @@ public class TongueStateMachine {
                 mAIController.mEntity.mSkin.deactivateSubSkin("tng");
                 mIsTongueActive = false;
                 mCurrentStateTimer = 0;
-                mAIController.mEntity.getBody().getFixtureList().setDensity(10.0f);
-                mAIController.mEntity.getBody().resetMassData();
                 break;
             }
             case eFiringHammer:

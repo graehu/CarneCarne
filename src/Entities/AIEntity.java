@@ -107,8 +107,10 @@ public class AIEntity extends Entity
                 AtoB = false;
                 other = edge.contact.m_fixtureB;
             }
-            //if (other.m_filter.categoryBits == (1 << sWorld.BodyCategories.eEdibleTiles.ordinal())||
-            //        other.m_filter.categoryBits == (1 << sWorld.BodyCategories.eNonEdibleTiles.ordinal()))
+            if (other.m_filter.categoryBits == (1 << sWorld.BodyCategories.eEnemy.ordinal())||
+                other.m_filter.categoryBits == (1 << sWorld.BodyCategories.ePlayer.ordinal()))
+                mJumpContacts++;
+                
             //if (other.getUserData() != null)
             {
                 
@@ -312,7 +314,11 @@ public class AIEntity extends Entity
     }
     public void jump()
     {
-        float canJump = mAIEntityState.canJump(getBody().getLinearVelocity().y);
+        jump(1);
+    }
+    public void jump(float scale)
+    {
+        float canJump = mAIEntityState.canJump(getBody().getLinearVelocity().y) * scale;
         if (canJump != 0.0f)
         {
             getBody().setLinearVelocity(new Vec2(getBody().getLinearVelocity().x, canJump));
