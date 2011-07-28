@@ -249,6 +249,10 @@ public class PlayerInputController extends iAIController implements iEventListen
         }    */ 
     }
     
+    public float getWeight()
+    {
+        return mTongueState.getWeight();
+    }
     public void spitBlock(final Tile _tile)
     {
         HashMap parameters = new HashMap();

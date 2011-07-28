@@ -287,6 +287,21 @@ public class PlayerEntity extends AIEntity
     }
 
     @Override
+    public void walk(float value) 
+    {
+        float weight = ((PlayerInputController)mController).getWeight();
+        super.walk(value / weight);
+    }
+
+    @Override
+    public void jump() {
+        float weight = ((PlayerInputController)mController).getWeight();
+            super.jump(1/weight);
+    }
+    
+    
+    
+    @Override
     public void stun(Vec2 _direction)
     {
         super.stun(_direction);
