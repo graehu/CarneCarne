@@ -48,11 +48,11 @@ public class BroccoliController extends iAIController
                 {
                     if(targetPos.x > myPos.x)
                     {
-                        ((Broccoli)mEntity).move(4.5f);
+                        ((Broccoli)mEntity).move(1.5f);
                     }
                     else
                     {
-                        ((Broccoli)mEntity).move(-4.5f);
+                        ((Broccoli)mEntity).move(-1.5f);
                     }
                 }
             }

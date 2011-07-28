@@ -5,7 +5,9 @@
 package States.Game.RaceMode;
 
 import Events.GenericStringEvent;
+import Events.RaceCountdownEvent;
 import Events.RaceResetEvent;
+import Events.RaceStartEvent;
 import Events.RaceWonEvent;
 import Events.iEvent;
 import Events.iEventListener;
@@ -47,7 +49,6 @@ class RaceState implements iEventListener
         if (_event.getType().equals("RaceWonEvent"))
         {
             RaceWonEvent event = (RaceWonEvent)_event;
-            //event.getPlayer().mScoreTracker.winRace(mTimer, mTimer);
             changeState(State.eRaceWon);
         }
         else if (_event.getType().equals("RaceCountdownStartEvent"))
@@ -129,7 +130,7 @@ class RaceState implements iEventListener
             }
         }
     }
-    private void changeState(State _state)
+        private void changeState(State _state)
     {
         switch (_state)
         {

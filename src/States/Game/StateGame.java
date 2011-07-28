@@ -15,7 +15,7 @@ import Graphics.Particles.sParticleManager;
 import Graphics.Skins.sSkinFactory;
 import Graphics.Sprites.sSpriteFactory;
 import Graphics.sGraphicsManager;
-import HUD.sHud;
+import GUI.HUD.sHud;
 import Input.sInput;
 import Sound.sSound;
 import States.Game.FootballMode.FootballMode;
@@ -113,6 +113,7 @@ public class StateGame extends BasicGameState implements iEventListener {
         mGameMode.render(_grphcs);
         //cleanup texture data
         //screen.flushPixelData();
+        GUIManager.get().render(false);
         
 
     }

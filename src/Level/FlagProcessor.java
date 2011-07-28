@@ -268,6 +268,7 @@ public class FlagProcessor
                         iPlatformController controller = null;
                         String platformType = _tiledMap.getTileProperty(id, "PlatformType", "Error, platform type not defined");
                         String speed = _tiledMap.getTileProperty(id, "Speed", "1");
+                        String movement = _tiledMap.getTileProperty(id,"Movement", "Horizontal");
                         float speedf = Float.valueOf(speed);
                         if (platformType.equals("Stupid"))
                         {
@@ -275,7 +276,7 @@ public class FlagProcessor
                         }
                         else if(platformType.equals("Simple"))
                         {
-                            controller = new SimplePlatformController(speedf);
+                            controller = new SimplePlatformController(speedf, movement);
                         }
                         CaveIn cavein = (CaveIn)platformBody.getUserData();
                         cavein.setPlatformController(controller);

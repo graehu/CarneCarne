@@ -39,14 +39,6 @@ public class PlayerFactory implements iPhysicsFactory {
         circleFixture.filter.categoryBits = (1 << category.ordinal());
         circleFixture.filter.maskBits = Integer.MAX_VALUE;
         circleFixture.shape = wheelShape;
-        PolygonShape axelShape = new PolygonShape();
-        FixtureDef axelFixture = new FixtureDef();
-        axelShape.setAsBox(0.1f, 0.1f);
-        axelFixture.density = 0.0001f;
-        axelFixture.filter.categoryBits = (1 << category.ordinal());
-        axelFixture.filter.maskBits = Integer.MAX_VALUE;
-        axelFixture.filter.groupIndex = -100;
-        axelFixture.shape = axelShape;
         BodyDef def = new BodyDef();
         def.type = BodyType.DYNAMIC;
         def.userData = entity;

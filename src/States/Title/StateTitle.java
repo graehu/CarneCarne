@@ -4,14 +4,12 @@
  */
 package States.Title;
 
-import Events.iEvent;
-import Events.iEventListener;
-import Events.sEvents;
 import GUI.Components.Button;
 import GUI.Components.Effects.AnimatedEffect;
 import GUI.Components.GraphicalComponent;
 import GUI.Components.ScrollableComponent;
 import GUI.Components.TextField;
+import GUI.GUIManager;
 import Graphics.sGraphicsManager;
 import Sound.sSound;
 import Utils.sFontLoader;
@@ -30,21 +28,12 @@ import org.newdawn.slick.state.transition.BlobbyTransition;
 
 /**
  *
- * @author a203945
+ * @author Aaron
  */
-public class StateTitle extends BasicGameState implements iEventListener{
+public class StateTitle extends BasicGameState {
    // @Override
     public int getID() {
        return 2;
-    }
-
-    public boolean trigger(iEvent _event)
-    {
-        if(_event.getName().equals("WindowResizeEvent"))
-        {
-            calcUI();
-        }
-        return true;
     }
     
     enum MenuState
@@ -56,13 +45,15 @@ public class StateTitle extends BasicGameState implements iEventListener{
 
     GameContainer cont = null;
     boolean inited = false;
+    Integer mGUIManager = null;
     @Override
     public void enter(final GameContainer _gc, final StateBasedGame _sbg) throws SlickException 
     {
-        if(!inited)
+        if(!inited) //we do this here so if the state is not used it is not inited
         {
             inited = true;
-            sEvents.subscribeToEvent("WindowResizeEvent", this);
+            mGUIManager = GUIManager.create(_gc);
+            GUIManager.set(mGUIManager); //make sure we're using the right instance
 
             //initalise music
             sSound.loadSound("menu1", "assets/music/Menu1.ogg");
@@ -133,7 +124,22 @@ public class StateTitle extends BasicGameState implements iEventListener{
 
             mParalax0.addChild(mParticlesToggle);
             mParalax0.addChild(mLightingToggle);
-
+            
+            //add to GUIManager in render order
+            GUIManager.get().addRootComponent(mBackground);
+            
+            GUIManager.get().addRootComponent(mParalax2);
+            GUIManager.get().addRootComponent(mParalax1);
+            GUIManager.get().addRootComponent(mParalax0);
+            
+            GUIManager.get().addRootComponent(mNameField);
+            GUIManager.get().addRootComponent(mAdventureButton);
+            GUIManager.get().addRootComponent(mRaceButton);
+            GUIManager.get().addRootComponent(mOptionsButton);
+            GUIManager.get().addRootComponent(mHighScoresButton);
+            
+            GUIManager.get().addRootComponent(mForeground);
+            
             calcUI();
 
             mAdventureButton.setCallback(new Runnable() {
@@ -154,22 +160,9 @@ public class StateTitle extends BasicGameState implements iEventListener{
         }
         else
         {
-            mBackground.setAcceptingInput(true); 
-            mForeground.setAcceptingInput(true);
-            mLogo.setAcceptingInput(true);
-            mParalax0.setAcceptingInput(true);
-            mParalax1.setAcceptingInput(true);
-            mParalax2.setAcceptingInput(true);
-            mCarrotAnimation.setAcceptingInput(true);
-            mBrocAnimation.setAcceptingInput(true);
-            mNameField.setAcceptingInput(true);
-            mAdventureButton.setAcceptingInput(true);
-            mRaceButton.setAcceptingInput(false);
-            mOptionsButton.setAcceptingInput(true);
-            mHighScoresButton.setAcceptingInput(true);
-            mParticlesToggle.setAcceptingInput(true);
-            mLightingToggle.setAcceptingInput(true);
+            GUIManager.get().setAcceptingInput(true);
         }
+        GUIManager.set(mGUIManager);
         cont = _gc;
         super.enter(_gc, _sbg);
         //container.setMouseCursor("ui/title/mouse.png", 0, 62); //FIXME: break in fullscreen
@@ -181,21 +174,7 @@ public class StateTitle extends BasicGameState implements iEventListener{
         super.leave(container, game);
         container.setDefaultMouseCursor();
         sSound.stop("menu1");
-        mBackground.setAcceptingInput(false); 
-        mForeground.setAcceptingInput(false);
-        mLogo.setAcceptingInput(false);
-        mParalax0.setAcceptingInput(false);
-        mParalax1.setAcceptingInput(false);
-        mParalax2.setAcceptingInput(false);
-        mCarrotAnimation.setAcceptingInput(false);
-        mBrocAnimation.setAcceptingInput(false);
-        mNameField.setAcceptingInput(false);
-        mAdventureButton.setAcceptingInput(false);
-        mRaceButton.setAcceptingInput(false);
-        mOptionsButton.setAcceptingInput(false);
-        mHighScoresButton.setAcceptingInput(false);
-        mParticlesToggle.setAcceptingInput(false);
-        mLightingToggle.setAcceptingInput(false);
+        GUIManager.get().setAcceptingInput(false);
     }
     
     
@@ -225,22 +204,9 @@ public class StateTitle extends BasicGameState implements iEventListener{
     }
     
     public void render(GameContainer _gc, StateBasedGame _sbg, Graphics _grphcs) throws SlickException {
-        boolean debug = false;
-        if(mBackground != null)
+        if(mGUIManager != null)
         {
-        mBackground.render(_gc, _grphcs, debug);
-        //render other stuff here
-        mParalax2.render(_gc, _grphcs, debug);
-        mParalax1.render(_gc, _grphcs, debug);
-        mParalax0.render(_gc, _grphcs, debug);
-        
-        mForeground.render(_gc, _grphcs, debug);
-        
-        mNameField.render(_gc, _grphcs, debug);
-        mAdventureButton.render(_gc, _grphcs, debug);
-        mRaceButton.render(_gc, _grphcs, debug);
-        mOptionsButton.render(_gc, _grphcs, debug);
-        mHighScoresButton.render(_gc, _grphcs, debug);
+            GUIManager.get().render(false);
         }
     }
 
@@ -254,15 +220,7 @@ public class StateTitle extends BasicGameState implements iEventListener{
         
         updateMenuState();
         
-        mParalax0.update(_i);
-        mParalax1.update(_i);
-        mParalax2.update(_i);
-        
-        mNameField.update(_i);
-        mAdventureButton.update(_i);
-        mRaceButton.update(_i);
-        mOptionsButton.update(_i);
-        mHighScoresButton.update(_i);
+        GUIManager.get().update(_i);
     }
     
     protected void updateMenuState()
@@ -294,6 +252,7 @@ public class StateTitle extends BasicGameState implements iEventListener{
         }
     }
     
+    //calculates the positions relative to the background
     protected void calcUI()
     {
         //calc scale and offset values
@@ -303,36 +262,25 @@ public class StateTitle extends BasicGameState implements iEventListener{
         mOffset = (screen.y - mBackground.getHeight()*mScale) * 0.5f;
         Vector2f vOffset = new Vector2f(0, mOffset);
         
-        mBackground.setLocalScale(mScale);
         mBackground.setLocalTranslation(vOffset);
-        mForeground.setLocalScale(mScale);
         mForeground.setLocalTranslation(vOffset);
         
         Vector2f buttonPos = new Vector2f(mBackground.getWidth() * 0.6f, mOffset + (mBackground.getHeight() * 0.3f));
         int buttonOffset = (int)75;
         
-        mNameField.setLocalScale(mScale);
         mNameField.setLocalTranslation(new Vector2f(buttonPos.x, buttonPos.y));
         
-        mAdventureButton.setLocalScale(mScale);
         mAdventureButton.setLocalTranslation(new Vector2f(buttonPos.x, buttonPos.y + buttonOffset + 10)); //constant to provide extra offset for namefield
         mAdventureButton.setDimensionsToText();
         
-        mRaceButton.setLocalScale(mScale);
         mRaceButton.setLocalTranslation(new Vector2f(buttonPos.x, buttonPos.y + 2*buttonOffset));
         mRaceButton.setDimensionsToText();
         
-        mOptionsButton.setLocalScale(mScale);
         mOptionsButton.setLocalTranslation(new Vector2f(buttonPos.x, buttonPos.y + 3*buttonOffset - 10));
         mOptionsButton.setDimensionsToText();
         
-        mHighScoresButton.setLocalScale(mScale);
         mHighScoresButton.setLocalTranslation(new Vector2f(buttonPos.x, buttonPos.y + 4*buttonOffset - 20)); //FIXME: booooooooooodge
         mHighScoresButton.setDimensionsToText();
-        
-        mParalax0.setLocalScale(mScale);
-        mParalax1.setLocalScale(mScale);
-        mParalax2.setLocalScale(mScale);
         
         float paralaxOffset = -34.0f; //tweak
         mParalax0.setLocalTranslation(new Vector2f(0,mOffset + (mBackground.getHeight()-mParalax0.getImageHeight()) + paralaxOffset));

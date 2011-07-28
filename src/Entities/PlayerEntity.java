@@ -11,14 +11,15 @@ import Graphics.Skins.iSkin;
 import Graphics.Sprites.iSprite;
 import Graphics.Sprites.sSpriteFactory;
 import Graphics.sGraphicsManager;
-import HUD.Reticle;
-import HUD.Revolver;
-import HUD.sHud;
+import GUI.HUD.Reticle;
+import GUI.HUD.Revolver;
+import GUI.HUD.sHud;
 import Level.sLevel.TileType;
 import Score.RaceScoreTracker;
 import Score.ScoreTracker;
 import States.Game.Tutorial.IntroSection;
 import World.sWorld;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import org.jbox2d.common.Vec2;
@@ -38,31 +39,35 @@ import org.newdawn.slick.geom.Vector2f;
  */
 public class PlayerEntity extends AIEntity
 {
-    String mBodyType = "bdy";
-    private CheckPointZone mOriginalSpawnPoint;
-    private CheckPointZone mCheckPoint;
-    private Vec2 mCheckPointPosition;
-    public IntroSection mIntroSection;
-    private Joint mDeathJoint;
-    private Vec2 mDirection;
-    public Reticle mReticle;
-    protected Revolver mRevolver;
-    private iSprite mArrowSprite;
-    private Rectangle mViewPort;
-    private int mRaceTimer;
-    private int mDeaths;
-    public ScoreTracker mScoreTracker;
-    //private ParticleSys mParticleSys;
+    protected   String          mBodyType = "bdy";
+    private     CheckPointZone  mOriginalSpawnPoint;
+    private     CheckPointZone  mCheckPoint;
+    private     Vec2            mCheckPointPosition;
+    public      IntroSection    mIntroSection;
+    private     Joint           mDeathJoint;
+    private     Vec2            mDirection;
+    public      Reticle         mReticle;
+    protected   Revolver        mRevolver;
+    private     iSprite         mArrowSprite;
+    private     Rectangle       mViewPort;
+    private     int             mRaceTimer;
+    private     int             mDeaths;
+    public      ScoreTracker    mScoreTracker;
+    private     Integer         mGUIManager;
+    private     ArrayList<Integer>  mGUIComponents = new ArrayList<Integer>();
+    
     public PlayerEntity(iSkin _skin, CheckPointZone _spawnPoint)
     {
         super(_skin);
+        //create mGUIManager
+        mGUIManager = GUIManager.create();
         mScoreTracker = new RaceScoreTracker();
         mOriginalSpawnPoint = mCheckPoint = _spawnPoint;
         if (mCheckPoint != null)
             mCheckPointPosition = mCheckPoint.getPosition();
         mReticle = new Reticle(this);
-        mRevolver = new Revolver("ui/revolver.png", new Vector2f(1540,900)); //FIXME: assumes native resolution of 1680x1050
-        GUIManager.get().addRootComponent(mRevolver);
+        mRevolver = new Revolver("ui/revolver.png", new Vector2f(0,0)); //FIXME: assumes native resolution of 1680x1050
+        mGUIComponents.add(GUIManager.use(mGUIManager).addRootComponent(mRevolver));
         mDeaths = mRaceTimer = 0;
         HashMap params = new HashMap();
         try
@@ -79,10 +84,15 @@ public class PlayerEntity extends AIEntity
     {
         /// Purposefully not destroying the body
         mController.destroy();
+        GUIManager.get().removeRootComponentList(mGUIComponents);
+        mGUIComponents.clear();
     }
     public void setClip(Rectangle _viewPort)
     {
         mViewPort = _viewPort;
+        float scale = sGraphicsManager.getTrueScreenDimensions().x / 1680.0f; //FIXME: assumes 1680x1050
+        //FIXME: the GUIManager should be scaled by the viewport not the components
+        mRevolver.setLocalTranslation(new Vector2f(_viewPort.getWidth()/scale - 140*scale,_viewPort.getHeight()/scale - 150*scale)); 
     }
     public CheckPointZone getCheckPoint()
     {
@@ -273,6 +283,7 @@ public class PlayerEntity extends AIEntity
         {
             super.subUpdate();
         }
+        GUIManager.use(mGUIManager).update(16); //assumes 60fps
     }
 
     @Override
@@ -298,7 +309,7 @@ public class PlayerEntity extends AIEntity
     
     public void renderHUD()
     {
-        if (sGraphicsManager.getClip() == mViewPort)
+        if (sGraphicsManager.getClip() == mViewPort) //only render HUD when rendering this body's cam
         {
             if (mCheckPoint != null)
             {
@@ -322,6 +333,7 @@ public class PlayerEntity extends AIEntity
             
             mScoreTracker.render();
             sHud.render(((PlayerInputController)mController).mPlayer);
+            GUIManager.use(mGUIManager).render(false);
         }
     }
     
