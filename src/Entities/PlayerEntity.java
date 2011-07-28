@@ -6,14 +6,12 @@ package Entities;
 
 import AI.PlayerInputController;
 import Events.AreaEvents.CheckPointZone;
+import GUI.Components.GraphicalComponent;
 import GUI.GUIManager;
 import Graphics.Skins.iSkin;
-import Graphics.Sprites.iSprite;
-import Graphics.Sprites.sSpriteFactory;
 import Graphics.sGraphicsManager;
 import GUI.HUD.Reticle;
 import GUI.HUD.Revolver;
-import GUI.HUD.sHud;
 import Level.sLevel.TileType;
 import Score.RaceScoreTracker;
 import Score.ScoreTracker;
@@ -24,12 +22,9 @@ import java.util.HashMap;
 import java.util.HashSet;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
-import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.Fixture;
 import org.jbox2d.dynamics.contacts.ContactEdge;
 import org.jbox2d.dynamics.joints.Joint;
-import org.newdawn.slick.Image;
-import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Vector2f;
 
@@ -39,71 +34,72 @@ import org.newdawn.slick.geom.Vector2f;
  */
 public class PlayerEntity extends AIEntity
 {
-    protected   String          mBodyType = "bdy";
-    private     CheckPointZone  mOriginalSpawnPoint;
-    private     CheckPointZone  mCheckPoint;
-    private     Vec2            mCheckPointPosition;
-    public      IntroSection    mIntroSection;
-    private     Joint           mDeathJoint;
-    private     Vec2            mDirection;
-    public      Reticle         mReticle;
-    protected   Revolver        mRevolver;
-    private     iSprite         mArrowSprite;
-    private     Rectangle       mViewPort;
-    private     int             mRaceTimer;
-    private     int             mDeaths;
-    public      ScoreTracker    mScoreTracker;
-    private     Integer         mGUIManager;
-    private     ArrayList<Integer>  mGUIComponents = new ArrayList<Integer>();
+    protected   String              mBodyType = "bdy";
+    private     CheckPointZone      mOriginalSpawnPoint;
+    private     CheckPointZone      mCheckPoint;
+    private     Vec2                mCheckPointPosition;
+    public      IntroSection        mIntroSection;
+    private     Joint               mDeathJoint;
+    private     Vec2                mDirection;
+    public      Reticle             mReticle;
+    protected   Revolver            mRevolver;
+    private     GraphicalComponent  mHUDArrow;
+    private     Rectangle           mViewPort;
+    private     int                 mRaceTimer;
+    private     int                 mDeaths;
+    private     boolean             mWasIReallyKilled = true;
+    public      ScoreTracker        mScoreTracker;
+    private     Integer             mGUIManager;
     
     public PlayerEntity(iSkin _skin, CheckPointZone _spawnPoint)
     {
         super(_skin);
         //create mGUIManager
         mGUIManager = GUIManager.create();
-        mScoreTracker = new RaceScoreTracker();
+        mScoreTracker = new RaceScoreTracker(mGUIManager);
         mOriginalSpawnPoint = mCheckPoint = _spawnPoint;
         if (mCheckPoint != null)
             mCheckPointPosition = mCheckPoint.getPosition();
-        mReticle = new Reticle(this);
-        mRevolver = new Revolver("ui/revolver.png", new Vector2f(0,0)); //FIXME: assumes native resolution of 1680x1050
-        mGUIComponents.add(GUIManager.use(mGUIManager).addRootComponent(mRevolver));
         mDeaths = mRaceTimer = 0;
-        HashMap params = new HashMap();
-        try
-        {
-            params.put("img", new Image("assets/Arrow.png"));
-        }
-        catch (SlickException e)
-        {
-            assert(false);
-        }
-        mArrowSprite = sSpriteFactory.create("simple", params, false);
+        mReticle = new Reticle(this);
+        
+        mRevolver = new Revolver("ui/revolver.png", new Vector2f(1500,900)); 
+        GUIManager.use(mGUIManager).addRootComponent(mRevolver);
+        
+        mHUDArrow = new GraphicalComponent(sGraphicsManager.getGUIContext(), new Vector2f(700,30), new Vector2f(0,0));
+        GUIManager.use(mGUIManager).addRootComponent(mHUDArrow);
+        mHUDArrow.setImage("ui/HUD/Arrow.png");
+        mHUDArrow.setDimentionsToImage();
     }
+    
     public void destroy() /// FIXME more memory leaks to cleanup in here
     {
         /// Purposefully not destroying the body
         mController.destroy();
-        GUIManager.get().removeRootComponentList(mGUIComponents);
-        mGUIComponents.clear();
+        GUIManager.destroy(mGUIManager);
     }
+    
     public void setClip(Rectangle _viewPort)
     {
         mViewPort = _viewPort;
         float scale = sGraphicsManager.getTrueScreenDimensions().x / 1680.0f; //FIXME: assumes 1680x1050
         //FIXME: the GUIManager should be scaled by the viewport not the components
-        mRevolver.setLocalTranslation(new Vector2f(_viewPort.getWidth()/scale - 140*scale,_viewPort.getHeight()/scale - 150*scale)); 
+        GUIManager.use(mGUIManager).setDimensions(new Vector2f(_viewPort.getWidth(), _viewPort.getHeight()));
+        //mRevolver.setLocalTranslation(new Vector2f(_viewPort.getWidth()/scale - 140*scale,_viewPort.getHeight()/scale - 150*scale)); 
+        //mHUDArrow.setLocalTranslation(new Vector2f(_viewPort.getWidth()/scale *0.5f - mHUDArrow.getImageWidth()*0.5f*scale,30*scale));
     }
+    
     public CheckPointZone getCheckPoint()
     {
         return mCheckPoint;
     }
+    
     @Override
     protected float calculateArea()
     {
         return super.calculateArea() * 4.0f;
     }
-    private boolean mWasIReallyKilled = true;
+    
     public void resetRace()
     {
         if (mDeathJoint != null)
@@ -283,6 +279,7 @@ public class PlayerEntity extends AIEntity
         {
             super.subUpdate();
         }
+        mScoreTracker.update();
         GUIManager.use(mGUIManager).update(16); //assumes 60fps
     }
 
@@ -336,8 +333,7 @@ public class PlayerEntity extends AIEntity
                     direction.normalize();
                     float rotation = (float)Math.atan2(direction.y, direction.x);
                     //rotation -= 180.0f;
-                    mArrowSprite.setRotation(rotation*180.0f/(float)Math.PI);
-                    mArrowSprite.render(mViewPort.getWidth()*0.5f, 0);
+                    mHUDArrow.setLocalRotation(rotation*180.0f/(float)Math.PI);
                 }
                     
                 sGraphicsManager.drawString("You have died " + mDeaths + " times", 0f, 0.1f);
@@ -347,8 +343,6 @@ public class PlayerEntity extends AIEntity
             
             mReticle.render(); //always render ontop
             
-            mScoreTracker.render();
-            sHud.render(((PlayerInputController)mController).mPlayer);
             GUIManager.use(mGUIManager).render(false);
         }
     }

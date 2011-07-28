@@ -3,6 +3,7 @@ package main;
 
 import Events.sEvents;
 import GUI.GUIManager;
+import Graphics.Particles.sParticleManager;
 import Graphics.sGraphicsManager;
 import Input.sInput;
 import Sound.sSound;
@@ -64,7 +65,9 @@ public class Main extends StateBasedGame
         sInput.init(_gc); 
         sEvents.init();
         sSound.init();
+        sParticleManager.warmUp();
         GUIManager.setDefaultContext(_gc);
+        
         //Splash: state1
         mSplashState = new StateSplash();
         addState(mSplashState);

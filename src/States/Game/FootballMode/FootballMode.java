@@ -76,7 +76,6 @@ public class FootballMode implements iGameMode, iEventListener
             mFootball = event.getFootball();
             ballSpawnPosition = mFootball.getBody().getPosition().clone();
             mFootball.setGameMode(this);
-            //sEvents.unsubscribeToEvent("FootballSpawnEvent", this);
         }
         else if (_event.getName().equals("GoalSpawnEvent"))
         {
@@ -92,11 +91,8 @@ public class FootballMode implements iGameMode, iEventListener
     {
         if (_football == mFootball)
         {
-            //mFootball.kill(CauseOfDeath.eSpikes, this); /// For death animation change this
+            mFootball.doom();
             mFootball = null;
-            HashMap parameters = new HashMap();
-            parameters.put("position",ballSpawnPosition);
-            sEvents.triggerEvent(new FootballSpawnEvent((Football)sEntityFactory.create("Football",parameters)));
             scores.set(_team, scores.get(_team)+1);
             PlayerEntity scoredPlayer = players.get(_team);
             scoredPlayer.mScoreTracker.score(ScoreEvent.eScoredGoal);
@@ -111,12 +107,8 @@ public class FootballMode implements iGameMode, iEventListener
     }
     public void footballDied(Football _football)
     {
-        if (_football == mFootball)
-        {
-            mFootball = null;
-            HashMap parameters = new HashMap();
-            parameters.put("position",ballSpawnPosition);
-            sEvents.triggerEvent(new FootballSpawnEvent((Football)sEntityFactory.create("Football",parameters)));
-        }
+        HashMap parameters = new HashMap();
+        parameters.put("position",ballSpawnPosition);
+        sEvents.triggerEvent(new FootballSpawnEvent((Football)sEntityFactory.create("Football",parameters)));
     }
 }

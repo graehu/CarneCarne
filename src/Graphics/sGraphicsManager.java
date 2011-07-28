@@ -89,8 +89,7 @@ public class sGraphicsManager {
     public static void endTransform()
     {
         mAllowTransform = false;
-        mGameContainer.getGraphics().clearClip(); 
-        mGameContainer.getGraphics().popTransform();              
+        mGameContainer.getGraphics().popTransform();    
     }
     public static boolean getAllowShaders(){return mAllowShaders;}
     public static boolean getAllowParticles(){return mAllowParticles;}
@@ -98,6 +97,10 @@ public class sGraphicsManager {
     {
         mGameContainer.getGraphics().setClip(_rect);
         mClip = _rect;
+    }
+    public static void clearClip()
+    {
+        mGameContainer.getGraphics().clearClip(); 
     }
     public static Rectangle getClip()
     {

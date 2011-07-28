@@ -200,11 +200,10 @@ public class BodyCamera extends iCamera implements iEventListener
     }
     public void render(Graphics _graphics)
     {
-        
+        sGraphicsManager.setClip(mViewPort);
         sGraphicsManager.beginTransform();
         {
             sGraphicsManager.translate(mViewPort.getX(),mViewPort.getY());
-            sGraphicsManager.setClip(mViewPort);
             calculatePosition();
             
             //apply gradient to background
@@ -228,6 +227,7 @@ public class BodyCamera extends iCamera implements iEventListener
             mOverlay.draw(0,0, (int)mViewPort.getWidth(), (int)mViewPort.getHeight());
         }
         sGraphicsManager.endTransform();  
+        sGraphicsManager.clearClip();
     }
     
     protected void renderLighting(Graphics _graphics)

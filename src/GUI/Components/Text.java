@@ -4,8 +4,6 @@
  */
 package GUI.Components;
 
-import Utils.sFontLoader;
-import org.newdawn.slick.Color;
 import org.newdawn.slick.Font;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
@@ -26,9 +24,6 @@ public class Text extends iComponent{
         mTextString = _str;
         calcDimensions();
         setLocalTranslation(_position);
-    }
-    public Text(GUIContext _context) {
-        super(_context);
     }
     
     Font mFont = null;

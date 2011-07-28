@@ -4,6 +4,7 @@
  */
 package Utils;
 
+import java.awt.Color;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -11,6 +12,9 @@ import java.util.logging.Logger;
 import org.newdawn.slick.Font;
 import org.newdawn.slick.UnicodeFont;
 import org.newdawn.slick.font.effects.ColorEffect;
+import org.newdawn.slick.font.effects.OutlineEffect;
+import org.newdawn.slick.font.effects.OutlineWobbleEffect;
+import org.newdawn.slick.font.effects.ShadowEffect;
 import org.newdawn.slick.util.ResourceLoader;
 
 /**

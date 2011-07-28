@@ -7,13 +7,15 @@ package Score;
 import Entities.PlayerEntity;
 import Events.NewHighScoreEvent;
 import Events.sEvents;
+import GUI.Components.GraphicalComponent;
+import GUI.Components.Text;
+import GUI.GUIManager;
 import Graphics.Particles.sParticleManager;
-import Graphics.Skins.iSkin;
-import Graphics.Skins.sSkinFactory;
 import Graphics.sGraphicsManager;
-import java.util.HashMap;
+import Utils.sFontLoader;
 import org.jbox2d.common.Vec2;
 import org.newdawn.slick.Color;
+import org.newdawn.slick.geom.Vector2f;
 
 /**
  *
@@ -25,9 +27,10 @@ abstract public class ScoreTracker
     private int mBestTime;
     private int mBestEverTime;
     private float mRenderedScore;
-    private iSkin mSkin;
-    private iSkin mWinnerSkin;
     private int mWinnerTimer;
+    private GraphicalComponent mTacoImage;
+    private GraphicalComponent mWinnerImage;
+    private Text mScoreText;
 
 
     public enum ScoreEvent
@@ -41,11 +44,20 @@ abstract public class ScoreTracker
         eScoreEventsMax,
     }
     
-    protected ScoreTracker()
+    protected ScoreTracker(int _GUIManager) 
     {
-        HashMap params = new HashMap();
-        params.put("ref", "taco");
-        mSkin = sSkinFactory.create("static", params);
+        mTacoImage = (GraphicalComponent)GUIManager.use(_GUIManager)
+                .createRootComponent(GUIManager.ComponentType.eGraphical, new Vector2f(1500,50), new Vector2f()); //FIXME: assumes 1680x1050
+        mTacoImage.setImage("ui/HUD/taco.png");
+        
+        mWinnerImage = (GraphicalComponent)GUIManager.use(_GUIManager)
+                .createRootComponent(GUIManager.ComponentType.eGraphical, new Vector2f(), new Vector2f());
+        mWinnerImage.setImage("ui/HUD/winner.png");
+        mWinnerImage.setIsVisible(false);
+        
+        mScoreText = new Text(sGraphicsManager.getGUIContext(), sFontLoader.createFont("GringoNights", 30), "SCORE", new Vector2f(30,40));
+        mTacoImage.addChild(mScoreText);
+        
         mRenderedScore = mScore = 0;
         mBestTime = mBestEverTime = Integer.MAX_VALUE;
     }
@@ -71,9 +83,7 @@ abstract public class ScoreTracker
                 sEvents.triggerEvent(new NewHighScoreEvent(_time, _player));
             }
         }
-        HashMap params = new HashMap();
-        params.put("ref", "winner");
-        mWinnerSkin = sSkinFactory.create("static", params);
+        mWinnerImage.setIsVisible(true);
         mWinnerTimer = 180;
         sParticleManager.createFirework("Green", new Vec2(500,500), new Vec2(-5,0));
         sParticleManager.createFirework("Green", new Vec2(500,500), new Vec2(5,0));
@@ -82,19 +92,11 @@ abstract public class ScoreTracker
     }
     public void raceEnded()
     {
-        if (mWinnerSkin == null)
-        {
-            HashMap params = new HashMap();
-            params.put("ref", "loser");
-            mWinnerSkin = sSkinFactory.create("static", params);
-            mWinnerTimer = 180;
-        }
+        //looser image here is req
     }
-    public void render()
+
+    public void update() 
     {
-        Vec2 s = sGraphicsManager.getScreenDimensions();
-        mSkin.render(s.x-143, s.y-94);
-        
         Color stringColour = Color.white;
         int renderedScore = (int)mRenderedScore;
         if (mRenderedScore < mScore)
@@ -117,16 +119,14 @@ abstract public class ScoreTracker
         }
         if (renderedScore == mScore)
             stringColour = Color.white;
-        sGraphicsManager.drawString(String.valueOf(renderedScore), 0.9f, 0.9f, stringColour);
+        mScoreText.setColor(stringColour);
+        mScoreText.setTextString(String.valueOf(renderedScore));
         
-        if (mWinnerSkin != null)
+        if (mWinnerImage.isVisible())
         {
-            mWinnerSkin.render(0, 50);
             mWinnerTimer--;
             if (mWinnerTimer == 0)
-            {
-                mWinnerSkin = null;
-            }
+                mWinnerImage.setIsVisible(false);
         }
     }
 }
