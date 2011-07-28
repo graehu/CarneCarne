@@ -398,13 +398,15 @@ public class sWorld
     public static Body createAreaEvent(int _x, int _y, int _x2, int _y2, AreaEvent _event)
     {
         BodyDef def = new BodyDef();
-        def.position = new Vec2(((_x2-_x)*0.5f)+(_x+0.5f), ((_y2-_y)*0.5f)+(_y+0.5f));
+        Vec2 halfDims = new Vec2(((float)_x2-_x)*0.25f, ((float)_y2-_y)*0.25f);
+        //def.position = new Vec2(((_x2-_x)*0.5f)+(_x+0.5f), ((_y2-_y)*0.5f)+(_y+0.5f));
+        def.position = new Vec2(_x, _y).add(halfDims);
         def.userData = _event;
         FixtureDef fixture = new FixtureDef();
         fixture.filter.categoryBits = (1 << BodyCategories.eCheckPoint.ordinal());
         fixture.filter.maskBits = Integer.MAX_VALUE;
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(((float)_x2+1-_x)*0.5f, ((float)_y2+1-_y)*0.5f);
+        shape.setAsBox(halfDims.x, halfDims.y);
         fixture.shape = shape;
         fixture.isSensor = true;
         Body body = mWorld.createBody(def);

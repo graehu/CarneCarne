@@ -18,31 +18,45 @@ import org.jbox2d.dynamics.contacts.ContactEdge;
 public class Football extends Pea
 {
     FootballMode mGameMode;
+    int mDoomTimer;
     Football(iSkin _skin)
     {
         super(_skin);
         mGameMode = null;
+        mDoomTimer = 0;
     }
     
     @Override
     public void update()
     {
-        ContactEdge contact = mBody.getContactList();
-        while (contact != null)
+        if (mDoomTimer != 0)
         {
-            if (contact.other.getFixtureList().getFilterData().categoryBits == (1 << sWorld.BodyCategories.eCheckPoint.ordinal()))
+            mDoomTimer--;
+            if (mDoomTimer == 0)
             {
-                try
-                {
-                    GoalZone zone = (GoalZone)contact.other.getUserData();
-                    zone.enter(this);
-                }
-                catch (ClassCastException e)
-                {
-                    
-                }
+                kill(CauseOfDeath.eMundane, this);
+                mBody = null;
             }
-            contact = contact.next;
+        }
+        else
+        {
+            ContactEdge contact = mBody.getContactList();
+            while (contact != null)
+            {
+                if (contact.other.getFixtureList().getFilterData().categoryBits == (1 << sWorld.BodyCategories.eCheckPoint.ordinal()))
+                {
+                    try
+                    {
+                        GoalZone zone = (GoalZone)contact.other.getUserData();
+                        zone.enter(this);
+                    }
+                    catch (ClassCastException e)
+                    {
+
+                    }
+                }
+                contact = contact.next;
+            }
         }
     }
 
@@ -54,7 +68,15 @@ public class Football extends Pea
     @Override
     public void kill(CauseOfDeath _cause, Object _killer)
     {
-        mGameMode.footballDied(this);
-        super.kill(_cause, _killer);
+        if (mBody != null)
+        {
+            mGameMode.footballDied(this);
+            super.kill(_cause, _killer);
+        }
+    }
+
+    public void doom()
+    {
+        mDoomTimer = 120;
     }
 }
