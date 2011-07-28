@@ -8,6 +8,8 @@ package Score;
  *
  * @author alasdair
  */
+
+/// I say race score tracker, I'm just using this for everything now since its persistant
 public class RaceScoreTracker extends ScoreTracker
 {
     private static Integer[] getScoreValues()
@@ -17,6 +19,8 @@ public class RaceScoreTracker extends ScoreTracker
         scoreValues[ScoreEvent.eDied.ordinal()] = -100;
         scoreValues[ScoreEvent.eWonRace.ordinal()] = 500;
         scoreValues[ScoreEvent.eLostRace.ordinal()] = -200;
+        scoreValues[ScoreEvent.eScoredGoal.ordinal()] = 500;
+        scoreValues[ScoreEvent.eConceededGoal.ordinal()] = -500;
         return scoreValues;
     }
     private static Integer[] mScoreValues = getScoreValues(); /// These are Integers instead of ints just so they can be null and therefore an error

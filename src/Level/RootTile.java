@@ -35,6 +35,11 @@ public abstract class RootTile
     {
         mIsEverBurning = _isEverBurning;
     }
+
+    public int getSlopeType()
+    {
+        return mSlopeType;
+    }
     public enum AnimationType
     {
         eFireHit,

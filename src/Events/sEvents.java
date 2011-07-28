@@ -23,10 +23,6 @@ public class sEvents {
     private static Set<String> blockedEvents = new HashSet<String>();
     private static Set<iEventListener> blockedListeners = new HashSet<iEventListener>();
 
-    public static void addNewAreaEvent(AreaEvent _areaEvent)
-    {
-    }
-
     public static void unblockAllEvents()
     {
         blockedEvents.clear();

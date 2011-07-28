@@ -32,13 +32,13 @@ public class RaceMode implements iGameMode, iEventListener
     Collection<PlayerEntity> players = new LinkedList<PlayerEntity>();
     int mTimer;
     iSkin mRaceRender = null;
-    public RaceMode(boolean _initLevel)
+    public RaceMode()
     {
         mTimer = 0;
         mRaceState = new RaceState();
         sEvents.subscribeToEvent("PlayerCreatedEvent", this);
         sEvents.subscribeToEvent("RaceResetEvent", this);
-        sEvents.subscribeToEvent("RaceStartEvent", this);
+        sEvents.subscribeToEvent("BarrierOpenEvent" + "StartGate", this);
         sLevel.newLevel("RaceReloaded");
     }
     public iGameMode update(Graphics _graphics, float _time)
@@ -82,7 +82,7 @@ public class RaceMode implements iGameMode, iEventListener
                 entity.resetRace();
             }
         }
-        else if (_event.getName().equals("RaceStartEvent"))
+        else if (_event.getName().equals("BarrierOpenEvent" + "StartGate"))
         {
             HashMap map = new HashMap();
             map.put("ref", "CountdownGo");

@@ -4,6 +4,7 @@
  */
 package Events.AreaEvents;
 
+import Entities.AIEntity;
 import Entities.PlayerEntity;
 import Events.GenericEvent;
 import Events.RaceResetEvent;
@@ -30,16 +31,16 @@ public class RaceStartZone extends CheckPointZone implements iEventListener
         mNumPlayers = _numPlayers;
         mRaceHasStarted = false;
         sEvents.subscribeToEvent("RaceResetEvent", this);
-        sEvents.subscribeToEvent("RaceStartEvent", this);
+        sEvents.subscribeToEvent("BarrierOpenEvent" + "StartGate", this);
     }
     @Override
-    public void enter(PlayerEntity _entity) 
+    public void enter(AIEntity _entity) 
     {
         /*if (_entity.getCheckPoint() == this)
         {
             throw new UnsupportedOperationException("Dicks");
         }*/
-        mPlayers.put(_entity, _entity.getCheckPoint());
+        mPlayers.put((PlayerEntity)_entity, ((PlayerEntity)_entity).getCheckPoint());
         _entity.placeCheckPoint(this);
         if (!mRaceHasStarted && mPlayers.size() == mNumPlayers)
         {
@@ -47,18 +48,18 @@ public class RaceStartZone extends CheckPointZone implements iEventListener
         }
     }
     @Override
-    public void leave(PlayerEntity _entity) 
+    public void leave(AIEntity _entity) 
     {
         //_entity.placeCheckPoint(mPlayers.get(_entity));
         if (!mRaceHasStarted)
         {
-            _entity.getToStartingZone();
+            ((PlayerEntity)_entity).getToStartingZone();
         }
         if (!mRaceHasStarted && mPlayers.size() == mNumPlayers)
         {
             sEvents.triggerEvent(new GenericEvent("RaceCountdownInterruptEvent"));
         }
-        mPlayers.remove(_entity);
+        mPlayers.remove((PlayerEntity)_entity);
     }
     @Override
     public boolean incrementRaceTimer()
@@ -105,7 +106,7 @@ public class RaceStartZone extends CheckPointZone implements iEventListener
 
     public boolean trigger(iEvent _event)
     {
-        if (_event.getName().equals("RaceStartEvent"))
+        if (_event.getName().equals("BarrierOpenEvent" + "StartGate"))
         {
             mRaceHasStarted = true;
         }

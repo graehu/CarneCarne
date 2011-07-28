@@ -25,7 +25,7 @@ class IntroSmashSection extends IntroSection
         params.put("ref", "SignTutorialSmash");
         mSkin = sSkinFactory.create("static", params);
     }
-
+    
     @Override
     public IntroSection updateImpl()
     {

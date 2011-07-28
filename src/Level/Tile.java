@@ -38,16 +38,23 @@ public class Tile
         mXTile = _xTile;
         mYTile = _yTile;
         isOnFire = false;
-        if (mRootId.mIsEverBurning)
+        try
         {
-            isOnFire = true;
-            if (mTileGrid.mBody.m_type.equals(BodyType.STATIC))
-                sParticleManager.createSystem("TarBurn", new Vec2(getWorldPosition()).mul(64).add(new Vec2(32,32)), -1);
-            else
+            if (mRootId.mIsEverBurning)
             {
-                Body body = mTileGrid.getBody();
-                sParticleManager.createMovingSystem("TarBurn", -1,body, getLocalPosition(), new Vec2(0,0));
-            } 
+                isOnFire = true;
+                if (mTileGrid.mBody.m_type.equals(BodyType.STATIC))
+                    sParticleManager.createSystem("TarBurn", new Vec2(getWorldPosition()).mul(64).add(new Vec2(32,32)), -1);
+                else
+                {
+                    Body body = mTileGrid.getBody();
+                    sParticleManager.createMovingSystem("TarBurn", -1,body, getLocalPosition(), new Vec2(0,0));
+                } 
+            }
+        }
+        catch (NullPointerException e) /// Fake tile
+        {
+            
         }
     }
     public RootTile getRootTile()
@@ -68,15 +75,6 @@ public class Tile
     }
     public void setOnFire()
     {
-        /*try
-        {
-            if (mRootId.mAnimationsName != null)
-                sParticleManager.createSystem(mRootId.mAnimationsName + "FireHit", mTileGrid.mBody.getWorldPoint(new Vec2(mXTile,mYTile)).mul(64.0f), 2);
-        }
-        catch (NullPointerException e) /// FIXME lol jk this is working PERFECTLY
-        {
-            /// Booo
-        }*/
         if (!isOnFire)
         {
             isOnFire = true;
@@ -107,9 +105,9 @@ public class Tile
     }
     public boolean damageTile()
     {
-        sParticleManager.createSystem(mRootId.getAnimationsName(RootTile.AnimationType.eDamage) + "DamageParticle", mTileGrid.mBody.getWorldPoint(new Vec2(mXTile,mYTile)).mul(64.0f).add(new Vec2(32,32)), 1f);
         if (mHealth > 1)
         {
+            sParticleManager.createSystem(mRootId.getAnimationsName(RootTile.AnimationType.eDamage) + "DamageParticle", mTileGrid.mBody.getWorldPoint(new Vec2(mXTile,mYTile)).mul(64.0f).add(new Vec2(32,32)), 1f);
             mRootId = mRootId.getNext();
             mHealth--;
             Stack<Integer> stack = new Stack<Integer>();
@@ -123,6 +121,7 @@ public class Tile
             }
             return false;
         }
+        sParticleManager.createSystem(mRootId.getAnimationsName(RootTile.AnimationType.eDamage) + "DestroyParticle", mTileGrid.mBody.getWorldPoint(new Vec2(mXTile,mYTile)).mul(64.0f).add(new Vec2(32,32)), 1f);
         return true;
     }
     public TileGrid getTileGrid()

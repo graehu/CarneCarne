@@ -9,12 +9,16 @@ import AI.StupidPlatformController;
 import AI.iPlatformController;
 import AI.sPathFinding;
 import Entities.CaveIn;
+import Entities.Entity;
 import Entities.PlayerEntity;
 import Entities.sEntityFactory;
 import Events.AreaEvents.CheckPointZone;
+import Events.AreaEvents.GoalZone;
 import Events.AreaEvents.PlayerSpawnZone;
 import Events.AreaEvents.RaceEndZone;
 import Events.AreaEvents.RaceStartZone;
+import Events.FootballSpawnEvent;
+import Events.GoalSpawnEvent;
 import Events.PlayerCreatedEvent;
 import Events.TutorialSpawnEvent;
 import Events.sEvents;
@@ -45,6 +49,7 @@ public class FlagProcessor
         eRaceStartZone,
         eRaceCheckPoint,
         eRaceEndZone,
+        eFootballGoal,
         eAreaEventsMax
     }
     int lowestX, lowestY, highestX, highestY;
@@ -93,6 +98,7 @@ public class FlagProcessor
     }
     private Stack<PlayerSpawnPoint> spawnPoints;
     private Vector<RaceCheckPointParameters> checkPoints;
+    private Vector<CheckPoint> goals;
     RaceStartZoneParameters raceStartZone;
     RaceEndZoneParameters raceEndZone;
     HashMap<String,StartBarrier> mBarriers;
@@ -102,6 +108,7 @@ public class FlagProcessor
         raceStartZone = null;
         spawnPoints = new Stack<PlayerSpawnPoint>();
         checkPoints = new Vector<RaceCheckPointParameters>();
+        goals = new Vector<CheckPoint>();
         lowestX = lowestY = Integer.MAX_VALUE;
         highestX = highestY = Integer.MIN_VALUE;
         int width = _tiledMap.getWidth();
@@ -115,6 +122,7 @@ public class FlagProcessor
         eventMap.put("RaceStart", AreaEvents.eRaceStartZone);
         eventMap.put("RaceCheckPoint", AreaEvents.eRaceCheckPoint);
         eventMap.put("RaceEnd", AreaEvents.eRaceEndZone);
+        eventMap.put("FootballGoal", AreaEvents.eFootballGoal);
         eventMap.put("None", AreaEvents.eNoEvent);
         for (int i = 0; i < width; i++)
         {
@@ -158,6 +166,20 @@ public class FlagProcessor
                                 raceEndZone = new RaceEndZoneParameters(lowestX, lowestY, highestX, highestY);
                             break;
                         }
+                        case eFootballGoal:
+                        {
+                            int goalNumber = new Integer(_tiledMap.getTileProperty(id, "Number", "Too many fat chicks error"));
+                            if (goals.size() <= goalNumber || goals.get(goalNumber) == null)
+                            {
+                                CheckPoint zone = new CheckPoint(lowestX, lowestY, highestX, highestY, goalNumber);
+                                if (goals.size() <= goalNumber)
+                                {
+                                    goals.setSize(goalNumber+1);
+                                }
+                                goals.set(goalNumber, zone);
+                            }
+                            break;
+                        }
                     }
                     lowestX = lowestY = Integer.MAX_VALUE;
                     highestX = highestY = Integer.MIN_VALUE;
@@ -193,6 +215,12 @@ public class FlagProcessor
                     {
                         parameters.put("position",new Vec2(i,ii));
                         sEntityFactory.create("Pea",parameters);
+                    }
+                    else if(spawn.equals("Football"))
+                    {
+                        parameters.put("position",new Vec2(i,ii));
+                        Entity entity = sEntityFactory.create("Football",parameters);
+                        sEvents.triggerEvent(new FootballSpawnEvent(entity));
                     }
                     else if (spawn.equals("Player"))
                     {
@@ -268,7 +296,6 @@ public class FlagProcessor
         if (raceEndZone != null)
         {
             CheckPointZone zone = new RaceEndZone(raceEndZone.x, raceEndZone.y, raceEndZone.x2, raceEndZone.y2, checkPoints.size()+1);
-            sEvents.addNewAreaEvent(zone);
             for (int i = checkPoints.size()-1; i >= 0; i--)
             {
                 RaceCheckPointParameters params = checkPoints.get(i);
@@ -282,7 +309,12 @@ public class FlagProcessor
                 }
             }
             startZone = new RaceStartZone(raceStartZone.x, raceStartZone.y, raceStartZone.x2, raceStartZone.y2, zone, playerPositions.size());
-            sEvents.addNewAreaEvent(startZone);
+        }
+        for (int i = goals.size()-1; i >= 0; i--)
+        {
+            CheckPoint params = goals.get(i);
+            GoalZone zone = new GoalZone(params.x, params.y, params.x2, params.y2, i);
+            sEvents.triggerEvent(new GoalSpawnEvent(zone));
         }
         int players = playerPositions.size();
         while (!playerPositions.isEmpty())

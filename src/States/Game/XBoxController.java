@@ -35,7 +35,7 @@ public class XBoxController
 {
     static private float stickEpsilon = 0.3f; /// TWEAK
     static private float shoulderButtonEpsilon = 0.3f;
-    private boolean xAxisHit = false;
+    private boolean leftStickHit = false, rightStickHit = false;
     private boolean mJumpButton = false, mRightShoulderButton = false;
     //private boolean yAxisHit = false;
     private enum TriggerState
@@ -60,10 +60,27 @@ public class XBoxController
         
         //get player direction
         Vec2 rightStick = new Vec2(_input.getAxisValue(mPlayer, 3),_input.getAxisValue(mPlayer, 2));
+        Vec2 leftStick = new Vec2(_input.getAxisValue(mPlayer, 1),_input.getAxisValue(mPlayer, 0));
+        if (!leftStickHit)
+        {
+            if (leftStick.x == -1.0f && leftStick.y == -1.0f)
+            {
+                leftStick = new Vec2(0,0);
+            }
+            else leftStickHit = true;
+        }
+        if (!rightStickHit)
+        {
+            if (rightStick.x == -1.0f && rightStick.y == -1.0f)
+            {
+                rightStick = new Vec2(0,0);
+            }
+            else rightStickHit = true;
+        }
         
         if (rightStick.length() < 0.2f)
         {
-            rightStick = new Vec2(_input.getAxisValue(mPlayer, 1),_input.getAxisValue(mPlayer, 0));
+            rightStick = leftStick;
         }
         if (rightStick.length() > 0.2f)
         {
@@ -109,16 +126,12 @@ public class XBoxController
         //handle shoulder triggers
         float xAxis = _input.getAxisValue(mPlayer, 1);
         float xStickEpsilon = 0.5f;
-        if (xAxisHit)
+        if (leftStickHit)
         {
             if (xAxis > xStickEpsilon || xAxis < -xStickEpsilon)
             {
                 sEvents.triggerEvent(new AnalogueStickEvent(xAxis, mPlayer)); //move
             }
-        }
-        else if (xAxis != -1.0f)
-        {
-            xAxisHit = true;
         }
         
         float shoulderButtons =_input.getAxisValue(mPlayer,4);

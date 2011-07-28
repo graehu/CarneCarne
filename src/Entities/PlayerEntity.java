@@ -5,9 +5,7 @@
 package Entities;
 
 import AI.PlayerInputController;
-import Entities.AIEntityState.State;
 import Events.AreaEvents.CheckPointZone;
-import Events.MapClickReleaseEvent;
 import GUI.GUIManager;
 import Graphics.Skins.iSkin;
 import Graphics.Sprites.iSprite;
@@ -24,6 +22,8 @@ import World.sWorld;
 import java.util.HashMap;
 import java.util.HashSet;
 import org.jbox2d.common.Vec2;
+import org.jbox2d.dynamics.Body;
+import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.Fixture;
 import org.jbox2d.dynamics.contacts.ContactEdge;
 import org.jbox2d.dynamics.joints.Joint;
@@ -121,6 +121,7 @@ public class PlayerEntity extends AIEntity
     {
         mCheckPoint = mOriginalSpawnPoint;
     }
+    @Override
     public void placeCheckPoint(CheckPointZone _checkPoint)
     {
         if (mDeathJoint == null)
@@ -149,44 +150,63 @@ public class PlayerEntity extends AIEntity
     @Override
     public void kill(CauseOfDeath _causeOfDeath, Object _killer)
     {
-        if (mDeathJoint == null)
+        if (_killer != this)
         {
-            if (mWasIReallyKilled)
+            if (mDeathJoint == null)
             {
-                mDeaths++;
-                mScoreTracker.score(ScoreTracker.ScoreEvent.eDied);
-                switch (_causeOfDeath)
+                if (mWasIReallyKilled)
                 {
-                    case eFire:
-                    case eSpikes:
+                    mDeaths++;
+                    mScoreTracker.score(ScoreTracker.ScoreEvent.eDied);
+                    HashMap params = new HashMap();
+                    switch (_causeOfDeath)
                     {
-                        HashMap params = new HashMap();
-                        params.put("causeOfDeath", _causeOfDeath);
-                        params.put("position", mBody.getPosition());
-                        params.put("rotation", mBody.getAngle());
-                        params.put("linearVelocity", mBody.getLinearVelocity());
-                        params.put("angularVelocity", mBody.getAngularVelocity());
-                        params.put("killer", _killer);
-                        Entity carcass = sEntityFactory.create("Carcass", params);
-                        break;
-                    }
-                    default:
-                    {
-                        break;
+                        case eSpikes:
+                        {
+                            Fixture killer = (Fixture)_killer;
+                            //try
+                            {
+                                Body body = killer.getBody();
+                                //if (body.getType().equals(BodyType.KINEMATIC))
+                                {
+                                    params.put("attachment", killer);
+                                }
+                            }
+                            //catch (Throwable e) /// NullPointer and ClassCast Exceptions
+                            {
+                                
+                            }
+                            /// Purposefully not breaking
+                        }
+                        case eFire:
+                        {
+                            params.put("causeOfDeath", _causeOfDeath);
+                            params.put("position", mBody.getPosition());
+                            params.put("rotation", mBody.getAngle());
+                            params.put("linearVelocity", mBody.getLinearVelocity());
+                            params.put("angularVelocity", mBody.getAngularVelocity());
+                            params.put("killer", ((Fixture)_killer).getBody().getUserData());
+                            Entity carcass = sEntityFactory.create("Carcass", params);
+                            break;
+                        }
+                        default:
+                        {
+                            break;
+                        }
                     }
                 }
+                Fixture fixture = getBody().getFixtureList();
+                while (fixture != null)
+                {
+                    fixture.setSensor(true);
+                    fixture = fixture.getNext();
+                }
+                mDeathJoint = sWorld.createMouseJoint(mCheckPointPosition, getBody());
+                ((PlayerInputController)mController).kill();
             }
-            Fixture fixture = getBody().getFixtureList();
-            while (fixture != null)
-            {
-                fixture.setSensor(true);
-                fixture = fixture.getNext();
-            }
-            mDeathJoint = sWorld.createMouseJoint(mCheckPointPosition, getBody());
+            mAIEntityState.kill();
             ((PlayerInputController)mController).kill();
         }
-        mAIEntityState.kill();
-        ((PlayerInputController)mController).kill();
     }
     boolean compareFloat(float a, float b, float epsilon)
     {
@@ -209,11 +229,18 @@ public class PlayerEntity extends AIEntity
             if (contact.other.getFixtureList().getFilterData().categoryBits == (1 << sWorld.BodyCategories.eCheckPoint.ordinal()))
             {
                 contact.contact.setEnabled(false);
-                if (!checkpointSet.contains((CheckPointZone)contact.other.getUserData()))
+                try
                 {
-                    ((CheckPointZone)contact.other.getUserData()).enter(this);
+                    if (!checkpointSet.contains((CheckPointZone)contact.other.getUserData()))
+                    {
+                        ((CheckPointZone)contact.other.getUserData()).enter(this);
+                    }
+                    newCheckPoints.add((CheckPointZone)contact.other.getUserData());
                 }
-                newCheckPoints.add((CheckPointZone)contact.other.getUserData());
+                catch (ClassCastException e)
+                {
+                    
+                }
                 //checkpointSet.add((CheckPointZone)contact.other.getUserData());
                 //placeCheckPoint();
             }

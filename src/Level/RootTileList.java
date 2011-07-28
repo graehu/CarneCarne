@@ -116,7 +116,7 @@ public class RootTileList {
                     int size = Integer.valueOf(_tiledMap.getTileProperty(i, "Size", "1"));
                     for (int ii = 0; ii < size; ii++)
                     {
-                        mRootTiles.add(new SpikeTile(i));
+                        mRootTiles.add(new SpikeTile(i,ii));
                         i++;
                     }
                 }

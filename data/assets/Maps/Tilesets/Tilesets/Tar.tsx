@@ -10,4 +10,9 @@
    <property name="Type" value="Block"/>
   </properties>
  </tile>
+ <tile id="15">
+  <properties>
+   <property name="Everburning" value="true"/>
+  </properties>
+ </tile>
 </tileset>

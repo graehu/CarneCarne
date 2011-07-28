@@ -61,7 +61,7 @@ public class IntroMode implements iGameMode, iEventListener
             Vec2 s = sGraphicsManager.getTrueScreenDimensions();
             sWorld.switchCamera(new FreeCamera(new Rectangle(0,0,s.x, 0 + s.y)));
             cleanup();
-            iGameMode raceMode = new RaceMode(false);
+            iGameMode raceMode = new RaceMode();
             sEvents.unsubscribeToEvent("TutorialSpawnEvent", this);
             return raceMode;
         }

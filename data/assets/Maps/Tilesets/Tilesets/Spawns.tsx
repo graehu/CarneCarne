@@ -26,4 +26,15 @@
    <property name="Spawn" value="Pea"/>
   </properties>
  </tile>
+ <tile id="5">
+  <properties>
+   <property name="Spawn" value="Football"/>
+  </properties>
+ </tile>
+ <tile id="6">
+  <properties>
+   <property name="Event" value="FootballGoal"/>
+   <property name="Number" value="0"/>
+  </properties>
+ </tile>
 </tileset>

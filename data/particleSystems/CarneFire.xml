@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <system additive="true" points="false">
 <emitter imageName="" name="Default" renderType="inherit" useAdditive="false" useOriented="false">
-<spawnInterval enabled="true" max="20.0" min="20.0"/>
+<spawnInterval enabled="true" max="30.0" min="30.0"/>
 <spawnCount enabled="true" max="1.0" min="1.0"/>
 <initialLife enabled="true" max="400.0" min="400.0"/>
-<initialSize enabled="true" max="100.0" min="100.0"/>
+<initialSize enabled="true" max="120.0" min="120.0"/>
 <xOffset enabled="true" max="0.0" min="0.0"/>
 <yOffset enabled="true" max="0.0" min="0.0"/>
 <initialDistance enabled="false" max="0.0" min="0.0"/>
@@ -82,10 +82,10 @@
 </color>
 </emitter>
 <emitter imageName="" name="DeekDeekDeek, these are sparks" renderType="inherit" useAdditive="false" useOriented="false">
-<spawnInterval enabled="true" max="200.0" min="2.0"/>
+<spawnInterval enabled="true" max="300.0" min="150.0"/>
 <spawnCount enabled="true" max="3.0" min="1.0"/>
 <initialLife enabled="true" max="2000.0" min="1000.0"/>
-<initialSize enabled="true" max="10.0" min="2.0"/>
+<initialSize enabled="true" max="15.0" min="10.0"/>
 <xOffset enabled="true" max="20.0" min="-20.0"/>
 <yOffset enabled="true" max="20.0" min="-20.0"/>
 <initialDistance enabled="false" max="0.0" min="0.0"/>
@@ -128,10 +128,10 @@
 </color>
 </emitter>
 <emitter imageName="" name="Default_clone" renderType="inherit" useAdditive="false" useOriented="false">
-<spawnInterval enabled="true" max="5.0" min="5.0"/>
+<spawnInterval enabled="true" max="40.0" min="20.0"/>
 <spawnCount enabled="true" max="1.0" min="1.0"/>
 <initialLife enabled="true" max="800.0" min="800.0"/>
-<initialSize enabled="true" max="40.0" min="20.0"/>
+<initialSize enabled="true" max="70.0" min="50.0"/>
 <xOffset enabled="true" max="20.0" min="-20.0"/>
 <yOffset enabled="true" max="-40.0" min="-40.0"/>
 <initialDistance enabled="false" max="0.0" min="0.0"/>
@@ -140,7 +140,7 @@
 <emitCount enabled="false" max="1000.0" min="1000.0"/>
 <spread type="random" value="360.0"/>
 <angularOffset type="simple" value="0.0"/>
-<growthFactor type="simple" value="2.0"/>
+<growthFactor type="simple" value="-5.0"/>
 <gravityFactor type="simple" value="-5.0"/>
 <windFactor type="simple" value="0.0"/>
 <startAlpha type="simple" value="0.0"/>

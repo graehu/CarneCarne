@@ -4,15 +4,9 @@
  */
 package Events.AreaEvents;
 
+import Entities.AIEntity;
 import Entities.Entity;
-import Entities.PlayerEntity;
-import Graphics.sGraphicsManager;
 import World.sWorld;
-import org.jbox2d.common.Vec2;
-import org.newdawn.slick.Color;
-import org.newdawn.slick.fills.GradientFill;
-import org.newdawn.slick.geom.Rectangle;
-import org.newdawn.slick.geom.Vector2f;
 
 /**
  *
@@ -32,8 +26,8 @@ abstract public class AreaEvent extends Entity
             setBody(sWorld.createAreaEvent(_x, _y, _x2, _y2, this));
     }
     
-    abstract public void enter(PlayerEntity _entity);
-    abstract public void leave(PlayerEntity _entity);
+    abstract public void enter(AIEntity _entity);
+    abstract public void leave(AIEntity _entity);
     @Override
     public final void render()
     {

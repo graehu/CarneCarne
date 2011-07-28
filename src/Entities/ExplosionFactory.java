@@ -20,7 +20,7 @@ class ExplosionFactory implements iEntityFactory
 
     public Entity useFactory(HashMap _parameters)
     {
-        Entity entity = new Explosion();
+        Entity entity = new Explosion((PlayerEntity)_parameters.get("player"));
         _parameters.put("userData", entity);
         entity.setBody(sWorld.useFactory("ExplosionBody", _parameters));
         return entity;

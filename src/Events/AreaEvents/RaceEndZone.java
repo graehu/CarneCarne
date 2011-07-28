@@ -4,6 +4,7 @@
  */
 package Events.AreaEvents;
 
+import Entities.AIEntity;
 import Entities.PlayerEntity;
 import Events.RaceWonEvent;
 import Events.iEvent;
@@ -31,13 +32,13 @@ public class RaceEndZone extends CheckPointZone implements iEventListener
         sGraphicsManager.drawString("You won the race in " + getTimeString(_raceTimer) + " seconds.", 0f, 0);
     }
     @Override
-    public void enter(PlayerEntity _entity)
+    public void enter(AIEntity _entity)
     {
         mFinishedPlayers++;
         if (mWinner == null)
         {
             _entity.placeCheckPoint(this);
-            mWinner = _entity;
+            mWinner = (PlayerEntity)_entity;
             sEvents.triggerDelayedEvent(new RaceWonEvent(mWinner));
         }
         else

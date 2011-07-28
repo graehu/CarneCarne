@@ -18,7 +18,7 @@ import Graphics.sGraphicsManager;
 import HUD.sHud;
 import Input.sInput;
 import Sound.sSound;
-import States.Game.RaceMode.RaceMode;
+import States.Game.FootballMode.FootballMode;
 import States.Menu.StateMenu;
 import States.StateChanger;
 import World.sWorld;
@@ -157,7 +157,8 @@ public class StateGame extends BasicGameState implements iEventListener {
         sSpriteFactory.init();
         sWorld.init();
         
-        mGameMode = new RaceMode(true);
+        mGameMode = new FootballMode();
+        //mGameMode = new RaceMode();
         //mGameMode = new IntroMode();
         
         //subscribe to events (must be done before further initialisation)

@@ -149,32 +149,34 @@ final class MouseStateMachine
     }
     void changeState(States _state)
     {
-        /*Vec2 physicsPos = sWorld.translateToPhysics(new Vec2(mNewMouseX, mNewMouseY));
+        Vec2 physicsPos = sWorld.translateToPhysics(new Vec2(mNewMouseX, mNewMouseY));
         switch(mState) //old
         {
             case eRightPressed:
                 if(_state != States.eRightPressed)
                 {
-                    sEvents.triggerEvent(new MapClickReleaseEvent(physicsPos,false, 0));
+                    sEvents.triggerEvent(new MapClickReleaseEvent(physicsPos,"Spit", 0));
                 }
                 break;
             case eLeftPressed:
                 if(_state != States.eLeftPressed)
                 {
-                    sEvents.triggerEvent(new MapClickReleaseEvent(physicsPos,true, 0));
+                    sEvents.triggerEvent(new MapClickReleaseEvent(physicsPos,"Tongue", 0));
+                    sEvents.triggerEvent(new MapClickReleaseEvent(physicsPos,"Hammer", 0));
                 }
                 break;
         }
         switch(_state)
         {
             case eRightPressed:
-                sEvents.triggerEvent(new MapClickEvent(physicsPos,false,0));
+                sEvents.triggerEvent(new MapClickEvent(physicsPos,"Spit",0));
                 break;
             case eLeftPressed:
-                sEvents.triggerEvent(new MapClickEvent(physicsPos,true,0));
+                sEvents.triggerEvent(new MapClickEvent(physicsPos,"Tongue",0));
+                sEvents.triggerEvent(new MapClickEvent(physicsPos,"Hammer",0));
                 break;
         }
-        mState = _state;*/
+        mState = _state;
     }
 
 }

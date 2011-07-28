@@ -4,7 +4,7 @@
  */
 package Events.AreaEvents;
 
-import Entities.PlayerEntity;
+import Entities.AIEntity;
 
 /**
  *
@@ -19,12 +19,12 @@ public class TutorialZone extends CheckPointZone
     }
     
     @Override
-    public void enter(PlayerEntity _entity)
+    public void enter(AIEntity _entity)
     {
     }
 
     @Override
-    public void leave(PlayerEntity _entity)
+    public void leave(AIEntity _entity)
     {
     }
     

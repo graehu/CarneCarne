@@ -99,6 +99,7 @@ public class FireParticle extends Entity
         {
             HashMap params = new HashMap();
             params.put("position", mBody.getPosition());
+            params.put("player", mOwner);
             sEntityFactory.create("Explosion", params);
             sWorld.destroyBody(getBody());
             mParticles.kill();

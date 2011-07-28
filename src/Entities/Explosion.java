@@ -17,10 +17,12 @@ import org.jbox2d.dynamics.contacts.ContactEdge;
 class Explosion extends Entity
 {
     int mTimer;
-    public Explosion()
+    PlayerEntity mKiller;
+    public Explosion(PlayerEntity _killer)
     {
         super(null);
-        mTimer = 120;
+        mTimer = 30;
+        mKiller = _killer;
     }
 
     @Override
@@ -31,7 +33,7 @@ class Explosion extends Entity
         {
             if (edge.other.getUserData() != null)
             {
-                ((Entity)edge.other.getUserData()).kill(CauseOfDeath.eFire, this);
+                ((Entity)edge.other.getUserData()).kill(CauseOfDeath.eFire, mKiller);
             }
             else
             {

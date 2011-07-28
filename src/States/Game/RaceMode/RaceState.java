@@ -87,6 +87,7 @@ class RaceState implements iEventListener
                 if (mTimer == 180)
                 {
                     changeState(State.eRaceInProgress);
+                    //sEvents.triggerEvent(new RaceStartEvent());
                     sEvents.triggerEvent(new GenericStringEvent("BarrierOpenEvent", "StartGate"));
                 }
                 else

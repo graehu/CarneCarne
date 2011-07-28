@@ -28,6 +28,10 @@ public class BodyMovingParticleSys extends MovingParticleSys
     {
         Vec2 position = getPosition();
         mParticles.moveEmittersTo(position.x, position.y);
+        if (mBody.getFixtureList() == null)
+        {
+            return false;
+        }
         return mParticles.update(_delta);
     }
     public Vec2 getPosition()
@@ -35,6 +39,7 @@ public class BodyMovingParticleSys extends MovingParticleSys
         return mBody.getWorldPoint(mLocalPosition).add(mOffset).mul(64);
     }
     
+    @Override
     public void setPosition(Vec2 _offset)
     {
         mOffset = _offset;

@@ -26,6 +26,7 @@ public class sEntityFactory {
         mFactories.put("Carrot", new CarrotFactory());
         mFactories.put("Broccoli", new BroccoliFactory());
         mFactories.put("Pea", new PeaFactory());
+        mFactories.put("Football", new FootballFactory());
         mFactories.put("CaveIn", new CaveInFactory());
         mFactories.put("CaveInTileFactory", new CaveInTileFactory());
         mFactories.put("SeeSaw", new SeeSawFactory());

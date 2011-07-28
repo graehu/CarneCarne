@@ -4,7 +4,7 @@
  */
 package Events.AreaEvents;
 
-import Entities.PlayerEntity;
+import Entities.AIEntity;
 import Graphics.sGraphicsManager;
 import org.jbox2d.common.Vec2;
 
@@ -23,13 +23,13 @@ public class CheckPointZone extends AreaEvent
         mNextCheckPoint = _nextCheckPoint;
     }
     @Override
-    public void enter(PlayerEntity _entity)
+    public void enter(AIEntity _entity)
     {
         _entity.placeCheckPoint(this);
     }
 
     @Override
-    public void leave(PlayerEntity _entity)
+    public void leave(AIEntity _entity)
     {
         _entity.placeCheckPoint(this);
     }

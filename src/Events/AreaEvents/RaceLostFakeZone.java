@@ -4,6 +4,7 @@
  */
 package Events.AreaEvents;
 
+import Entities.AIEntity;
 import Entities.PlayerEntity;
 import Graphics.sGraphicsManager;
 
@@ -53,7 +54,7 @@ public class RaceLostFakeZone extends CheckPointZone
         sGraphicsManager.drawString("You lost. So hard. You got place " + placeString() + " in " + getTimeString(_raceTimer) + " seconds.", 0f, 0);
     }
     @Override
-    public void enter(PlayerEntity _entity)
+    public void enter(AIEntity _entity)
     {
     }
     @Override

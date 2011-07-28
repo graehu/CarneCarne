@@ -41,17 +41,17 @@ public class HighImpulseListener implements iListener
         Body bodyB = _contact.m_fixtureB.m_body;
         Vec2 momentumExchanged = bodyA.getLinearVelocity().mul(bodyA.getMass()).sub(bodyB.getLinearVelocity().mul(bodyB.getMass()));
         float force = momentumExchanged.normalize();
-        if (force > 35000.0f && false)
+        if (force > 10.0f)
         {
-            if (_contact.m_fixtureA.m_filter.categoryBits != (1 << BodyCategories.ePlayer.ordinal()))
+            if (_contact.m_fixtureA.m_filter.categoryBits != (1 << BodyCategories.eCarcass.ordinal()))
             {
-                sEvents.triggerDelayedEvent(new EntityDeathEvent((Entity)_contact.m_fixtureB.m_body.getUserData(),CauseOfDeath.eImpact, _contact.m_fixtureA.getBody().getUserData()));
-                sParticleManager.createSystem("ParticleFire", sWorld.translateToWorld(_contact.m_fixtureB.m_body.getPosition()), 0.5f);
+                sEvents.triggerDelayedEvent(new EntityDeathEvent((Entity)_contact.m_fixtureB.m_body.getUserData(),CauseOfDeath.eImpact, _contact.m_fixtureA));
+                //sParticleManager.createSystem("ParticleFire", sWorld.translateToWorld(_contact.m_fixtureB.m_body.getPosition()), 0.5f);
             }
             else 
             {
-                sEvents.triggerDelayedEvent(new EntityDeathEvent((Entity)_contact.m_fixtureA.m_body.getUserData(),CauseOfDeath.eImpact, _contact.m_fixtureB.getBody().getUserData()));    
-                sParticleManager.createSystem("ParticleFire", sWorld.translateToWorld(_contact.m_fixtureA.m_body.getPosition()), 0.5f);   
+                sEvents.triggerDelayedEvent(new EntityDeathEvent((Entity)_contact.m_fixtureA.m_body.getUserData(),CauseOfDeath.eImpact, _contact.m_fixtureB));    
+                //sParticleManager.createSystem("ParticleFire", sWorld.translateToWorld(_contact.m_fixtureA.m_body.getPosition()), 0.5f);   
             }
         }
     }

@@ -25,9 +25,10 @@ public class SpikeTile extends NonEdibleTile
         strings[AnimationType.eJump.ordinal()] = "Hard";
         return strings;
     }
-    public SpikeTile(int _id)
+    public SpikeTile(int _id, int _rotation)
     {
         super(_id, TileType.eSpikes, true);
+        mSlopeType = _rotation;
     }
     
     @Override

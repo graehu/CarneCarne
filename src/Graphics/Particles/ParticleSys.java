@@ -153,8 +153,6 @@ class ParticleSys implements ParticleSysBase
             mSystem.update(_delta);
             return true;
         }
-        
-        
     }
 
     public void render(float _x, float _y)

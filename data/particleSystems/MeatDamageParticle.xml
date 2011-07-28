@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <system additive="false" points="false">
-<emitter imageName="particleSystems\MeatParticle2.png" name="Default" renderType="quads" useAdditive="false" useOriented="true">
+<emitter imageName="particleSystems/MeatParticle.png" name="Default" renderType="quads" useAdditive="false" useOriented="true">
 <spawnInterval enabled="true" max="30.0" min="30.0"/>
 <spawnCount enabled="true" max="10.0" min="3.0"/>
 <initialLife enabled="true" max="500.0" min="200.0"/>

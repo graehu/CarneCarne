@@ -36,6 +36,7 @@ public class SpatBlock extends Entity {
             tileMask |= (1 << BodyCategories.eEdibleTiles.ordinal()) |
                 (1 << BodyCategories.eNonEdibleTiles.ordinal())|
                 (1 << BodyCategories.eGum.ordinal()) |
+                (1 << BodyCategories.eIce.ordinal()) |
                 (1 << BodyCategories.eTar.ordinal());
         }
         for (ContactEdge edge = getBody().getContactList(); edge != null; edge = edge.next)

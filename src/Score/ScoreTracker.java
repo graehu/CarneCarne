@@ -36,7 +36,9 @@ abstract public class ScoreTracker
         eDied,
         eWonRace,
         eLostRace,
-        eScoreEventsMax
+        eScoredGoal,
+        eConceededGoal,
+        eScoreEventsMax,
     }
     
     protected ScoreTracker()

@@ -7,12 +7,14 @@ package Entities;
 import AI.iAIController;
 import AI.iPathFinding.Command;
 import Entities.AIEntityState.State;
+import Events.AreaEvents.CheckPointZone;
 import Graphics.Particles.ParticleSysBase;
 import Graphics.Particles.sParticleManager;
 import Graphics.Skins.iSkin;
 import Level.RootTile.AnimationType;
 import Level.Tile;
 import Level.sLevel.TileType;
+import States.Game.FootballMode.FootballMode;
 import World.sWorld;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Fixture;
@@ -22,7 +24,8 @@ import org.jbox2d.dynamics.joints.RevoluteJoint;
  *
  * @author alasdair
  */
-public class AIEntity extends Entity {
+public class AIEntity extends Entity
+{
 
     final static float root2 = (float) Math.sqrt(2);
     static int mContactParticleDelay = 10;
@@ -187,6 +190,9 @@ public class AIEntity extends Entity {
 
         mController.update();
         subUpdate();
+    }
+    public void placeCheckPoint(CheckPointZone _checkPoint)
+    {
     }
     protected void createContactParticle(Vec2 _dir)
     {
