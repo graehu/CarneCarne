@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <system additive="false" points="false">
-<emitter imageName="particleSystems/\MeatParticle.png" name="Default" renderType="quads" useAdditive="false" useOriented="true">
+<emitter imageName="particleSystems/MeatParticle.png" name="Default" renderType="quads" useAdditive="false" useOriented="true">
 <spawnInterval enabled="true" max="1000.0" min="1000.0"/>
 <spawnCount enabled="true" max="15.0" min="10.0"/>
 <initialLife enabled="true" max="500.0" min="200.0"/>
@@ -129,10 +129,10 @@
 </alpha>
 <size active="true" max="255" min="0" type="linear">
 <point x="0.0" y="0.0"/>
-<point x="0.11363637" y="54.85465"/>
-<point x="0.22727273" y="97.84883"/>
-<point x="0.37603307" y="112.674416"/>
-<point x="1.0" y="123.05232"/>
+<point x="0.09917355" y="68.19767"/>
+<point x="0.21694215" y="112.674416"/>
+<point x="0.37396693" y="136.39534"/>
+<point x="1.0" y="139.36046"/>
 </size>
 <velocity active="true" max="1" min="0" type="linear">
 <point x="0.0" y="0.05232558"/>

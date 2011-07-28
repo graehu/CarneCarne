@@ -23,4 +23,10 @@ public class StaticLevelTongueAnchor extends TongueAnchor
     {
         return mPosition;
     }
+
+    @Override
+    public TongueAnchor stun()
+    { /// Do le nothing
+        return this;
+    }
 }

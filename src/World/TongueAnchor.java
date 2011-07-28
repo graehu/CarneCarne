@@ -18,4 +18,6 @@ public abstract class TongueAnchor
     {
         return true;
     }
+
+    abstract public TongueAnchor stun();
 }

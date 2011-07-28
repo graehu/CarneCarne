@@ -9,7 +9,7 @@ import org.jbox2d.dynamics.Fixture;
 
 /**
  *
- * @author A203946
+ * @author alasdair
  */
 class PlayerTongueAnchor extends MovingBodyTongueAnchor {
 
@@ -25,9 +25,8 @@ class PlayerTongueAnchor extends MovingBodyTongueAnchor {
             return false;
         if (mTimer++ > 120)
         {
-            return false;
+            //return false;
         }
         return true;
     }
-    
 }

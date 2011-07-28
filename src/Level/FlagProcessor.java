@@ -25,6 +25,7 @@ import Events.sEvents;
 import Graphics.Particles.sParticleManager;
 import Level.Lighting.sLightsManager;
 import Level.sLevel.TileType;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Stack;
 import java.util.Vector;
@@ -39,7 +40,7 @@ import org.newdawn.slick.tiled.TiledMap;
  */
 public class FlagProcessor
 {
-    private Stack<Vec2> playerPositions;
+    private Vector<Vec2> playerPositions;
     private HashMap<String,AreaEvents> eventMap;
     private int mLayerIndex;
     AreaEvents areaEvents[][];
@@ -114,7 +115,7 @@ public class FlagProcessor
         int width = _tiledMap.getWidth();
         int height = _tiledMap.getHeight();
         mLayerIndex = _tiledMap.getLayerIndex("Flags");
-        playerPositions = new Stack<Vec2>();
+        playerPositions = new Vector<Vec2>();
         int tutorialPlayers = 0;
         HashMap parameters = new HashMap();
         areaEvents = new AreaEvents[width][height];
@@ -224,7 +225,11 @@ public class FlagProcessor
                     }
                     else if (spawn.equals("Player"))
                     {
-                        playerPositions.push(new Vec2(i,ii));
+                        int player = playerPositions.size();
+                        player = Integer.valueOf(_tiledMap.getTileProperty(id, "Number", String.valueOf(player)));
+                        if (playerPositions.size() < player+1)
+                            playerPositions.setSize(player+1);
+                        playerPositions.set(player, new Vec2(i,ii));
                     }
                     else if (spawn.equals("SeeSaw"))
                     {
@@ -320,13 +325,12 @@ public class FlagProcessor
         int players = playerPositions.size();
         while (!playerPositions.isEmpty())
         {
-            Vec2 position = playerPositions.pop();
+            Vec2 position = playerPositions.remove(playerPositions.size()-1);
             parameters.put("position", position);
             parameters.put("playerNumber", --players);
             parameters.put("checkPoint", new PlayerSpawnZone((int)position.x, (int)position.y, (int)position.x+1, (int)position.y+1, startZone));
             PlayerEntity player = (PlayerEntity)sEntityFactory.create("Player",parameters);
             sPathFinding.addPlayer(player);
-            sEvents.triggerEvent(new PlayerCreatedEvent(player,players));
         }
     }
     private class Tile

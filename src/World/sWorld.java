@@ -25,6 +25,7 @@ import Events.iEventListener;
 import Events.sEvents;
 import Graphics.Camera.FreeCamera;
 import Graphics.Camera.iCamera;
+import Graphics.Particles.sParticleManager;
 import Graphics.sGraphicsManager;
 import Level.FakeTile;
 import Level.RootTile;
@@ -241,11 +242,16 @@ public class sWorld
             mWorld.destroyBody(callback.getFixture().getBody());
             //return new Tile(id, tile, null, -1, -1);
         }
-        if (callback.getFixture().m_filter.categoryBits == (1 << BodyCategories.ePlayer.ordinal())||
-                callback.getFixture().m_filter.categoryBits == (1 << BodyCategories.eEnemy.ordinal()))
+        if (callback.getFixture().m_filter.categoryBits == (1 << BodyCategories.ePlayer.ordinal()))
         {
             mLastHit = callback.getFixture();
             mLastTongueAnchor = new PlayerTongueAnchor(mLastHit, new Vec2(0.0f, 0.0f));
+            return new FakeTile(mLastHit.getBody());
+        }
+        if (callback.getFixture().m_filter.categoryBits == (1 << BodyCategories.eEnemy.ordinal()))
+        {
+            mLastHit = callback.getFixture();
+            mLastTongueAnchor = new MovingBodyTongueAnchor(mLastHit, new Vec2(0.0f, 0.0f));
             return new FakeTile(mLastHit.getBody());
         }
         Tile tile = (Tile)callback.getFixture().getUserData();
@@ -260,6 +266,7 @@ public class sWorld
                 case eMelonFlesh:
                 case eChilli:
                 {
+                    sParticleManager.createSystem(tile.getAnimationsName(RootTile.AnimationType.eNom) + "Nom", tile.getWorldPosition().mul(64.0f).add(new Vec2(32,32)), -1);
                     ret = tile.clone();
                     sEvents.triggerEvent(new TileDestroyedEvent((int)callback.getFixture().m_body.getPosition().x, (int)callback.getFixture().m_body.getPosition().y));
                     tile.destroyFixture();

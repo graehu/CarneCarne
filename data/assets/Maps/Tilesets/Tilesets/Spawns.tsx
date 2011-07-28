@@ -37,4 +37,10 @@
    <property name="Number" value="0"/>
   </properties>
  </tile>
+ <tile id="7">
+  <properties>
+   <property name="Event" value="FootballGoal"/>
+   <property name="Number" value="1"/>
+  </properties>
+ </tile>
 </tileset>

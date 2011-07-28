@@ -131,6 +131,8 @@ public class AnimatedTiledMap extends TiledMap
     }
     void createAnimatedTile(int _xPos, int _yPos, String _ref)
     {
+        if (_ref.equals("BoneGrowBack")) /// FIXME greg sucks
+            _ref = "MeatGrowBack";
         createAnimatedTile(_xPos, _yPos, _ref, 41, 0, false);
     }
     void createAnimatedTile(int _xPos, int _yPos, String _ref, int _duration, int _maxTimeOffset, boolean _isRandSpeed)

@@ -394,6 +394,17 @@ public class TongueStateMachine {
             }
         }
     }
+    public void hammerHit()
+    {
+        if (mState.equals(State.eSwinging))
+        {
+            tongueAttachment = tongueAttachment.stun();
+            if (tongueAttachment == null)
+            {
+                changeState(State.eRetractingTongue);
+            }
+        }
+    }
     public void tongueClick(Vec2 _position)
     {
         switch (mState)

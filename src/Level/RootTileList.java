@@ -68,6 +68,7 @@ public class RootTileList {
             animationsNames[AnimationType.eSpawn.ordinal()] = _tiledMap.getTileProperty(i, "SpawnAnimation", defaultAnimationsName);
             animationsNames[AnimationType.eSpit.ordinal()] = _tiledMap.getTileProperty(i, "SpitAnimation", defaultAnimationsName);
             animationsNames[AnimationType.eJump.ordinal()] = _tiledMap.getTileProperty(i, "JumpAnimation", defaultAnimationsName);
+            animationsNames[AnimationType.eNom.ordinal()] = _tiledMap.getTileProperty(i, "NomAnimation", defaultAnimationsName);
             boolean regrows = new Boolean(_tiledMap.getTileProperty(i,"Regrows","true")).booleanValue();
             boolean anchor = Boolean.valueOf(_tiledMap.getTileProperty(i, "Anchor", "true")).booleanValue();
             boolean isFlammable = Boolean.valueOf(_tiledMap.getTileProperty(i, "Flammable", "false")).booleanValue();

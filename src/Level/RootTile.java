@@ -47,6 +47,7 @@ public abstract class RootTile
         eSpawn,
         eSpit,
         eJump,
+        eNom,
         eAnimationsMax
     }
     String mAnimationsNames[];

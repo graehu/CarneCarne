@@ -48,6 +48,11 @@ public class PlayerInputController extends iAIController implements iEventListen
         mTongueState.hammerRelease(mPlayerDir);
         mTongueState.spitRelease(mPlayerDir);
     }
+    
+    public void hammerHit()
+    {
+        mTongueState.hammerHit();
+    }
 
     public void kill()
     {

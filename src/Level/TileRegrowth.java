@@ -43,7 +43,7 @@ public class TileRegrowth
         mFrames = 0;
         inactiveTiles = new RegrowingTile[_width][_height];
     }
-    void add (int _x, int _y, RootTile _rootId)
+    void add(int _x, int _y, RootTile _rootId)
     {
         //mTileGrid.tiledMap.createAnimatedTile(_x, _y, _rootId.mAnimationsName + "GrowBack");
         RegrowingTile tile = new RegrowingTile(_x,_y, _rootId ,mFrames+nonAnimatedRegrowthTime);
@@ -83,9 +83,9 @@ public class TileRegrowth
             {
                 tile.timer = mFrames + animatedRegrowthTime;
                 respawningTiles.add(tile);
-                if (tile.mRootId.getAnimationsName(RootTile.AnimationType.eSpawn).equals("Default")) /// FIXME remove this
+                /*if (tile.mRootId.getAnimationsName(RootTile.AnimationType.eSpawn).equals("Default")) /// FIXME remove this
                     mTileGrid.tiledMap.createAnimatedTile(tile.x, tile.y,"Meat" + "GrowBack");
-                else
+                else*/
                     mTileGrid.tiledMap.createAnimatedTile(tile.x, tile.y,tile.mRootId.getAnimationsName(RootTile.AnimationType.eSpawn) + "GrowBack");
             }
             else

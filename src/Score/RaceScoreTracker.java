@@ -15,12 +15,18 @@ public class RaceScoreTracker extends ScoreTracker
     private static Integer[] getScoreValues()
     {
         Integer[] scoreValues = new Integer[ScoreEvent.eScoreEventsMax.ordinal()];
-        scoreValues[ScoreEvent.eKilledOpponent.ordinal()] = 100;
+        /*scoreValues[ScoreEvent.eKilledOpponent.ordinal()] = 100;
         scoreValues[ScoreEvent.eDied.ordinal()] = -100;
         scoreValues[ScoreEvent.eWonRace.ordinal()] = 500;
         scoreValues[ScoreEvent.eLostRace.ordinal()] = -200;
         scoreValues[ScoreEvent.eScoredGoal.ordinal()] = 500;
-        scoreValues[ScoreEvent.eConceededGoal.ordinal()] = -500;
+        scoreValues[ScoreEvent.eConceededGoal.ordinal()] = -500;*/
+        scoreValues[ScoreEvent.eKilledOpponent.ordinal()] = 0;
+        scoreValues[ScoreEvent.eDied.ordinal()] = -0;
+        scoreValues[ScoreEvent.eWonRace.ordinal()] = 0;
+        scoreValues[ScoreEvent.eLostRace.ordinal()] = -0;
+        scoreValues[ScoreEvent.eScoredGoal.ordinal()] = 1;
+        scoreValues[ScoreEvent.eConceededGoal.ordinal()] = -0;
         return scoreValues;
     }
     private static Integer[] mScoreValues = getScoreValues(); /// These are Integers instead of ints just so they can be null and therefore an error

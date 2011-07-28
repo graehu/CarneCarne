@@ -4,6 +4,8 @@
  */
 package World;
 
+import Entities.AIEntity;
+import Entities.Football;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Fixture;
 
@@ -29,8 +31,23 @@ public class MovingBodyTongueAnchor extends TongueAnchor
     @Override
     public boolean hasContact()
     {
-        if (mFixture.getBody() == null)
+        if (mFixture.getBody().getFixtureList() == null)
             return false;
         return true;
     }
+    @Override
+    public TongueAnchor stun()
+    {
+        try
+        {
+            AIEntity entity = (AIEntity)mFixture.getBody().getUserData();
+            return null;
+        }
+        catch (ClassCastException e)
+        {
+            return this;
+        }
+    }
+    
+
 }

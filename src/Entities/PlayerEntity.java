@@ -290,6 +290,7 @@ public class PlayerEntity extends AIEntity
     public void stun(Vec2 _direction)
     {
         super.stun(_direction);
+        ((PlayerInputController)mController).hammerHit();
     }
     @Override
     void stun()
