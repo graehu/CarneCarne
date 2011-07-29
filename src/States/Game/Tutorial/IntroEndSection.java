@@ -22,10 +22,11 @@ class IntroEndSection extends IntroSection implements iEventListener
     public IntroEndSection(Vec2 _position, int _playerNumber)
     {
         super(_position, _playerNumber, null, null, 0.0f);
-        sEvents.unblockAllEvents();
         HashMap params = new HashMap();
         params.put("ref", "SignTutorialFinish");
         mSkin = sSkinFactory.create("static", params);
+        sEvents.unblockEvent("MapClickEvent"+"Spit"+mPlayerNumber);
+        sEvents.unblockEvent("MapClickReleaseEvent"+"Spit"+mPlayerNumber);
         sEvents.subscribeToEvent("AllPlayersTutorialEndedEvent", this);
         sEvents.triggerEvent(new PlayerEndedTutorialEvent(mPlayerNumber));
     }

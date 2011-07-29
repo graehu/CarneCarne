@@ -6,14 +6,7 @@ package Events.AreaEvents;
 
 import Entities.AIEntity;
 import Entities.Entity;
-import Graphics.sGraphicsManager;
 import World.sWorld;
-import org.jbox2d.common.Vec2;
-import org.newdawn.slick.Color;
-import org.newdawn.slick.fills.GradientFill;
-import org.newdawn.slick.geom.Rectangle;
-import org.newdawn.slick.geom.Shape;
-import org.newdawn.slick.geom.Vector2f;
 
 /**
  *

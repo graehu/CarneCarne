@@ -1,30 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" width="50" height="50" tilewidth="64" tileheight="64">
- <tileset firstgid="1" source="Tilesets/MeatEdible.tsx"/>
- <tileset firstgid="17" source="Tilesets/MeatSlopes.tsx"/>
- <tileset firstgid="33" source="Tilesets/MeatBoneDown.tsx"/>
- <tileset firstgid="49" source="Tilesets/MeatNonEdible.tsx"/>
- <tileset firstgid="113" source="Tilesets/Spawns.tsx"/>
- <tileset firstgid="121" source="Tilesets/Ice.tsx"/>
- <tileset firstgid="137" source="Tilesets/IceSlopes.tsx"/>
- <tileset firstgid="153" source="Tilesets/Tar.tsx"/>
- <tileset firstgid="169" source="Tilesets/Bouncy.tsx"/>
- <tileset firstgid="177" source="Tilesets/Spikes.tsx"/>
- <tileset firstgid="181" source="Tilesets/Chilli.tsx"/>
+ <tileset firstgid="1" source="Tilesets/Spikes.tsx"/>
+ <tileset firstgid="5" source="Tilesets/MeatEdible.tsx"/>
+ <tileset firstgid="21" source="Tilesets/MeatSlopes.tsx"/>
+ <tileset firstgid="37" source="Tilesets/MeatBoneDown.tsx"/>
+ <tileset firstgid="53" source="Tilesets/MeatNonEdible.tsx"/>
+ <tileset firstgid="117" source="Tilesets/Bouncy.tsx"/>
+ <tileset firstgid="125" source="Tilesets/Chilli.tsx"/>
+ <tileset firstgid="133" source="Tilesets/Spawns.tsx"/>
+ <tileset firstgid="141" source="Tilesets/Ice.tsx"/>
+ <tileset firstgid="157" source="Tilesets/IceSlopes.tsx"/>
+ <tileset firstgid="173" source="Tilesets/Tar.tsx"/>
  <tileset firstgid="189" source="Tilesets/Light.tsx"/>
  <layer name="Background" width="50" height="50">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC+3PsRGAMAwEQfXfiY2LJHKGGAIYGc9u+NFfBAAAAAAAAADA+o7qAzeefBufv3hPT/Y/NUxXLTrq7NLRqg+QOgE6ffiiECcAAA==
+   H4sIAAAAAAAAC+3PMQ6AMAwEQX86Ic+nSocRBcghmimvuo0AAAAAAAAAAFjfUX3gxpNv4/MX7+nJ/qeG6apFR51dOlr1AVInAg88RBAnAAA=
   </data>
  </layer>
  <layer name="Level" width="50" height="50">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC+3Wyw3CMAwG4DAGB4bIeB2BAwN0BBCX8hAHloOgRlgmbh6Okwr5l3wgtPT/VPqwxhirs7rBodZ7JdZTHW2jDnVIRB3qkIg61CERdahDIqmO1Pf5Xintu1YHta6OtlGHOiSijv9y3OWqJcd14DoeYu3S4zpw30ueTZoux3VI7Xvp1JGTm1HHmlLi6HEPjh0zxTG8Zw8+b+ftNpnjk7ufO9YO7H+YO+U67IIFemxkbZwnth1eCxnw+Qk53EzIEbK0DjRAx2TCBmyBa70s2OAdMQO04LXWlpCB6pY7rSyUoeYMjUbS0MpSu+/5e6o/91x4b5Q0+OPAe++poP814MAe9/1YebwB9scO321p4LOQcvSKd/hQz8DS90S375E59udX01LzfbfWtdjbYRjdOQYXysH5X3Cm9LjUNaLTf17qF6hlECcAAA==
+   H4sIAAAAAAAAC+3WOw7CMAwG4PA6BgOHyNFALIiBmSMwcIDeEYwaYZmkSeM4rpB/yQOBtv+n0od3znmbxQ1Nal0ruZ7m6BtzmEMi5jCHRMxhDomYwxwSKXWUvs9rpbbvUh2pdXP0jTnMIRFz/JfjIletONCB67iKtSsPdOC+l9y6NJ0OdCjtu1bqyMnWmWNJqXFo3INzxyxx3N/zQJ/34+92Mydk7nZwrAPa/jl2muvwExbs8Zm1YZzc7+hazEDPT8wBsyKOmKV3sAE7Vi5uoBa8pmWhhuDIGbCFrvW2xAypbnOnlyVlaDmw/6PwSBuwRXJa9z1/T/XnnovvjZKGcBx87z1V9N9EHNQD3w+NJxhwf+oI3aYGPwtTDq0ER0jqGVj7ngjbcq9r/7PXsrR83211LWo7HKM7xwBJOTj/C87UHjd1jdjozwsmWH7NECcAAA==
   </data>
  </layer>
  <layer name="Flags" width="50" height="50">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC+3WQQqAIBQA0c7corpcdwuXfSxK4jfiPHATFQ4qOE3621Z5toZBtYUR2ZHLDhY7WOxgsYPFDhY7WN527HlTe6zMadT1oPqr4+v9mdExV54tjf+64r5isYPFDhbvJSx2sNhx1nL+335z9/4I61H6e+2Ia9drR2RHLjtY7GDx3s5iB8sIHcQz/VTPc685AB2V9ZQQJwAA
+   H4sIAAAAAAAAC+3WQQqAIBQA0U7forxSdwuXfSQ0QkecB27CwEEFt02jpcK3MwyqFEZkR192sNjBYgeLHSx2sNjB0tpx9VtatbymVfeDalTH3+ezR8de+HZUzqvluWKxg8UOFt8lLHaw2PH05f63/vM2f4X9yP2zdsS9m7UjsqMvO1jsYPHdzmIHywodxDtda+a1l9y3h26xECcAAA==
   </data>
  </layer>
 </map>

@@ -186,13 +186,20 @@ public class PlayerEntity extends AIEntity
                         }
                         case eFire:
                         {
-                            params.put("causeOfDeath", _causeOfDeath);
-                            params.put("position", mBody.getPosition());
-                            params.put("rotation", mBody.getAngle());
-                            params.put("linearVelocity", mBody.getLinearVelocity());
-                            params.put("angularVelocity", mBody.getAngularVelocity());
-                            params.put("killer", ((Fixture)_killer).getBody().getUserData());
-                            Entity carcass = sEntityFactory.create("Carcass", params);
+                            try
+                            {
+                                params.put("killer", ((Fixture)_killer).getBody().getUserData());
+                                params.put("causeOfDeath", _causeOfDeath);
+                                params.put("position", mBody.getPosition());
+                                params.put("rotation", mBody.getAngle());
+                                params.put("linearVelocity", mBody.getLinearVelocity());
+                                params.put("angularVelocity", mBody.getAngularVelocity());
+                                Entity carcass = sEntityFactory.create("Carcass", params);
+                            }
+                            catch (Throwable e) /// NullPointer and ClassCast Exceptions
+                            {
+                                
+                            }
                             break;
                         }
                         default:

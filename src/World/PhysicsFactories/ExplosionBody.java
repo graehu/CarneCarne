@@ -4,6 +4,7 @@
  */
 package World.PhysicsFactories;
 
+import World.sWorld.BodyCategories;
 import java.util.HashMap;
 import org.jbox2d.collision.shapes.CircleShape;
 import org.jbox2d.common.Vec2;
@@ -29,6 +30,7 @@ public class ExplosionBody implements iPhysicsFactory
         
         FixtureDef fixture = new FixtureDef();
         fixture.isSensor = true;
+        fixture.filter.categoryBits = (1 << BodyCategories.eFire.ordinal());
         
         CircleShape shape = new CircleShape();
         shape.m_radius = 0.75f;
