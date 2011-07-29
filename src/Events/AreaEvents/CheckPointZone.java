@@ -71,7 +71,7 @@ public class CheckPointZone extends AreaEvent
     }
     public void renderRaceState(int _raceTimer)
     {
-        sGraphicsManager.drawString("Run Forrest run! Time: " + getTimeString(_raceTimer) + " " + mCheckPointNumber + " checkpoints reached", 0f, 0);
+       // sGraphicsManager.drawString("Run Forrest run! Time: " + getTimeString(_raceTimer) + " " + mCheckPointNumber + " checkpoints reached", 0f, 0);
     }
 
     public CheckPointZone getNext()

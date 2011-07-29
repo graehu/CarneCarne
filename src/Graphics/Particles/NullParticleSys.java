@@ -16,6 +16,10 @@ public class NullParticleSys implements ParticleSysBase
     public boolean isDead() {
         return true;
     }
+    
+    public boolean isPersistant() {
+        return false;
+    }
 
     public void kill() {
         

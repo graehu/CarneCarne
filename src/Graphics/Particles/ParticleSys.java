@@ -39,6 +39,11 @@ class ParticleSys implements ParticleSysBase
         return mIsDead;
     }
     
+    public boolean isPersistant()
+    {
+        return mLife == -1;
+    }
+    
     public void kill()
     {
         mLife = 0.0f;

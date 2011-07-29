@@ -343,7 +343,7 @@ public class PlayerEntity extends AIEntity
                     mHUDArrow.setLocalRotation(rotation*180.0f/(float)Math.PI);
                 }
                     
-                sGraphicsManager.drawString("You have died " + mDeaths + " times", 0f, 0.1f);
+               // sGraphicsManager.drawString("You have died " + mDeaths + " times", 0f, 0.1f);
             }
             if (mIntroSection != null)
                 mIntroSection.render();

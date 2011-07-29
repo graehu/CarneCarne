@@ -24,6 +24,11 @@ abstract public class MovingParticleSys implements ParticleSysBase
     {
         return mParticles.isDead();
     }
+    
+    public boolean isPersistant()
+    {
+        return mParticles.isPersistant(); 
+    }
 
     public void kill() {
         mParticles.kill();

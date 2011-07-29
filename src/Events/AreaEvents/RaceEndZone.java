@@ -29,7 +29,7 @@ public class RaceEndZone extends CheckPointZone implements iEventListener
     @Override
     public void renderRaceState(int _raceTimer)
     {
-        sGraphicsManager.drawString("You won the race in " + getTimeString(_raceTimer) + " seconds.", 0f, 0);
+       // sGraphicsManager.drawString("You won the race in " + getTimeString(_raceTimer) + " seconds.", 0f, 0);
     }
     @Override
     public void enter(AIEntity _entity)

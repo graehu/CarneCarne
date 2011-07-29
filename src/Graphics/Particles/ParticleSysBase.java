@@ -16,6 +16,7 @@ public interface ParticleSysBase
     
     //accessor for mIsDead
     public boolean isDead();
+    public boolean isPersistant();
     
     public void kill();
     
