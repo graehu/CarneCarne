@@ -44,11 +44,6 @@ public class FootballMode implements iGameMode, iEventListener
         sEvents.subscribeToEvent("FootballSpawnEvent", this);
         sEvents.subscribeToEvent("GoalSpawnEvent", this);
         sLevel.newLevel("The_Match");
-        /*HashMap params = new HashMap();
-        params.put("position", new Vec2(23,32));
-        params.put("radius", 5.0f);
-        params.put("duration", 180000);
-        sEntityFactory.create("BroccoliExplosion", params);*/
     }
     
     public iGameMode update(Graphics _graphics, float _time)

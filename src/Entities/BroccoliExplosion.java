@@ -5,8 +5,6 @@
 package Entities;
 
 import Graphics.Skins.iSkin;
-import org.jbox2d.common.Vec2;
-import org.jbox2d.dynamics.contacts.ContactEdge;
 
 /**
  *
@@ -18,6 +16,7 @@ public class BroccoliExplosion extends Entity
     public BroccoliExplosion(iSkin _skin, int _timer)
     {
         super(_skin);
+        mTimer = _timer;
     }
     @Override
     public void update()
@@ -26,12 +25,6 @@ public class BroccoliExplosion extends Entity
         if (mTimer == 0)
         {
             kill(CauseOfDeath.eMundane, this);
-        }
-        for (ContactEdge edge = mBody.getContactList(); edge != null; edge = edge.next)
-        {
-            Vec2 direction = edge.other.getPosition().sub(mBody.getPosition());
-            float length = direction.normalize();
-            edge.other.applyLinearImpulse(direction.mul(2.0f), edge.other.getPosition());
         }
     }
     

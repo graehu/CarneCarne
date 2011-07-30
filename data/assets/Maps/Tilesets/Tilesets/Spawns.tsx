@@ -20,7 +20,7 @@
  </tile>
  <tile id="3">
   <properties>
-   <property name="Event" value="Tooltip"/>
+   <property name="Spawn" value="Broccoli"/>
   </properties>
  </tile>
  <tile id="4">

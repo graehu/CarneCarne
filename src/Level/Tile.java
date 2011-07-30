@@ -103,11 +103,12 @@ public class Tile
             }
         }
     }
-    public boolean damageTile()
+    public boolean damageTile(boolean _particles)
     {
         if (mHealth > 1)
         {
-            sParticleManager.createSystem(mRootId.getAnimationsName(RootTile.AnimationType.eDamage) + "DamageParticle", mTileGrid.mBody.getWorldPoint(new Vec2(mXTile,mYTile)).mul(64.0f).add(new Vec2(32,32)), 1f);
+            if (_particles)
+                sParticleManager.createSystem(mRootId.getAnimationsName(RootTile.AnimationType.eDamage) + "DamageParticle", mTileGrid.mBody.getWorldPoint(new Vec2(mXTile,mYTile)).mul(64.0f).add(new Vec2(32,32)), 1f);
             mRootId = mRootId.getNext();
             mHealth--;
             Stack<Integer> stack = new Stack<Integer>();
@@ -121,7 +122,10 @@ public class Tile
             }
             return false;
         }
-        sParticleManager.createSystem(mRootId.getAnimationsName(RootTile.AnimationType.eDamage) + "DestroyParticle", mTileGrid.mBody.getWorldPoint(new Vec2(mXTile,mYTile)).mul(64.0f).add(new Vec2(32,32)), 1f);
+        if (_particles)
+        {
+            sParticleManager.createSystem(mRootId.getAnimationsName(RootTile.AnimationType.eDamage) + "DestroyParticle", mTileGrid.mBody.getWorldPoint(new Vec2(mXTile,mYTile)).mul(64.0f).add(new Vec2(32,32)), 1f);
+        }
         return true;
     }
     public TileGrid getTileGrid()
