@@ -79,7 +79,7 @@ public class CarcassBodyFactory implements iPhysicsFactory
         
         if (cause.equals(Entity.CauseOfDeath.eFire))
         {
-            sParticleManager.createMovingSystem("Burnt", -1, body, new Vec2(0.0f,0.0f), new Vec2(0.5f,0.5f));
+            sParticleManager.createMovingSystem("Burnt", 1, body, new Vec2(0.0f,0.0f), new Vec2(0.5f,0.5f));
         }
 
         if (cause.equals(Entity.CauseOfDeath.eSpikes))
@@ -89,13 +89,13 @@ public class CarcassBodyFactory implements iPhysicsFactory
             Tile tile = (Tile)attachment.getUserData();
             int direction = (tile).getRootTile().getSlopeType();
             Vec2 anchor = tile.getWorldPosition();
-            jointDef.initialize(body, attachment.getBody(), anchor/*.add(mSpikeDirections[direction].mul(0.5f))*/, mSpikeDirections[direction]);
+            jointDef.initialize(body, attachment.getBody(), anchor/*.sub(mSpikeDirections[direction].mul(0.5f))*/, mSpikeDirections[direction]);
             jointDef.lowerTranslation = 0.0f;
-            jointDef.upperTranslation = 1.0f;
+            jointDef.upperTranslation = 0.5f;
             if (direction == 0)
             {
-                jointDef.lowerTranslation = -0.5f;
-                jointDef.upperTranslation = 0.5f;
+                //jointDef.lowerTranslation = -0.5f;
+                //jointDef.upperTranslation = 0.5f;
             }
             jointDef.enableLimit = true;
             

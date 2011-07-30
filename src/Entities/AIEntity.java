@@ -99,7 +99,6 @@ public class AIEntity extends Entity
         
         while (edge != null)
         {
-            Vec2 collisionNorm = edge.contact.m_manifold.localNormal;
             Fixture other = edge.contact.m_fixtureA;
             boolean AtoB = true;
             if (other.m_body == getBody())
@@ -107,6 +106,15 @@ public class AIEntity extends Entity
                 AtoB = false;
                 other = edge.contact.m_fixtureB;
             }
+            Vec2 collisionNorm = edge.contact.m_manifold.localNormal;
+            float rot = other.getBody().getTransform().getAngle();
+            collisionNorm.x = (float) (collisionNorm.x*Math.cos(rot) - collisionNorm.y*Math.sin(rot));
+            collisionNorm.y = (float) (collisionNorm.x*Math.sin(rot) + collisionNorm.y*Math.cos(rot));
+            if(AtoB == false)
+            {
+                collisionNorm.negateLocal();
+            }
+            collisionNorm.normalize();
 //            if (other.m_filter.categoryBits == (1 << sWorld.BodyCategories.eEnemy.ordinal())||
 //                other.m_filter.categoryBits == (1 << sWorld.BodyCategories.ePlayer.ordinal()))
 //                mJumpContacts++;
@@ -132,19 +140,22 @@ public class AIEntity extends Entity
                                 mTar++;
                             }
                             break;
+                        case eSpikes:
+                        {
+                            if (edge.contact.isTouching())
+                            {
+                                if (Vec2.dot(collisionNorm, ((Tile)other.getUserData()).getRootTile().getSpikeNormal()) > 0.8f)
+                                {
+                                    kill(CauseOfDeath.eSpikes, other); 
+                                }
+                            }
+                            break;
+                        }
                         default:
                             break;
                     }
                 }
                 
-                float rot = other.getBody().getTransform().getAngle();
-                collisionNorm.x = (float) (collisionNorm.x*Math.cos(rot) - collisionNorm.y*Math.sin(rot));
-                collisionNorm.y = (float) (collisionNorm.x*Math.sin(rot) + collisionNorm.y*Math.cos(rot));
-                if(AtoB == false)
-                {
-                    collisionNorm.negateLocal();
-                }
-                collisionNorm.normalize();
                 if(collisionNorm.y > 1/root2) //up
                 {
                     createContactParticle(collisionNorm);
@@ -225,7 +236,7 @@ public class AIEntity extends Entity
                     }
                     catch(NullPointerException _e)
                     {
-                        System.err.println(_e);
+                        _e.printStackTrace();
                     }
                 }               
                 else
@@ -236,7 +247,7 @@ public class AIEntity extends Entity
                     }
                     catch(NullPointerException _e)
                     {
-                        System.err.println(_e);
+                        _e.printStackTrace();
                     }
                 }
             }

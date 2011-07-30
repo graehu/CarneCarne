@@ -13,7 +13,9 @@
  </tile>
  <tile id="2">
   <properties>
+   <property name="Event" value="Tooltip"/>
    <property name="Spawn" value="Carrot"/>
+   <property name="String" value="This is a tooltip. Its pretty cool eh"/>
   </properties>
  </tile>
  <tile id="3">

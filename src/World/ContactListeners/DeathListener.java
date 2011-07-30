@@ -28,34 +28,27 @@ public class DeathListener implements iListener
 
     public void beginContact(Contact _contact)
     {
-        try
+        if (_contact.m_fixtureB.m_filter.categoryBits == (1 << sWorld.BodyCategories.ePlayer.ordinal())||
+                _contact.m_fixtureB.m_filter.categoryBits == (1 << sWorld.BodyCategories.eEnemy.ordinal())||
+                _contact.m_fixtureB.m_filter.categoryBits == (1 << sWorld.BodyCategories.eCarcass.ordinal()))
         {
-            if (_contact.m_fixtureB.m_filter.categoryBits == (1 << sWorld.BodyCategories.ePlayer.ordinal())||
-                    _contact.m_fixtureB.m_filter.categoryBits == (1 << sWorld.BodyCategories.eEnemy.ordinal())||
-                    _contact.m_fixtureB.m_filter.categoryBits == (1 << sWorld.BodyCategories.eCarcass.ordinal()))
+            boolean kill = true;
+            if (_contact.m_fixtureA.m_body.m_userData != null)
+                kill = ((Entity)_contact.m_fixtureA.m_body.m_userData).killedOpponent((Entity)_contact.m_fixtureB.m_body.m_userData);
+            if (kill)
             {
-                boolean kill = true;
-                if (_contact.m_fixtureA.m_body.m_userData != null)
-                    kill = ((Entity)_contact.m_fixtureA.m_body.m_userData).killedOpponent((Entity)_contact.m_fixtureB.m_body.m_userData);
-                if (kill)
-                {
-                    sEvents.triggerDelayedEvent(new EntityDeathEvent(((Entity)_contact.m_fixtureB.m_body.m_userData), mCauseOfDeath, _contact.m_fixtureA));
-                }
-            }
-            else
-            {
-                boolean kill = true;
-                if (_contact.m_fixtureA.m_body.m_userData != null)
-                    kill = ((FireParticle)_contact.m_fixtureB.m_body.m_userData).killedOpponent((Entity)_contact.m_fixtureB.m_body.m_userData);
-                if (kill)
-                {
-                    sEvents.triggerDelayedEvent(new EntityDeathEvent(((Entity)_contact.m_fixtureA.m_body.m_userData), mCauseOfDeath, _contact.m_fixtureB));
-                }
+                sEvents.triggerDelayedEvent(new EntityDeathEvent(((Entity)_contact.m_fixtureB.m_body.m_userData), mCauseOfDeath, _contact.m_fixtureA));
             }
         }
-        catch (ClassCastException e)
+        else
         {
-            
+            boolean kill = true;
+            if (_contact.m_fixtureA.m_body.m_userData != null)
+                kill = ((Entity)_contact.m_fixtureB.m_body.m_userData).killedOpponent((Entity)_contact.m_fixtureB.m_body.m_userData);
+            if (kill)
+            {
+                sEvents.triggerDelayedEvent(new EntityDeathEvent(((Entity)_contact.m_fixtureA.m_body.m_userData), mCauseOfDeath, _contact.m_fixtureB));
+            }
         }
     }
 

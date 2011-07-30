@@ -25,7 +25,7 @@ class CheckPointFactory implements iPhysicsFactory {
 
     public Body useFactory(HashMap _parameters, World _world)
     {
-        Vec2 position = (Vec2)_parameters.get("position");
+        /*Vec2 position = (Vec2)_parameters.get("position");
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(0.5f, 0.5f);
         FixtureDef fixture = new FixtureDef();
@@ -39,6 +39,7 @@ class CheckPointFactory implements iPhysicsFactory {
         
         Body body = _world.createBody(def);
         body.createFixture(fixture);
-        return body;  
+        return body;  */
+        return null;
     }
 }

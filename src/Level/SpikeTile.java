@@ -34,8 +34,35 @@ public class SpikeTile extends NonEdibleTile
     @Override
     protected Shape createShape(int _xTile, int _yTile)
     {
+        //PolygonShape shape = new PolygonShape();
+        //shape.setAsBox(0.25f, 0.25f, new Vec2(_xTile,_yTile).add(new Vec2(0.25f,0.25f)), 0);
+        //return shape;
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(0.25f, 0.25f, new Vec2(_xTile,_yTile).add(new Vec2(0.25f,0.25f)), 0);
+        switch (mSlopeType)
+        {
+            case 0:
+            {
+                shape.setAsBox(0.5f, 0.25f, new Vec2(_xTile,_yTile+0.25f), 0.0f);
+                break;
+            }
+            case 1:
+            {
+                shape.setAsBox(0.25f, 0.5f, new Vec2(_xTile-0.25f,_yTile), 0.0f);
+                break;
+            }
+            case 2:
+            {
+                shape.setAsBox(0.5f, 0.25f, new Vec2(_xTile,_yTile-0.25f), 0.0f);
+                break;
+            }
+            case 3:
+            {
+                shape.setAsBox(0.25f, 0.5f, new Vec2(_xTile+0.25f,_yTile), 0.0f);
+                break;
+            }
+            default:
+                assert(false);
+        }
         return shape;
     }
     
