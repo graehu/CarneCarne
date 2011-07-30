@@ -61,6 +61,8 @@ public class sInput {
             sEvents.triggerEvent(new KeyDownEvent(' ', 0));
         if(input.isKeyDown(Input.KEY_ESCAPE))
             sEvents.triggerEvent(new KeyDownEvent('Q', 0));
+        if(input.isKeyDown(Input.KEY_R))
+            sEvents.triggerEvent(new KeyDownEvent('r', 0));
         if(input.isKeyDown(Input.KEY_F11))
             sGraphicsManager.toggleFullscreen();
         

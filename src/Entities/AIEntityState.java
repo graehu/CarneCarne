@@ -4,6 +4,10 @@
  */
 package Entities;
 
+import Graphics.Particles.sParticleManager;
+import World.sWorld;
+import org.jbox2d.common.Vec2;
+
 /**
  *
  * @author alasdair
@@ -351,7 +355,22 @@ class AIEntityState
     }
     private void changeState(State _newState)
     {
+        if(mState.equals(_newState))
+            return;
         mEntity.mSkin.setAlpha(1f);
+        switch(mState) //old
+        {
+            case eSwimming:
+            {
+                //on jump
+                if(_newState.equals(State.eFalling) || _newState.equals(State.eJumping))
+                    sParticleManager.createSystem(  "WaterJumpSmall",
+                                                    sWorld.translateToWorld(mEntity.getBody().getPosition())
+                                                        .sub(sWorld.getPixelTranslation())
+                                                        .add(new Vec2(32,64)), /*Offset to bottom of carne*/
+                                                    1.0f);
+            }
+        }
         switch(_newState)
         {
             case eDead:
@@ -365,7 +384,20 @@ class AIEntityState
             }
             case eSwimming:
             {
-                int magic = 0;
+                //on hit water
+                if(mState.equals(State.eFalling))
+                {
+                    String particle = "WaterJumpSmall";
+                    if(mEntity.getBody().getLinearVelocity().lengthSquared() > 80)
+                    {
+                        particle = "WaterJumpBig";
+                    }
+                    sParticleManager.createSystem(  particle,
+                                                    sWorld.translateToWorld(mEntity.getBody().getPosition())
+                                                        .sub(sWorld.getPixelTranslation())
+                                                        .add(new Vec2(32,64)), /*Offset to bottom of carne*/
+                                                    1.0f);
+                }
             }
         }
         mState = _newState;

@@ -6,20 +6,22 @@ package GUI.Components;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Font;
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
+import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.gui.GUIContext;
 
 /**
  *
- * @author a203945
+ * @author Aaron
  */
 public class Button extends GraphicalComponent{
     public Button(GUIContext _context, Vector2f _position, Vector2f _dimensions) {
         super(_context, _position, _dimensions);
-        _context.getInput().addPrimaryListener(this);
+        _context.getInput().addListener(this);
         setColor(mDefaultColor);
     }
     public Button(GUIContext _context) {
@@ -41,17 +43,13 @@ public class Button extends GraphicalComponent{
     Image mSelectedImage = null;
     Color mSelectedColor = new Color(210,187,21);
     ButtonState mState = ButtonState.eDefault;
-    Runnable mCallback = null;
-
+    Runnable mCallback = null;    
+    
     public void setCallback(Runnable _callback)
     {
         mCallback = _callback;
     }
-    @Override
-    protected boolean updateSelf(int _delta) 
-    {        
-        return super.updateSelf(_delta);
-    }
+
     private void changeState(ButtonState _newState)
     {
         //do not process if already in _newState

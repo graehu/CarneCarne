@@ -1,0 +1,395 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<system additive="false" points="false">
+<emitter imageName="particleSystems/MelonSkinParticle.png" name="Default" renderType="quads" useAdditive="false" useOriented="true">
+<spawnInterval enabled="true" max="1000.0" min="1000.0"/>
+<spawnCount enabled="true" max="15.0" min="10.0"/>
+<initialLife enabled="true" max="500.0" min="200.0"/>
+<initialSize enabled="true" max="10.0" min="5.0"/>
+<xOffset enabled="true" max="25.0" min="-25.0"/>
+<yOffset enabled="true" max="25.0" min="-25.0"/>
+<initialDistance enabled="false" max="0.0" min="0.0"/>
+<speed enabled="true" max="200.0" min="50.0"/>
+<length enabled="true" max="1000.0" min="1000.0"/>
+<emitCount enabled="false" max="1000.0" min="1000.0"/>
+<spread type="random" value="360.0"/>
+<angularOffset type="simple" value="0.0"/>
+<growthFactor type="simple" value="0.0"/>
+<gravityFactor type="simple" value="3.0"/>
+<windFactor type="simple" value="0.0"/>
+<startAlpha type="simple" value="255.0"/>
+<endAlpha type="simple" value="55.0"/>
+<alpha active="false" max="255" min="0" type="linear">
+<point x="0.0" y="0.0"/>
+<point x="1.0" y="255.0"/>
+</alpha>
+<size active="false" max="255" min="0" type="linear">
+<point x="0.0" y="0.0"/>
+<point x="1.0" y="255.0"/>
+</size>
+<velocity active="false" max="1" min="0" type="linear">
+<point x="0.0" y="0.0"/>
+<point x="1.0" y="1.0"/>
+</velocity>
+<scaleY active="false" max="1" min="0" type="linear">
+<point x="0.0" y="0.0"/>
+<point x="1.0" y="1.0"/>
+</scaleY>
+<color>
+<step b="0.07450981" g="0.54901963" offset="0.0" r="0.12941177"/>
+<step b="0.07450981" g="0.54901963" offset="1.0" r="0.12941177"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="0.6" g="0.8" offset="1.0" r="1.0"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="1.0" g="0.4" offset="1.0" r="0.6"/>
+<step b="0.11372549" g="0.18431373" offset="1.0" r="0.6"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="0.11372549" g="0.18431373" offset="1.0" r="0.6"/>
+<step b="0.11372549" g="0.18431373" offset="1.0" r="0.6"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="0.6" g="0.8" offset="1.0" r="1.0"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="1.0" g="0.4" offset="1.0" r="0.6"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.6"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="1.0" g="0.4" offset="1.0" r="0.6"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="0.2" g="0.0" offset="1.0" r="1.0"/>
+<step b="0.2" g="0.0" offset="1.0" r="1.0"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="0.2" g="0.0" offset="1.0" r="1.0"/>
+<step b="1.0" g="0.4" offset="1.0" r="0.6"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="0.2" g="0.0" offset="1.0" r="1.0"/>
+<step b="0.11372549" g="0.18431373" offset="1.0" r="0.6"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="0.6" g="0.8" offset="1.0" r="1.0"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="1.0" g="0.4" offset="1.0" r="0.6"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.6"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="1.0" g="0.4" offset="1.0" r="0.6"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="0.2" g="0.0" offset="1.0" r="1.0"/>
+<step b="0.2" g="0.0" offset="1.0" r="1.0"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="0.2" g="0.0" offset="1.0" r="1.0"/>
+<step b="1.0" g="0.4" offset="1.0" r="0.6"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="0.2" g="0.0" offset="1.0" r="1.0"/>
+<step b="0.2" g="0.0" offset="1.0" r="1.0"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="0.6" g="0.8" offset="1.0" r="1.0"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="0.6" g="0.8" offset="1.0" r="1.0"/>
+<step b="0.2" g="0.0" offset="1.0" r="1.0"/>
+<step b="0.2" g="0.0" offset="1.0" r="1.0"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="0.2" g="0.0" offset="1.0" r="1.0"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="1.0" g="0.4" offset="1.0" r="0.6"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.6"/>
+<step b="1.0" g="0.4" offset="1.0" r="0.6"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="0.6" g="0.8" offset="1.0" r="1.0"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="0.6" g="0.8" offset="1.0" r="1.0"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="0.2" g="0.0" offset="1.0" r="1.0"/>
+<step b="0.2" g="0.0" offset="1.0" r="1.0"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="1.0" g="0.4" offset="1.0" r="0.6"/>
+<step b="0.67058825" g="0.79607844" offset="1.0" r="0.8117647"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="0.6" g="0.8" offset="1.0" r="1.0"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="0.6" g="0.8" offset="1.0" r="1.0"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="0.2" g="0.0" offset="1.0" r="1.0"/>
+<step b="0.2" g="0.0" offset="1.0" r="1.0"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="1.0" g="0.4" offset="1.0" r="0.6"/>
+<step b="0.67058825" g="0.79607844" offset="1.0" r="0.8117647"/>
+<step b="0.2" g="0.0" offset="1.0" r="1.0"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="1.0" g="0.4" offset="1.0" r="0.6"/>
+<step b="0.67058825" g="0.79607844" offset="1.0" r="0.8117647"/>
+<step b="0.6" g="0.8" offset="1.0" r="1.0"/>
+<step b="0.2" g="0.0" offset="1.0" r="1.0"/>
+<step b="0.2" g="0.0" offset="1.0" r="1.0"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="0.2" g="0.0" offset="1.0" r="1.0"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="1.0" g="0.4" offset="1.0" r="0.6"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.6"/>
+<step b="1.0" g="0.4" offset="1.0" r="0.6"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="0.6" g="0.8" offset="1.0" r="1.0"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="0.6" g="0.8" offset="1.0" r="1.0"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="0.2" g="0.0" offset="1.0" r="1.0"/>
+<step b="0.2" g="0.0" offset="1.0" r="1.0"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="1.0" g="0.4" offset="1.0" r="0.6"/>
+<step b="0.67058825" g="0.79607844" offset="1.0" r="0.8117647"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="0.6" g="0.8" offset="1.0" r="1.0"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="0.2" g="0.0" offset="1.0" r="1.0"/>
+<step b="0.2" g="0.0" offset="1.0" r="1.0"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="1.0" g="0.4" offset="1.0" r="0.6"/>
+<step b="0.2" g="0.0" offset="1.0" r="1.0"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="0.2" g="0.0" offset="1.0" r="1.0"/>
+<step b="0.2" g="0.0" offset="1.0" r="1.0"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="1.0" g="0.4" offset="1.0" r="0.6"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.6"/>
+<step b="1.0" g="0.4" offset="1.0" r="0.6"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="0.6" g="0.8" offset="1.0" r="1.0"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="0.11372549" g="0.18431373" offset="1.0" r="0.6"/>
+<step b="0.3529412" g="0.40392157" offset="1.0" r="0.6745098"/>
+</color>
+</emitter>
+<emitter imageName="particlesystems/smash.png" name="NewEmitter_1311845376801" renderType="inherit" useAdditive="false" useOriented="false">
+<spawnInterval enabled="true" max="1000.0" min="1000.0"/>
+<spawnCount enabled="true" max="1.0" min="1.0"/>
+<initialLife enabled="false" max="1000.0" min="1000.0"/>
+<initialSize enabled="false" max="10.0" min="10.0"/>
+<xOffset enabled="false" max="0.0" min="0.0"/>
+<yOffset enabled="false" max="0.0" min="0.0"/>
+<initialDistance enabled="false" max="0.0" min="0.0"/>
+<speed enabled="false" max="50.0" min="50.0"/>
+<length enabled="true" max="1000.0" min="1000.0"/>
+<emitCount enabled="false" max="1000.0" min="1000.0"/>
+<spread type="random" value="360.0"/>
+<angularOffset type="simple" value="0.0"/>
+<growthFactor type="simple" value="0.0"/>
+<gravityFactor type="simple" value="0.0"/>
+<windFactor type="simple" value="0.0"/>
+<startAlpha type="simple" value="255.0"/>
+<endAlpha type="simple" value="0.0"/>
+<alpha active="true" max="255" min="0" type="linear">
+<point x="0.0" y="0.0"/>
+<point x="0.19008264" y="232.76163"/>
+<point x="0.7107438" y="234.24419"/>
+<point x="1.0" y="0.0"/>
+</alpha>
+<size active="true" max="255" min="0" type="linear">
+<point x="0.0" y="0.0"/>
+<point x="0.11363637" y="54.85465"/>
+<point x="0.22727273" y="97.84883"/>
+<point x="0.37603307" y="112.674416"/>
+<point x="1.0" y="123.05232"/>
+</size>
+<velocity active="true" max="1" min="0" type="linear">
+<point x="0.0" y="0.05232558"/>
+<point x="0.17561984" y="0.029069768"/>
+<point x="0.7355372" y="0.034883723"/>
+<point x="1.0" y="0.0"/>
+</velocity>
+<scaleY active="false" max="1" min="0" type="linear">
+<point x="0.0" y="0.0"/>
+<point x="1.0" y="1.0"/>
+</scaleY>
+<color>
+<step b="0.12941177" g="0.8156863" offset="0.0" r="0.20784314"/>
+<step b="0.12941177" g="0.78431374" offset="1.0" r="0.20392157"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="0.6" g="0.8" offset="1.0" r="1.0"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="1.0" g="0.4" offset="1.0" r="0.6"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.6"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="1.0" g="0.4" offset="1.0" r="0.6"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="0.2" g="0.0" offset="1.0" r="1.0"/>
+<step b="0.2" g="0.0" offset="1.0" r="1.0"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="0.2" g="0.0" offset="1.0" r="1.0"/>
+<step b="1.0" g="0.4" offset="1.0" r="0.6"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="0.2" g="0.0" offset="1.0" r="1.0"/>
+<step b="0.2" g="0.0" offset="1.0" r="1.0"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="0.6" g="0.8" offset="1.0" r="1.0"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="0.67058825" g="0.79607844" offset="1.0" r="0.8117647"/>
+<step b="1.0" g="0.4" offset="1.0" r="0.6"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="0.2" g="0.0" offset="1.0" r="1.0"/>
+<step b="0.2" g="0.0" offset="1.0" r="1.0"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="0.6" g="0.8" offset="1.0" r="1.0"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="0.6" g="0.8" offset="1.0" r="1.0"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="1.0" g="0.4" offset="1.0" r="0.6"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.6"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="1.0" g="0.4" offset="1.0" r="0.6"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="0.2" g="0.0" offset="1.0" r="1.0"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="0.2" g="0.0" offset="1.0" r="1.0"/>
+<step b="0.2" g="0.0" offset="1.0" r="1.0"/>
+<step b="0.6" g="0.8" offset="1.0" r="1.0"/>
+<step b="0.67058825" g="0.79607844" offset="1.0" r="0.8117647"/>
+<step b="1.0" g="0.4" offset="1.0" r="0.6"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="0.2" g="0.0" offset="1.0" r="1.0"/>
+<step b="0.67058825" g="0.79607844" offset="1.0" r="0.8117647"/>
+<step b="1.0" g="0.4" offset="1.0" r="0.6"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="0.2" g="0.0" offset="1.0" r="1.0"/>
+<step b="0.2" g="0.0" offset="1.0" r="1.0"/>
+<step b="0.4" g="0.4" offset="1.0" r="1.0"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="0.6" g="0.8" offset="1.0" r="1.0"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="1.0" g="0.4" offset="1.0" r="0.6"/>
+<step b="0.11372549" g="0.18431373" offset="1.0" r="0.6"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="0.11372549" g="0.18431373" offset="1.0" r="0.6"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="0.6" g="0.8" offset="1.0" r="1.0"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="1.0" g="0.4" offset="1.0" r="0.6"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.6"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="1.0" g="0.4" offset="1.0" r="0.6"/>
+<step b="0.11372549" g="0.18431373" offset="1.0" r="0.6"/>
+<step b="0.2" g="0.0" offset="1.0" r="1.0"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="1.0" g="0.4" offset="1.0" r="0.6"/>
+<step b="0.2" g="0.0" offset="1.0" r="1.0"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="0.2" g="0.0" offset="1.0" r="1.0"/>
+<step b="0.2" g="0.0" offset="1.0" r="1.0"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="1.0" g="0.4" offset="1.0" r="0.6"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.6"/>
+<step b="1.0" g="0.4" offset="1.0" r="0.6"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="0.6" g="0.8" offset="1.0" r="1.0"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="0.11372549" g="0.18431373" offset="1.0" r="0.6"/>
+<step b="0.11372549" g="0.18431373" offset="1.0" r="0.6"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="0.11372549" g="0.18431373" offset="1.0" r="0.6"/>
+<step b="1.0" g="0.4" offset="1.0" r="0.6"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="0.6" g="0.8" offset="1.0" r="1.0"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="0.07450981" g="0.54901963" offset="1.0" r="0.12941177"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="0.11372549" g="0.18431373" offset="1.0" r="0.6"/>
+<step b="1.0" g="0.4" offset="1.0" r="0.6"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="0.6" g="0.8" offset="1.0" r="1.0"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="0.07450981" g="0.54901963" offset="1.0" r="0.12941177"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="0.6" g="0.8" offset="1.0" r="1.0"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="0.11372549" g="0.18431373" offset="1.0" r="0.6"/>
+<step b="0.11372549" g="0.18431373" offset="1.0" r="0.6"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="0.11372549" g="0.18431373" offset="1.0" r="0.6"/>
+<step b="1.0" g="0.4" offset="1.0" r="0.6"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="0.6" g="0.8" offset="1.0" r="1.0"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="0.07450981" g="0.54901963" offset="1.0" r="0.12941177"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="0.11372549" g="0.18431373" offset="1.0" r="0.6"/>
+<step b="1.0" g="0.4" offset="1.0" r="0.6"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="0.6" g="0.8" offset="1.0" r="1.0"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="0.07450981" g="0.54901963" offset="1.0" r="0.12941177"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.6"/>
+<step b="1.0" g="0.4" offset="1.0" r="0.6"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="0.6" g="0.8" offset="1.0" r="1.0"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="0.11372549" g="0.18431373" offset="1.0" r="0.6"/>
+<step b="0.11372549" g="0.18431373" offset="1.0" r="0.6"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="0.11372549" g="0.18431373" offset="1.0" r="0.6"/>
+<step b="1.0" g="0.4" offset="1.0" r="0.6"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="0.6" g="0.8" offset="1.0" r="1.0"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="0.07450981" g="0.54901963" offset="1.0" r="0.12941177"/>
+<step b="0.2" g="0.0" offset="1.0" r="1.0"/>
+<step b="0.2" g="0.0" offset="1.0" r="1.0"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="1.0" g="0.4" offset="1.0" r="0.6"/>
+<step b="0.67058825" g="0.79607844" offset="1.0" r="0.8117647"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="0.6" g="0.8" offset="1.0" r="1.0"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="0.6" g="0.8" offset="1.0" r="1.0"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="0.2" g="0.0" offset="1.0" r="1.0"/>
+<step b="0.2" g="0.0" offset="1.0" r="1.0"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="1.0" g="0.4" offset="1.0" r="0.6"/>
+<step b="0.67058825" g="0.79607844" offset="1.0" r="0.8117647"/>
+<step b="0.2" g="0.0" offset="1.0" r="1.0"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="1.0" g="0.4" offset="1.0" r="0.6"/>
+<step b="0.67058825" g="0.79607844" offset="1.0" r="0.8117647"/>
+<step b="0.6" g="0.8" offset="1.0" r="1.0"/>
+<step b="0.2" g="0.0" offset="1.0" r="1.0"/>
+<step b="0.2" g="0.0" offset="1.0" r="1.0"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="0.2" g="0.0" offset="1.0" r="1.0"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="1.0" g="0.4" offset="1.0" r="0.6"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.6"/>
+<step b="1.0" g="0.4" offset="1.0" r="0.6"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="0.6" g="0.8" offset="1.0" r="1.0"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="0.6" g="0.8" offset="1.0" r="1.0"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="0.2" g="0.0" offset="1.0" r="1.0"/>
+<step b="0.2" g="0.0" offset="1.0" r="1.0"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="1.0" g="0.4" offset="1.0" r="0.6"/>
+<step b="0.67058825" g="0.79607844" offset="1.0" r="0.8117647"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="0.6" g="0.8" offset="1.0" r="1.0"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="0.2" g="0.0" offset="1.0" r="1.0"/>
+<step b="0.2" g="0.0" offset="1.0" r="1.0"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="1.0" g="0.4" offset="1.0" r="0.6"/>
+<step b="0.2" g="0.0" offset="1.0" r="1.0"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="0.2" g="0.0" offset="1.0" r="1.0"/>
+<step b="0.2" g="0.0" offset="1.0" r="1.0"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="1.0" g="0.4" offset="1.0" r="0.6"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.6"/>
+<step b="1.0" g="0.4" offset="1.0" r="0.6"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="0.6" g="0.8" offset="1.0" r="1.0"/>
+<step b="0.0" g="0.0" offset="1.0" r="0.0"/>
+<step b="0.11372549" g="0.18431373" offset="1.0" r="0.6"/>
+<step b="0.0" g="0.0" offset="1.0" r="1.0"/>
+</color>
+</emitter>
+</system>
