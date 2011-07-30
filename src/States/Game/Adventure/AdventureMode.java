@@ -29,6 +29,7 @@ public class AdventureMode implements iGameMode, iEventListener
     {
         mTimer = 0;
         sEvents.subscribeToEvent("PlayerCreatedEvent", this);
+        sEvents.subscribeToEvent("RaceResetEvent", this);
         sLevel.newLevel("Level1");
     }
     public iGameMode update(Graphics _graphics, float _time)
@@ -50,6 +51,10 @@ public class AdventureMode implements iGameMode, iEventListener
         {
             PlayerCreatedEvent event = (PlayerCreatedEvent)_event;
             players.add(event.getPlayer());
+        }
+        else if (_event.getName().equals("RaceResetEvent"))
+        {
+            //on finish
         }
         return true;
     }

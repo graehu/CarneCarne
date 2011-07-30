@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset name="MelonSkin" tilewidth="64" tileheight="64">
+<tileset name="TileMelonSkin" tilewidth="64" tileheight="64">
  <image source="Images/Special/MelonSkin.png" width="256" height="2048"/>
  <tile id="0">
   <properties>

@@ -124,7 +124,7 @@ public abstract class iComponent extends AbstractComponent {
     }
     private final void renderInternalDebug(Graphics _graphics)
     {
-        _graphics.setColor(mColor);
+        _graphics.setColor(Color.white);
         renderSelfDebug(_graphics) ;
         
         //render children
@@ -254,6 +254,17 @@ public abstract class iComponent extends AbstractComponent {
     {
         return mChildren.listIterator();
     }
+
+    @Override
+    public void setAcceptingInput(boolean acceptingInput) 
+    {
+        super.setAcceptingInput(acceptingInput);
+        for(iComponent c : mChildren)
+        {
+            c.setAcceptingInput(acceptingInput);
+        }
+    }
+    
     
     /*
      * -------methods for destruction----------

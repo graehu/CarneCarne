@@ -26,6 +26,7 @@ public class Revolver extends GraphicalComponent
     static int AmmoCount = 6;
     static int fps = 18;
     static int timer = 0;
+    static int defaultAmmo = 5 * framesPerAmmo;
     
     public Revolver(String _ref, Vector2f _position) {
         super(sGraphicsManager.getGUIContext(), _position, new Vector2f());
@@ -50,8 +51,8 @@ public class Revolver extends GraphicalComponent
         setDimentionsToImage();
     }
     
-    int mTargetFrame = 0;
-    int mCurrentFrame = 0;
+    int mTargetFrame = defaultAmmo;
+    int mCurrentFrame = defaultAmmo;
     SpriteSheet mSpriteSheet = null;
     
     public void setAmmo(TileType _type)
@@ -59,20 +60,20 @@ public class Revolver extends GraphicalComponent
         switch(_type)
         {
             case eEdible:
-                mTargetFrame = 1 * framesPerAmmo;
+                mTargetFrame = 0 * framesPerAmmo;
                 break;
             case eMelonFlesh:
-                mTargetFrame = 3 * framesPerAmmo;
+                mTargetFrame = 2 * framesPerAmmo;
                 break;
             case eGum:
-                mTargetFrame = 4 * framesPerAmmo;            
+                mTargetFrame = 1 * framesPerAmmo;            
                 break;
             case eChilli:
-                mTargetFrame = 2 * framesPerAmmo;
+                mTargetFrame = 4 * framesPerAmmo;
                 break;
             default:
             case eTileTypesMax:
-                mTargetFrame = 0;
+                mTargetFrame = defaultAmmo;
                 break;            
         }
     }
