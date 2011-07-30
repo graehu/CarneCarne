@@ -30,8 +30,15 @@ public class GoalZone extends AreaEvent
     @Override
     public void enter(AIEntity _entity)
     {
-        Football football = (Football)_entity;
-        mGameMode.score(mGoalNumber, football);
+        //try
+        {
+            Football football = (Football)_entity;
+            mGameMode.score(mGoalNumber, football);
+        }
+        //catch (ClassCastException e)
+        {
+            
+        }
     }
 
     @Override

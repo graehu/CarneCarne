@@ -4,8 +4,6 @@
  */
 package States.Game.FootballMode;
 
-import Entities.AIEntity;
-import Entities.Entity.CauseOfDeath;
 import Entities.Football;
 import Entities.PlayerEntity;
 import Entities.sEntityFactory;
@@ -22,7 +20,6 @@ import Score.ScoreTracker.ScoreEvent;
 import States.Game.iGameMode;
 import World.sWorld;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import org.jbox2d.common.Vec2;
 import org.newdawn.slick.Graphics;
@@ -47,6 +44,11 @@ public class FootballMode implements iGameMode, iEventListener
         sEvents.subscribeToEvent("FootballSpawnEvent", this);
         sEvents.subscribeToEvent("GoalSpawnEvent", this);
         sLevel.newLevel("The_Match");
+        /*HashMap params = new HashMap();
+        params.put("position", new Vec2(23,32));
+        params.put("radius", 5.0f);
+        params.put("duration", 180000);
+        sEntityFactory.create("BroccoliExplosion", params);*/
     }
     
     public iGameMode update(Graphics _graphics, float _time)
@@ -67,8 +69,13 @@ public class FootballMode implements iGameMode, iEventListener
         if (_event.getName().equals("PlayerCreatedEvent"))
         {
             PlayerCreatedEvent event = (PlayerCreatedEvent)_event;
+            event.getPlayer().setTeam(players.size() % 2);
             players.add(event.getPlayer());
             scores.add(0);
+            if (mFootball != null)
+            {
+                event.getPlayer().setFootball(mFootball);
+            }
         }
         else if (_event.getName().equals("FootballSpawnEvent"))
         {
@@ -76,6 +83,10 @@ public class FootballMode implements iGameMode, iEventListener
             mFootball = event.getFootball();
             ballSpawnPosition = mFootball.getBody().getPosition().clone();
             mFootball.setGameMode(this);
+            for (PlayerEntity player: players)
+            {
+                player.setFootball(mFootball);
+            }
         }
         else if (_event.getName().equals("GoalSpawnEvent"))
         {
@@ -94,15 +105,22 @@ public class FootballMode implements iGameMode, iEventListener
             mFootball.doom();
             mFootball = null;
             scores.set(_team, scores.get(_team)+1);
-            PlayerEntity scoredPlayer = players.get(_team);
-            scoredPlayer.mScoreTracker.score(ScoreEvent.eScoredGoal);
+            for (int i = 0; i < players.size(); i++)
+            {
+                if (i % goals.size() == _team)
+                {
+                    players.get(i).mScoreTracker.scoreGoal();
+                }
+            }
+            /*PlayerEntity scoredPlayer = players.get(_team);
+            scoredPlayer.mScoreTracker.scoreGoal();
             for (PlayerEntity player: players)
             {
                 if (player != scoredPlayer)
                 {
                     player.mScoreTracker.score(ScoreEvent.eConceededGoal);
                 }
-            }
+            }*/
         }
     }
     public void footballDied(Football _football)

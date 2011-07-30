@@ -17,11 +17,11 @@ import Events.AreaEvents.GoalZone;
 import Events.AreaEvents.PlayerSpawnZone;
 import Events.AreaEvents.RaceEndZone;
 import Events.AreaEvents.RaceStartZone;
+import Events.AreaEvents.ToolTipZone;
 import Events.FootballSpawnEvent;
 import Events.GoalSpawnEvent;
 import Events.TutorialSpawnEvent;
 import Events.sEvents;
-import Graphics.Particles.sParticleManager;
 import Level.Lighting.sLightsManager;
 import Level.sLevel.TileType;
 import java.util.HashMap;
@@ -49,6 +49,7 @@ public class FlagProcessor
         eRaceCheckPoint,
         eRaceEndZone,
         eFootballGoal,
+        eTooltip,
         eAreaEventsMax
     }
     int lowestX, lowestY, highestX, highestY;
@@ -122,6 +123,7 @@ public class FlagProcessor
         eventMap.put("RaceCheckPoint", AreaEvents.eRaceCheckPoint);
         eventMap.put("RaceEnd", AreaEvents.eRaceEndZone);
         eventMap.put("FootballGoal", AreaEvents.eFootballGoal);
+        eventMap.put("Tooltip", AreaEvents.eTooltip);
         eventMap.put("None", AreaEvents.eNoEvent);
         for (int i = 0; i < width; i++)
         {
@@ -177,6 +179,11 @@ public class FlagProcessor
                                 }
                                 goals.set(goalNumber, zone);
                             }
+                            break;
+                        }
+                        case eTooltip:
+                        {
+                            ToolTipZone zone = new ToolTipZone(lowestX, lowestY, highestX, highestY, _tiledMap.getTileProperty(id, "String", "Herpa derpa der?"));
                             break;
                         }
                     }

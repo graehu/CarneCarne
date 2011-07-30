@@ -106,6 +106,7 @@ public class FreeCamera extends iCamera implements iEventListener
         return true;
     }
     
+    @Override
     public iCamera addPlayer(Body _body)
     {
         return new BodyCamera(_body, mViewPort, true);
