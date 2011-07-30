@@ -5,7 +5,6 @@
 package Events.AreaEvents;
 
 import Entities.AIEntity;
-import Graphics.sGraphicsManager;
 import org.jbox2d.common.Vec2;
 
 /**

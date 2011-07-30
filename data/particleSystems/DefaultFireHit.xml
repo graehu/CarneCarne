@@ -2,9 +2,9 @@
 <system additive="true" points="false">
 <emitter imageName="" name="Default" renderType="inherit" useAdditive="false" useOriented="false">
 <spawnInterval enabled="true" max="30.0" min="20.0"/>
-<spawnCount enabled="true" max="10.0" min="4.0"/>
+<spawnCount enabled="true" max="6.0" min="4.0"/>
 <initialLife enabled="true" max="1500.0" min="1000.0"/>
-<initialSize enabled="true" max="60.0" min="20.0"/>
+<initialSize enabled="true" max="100.0" min="60.0"/>
 <xOffset enabled="true" max="20.0" min="-20.0"/>
 <yOffset enabled="true" max="20.0" min="-20.0"/>
 <initialDistance enabled="false" max="0.0" min="0.0"/>

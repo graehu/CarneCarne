@@ -4,6 +4,7 @@
  <tile id="0">
   <properties>
    <property name="Anchor " value="True"/>
+   <property name="Animationname" value="Tar"/>
    <property name="Flammable" value="True"/>
    <property name="Material" value="Tar"/>
    <property name="Regrows" value="False"/>

@@ -151,12 +151,14 @@ public class AIEntity extends Entity
                 }
                 else if(collisionNorm.y < - 0.9) //down
                 {
-                    if(edge.contact.isTouching() && !other.isSensor())
+                    if(edge.contact.isTouching())
                     {
-                        if(((Tile)other.getUserData()) != null)
+                        if(((Tile)other.getUserData()) != null && !other.isSensor())
+                        {
                             mTouchingTile = ((Tile)other.getUserData());
-                        mJumpContacts++;
-                        createContactParticle(collisionNorm);
+                            mJumpContacts++;
+                            createContactParticle(collisionNorm);
+                        }
                     }
                     mFloorNormal = collisionNorm.clone();
                 }
@@ -198,7 +200,13 @@ public class AIEntity extends Entity
     }
     protected void createContactParticle(Vec2 _dir)
     {
-        if(mBody.getLinearVelocity().lengthSquared() > 60)
+        createContactParticle(_dir, 60, 1.0f, 0.0f);
+    }
+    //this function will scale the effect linearly from the given speed by the given increment
+    //increment is per unit of speed
+    protected void createContactParticle(Vec2 _dir, float _minSpeed, float _startingScale, float _scaleInc)
+    {
+        if(mBody.getLinearVelocity().lengthSquared() > _minSpeed)
         {
             if(mContactParticleTimer > 10) //assumes 60fps
             {
@@ -319,12 +327,13 @@ public class AIEntity extends Entity
     public void jump(float scale)
     {
         float canJump = mAIEntityState.canJump(getBody().getLinearVelocity().y) * scale;
-        if (canJump != 0.0f)
+        if (canJump != 0.0f )
         {
             getBody().setLinearVelocity(new Vec2(getBody().getLinearVelocity().x, canJump));
             mJumpTimer = mJumpReload;
             mAIEntityState.jump();
             if (!mAIEntityState.getState().equals(State.eSwimming))
+            {
                 try
                 {
                     if(mTouchingTile != null)
@@ -338,6 +347,7 @@ public class AIEntity extends Entity
                 {
                     System.err.println("Null pointer rendering jump particle");
                 }
+            }
         }
     }
     public void stopJumping()
