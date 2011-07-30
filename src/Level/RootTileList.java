@@ -255,7 +255,11 @@ public class RootTileList {
                         maxHealth = health;
                     }
                 }
-                else i++;
+                else
+                {
+                    mRootTiles.add(new EmptyTile());
+                    i++;
+                }
             }
             else
             {

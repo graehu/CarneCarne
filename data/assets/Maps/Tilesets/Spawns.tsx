@@ -31,4 +31,16 @@
    <property name="Spawn" value="Football"/>
   </properties>
  </tile>
+ <tile id="6">
+  <properties>
+   <property name="Event" value="FootballGoal"/>
+   <property name="Number" value="0"/>
+  </properties>
+ </tile>
+ <tile id="7">
+  <properties>
+   <property name="Event" value="FootballGoal"/>
+   <property name="Number" value="1"/>
+  </properties>
+ </tile>
 </tileset>

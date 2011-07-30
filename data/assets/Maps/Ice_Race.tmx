@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="100" height="100" tilewidth="64" tileheight="64">
+ <tileset firstgid="1" source="Tilesets/Spikes.tsx"/>
+ <tileset firstgid="5" source="Tilesets/Spawns.tsx"/>
+ <tileset firstgid="13" source="Tilesets/Ice.tsx"/>
+ <tileset firstgid="29" source="Tilesets/IceSlopes.tsx"/>
+ <tileset firstgid="45" source="Tilesets/Water.tsx"/>
+ <tileset firstgid="49" source="Tilesets/MeatNonEdible.tsx"/>
+ <tileset firstgid="113" source="Tilesets/BoneVerticalSpine.tsx"/>
+ <tileset firstgid="125" source="Tilesets/BoneEnds.tsx"/>
+ <tileset firstgid="145" source="Tilesets/RaceStart.tsx"/>
+ <tileset firstgid="169" source="Tilesets/Finish.tsx"/>
+ <tileset firstgid="184" source="Tilesets/Bouncy.tsx"/>
+ <tileset firstgid="192" source="Tilesets/MeatEdible.tsx"/>
+ <tileset firstgid="208" source="Tilesets/MeatSlopes.tsx"/>
+ <tileset firstgid="224" source="Tilesets/Light.tsx"/>
+ <tileset firstgid="225" source="Tilesets/RaceCheckpoint.tsx"/>
+ <tileset firstgid="234" source="Tilesets/CheckpointFlags.tsx"/>
+ <layer name="background" width="100" height="100">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+3BMQEAAADCoPVP7WULoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgBt5RKnmQJwAAA==
+  </data>
+ </layer>
+ <layer name="Level" width="100" height="100">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+2c3dIUNRCGpzzfS/DgO9gDDwC5DC7LSxBUUAQVFPEH8AdUCqiaS/DAG1Dw7y7sqfpSFUN30p100sls3qq3andmNun0Mzs7k+nZw7Ish+lppi+fm7tcu1/K1nlpNeYw1++cO1y+nC+vkZ+3vH4p5+goiGFlWJsHpgPx+kgszxlrikVtcWJdGW7Bw88Hh5l0nNYsnCS5eRd8FXwN/B74ffAHjDa0xx7LOyWfybrw96VcFm8m1p8RfUh4XAffAH8I/gh8E/zxgu9/4TiOyLJc+Xmnxp3KR20dIjFsLKhcSHjcAt8GfwL+FPwZ+E5J0AJRY4sdu/x9sMQ5bHO/cxIed8Gfg78A3wN/Cb5PjDscw1nmuPw4pcs1LYk9tv+ntknFsXreyzl37hg4TEpYLMw41oitc5tj7LqBew4WY0LlOTx+UCy4x9fY7xK1v3FtwYNSCZOQBZXbUhZUDO7zrv3UdWvsWlbrmi0cM+e8jyOsHT8frVk4r55r6Tevj1+DdeE5c+q9VJLf7OP59lYspMcyrnKOmeG5GvY+J15pHCF/axYlXGrGkjKlkrH2xCI1zpKx92rO99GSRSmPknO02s7JhTWLEh6c+wqWHpHF5gsCp2LvSSOyyPEILDbtncUoHJw416sjshiNg6/Joi9R35HJwk4js9gLA1/+d2Sy6EOTxRjqjcWpctg0KotU3NY1OjnaKwvnkbR3FiPx6I3Furx+P1Uj7l8y7D57QdGpeKzzj/FIMcnZh3LvT1ys4Fg81vmneGyvqd9h7bqRmC9VsHWOc3n0wOTtCrbOcQmPHpicsjEeKSaj3Pse0RSPGJMR7n2P6hiPGJPWOpVj5bqk69t7YiKpM8XeW+dbg8fm56yM1RGnrpT7PsVEq067No9nGXGWKrwOXZf/xyp975S6Z/s7+A/wS0GsWkyceuOBzQmsSz6PcL9fETu9Av8J/ksY8155UPMza2U7/Q3+B/yvMO6WPMJ5uPD35EVkG8m63uZbQ5c+56DFI3SYx+eRbaTrenbJM84SHta15yNc86fOvTR5WNeeW5h7ThRyOENp6PKY4sn9vmGaPOqIuv7wzzUwTR51hF1/hOd9mDR4WM9NuXFax+ErvP7AzsExafDYTN3jd6Jy5scZe1Y19b8QWBuxtrF2qb60ctSSB2asJoCqFaDWxT53kdFvrG1JjLH+RuGB1QTEagVitQSSOgNu25IYa9Q1tOaB1QTEagVitQSSOgNu25IYa9Q1tOZxquZe12NK1RZYj20kS/7fKCbqM2tGTNbzSVY1Jy2esVgzYrKeT5J60yj/ybt2GFMt5TJpOe61w5hqSlqnV2Pcbt4391i6FxZO0mOdtg5eHKfOQkPYPJXv1BzbIXhdyiIVT06Mo4g79pj89dxjVo1nrkuYWPWbG0OqnsGJc8yq+fx7Tm6s+i2NgVK4PqcdjZzk5MaqX40YKIXrU8csrXhKc2PVr1YMlML1qWNWqBr13ts+kXqOtsbcGqdfrRgoYdtI29Fm0nruSdqvRgyUKB5Uf/O5QB1TOhLbuGtQrK3JpB4PJ2o7qr3JpC4PSrE2J5O+eEwmbXgcgteTSTse1DWNE7f93p7979UpHql1Evf07H+vbskjxmRqWZ4uMh5ax8bJBJcVj8kEF5fHZNJGOTz8ZZOJrjg8sPkrTR57dU4tB4fHpiOyjfV4e3ZuXQ2Xx6aQifWYe3VJjZOERyjrcffo0noznwfnP4Q5tp5vsLJG7Z/PQ8vW8w1W1lANHm8oxXaKmjz60dlS5zdt8pCrFovJQ66aLByPr8Bfg78Bfwt+0GRk46k2C8fjIfgR+Dvw9+AfWgxuMLVg4Xj8CH4MfgL+CfwzEs8V/SEOo1YsNkvvE09P793/AYq/2JZAnAAA
+  </data>
+ </layer>
+ <layer name="Foreground" width="100" height="100">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+3b0U7bMBQAUH8R8AJoiNJIk5iAPbF3/nPaPm6N5qjGiu9aWEJIz5EsV/fm2qnaCicOKcH/8/DRJ3Bifuza80j8Ouem0o+/yf1dft33V7lfo236+97693yZ+94m53pPu/ZYxLui/inXbBMAUPoe5Kwt5/ctyN3PdhYM+jVkvwYd1qJd2q+9H9tli3Qq1w0sQ/+b6dL+u1a+rnPbone9BgAwneF6IFqPXRX58vqhq+rrtd1mpLY8rq61BgQAAAAAAABgSvX+9Nh+93v2ues9c3vfAABM7ddM8/yeaZ61qT+fn8Exx+ZgaZb8XLrn3QGANToL4q1cVFfWlu3Qscfi0Vxrcx7EW7morqwt26Fjj8WjudbmIoi3clFdWVu2Q8cei0dzAe+3Se17FUM8sg3q+dzu0uvnRY69b9Wl8fterfgwbjRGlAP4rA75WzzEAQAAAACA0/XW/0P4V91U49Z1rXGieCsHAAAArM/c9z6OnS/Kv/UYz8EDAJyOm9xKX3bta+5vc2Me9WfR8jLpWcBy/AH59D3fQJwAAA==
+  </data>
+ </layer>
+ <layer name="Flags" width="100" height="100">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+3WOwrCQABFUSv341bdiFuy9rsFG4sQiPjPFc+BBykHLhNmsQCY1+7G+D49Wl7psZ4Yz3u0x3Lwrcf7fep+rEbjPv5XLXq0eF+16AGf5x0FAAztR2NeerTo0aJHix4terTo0aJHyzt7bF8+De5Hix4terTo0aIHAAAAv+wwGPPTo0WPFj1a9GjRo0WPFj1a9GjRo0WPFj1a9GjRA4BHHK+jodbjNNg/0qNFjxY9WvRo0aNFDwAAAACAtvN1NOjRokeLHi16tOjRokeLHgD8ss3EmIceLXq06NGiR4seLXq06AGUXQA2k4iiQJwAAA==
+  </data>
+ </layer>
+</map>

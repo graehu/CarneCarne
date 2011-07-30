@@ -3,7 +3,7 @@
  <image source="Images/Flags/light.png" width="64" height="64"/>
  <tile id="0">
   <properties>
-   <property name="Radius" value="600"/>
+   <property name="Radius" value="6000"/>
    <property name="Spawn" value="Light"/>
   </properties>
  </tile>
