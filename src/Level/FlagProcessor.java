@@ -306,7 +306,7 @@ public class FlagProcessor
             mBarrier.enable();
         }
         HashMap parameters = new HashMap();
-        RaceStartZone startZone = null;
+        CheckPointZone startZone = null;
         if (raceEndZone != null)
         {
             CheckPointZone zone = new RaceEndZone(raceEndZone.x, raceEndZone.y, raceEndZone.x2, raceEndZone.y2, checkPoints.size()+1);
@@ -322,7 +322,15 @@ public class FlagProcessor
                     
                 }
             }
-            startZone = new RaceStartZone(raceStartZone.x, raceStartZone.y, raceStartZone.x2, raceStartZone.y2, zone, playerPositions.size());
+            if (raceStartZone == null)
+            {
+                RaceCheckPointParameters params = checkPoints.get(0);
+                startZone = zone = new CheckPointZone(params.x, params.y, params.x2, params.y2, 0, zone);
+            }
+            else
+            {
+                startZone = new RaceStartZone(raceStartZone.x, raceStartZone.y, raceStartZone.x2, raceStartZone.y2, zone, playerPositions.size());
+            }
         }
         for (int i = goals.size()-1; i >= 0; i--)
         {

@@ -4,15 +4,13 @@
  */
 package Events.AreaEvents;
 
-import Graphics.sGraphicsManager;
-
 /**
  *
  * @author alasdair
  */
 public class PlayerSpawnZone extends CheckPointZone
 {
-    public PlayerSpawnZone(int _x, int _y, int _x2, int _y2, RaceStartZone _raceStart)
+    public PlayerSpawnZone(int _x, int _y, int _x2, int _y2, CheckPointZone _raceStart)
     {
         super(_x, _y, _x2, _y2, -1, _raceStart);
     }
