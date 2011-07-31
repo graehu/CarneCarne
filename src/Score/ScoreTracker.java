@@ -51,8 +51,10 @@ abstract public class ScoreTracker
     {
         mGUIManager = _GUIManager;
         mTacoImage = (GraphicalComponent)GUIManager.use(_GUIManager)
-                .createRootComponent(GUIManager.ComponentType.eGraphical, new Vector2f(1500,50), new Vector2f()); //FIXME: assumes 1680x1050
+                .createRootComponent(GUIManager.ComponentType.eGraphical, new Vector2f(1200,50), new Vector2f()); //FIXME: assumes 1680x1050
         mTacoImage.setImage("ui/HUD/taco.png");
+        mTacoImage.setDimentionsToImage();
+        //mTacoImage.setMaintainNativeSize(true);
         
         mScoreText = new Text(sGraphicsManager.getGUIContext(), sFontLoader.createFont("GringoNights", 30), "SCORE", new Vector2f(30,40));
         mTacoImage.addChild(mScoreText);
@@ -70,6 +72,7 @@ abstract public class ScoreTracker
             mDisplayComponent = mRaceWinnerImage = (GraphicalComponent)GUIManager.use(mGUIManager)
                     .createRootComponent(GUIManager.ComponentType.eGraphical, new Vector2f(), new Vector2f());
             mRaceWinnerImage.setImage("ui/HUD/winner.png");
+            mRaceWinnerImage.setDimentionsToImage();
             mRaceWinnerImage.setIsVisible(false);
             if (mGoalImage != null)
             {
@@ -85,6 +88,7 @@ abstract public class ScoreTracker
             mDisplayComponent = mGoalImage = (GraphicalComponent)GUIManager.use(mGUIManager)
                     .createRootComponent(GUIManager.ComponentType.eGraphical, new Vector2f(), new Vector2f());
             mGoalImage.setImage("ui/HUD/goal.png");
+            mGoalImage.setDimentionsToImage();
             mGoalImage.setIsVisible(false);
             if (mRaceWinnerImage != null)
             {

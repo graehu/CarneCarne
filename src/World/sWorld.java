@@ -328,7 +328,7 @@ public class sWorld
                     case eEdible:
                     case eMelonSkin:
                     {
-                        if (tile.damageTile())
+                        if (tile.damageTile(true))
                         {
                             sEvents.triggerEvent(new TileDestroyedEvent((int)callback.getFixture().m_body.getPosition().x, (int)callback.getFixture().m_body.getPosition().y));
                             tile.destroyFixture();

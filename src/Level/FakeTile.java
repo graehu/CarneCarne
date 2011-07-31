@@ -43,7 +43,7 @@ public class FakeTile extends Tile
         //((Entity)mBody.getUserData()).kill();
     }
     @Override
-    public boolean damageTile()
+    public boolean damageTile(boolean _particles)
     {
         return true;
     }

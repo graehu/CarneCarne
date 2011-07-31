@@ -6,10 +6,8 @@ package GUI.Components;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Font;
-import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
-import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.gui.GUIContext;
@@ -50,7 +48,7 @@ public class Button extends GraphicalComponent{
         mCallback = _callback;
     }
 
-    private void changeState(ButtonState _newState)
+    protected void changeState(ButtonState _newState)
     {
         //do not process if already in _newState
         if(mState == _newState)
@@ -60,8 +58,6 @@ public class Button extends GraphicalComponent{
         {
             case eSelected:
             {
-                if(mCallback != null)
-                    mCallback.run();
                 //set relative image and color
                 if(mSelectedImage != null)
                     mImage = mSelectedImage;
@@ -136,25 +132,27 @@ public class Button extends GraphicalComponent{
             }
         }
     }
-
     
     @Override
-    public void mouseClicked(int button, int x, int y, int clickCount) {
-//        switch(button)
-//        {
-//            case Input.MOUSE_LEFT_BUTTON: 
-//            {
-//                Shape myshape = getShape();
-//                if(myshape.contains(x, y))
-//                {
-//                    changeState(ButtonState.eSelected);
-//                    //consumeEvent();
-//                }
-//                else
-//                    changeState(ButtonState.eDefault);
-//            }
-//        }
+    public void mouseReleased(int button, int x, int y) {
+        switch(button)
+        {
+            case Input.MOUSE_LEFT_BUTTON: 
+            {
+                Shape myshape = getShape();
+                if(myshape.contains(x, y))
+                {
+                    if(mCallback != null && mState.equals(ButtonState.eSelected))
+                        mCallback.run();
+                    changeState(ButtonState.eHoverOver);
+                    //consumeEvent();
+                }
+                else
+                    changeState(ButtonState.eDefault);
+            }
+        }
     }
+
     public void addText(GUIContext _context, Font _font, String _str)
     {
          addText(_context, _font, _str, false);
@@ -180,7 +178,7 @@ public class Button extends GraphicalComponent{
     public void setDimensionsToText()
     {
         setDimensions(mText.getDimensions());
-        mText.setLocalTranslation(new Vector2f(0, 0));
+        mText.setLocalTranslation(new Vector2f(0,0));
     }
     
     

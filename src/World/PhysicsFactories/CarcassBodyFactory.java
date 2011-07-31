@@ -52,9 +52,11 @@ public class CarcassBodyFactory implements iPhysicsFactory
         circleFixture.shape = wheelShape;
         
         BodyDef def = new BodyDef();
+        def.angle = (Float)_parameters.get("rotation");
         Entity.CauseOfDeath cause = (Entity.CauseOfDeath)_parameters.get("causeOfDeath");
         switch (cause)
         {
+            case eAcid:
             case eFire:
             {
                 def.type = BodyType.DYNAMIC;
@@ -63,13 +65,14 @@ public class CarcassBodyFactory implements iPhysicsFactory
             case eSpikes:
             {
                 def.type = BodyType.DYNAMIC;
+                Tile tile = (Tile)((Fixture)_parameters.get("attachment")).getUserData();
+                def.angle = -tile.getRootTile().getSlopeType()*90.0f/(180.0f/(float)Math.PI);
                 break;
             }
         }
         def.userData = userData;
         def.position = position;
         def.fixedRotation = false;
-        def.angle = (Float)_parameters.get("rotation");
         def.linearVelocity = (Vec2)_parameters.get("linearVelocity");
         def.angularVelocity = (Float)_parameters.get("angularVelocity");
         def.inertiaScale = 1.0f;
@@ -87,7 +90,7 @@ public class CarcassBodyFactory implements iPhysicsFactory
             PrismaticJointDef jointDef = new PrismaticJointDef();
             Fixture attachment = (Fixture)_parameters.get("attachment");
             Tile tile = (Tile)attachment.getUserData();
-            int direction = (tile).getRootTile().getSlopeType();
+            int direction = tile.getRootTile().getSlopeType();
             Vec2 anchor = tile.getWorldPosition();
             jointDef.initialize(body, attachment.getBody(), anchor/*.sub(mSpikeDirections[direction].mul(0.5f))*/, mSpikeDirections[direction]);
             jointDef.lowerTranslation = 0.0f;

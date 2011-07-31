@@ -18,32 +18,33 @@ import org.newdawn.slick.gui.GUIContext;
 
 /**
  *
- * @author a203945
+ * @author Aaron
  */
 public class Revolver extends GraphicalComponent
 {
-    static int framesPerAmmo = 2;
-    static int AmmoCount = 6;
-    static int fps = 18;
+    static final int framesPerAmmo = 2;
+    static final int AmmoCount = 6;
+    static final int fps = 18;
+    static final int defaultAmmo = 5 * framesPerAmmo;
     static int timer = 0;
-    static int defaultAmmo = 5 * framesPerAmmo;
     
     public Revolver(String _ref, Vector2f _position) {
         super(sGraphicsManager.getGUIContext(), _position, new Vector2f());
-        try {
-            mSpriteSheet = new SpriteSheet(_ref, 190,181);
-        } catch (SlickException ex) {
-            Logger.getLogger(Revolver.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        mSpriteSheet.setFilter(Image.FILTER_LINEAR); //for improved scaling
-        mImage = mSpriteSheet.getSprite(0,0);
-        setDimentionsToImage();
+        init(_ref);
     }
     public Revolver(String _ref)  {
         super(sGraphicsManager.getGUIContext());
-        try {
+        init(_ref);
+    }
+    private void init(String _ref)
+    {
+        //setMaintainNativeSize(true);
+        try 
+        {
             mSpriteSheet = new SpriteSheet(_ref, 190,181);
-        } catch (SlickException ex) {
+        }
+        catch (SlickException ex) 
+        {
             Logger.getLogger(Revolver.class.getName()).log(Level.SEVERE, null, ex);
         }
         mSpriteSheet.setFilter(Image.FILTER_LINEAR); //for improved scaling
@@ -81,7 +82,6 @@ public class Revolver extends GraphicalComponent
     @Override
     protected boolean updateSelf(int _delta) 
     {
-        setLocalScale(1);
         //rotate the sprite relative to current position etc
         if(mCurrentFrame != mTargetFrame)
         {

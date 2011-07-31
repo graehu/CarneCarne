@@ -18,8 +18,8 @@ abstract public class AreaEvent
     {
         x = _x;
         y = _y;
-        x2 = _x2+1;
-        y2 = _y2+1;
+        x2 = _x2;
+        y2 = _y2;
         sAreaEvents.addEvent(this);
     }
     

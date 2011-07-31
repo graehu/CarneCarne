@@ -40,13 +40,14 @@ public class PlayerEntity extends AIEntity
     public      IntroSection        mIntroSection;
     private     Joint               mDeathJoint;
     private     Vec2                mDirection;
-    private int mTeam;
+    private     int                 mTeam;
     public      Reticle             mReticle;
     protected   Revolver            mRevolver;
     private     GraphicalComponent  mHUDArrow;
+    private     GraphicalComponent  mHUDFootball;
     private     Rectangle           mViewPort;
     private     int                 mRaceTimer;
-    private Football mFootball;
+    private     Football            mFootball;
     private     int                 mDeaths;
     private     boolean             mWasIReallyKilled = true;
     public      ScoreTracker        mScoreTracker;
@@ -64,13 +65,20 @@ public class PlayerEntity extends AIEntity
         mDeaths = mRaceTimer = 0;
         mReticle = new Reticle(this);
         
-        mRevolver = new Revolver("ui/revolver.png", new Vector2f(1500,900)); 
+        mRevolver = new Revolver("ui/revolver.png", new Vector2f(1510+38,880+48)); 
         GUIManager.use(mGUIManager).addRootComponent(mRevolver);
+        mRevolver.setDimentionsToImage();
         
-        mHUDArrow = new GraphicalComponent(sGraphicsManager.getGUIContext(), new Vector2f(700,30), new Vector2f(0,0));
+        mHUDArrow = new GraphicalComponent(sGraphicsManager.getGUIContext(), new Vector2f(0,0), new Vector2f(0,0));
         GUIManager.use(mGUIManager).addRootComponent(mHUDArrow);
         mHUDArrow.setImage("ui/HUD/Arrow.png");
         mHUDArrow.setDimentionsToImage();
+        
+        mHUDFootball = new GraphicalComponent(sGraphicsManager.getGUIContext(), new Vector2f(0,0), new Vector2f(0,0));
+        GUIManager.use(mGUIManager).addRootComponent(mHUDFootball);
+        mHUDFootball.setImage("assets/characters/football.png");
+        mHUDFootball.setDimentionsToImage();
+        //mHUDArrow.setMaintainNativeSize(true);
         
         mTeam = 0;
     }
@@ -89,11 +97,7 @@ public class PlayerEntity extends AIEntity
     public void setClip(Rectangle _viewPort)
     {
         mViewPort = _viewPort;
-        float scale = sGraphicsManager.getTrueScreenDimensions().x / 1680.0f; //FIXME: assumes 1680x1050
-        //FIXME: the GUIManager should be scaled by the viewport not the components
         GUIManager.use(mGUIManager).setDimensions(new Vector2f(_viewPort.getWidth(), _viewPort.getHeight()));
-        //mRevolver.setLocalTranslation(new Vector2f(_viewPort.getWidth()/scale - 140*scale,_viewPort.getHeight()/scale - 150*scale)); 
-        //mHUDArrow.setLocalTranslation(new Vector2f(_viewPort.getWidth()/scale *0.5f - mHUDArrow.getImageWidth()*0.5f*scale,30*scale));
     }
     
     public CheckPointZone getCheckPoint()
@@ -180,6 +184,7 @@ public class PlayerEntity extends AIEntity
                             params.put("attachment", killer);
                             /// Purposefully not breaking
                             case eFire:
+                            case eAcid:
                             {
                                 params.put("characterType", "Carne");
                                 try
@@ -309,7 +314,6 @@ public class PlayerEntity extends AIEntity
     @Override
     public void render()
     {
-        //mParticleSys.moveEmittersTo(mBody.getPosition().x*64.0f, mBody.getPosition().y*64.0f);
         mSkin.setRotation(mBodyType, getBody().getAngle()*(180/(float)Math.PI));
         super.render();
     }
@@ -330,11 +334,43 @@ public class PlayerEntity extends AIEntity
                 }
                 else if (mFootball != null)
                 {
+                    Vec2 location = new Vec2(1500,900);
+                    //mHUDFootball.setLocalTranslation(new Vector2f(1500,900));
                     Vec2 direction = mFootball.getBody().getPosition().sub(getBody().getPosition());
                     direction.normalize();
+                    Vec2 screenDimensions = sGraphicsManager.getScreenDimensions();
+                    Vec2 scale = screenDimensions.clone();
+                    scale.x = direction.x / scale.x;
+                    scale.y = direction.y / scale.y;
+                    float dimScale = screenDimensions.y/screenDimensions.x;
+                    if (scale.x * scale.x > scale.y * scale.y)
+                    {
+                        if (scale.x > 0.0f)
+                        {
+                            
+                        }
+                        else
+                        {
+                            location.x = 0;
+                        }
+                        location.y = location.y * ((direction.y * dimScale) + 0.5f);
+                    }
+                    else
+                    {
+                        if (scale.y > 0.0f)
+                        {
+                            
+                        }
+                        else
+                        {
+                            location.y = 0;
+                        }
+                        location.x = location.x * ((direction.x * dimScale) + 0.5f);
+                    }
+                    mHUDFootball.setLocalTranslation(new Vector2f(location.x, location.y).add(mHUDFootball.getDimensions()));
                     rotation = (float)Math.atan2(direction.y, direction.x);
                 }
-                    mHUDArrow.setLocalRotation(rotation*180.0f/(float)Math.PI);
+                mHUDArrow.setLocalRotation(rotation*180.0f/(float)Math.PI);
                     
                // sGraphicsManager.drawString("You have died " + mDeaths + " times", 0f, 0.1f);
             }
@@ -343,7 +379,7 @@ public class PlayerEntity extends AIEntity
             
             mReticle.render(); //always render ontop
             
-            GUIManager.use(mGUIManager).render(false);
+            GUIManager.use(mGUIManager).render(true);
         }
     }
     

@@ -1,6 +1,7 @@
 
 package GUI;
 
+import Events.WindowResizeEvent;
 import Events.iEvent;
 import Events.iEventListener;
 import Events.sEvents;
@@ -79,12 +80,13 @@ public class GUIManager implements iEventListener
     HashMap<Integer, iComponent> mManagedRoots = new HashMap<Integer, iComponent>();
     GameContainer mContainer = null;
     int IDCounter = 0;
-    float scale = 1.0f;
+    Vector2f scale = new Vector2f(1.0f,1.0f);
     Vector2f mDimensions = null;
     
     private GUIManager(GameContainer _context)
     {
-        scale = sGraphicsManager.getTrueScreenDimensions().x / 1680; //FIXME: assumes native resolution at 1680x1050
+        scale.x = sGraphicsManager.getTrueScreenDimensions().x / 1680; //FIXME: assumes native resolution at 1680x1050
+        scale.y = sGraphicsManager.getTrueScreenDimensions().y / 1050;
         if(_context != null)
             mContainer = _context;
         else
@@ -159,7 +161,8 @@ public class GUIManager implements iEventListener
     public void setDimensions(Vector2f _dimensions)
     {
         mDimensions = _dimensions;
-        scale = mDimensions.x / 1680; //FIXME: assumes native resolution at 1680x1050
+        scale.x = mDimensions.x / 1680; //FIXME: assumes native resolution at 1680x1050
+        scale.y = mDimensions.y / 1050;
     }
     public void render(boolean _debug)
     {
@@ -179,14 +182,16 @@ public class GUIManager implements iEventListener
     {
         if(_event.getType().equals("WindowResizeEvent"))
         {
+            WindowResizeEvent e = (WindowResizeEvent)_event;
             if(mDimensions == null)
             {
-                Vec2 screen = sGraphicsManager.getTrueScreenDimensions();
-                scale = screen.x / 1680; //FIXME: assumes native resolution at 1680x1050
+                scale.x = e.getDimensions().x / 1680; //FIXME: assumes native resolution at 1680x1050
+                scale.y = e.getDimensions().y / 1050;
             }
             else
             {
-                scale = mDimensions.x / 1680; //FIXME: assumes native resolution at 1680x1050
+                scale.x = mDimensions.x / 1680; //FIXME: assumes native resolution at 1680x1050
+                scale.y = mDimensions.y / 1050;
             }
         }
         return true; //do not unsubscribe

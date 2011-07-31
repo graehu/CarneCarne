@@ -34,6 +34,10 @@ public class Football extends Pea
     @Override
     public void update()
     {
+        if (mWaterHeight != 0)
+        {
+            buoyancy();
+        }
         ContactEdge edge = getBody().m_contactList;
         while (edge != null)
         {

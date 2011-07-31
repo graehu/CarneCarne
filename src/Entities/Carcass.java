@@ -51,6 +51,7 @@ public class Carcass extends Entity
         }
         catch (NullPointerException e)
         {
+            buoyancy();
             mTimer++;
             if (mTimer == 120)
             {

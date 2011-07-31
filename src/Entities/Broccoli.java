@@ -8,6 +8,7 @@ import Graphics.Particles.ParticleSysBase;
 import Graphics.Particles.sParticleManager;
 import Graphics.Skins.iSkin;
 import World.sWorld;
+import java.util.HashMap;
 import java.util.Random;
 import org.jbox2d.common.Vec2;
 
@@ -273,10 +274,10 @@ public class Broccoli extends AIEntity
                     mSkin.activateSubSkin(mCurrentAnimation, false, mAnimSpeed);
                     mState = brocState.eExplode;
 
-                    ParticleSysBase sys = sParticleManager.createSystem("broccoliExplode1", 
+                    /*ParticleSysBase sys = sParticleManager.createSystem("broccoliExplode1", 
                     sWorld.translateToWorld(mBody.getPosition()).sub(sWorld.getPixelTranslation()).add(new Vec2(32,32))
-                    , 0.001f);
-                    sParticleManager.createSystem("broccoliExplode2", 
+                    , 0.001f);*/
+                    /*sParticleManager.createSystem("broccoliExplode2", 
                     sWorld.translateToWorld(mBody.getPosition()).sub(sWorld.getPixelTranslation()).add(new Vec2(32,32))
                     , 0.001f);//*/
                     /*ParticleSysBase sys = sParticleManager.createSystem("broccoliExplode", 
@@ -290,9 +291,22 @@ public class Broccoli extends AIEntity
             case eExplode:
             {
                 if(!mSkin.isAnimating("broc_3_end"))
-                { 
+                {
                     mSkin.deactivateSubSkin(mCurrentAnimation);
                     mSkin.activateSubSkin(mCurrentAnimation, false, mAnimSpeed);
+                    HashMap params = new HashMap();
+                    params.put("position", mBody.getPosition().add(new Vec2(0,0.5f)));
+                    params.put("radius", 5.0f);
+                    params.put("duration", 30);
+                    sEntityFactory.create("BroccoliExplosion", params);
+                    
+                    ParticleSysBase sys = sParticleManager.createSystem("broccoliExplode1", 
+                        sWorld.translateToWorld(mBody.getPosition()).sub(sWorld.getPixelTranslation()).add(new Vec2(32,32))
+                        , 0.001f);
+                    sParticleManager.createSystem("broccoliExplode2", 
+                        sWorld.translateToWorld(mBody.getPosition()).sub(sWorld.getPixelTranslation()).add(new Vec2(32,32))
+                        , 0.001f);
+                    kill(CauseOfDeath.eMundane, this);
                     /*ParticleSysBase sys = sParticleManager.createSystem("MelonSDamageParticle", 
                         sWorld.translateToWorld(mBody.getPosition()).sub(sWorld.getPixelTranslation()).add(new Vec2(32,32))
                         , 1);*/

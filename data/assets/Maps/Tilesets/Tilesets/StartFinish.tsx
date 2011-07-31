@@ -3,7 +3,8 @@
  <image source="Images/Flags/StartFinish.png" width="128" height="64"/>
  <tile id="0">
   <properties>
-   <property name="Event" value="RaceStart"/>
+   <property name="Event" value="RaceCheckPoint"/>
+   <property name="Number" value="0"/>
   </properties>
  </tile>
  <tile id="1">

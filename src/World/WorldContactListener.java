@@ -13,6 +13,7 @@ import World.ContactListeners.FlipListener;
 import World.ContactListeners.DeathListener;
 import World.ContactListeners.TileBreakListener;
 import Entities.Entity.CauseOfDeath;
+import World.ContactListeners.SelfSensorListener;
 import World.ContactListeners.SpikeListener;
 import World.sWorld.BodyCategories;
 import org.jbox2d.callbacks.ContactImpulse;
@@ -40,10 +41,12 @@ public class WorldContactListener implements ContactListener{
         }
         iListener waterListener = new WaterListener();
         iListener highImpulse = new HighImpulseListener();
+        iListener selfSensorListener = new SelfSensorListener();
         for (int i = 0; i < BodyCategories.eBodyCategoriesMax.ordinal(); i++)
         {
             set(BodyCategories.eWater.ordinal(),i,waterListener);
             set(BodyCategories.eCarcass.ordinal(),i,highImpulse);
+            set(BodyCategories.eSelfSensor.ordinal(),i,selfSensorListener);
         }
         iListener gumListener = new GumListener();
         iListener fireListener = new DeathListener(CauseOfDeath.eFire);
@@ -62,6 +65,7 @@ public class WorldContactListener implements ContactListener{
         //set(BodyCategories.eCarcass.ordinal(),BodyCategories.eSpikes.ordinal(),spikeListener);
         set(BodyCategories.eEnemy.ordinal(),BodyCategories.eFire.ordinal(),fireListener);
         set(BodyCategories.eAcid.ordinal(),BodyCategories.eEnemy.ordinal(),acidListener);
+        set(BodyCategories.eAcid.ordinal(),BodyCategories.eCarcass.ordinal(),waterListener);
         set(BodyCategories.eCarcass.ordinal(),BodyCategories.eFire.ordinal(),fireListener);
         //set(BodyCategories.eCheckPoint.ordinal(), BodyCategories.ePlayer.ordinal(), new CheckPointListener());
         
