@@ -52,7 +52,8 @@ abstract public class TileGrid {
             for (int ii = 0; ii < mHeight; ii++)
             {
                 int id = getTileId(i, ii);
-                if (rootTiles.get(id).mTileType.equals(TileType.eWater))
+                if (rootTiles.get(id).mTileType.equals(TileType.eWater)||
+                        rootTiles.get(id).mTileType.equals(TileType.eAcid))
                 {
                     waterSearcher.addTile(i,ii,rootTiles.get(id));
                 }

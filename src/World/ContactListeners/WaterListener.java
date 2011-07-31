@@ -22,7 +22,8 @@ public class WaterListener implements iListener {
 
     public void beginContact(Contact _contact)
     {
-        if (_contact.m_fixtureA.m_filter.categoryBits == (1 << BodyCategories.eWater.ordinal()))
+        if (_contact.m_fixtureA.m_filter.categoryBits == (1 << BodyCategories.eWater.ordinal()) ||
+                _contact.m_fixtureA.m_filter.categoryBits == (1 << BodyCategories.eAcid.ordinal()))
         {
             ((Entity)_contact.m_fixtureB.m_body.m_userData).submerge(((Tile)_contact.m_fixtureA.m_userData).getWaterHeight());
         }
@@ -34,7 +35,8 @@ public class WaterListener implements iListener {
 
     public void endContact(Contact _contact)
     {
-        if (_contact.m_fixtureA.m_filter.categoryBits == (1 << BodyCategories.eWater.ordinal()))
+        if (_contact.m_fixtureA.m_filter.categoryBits == (1 << BodyCategories.eWater.ordinal()) ||
+                _contact.m_fixtureA.m_filter.categoryBits == (1 << BodyCategories.eAcid.ordinal()))
         {
             ((Entity)_contact.m_fixtureB.m_body.m_userData).unsubmerge();
         }
