@@ -9,6 +9,7 @@ import GUI.Components.Effects.AnimatedEffect;
 import GUI.Components.GraphicalComponent;
 import GUI.Components.ScrollableComponent;
 import GUI.Components.TextField;
+import GUI.Components.ToggleButton;
 import GUI.GUIManager;
 import Graphics.sGraphicsManager;
 import Sound.sSound;
@@ -118,11 +119,15 @@ public class StateTitle extends BasicGameState {
             mOptionsButton.addText(_gc, mUIFont, "OptionS", true);
             mHighScoresButton = new Button(_gc, new Vector2f(), buttonDim);
             mHighScoresButton.addText(_gc, mUIFont, "HighScorES", true);
-            mParticlesToggle = new Button(_gc, new Vector2f(200,-200), buttonDim);
+            
+            mParticlesToggle = new ToggleButton(_gc, new Vector2f(200,-200), buttonDim, true);
             mParticlesToggle.addText(_gc, mUIFont, "ParticlES On", true);
-            mLightingToggle = new Button(_gc, new Vector2f(200,-125), buttonDim);
+            mParticlesToggle.setToggleText("ParticlES On", "ParticlES Off");
+            
+            mLightingToggle = new ToggleButton(_gc, new Vector2f(200,-125), buttonDim, true);
             mLightingToggle.addText(_gc, mUIFont, "Lighting On", true);
-
+            mLightingToggle.setToggleText("Lighting On", "Lighting Off");
+            
             mParalax0.addChild(mParticlesToggle);
             mParalax0.addChild(mLightingToggle);
             
@@ -158,6 +163,16 @@ public class StateTitle extends BasicGameState {
                     mState = MenuState.eRight;
                 }
             });
+            
+            mParticlesToggle.setOnCallback(new Runnable() { public void run() {
+                    sGraphicsManager.setAllowParticles(true);}});
+            mParticlesToggle.setOffCallback(new Runnable() { public void run() {
+                    sGraphicsManager.setAllowParticles(false);}});
+            
+            mLightingToggle.setOnCallback(new Runnable() { public void run() {
+                    sGraphicsManager.setAllowShaders(true);}});
+            mLightingToggle.setOffCallback(new Runnable() { public void run() {
+                    sGraphicsManager.setAllowShaders(false);}});
         }
         GUIManager.get().setAcceptingInput(true);
         GUIManager.set(mGUIManager);
@@ -187,8 +202,9 @@ public class StateTitle extends BasicGameState {
     Button mRaceButton = null;
     Button mOptionsButton = null;
     Button mHighScoresButton = null;
-    Button mParticlesToggle = null;
-    Button mLightingToggle = null;
+    ToggleButton mParticlesToggle = null;
+    ToggleButton mLightingToggle = null;
+    ToggleButton mFullScreenButton = null;
     float mScale = 1.0f;
     float mOffset = 0.0f;
     MenuState mState = MenuState.eCenter;
@@ -203,7 +219,7 @@ public class StateTitle extends BasicGameState {
     public void render(GameContainer _gc, StateBasedGame _sbg, Graphics _grphcs) throws SlickException {
         if(mGUIManager != null)
         {
-            GUIManager.get().render(true);
+            GUIManager.get().render(false);
         }
     }
 

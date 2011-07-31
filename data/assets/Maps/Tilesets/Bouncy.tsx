@@ -4,6 +4,7 @@
  <tile id="0">
   <properties>
    <property name="Animationsname" value="Bounce"/>
+   <property name="FireHitAnimation" value="Default"/>
    <property name="BodyScale" value="0.5"/>
    <property name="Material" value="Bouncy"/>
    <property name="Size" value="4"/>
@@ -13,6 +14,7 @@
  <tile id="4">
   <properties>
    <property name="Animationsname" value="Bounce"/>
+   <property name="FireHitAnimation" value="Default"/>
    <property name="BodyScale" value="0.5"/>
    <property name="Material" value="Bouncy"/>
    <property name="Type" value="NonEdibleSlope"/>

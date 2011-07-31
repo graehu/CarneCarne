@@ -1,8 +1,10 @@
 
 package GUI.Components;
 
+import Graphics.sGraphicsManager;
 import java.util.ArrayList;
 import java.util.Iterator;
+import org.jbox2d.common.Vec2;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
@@ -33,10 +35,11 @@ public abstract class iComponent extends AbstractComponent {
     private iComponent  mParent;
     private ArrayList<iComponent> mChildren = new ArrayList<iComponent>();
     private Vector2f    mDimensions = new Vector2f(0,0);
-    private float       mLocalScale = 1.0f;
+    private boolean     mMaintainNativeSize = false;
+    private Vector2f    mLocalScale = new Vector2f(1.0f,1.0f);
     private float       mLocalRotation = 0.0f;
     private Vector2f    mLocalTranslation = new Vector2f(0,0);
-    private float       mGlobalScale = 1.0f;
+    private Vector2f    mGlobalScale = new Vector2f(1.0f,1.0f);
     private float       mGlobalRotation = 0.0f;
     private Vector2f    mGlobalTranslation = new Vector2f(0,0);
     private Transform   mGlobalTransform = Transform.createTranslateTransform(0, 0);
@@ -98,11 +101,18 @@ public abstract class iComponent extends AbstractComponent {
     private void renderInternal(GUIContext guic, Graphics grphcs, Vector2f _globalPos) throws SlickException
     {      
         float rot = getLocalRotation();
-        float scale = getLocalScale();
+        Vector2f scale = getLocalScale();
         Vector2f trans = getLocalTranslation().add(_globalPos);
         Vector2f center = new Vector2f(trans.x + (getWidth() * 0.5f), trans.y + (getHeight() * 0.5f));
         
-        grphcs.scale(scale, scale);
+        if(mMaintainNativeSize) //if true: only scale translation 
+        {
+            trans.x *= scale.x; trans.y *= scale.y;
+            center.x *= scale.x; center.y *= scale.y;
+            scale.y = scale.x;
+        }
+
+        grphcs.scale(scale.x, scale.y);
         grphcs.rotate(center.x, center.y, rot);
         {
             if(mIsVisible)
@@ -120,7 +130,7 @@ public abstract class iComponent extends AbstractComponent {
             }
         }
         grphcs.rotate(center.x, center.y, -rot);
-        grphcs.scale(1/scale, 1/scale);
+        grphcs.scale(1/scale.x, 1/scale.y);
     }
     private final void renderInternalDebug(Graphics _graphics)
     {
@@ -147,18 +157,28 @@ public abstract class iComponent extends AbstractComponent {
     /*
      * ----------various getters and setters-------------
      */
+    public final boolean getMaintainNativeSize(){return mMaintainNativeSize;}
+    public final void setMaintainNativeSize(boolean _maintain) {mMaintainNativeSize = _maintain;}
     //returns shape translated in global space
     public final Shape getShape(){return mShape;}
-    public final Transform getGlobalTransform(){return mGlobalTransform;}
+    public final Transform getGlobalTransform(){return new Transform(mGlobalTransform);}
     private final Transform calcGlobalTransform()
     {
         float rot = getLocalRotation() / (float)(180.0f/Math.PI);
-        float scale = getLocalScale();
+        Vector2f scale = getLocalScale();
         Vector2f trans = getLocalTranslation();
-        Vector2f center = new Vector2f(trans.x + (getWidth() * 0.5f), trans.y + (getHeight() * 0.5f));
-        Transform scaleT = Transform.createScaleTransform(scale, scale);
+        Vector2f center = new Vector2f(trans.x + (getWidth() * 0.5f), trans.y + (getHeight() * 0.5f));          
+        Transform scaleT = Transform.createScaleTransform(scale.x, scale.y);
+        
+        if(mMaintainNativeSize) //if true: scale size by x only
+        {
+            trans.x *= scale.x; trans.y *= scale.y;
+            center.x *= scale.x; center.y *= scale.y;
+            scale.y = scale.x;
+        }
+        
         Transform rotateT = Transform.createRotateTransform(rot, center.x, center.y);
-        Transform translateT = Transform.createTranslateTransform(getX(), getY());
+        Transform translateT = Transform.createTranslateTransform(trans.x, trans.y);
         Transform transform = scaleT.concatenate(rotateT).concatenate(translateT);
         if(mParent != null)
         {
@@ -166,13 +186,14 @@ public abstract class iComponent extends AbstractComponent {
         }
         return transform;
     }
-    public final float getGlobalScale(){return mGlobalScale;}
-    private final float calcGlobalScale()
+    public final Vector2f getGlobalScale(){return mGlobalScale.copy();}
+    private final Vector2f calcGlobalScale()
     {
-        float scale = mLocalScale;
+        Vector2f scale = getLocalScale();
         if(mParent != null)
         {
-            scale *= mParent.getGlobalScale();
+            scale.x *= mParent.getGlobalScale().x;
+            scale.y *= mParent.getGlobalScale().y;
         }
         return scale;
     }
@@ -186,7 +207,7 @@ public abstract class iComponent extends AbstractComponent {
         }
         return rotation;
     }
-    public final Vector2f getGlobalTranslation(){return mGlobalTranslation;}
+    public final Vector2f getGlobalTranslation(){return mGlobalTranslation.copy();}
     private final Vector2f calcGlobalTranslation()
     {
         Vector2f translation = mLocalTranslation.copy();
@@ -196,10 +217,11 @@ public abstract class iComponent extends AbstractComponent {
         }
         return translation;
     }
-    public final float getLocalScale(){return mLocalScale;}
-    public final void setLocalScale(float _scaleFactor)
+    public final Vector2f getLocalScale(){return mLocalScale.copy();}
+    public final void setLocalScale(Vector2f _scaleFactor)
     {
-        mLocalScale =_scaleFactor;
+        mLocalScale.x = _scaleFactor.x;
+        mLocalScale.y = _scaleFactor.y;
     }
     public final float getLocalRotation(){return mLocalRotation;}
     public final void setLocalRotation(float _degrees)
@@ -275,7 +297,8 @@ public abstract class iComponent extends AbstractComponent {
     }
     public final void destroy()
     {
-        mParent.removeChild(this);
+        if(!isRoot())
+            mParent.removeChild(this);
         destroyInternal();
     }
     protected void destroyInternal()

@@ -93,8 +93,13 @@ public class sGraphicsManager {
         mAllowTransform = false;
         mGameContainer.getGraphics().popTransform();    
     }
+    
     public static boolean getAllowShaders(){return mAllowShaders;}
+    public static void setAllowShaders(boolean _allow){mAllowShaders = _allow;}
+    
     public static boolean getAllowParticles(){return mAllowParticles;}
+    public static void setAllowParticles(boolean _allow){mAllowParticles = _allow;}
+    
     public static void setClip(Rectangle _rect)
     {
         mGameContainer.getGraphics().setClip(_rect);

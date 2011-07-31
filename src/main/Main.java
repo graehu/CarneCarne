@@ -21,6 +21,7 @@ public class Main extends StateBasedGame
     {
         super("CarneCarne!");
     }
+    
     public static void main(String[] arguments)
     {
         //setup native libs
