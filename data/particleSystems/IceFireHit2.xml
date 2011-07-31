@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <system additive="true" points="false">
-<emitter imageName="Z:\NecessaryEvil\Sprites\particles\IceFireHit2.xml" name="Default" renderType="quads" useAdditive="false" useOriented="true">
+<emitter imageName="particleSystems\IceFireHit2.xml" name="Default" renderType="quads" useAdditive="false" useOriented="true">
 <spawnInterval enabled="false" max="100.0" min="100.0"/>
 <spawnCount enabled="true" max="15.0" min="8.0"/>
 <initialLife enabled="true" max="1000.0" min="500.0"/>
