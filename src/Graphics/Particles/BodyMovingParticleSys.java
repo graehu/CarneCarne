@@ -30,6 +30,7 @@ public class BodyMovingParticleSys extends MovingParticleSys
         mParticles.moveEmittersTo(position.x, position.y);
         if (mBody.getFixtureList() == null)
         {
+            mParticles.kill();
             return false;
         }
         return mParticles.update(_delta);

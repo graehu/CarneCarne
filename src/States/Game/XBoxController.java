@@ -101,16 +101,16 @@ public class XBoxController
             //sEvents.triggerEvent(new MapClickEvent(rightStick,"Spit", mPlayer));
         }
         //handle shoulder buttons
-        if(_input.isButtonPressed(5, mPlayer))
+        /*if(_input.isButtonPressed(5, mPlayer))
         {
-            sEvents.triggerEvent(new MapClickEvent(rightStick,"Tongue", mPlayer));
+            sEvents.triggerEvent(new MapClickEvent(rightStick,"TongueHammer", mPlayer));
             mRightShoulderButton = true;
         }
         else if(mRightShoulderButton)//on release
         {
             mRightShoulderButton = false;
-            sEvents.triggerEvent(new MapClickReleaseEvent(rightStick,"Tongue", mPlayer));
-        }
+            sEvents.triggerEvent(new MapClickReleaseEvent(rightStick,"TongueHammer", mPlayer));
+        }*/
         if(_input.isButtonPressed(0, mPlayer)) //jump
         {
             sEvents.triggerEvent(new KeyDownEvent('w', mPlayer));
@@ -167,7 +167,7 @@ public class XBoxController
             {
                 if (_newState != TriggerState.eRightPressed)
                 {
-                    sEvents.triggerEvent(new MapClickReleaseEvent(_rightStick,"Hammer", mPlayer));
+                    sEvents.triggerEvent(new MapClickReleaseEvent(_rightStick,"TongueHammer", mPlayer));
                 }
                 break;
             }
@@ -189,7 +189,7 @@ public class XBoxController
             }
             case eRightPressed:
             {
-                sEvents.triggerEvent(new MapClickEvent(_rightStick,"Hammer", mPlayer));
+                sEvents.triggerEvent(new MapClickEvent(_rightStick,"TongueHammer", mPlayer));
                 break;
             }
             case eLeftPressed:

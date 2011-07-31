@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset name="TileMelonSkin" tilewidth="64" tileheight="64">
+<tileset name="MelonSkin" tilewidth="64" tileheight="64">
  <image source="Images/Special/MelonSkin.png" width="256" height="2048"/>
  <tile id="0">
   <properties>
+   <property name="Animationname" value="MelonS"/>
    <property name="Direction" value="DownRight"/>
    <property name="Material" value="MelonSkin"/>
    <property name="Type" value="MelonSkin"/>

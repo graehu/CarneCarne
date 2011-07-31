@@ -5,7 +5,9 @@
 package Entities;
 
 import AI.PlayerInputController;
+import Events.AreaEvents.AreaEvent;
 import Events.AreaEvents.CheckPointZone;
+import Events.AreaEvents.sAreaEvents;
 import GUI.Components.GraphicalComponent;
 import GUI.GUIManager;
 import Graphics.Skins.iSkin;
@@ -17,13 +19,10 @@ import Score.RaceScoreTracker;
 import Score.ScoreTracker;
 import States.Game.Tutorial.IntroSection;
 import World.sWorld;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import org.jbox2d.common.Vec2;
-import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.Fixture;
-import org.jbox2d.dynamics.contacts.ContactEdge;
 import org.jbox2d.dynamics.joints.Joint;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Vector2f;
@@ -41,11 +40,13 @@ public class PlayerEntity extends AIEntity
     public      IntroSection        mIntroSection;
     private     Joint               mDeathJoint;
     private     Vec2                mDirection;
+    private int mTeam;
     public      Reticle             mReticle;
     protected   Revolver            mRevolver;
     private     GraphicalComponent  mHUDArrow;
     private     Rectangle           mViewPort;
     private     int                 mRaceTimer;
+    private Football mFootball;
     private     int                 mDeaths;
     private     boolean             mWasIReallyKilled = true;
     public      ScoreTracker        mScoreTracker;
@@ -70,6 +71,8 @@ public class PlayerEntity extends AIEntity
         GUIManager.use(mGUIManager).addRootComponent(mHUDArrow);
         mHUDArrow.setImage("ui/HUD/Arrow.png");
         mHUDArrow.setDimentionsToImage();
+        
+        mTeam = 0;
     }
     
     public void destroy() /// FIXME more memory leaks to cleanup in here
@@ -77,6 +80,10 @@ public class PlayerEntity extends AIEntity
         /// Purposefully not destroying the body
         mController.destroy();
         GUIManager.destroy(mGUIManager);
+    }
+    public void setTeam(int _team)
+    {
+        mTeam = _team;
     }
     
     public void setClip(Rectangle _viewPort)
@@ -168,33 +175,30 @@ public class PlayerEntity extends AIEntity
                     switch (_causeOfDeath)
                     {
                         case eSpikes:
-                        {
+                        //{
                             Fixture killer = (Fixture)_killer;
-                            //try
-                            {
-                                Body body = killer.getBody();
-                                //if (body.getType().equals(BodyType.KINEMATIC))
-                                {
-                                    params.put("attachment", killer);
-                                }
-                            }
-                            //catch (Throwable e) /// NullPointer and ClassCast Exceptions
-                            {
-                                
-                            }
+                            params.put("attachment", killer);
                             /// Purposefully not breaking
-                        }
-                        case eFire:
-                        {
-                            params.put("causeOfDeath", _causeOfDeath);
-                            params.put("position", mBody.getPosition());
-                            params.put("rotation", mBody.getAngle());
-                            params.put("linearVelocity", mBody.getLinearVelocity());
-                            params.put("angularVelocity", mBody.getAngularVelocity());
-                            params.put("killer", ((Fixture)_killer).getBody().getUserData());
-                            Entity carcass = sEntityFactory.create("Carcass", params);
-                            break;
-                        }
+                            case eFire:
+                            {
+                                params.put("characterType", "Carne");
+                                try
+                                {
+                                    params.put("killer", ((Fixture)_killer).getBody().getUserData());
+                                }
+                                catch (ClassCastException e)
+                                {
+                                    params.put("killer", _killer);
+                                }
+                                params.put("causeOfDeath", _causeOfDeath);
+                                params.put("position", mBody.getPosition());
+                                params.put("rotation", mBody.getAngle());
+                                params.put("linearVelocity", mBody.getLinearVelocity());
+                                params.put("angularVelocity", mBody.getAngularVelocity());
+                                sEntityFactory.create("Carcass", params);
+                                break;
+                            }
+                        //}
                         default:
                         {
                             break;
@@ -218,7 +222,7 @@ public class PlayerEntity extends AIEntity
     {
         return (a < b + epsilon && a > b - epsilon);
     }
-    HashSet<CheckPointZone> checkpointSet = new HashSet<CheckPointZone>();
+    HashSet<AreaEvent> checkpointSet = new HashSet<AreaEvent>();
     @Override
     protected void subUpdate()
     {
@@ -228,33 +232,23 @@ public class PlayerEntity extends AIEntity
         }
         mReticle.update();
         
-        HashSet<CheckPointZone> newCheckPoints = new HashSet<CheckPointZone>();
-        ContactEdge contact = mBody.getContactList();
-        while (contact != null)
+        HashSet<AreaEvent> newCheckPoints = new HashSet<AreaEvent>();
+        AreaEvent event = sAreaEvents.collidePoint(mBody.getPosition());
+        if (event != null)
+        try
         {
-            if (contact.other.getFixtureList().getFilterData().categoryBits == (1 << sWorld.BodyCategories.eCheckPoint.ordinal()))
+            if (!checkpointSet.contains(event))
             {
-                contact.contact.setEnabled(false);
-                try
-                {
-                    if (!checkpointSet.contains((CheckPointZone)contact.other.getUserData()))
-                    {
-                        ((CheckPointZone)contact.other.getUserData()).enter(this);
-                    }
-                    newCheckPoints.add((CheckPointZone)contact.other.getUserData());
-                }
-                catch (ClassCastException e)
-                {
-                    
-                }
-                //checkpointSet.add((CheckPointZone)contact.other.getUserData());
-                //placeCheckPoint();
+                event.enter(this);
             }
-            contact = contact.next;
+            newCheckPoints.add((CheckPointZone)event);
         }
-        for (CheckPointZone checkPoint: checkpointSet)
+        catch (ClassCastException e) /// Null pointer and class cast
         {
-            if (!newCheckPoints.contains(checkPoint))
+        }
+        for (AreaEvent checkPoint: checkpointSet)
+        {
+            if (!newCheckPoints.contains((CheckPointZone)checkPoint))
             {
                 checkPoint.leave(this);
             }
@@ -327,16 +321,22 @@ public class PlayerEntity extends AIEntity
             if (mCheckPoint != null)
             {
                 mCheckPoint.renderRaceState(mRaceTimer);
+                float rotation = 0;
                 if(mCheckPoint.getNext() != null)
                 {
                     Vec2 direction = mCheckPoint.getNext().getPosition().sub(getBody().getPosition());
                     direction.normalize();
-                    float rotation = (float)Math.atan2(direction.y, direction.x);
-                    //rotation -= 180.0f;
-                    mHUDArrow.setLocalRotation(rotation*180.0f/(float)Math.PI);
+                    rotation = (float)Math.atan2(direction.y, direction.x);
                 }
+                else if (mFootball != null)
+                {
+                    Vec2 direction = mFootball.getBody().getPosition().sub(getBody().getPosition());
+                    direction.normalize();
+                    rotation = (float)Math.atan2(direction.y, direction.x);
+                }
+                    mHUDArrow.setLocalRotation(rotation*180.0f/(float)Math.PI);
                     
-                sGraphicsManager.drawString("You have died " + mDeaths + " times", 0f, 0.1f);
+               // sGraphicsManager.drawString("You have died " + mDeaths + " times", 0f, 0.1f);
             }
             if (mIntroSection != null)
                 mIntroSection.render();
@@ -409,5 +409,15 @@ public class PlayerEntity extends AIEntity
                 getBody().applyLinearImpulse(new Vec2(0.3f*_value,0), getBody().getWorldCenter());
             }
         }
+    }
+
+    public void setFootball(Football _football)
+    {
+        mFootball = _football;
+    }
+
+    public void displayTooltip(String _text)
+    {
+        throw new UnsupportedOperationException("Tooltip text: " + _text);
     }
 }

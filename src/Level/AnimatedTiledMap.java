@@ -180,6 +180,8 @@ public class AnimatedTiledMap extends TiledMap
      */
     public void renderAnimatedLayer(float _x, float _y, int _startX, int _startY, int _width, int _height)
     {
+        _startX = Math.max(0, _startX);
+        _startY = Math.max(0, _startY);
         if (mIsLoaded)
         {
             //assumes lists of equal length

@@ -32,6 +32,7 @@ public class sEntityFactory {
         mFactories.put("SeeSaw", new SeeSawFactory());
         mFactories.put("MovingPlatform", new MovingPlatformFactory());
         mFactories.put("FireParticle", new FireParticleFactory());
+        mFactories.put("BroccoliExplosion", new BroccoliExplosionFactory());
         mFactories.put("Explosion", new ExplosionFactory());
         mFactories.put("Carcass", new CarcassFactory());
     }

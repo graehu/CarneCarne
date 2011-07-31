@@ -6,6 +6,7 @@
 
 package Graphics.Particles;
 
+import Graphics.sGraphicsManager;
 import java.util.HashSet;
 import org.jbox2d.common.Vec2;
 import org.newdawn.slick.particles.ConfigurableEmitter;
@@ -20,6 +21,7 @@ class ParticleSys implements ParticleSysBase
     protected String mRef = null;
     protected float mLife = 0.0f;
     protected boolean mIsDead = false;
+    protected float mScale = 1.0f;
     protected ParticleSystem mSystem = null;
     private HashSet<Integer> mCompletedEmittors = new HashSet<Integer>();
 
@@ -37,6 +39,11 @@ class ParticleSys implements ParticleSysBase
     public boolean isDead()
     {
         return mIsDead;
+    }
+    
+    public boolean isPersistant()
+    {
+        return mLife == -1;
     }
     
     public void kill()
@@ -104,6 +111,11 @@ class ParticleSys implements ParticleSysBase
             ConfigurableEmitter emitter = ((ConfigurableEmitter)mSystem.getEmitter(i));
             ((ConfigurableEmitter.SimpleValue)emitter.angularOffset).setValue(_degrees);
         }
+    }
+    
+    public void setScale(float _s) //FIXME: IS BROKEN - not sure how to scale (graphics context is already translated)
+    {
+        mScale = _s;
     }
 
     /*

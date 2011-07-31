@@ -100,7 +100,7 @@ public class RaceStartZone extends CheckPointZone implements iEventListener
         }*/
         else
         {
-            sGraphicsManager.drawString("Waiting for all players to be ready.", 0f, 0);
+           // sGraphicsManager.drawString("Waiting for all players to be ready.", 0f, 0);
         }
     }
 

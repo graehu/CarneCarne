@@ -9,6 +9,7 @@ import Level.sLevel.TileType;
 import World.sWorld.BodyCategories;
 import java.util.Stack;
 import org.jbox2d.collision.shapes.Shape;
+import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.Fixture;
@@ -20,6 +21,7 @@ import org.jbox2d.dynamics.FixtureDef;
  */
 public abstract class RootTile
 {
+    private static Vec2 mSpikeNormals[];
     TileShape mShape;
     int mId;
     int mSlopeType;
@@ -39,6 +41,10 @@ public abstract class RootTile
     public int getSlopeType()
     {
         return mSlopeType;
+    }
+    public Vec2 getSpikeNormal()
+    {
+        return mSpikeNormals[mSlopeType];
     }
     public enum AnimationType
     {
@@ -63,6 +69,14 @@ public abstract class RootTile
         mIsFlammable = _isFlammable;
         mMaxHealth = _maxHealth;
         mIsEverBurning = false;
+        if (mSpikeNormals == null)
+        {
+            mSpikeNormals = new Vec2[4];
+            mSpikeNormals[0] = new Vec2(0,-1);
+            mSpikeNormals[1] = new Vec2(1,0);
+            mSpikeNormals[2] = new Vec2(0,1);
+            mSpikeNormals[3] = new Vec2(-1,0);
+        }
     }
     /*public RootTile(TileShape _shape, int _id, sLevel.TileType _tileType, String _animationsNames[], int _slopeType, int _maxHealth)
     {

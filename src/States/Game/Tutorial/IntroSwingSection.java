@@ -4,10 +4,10 @@
  */
 package States.Game.Tutorial;
 
+import Events.GenericStringEvent;
 import Events.iEvent;
 import Events.iEventListener;
 import Events.sEvents;
-import Graphics.Skins.iSkin;
 import Graphics.Skins.sSkinFactory;
 import Level.sLevel;
 import java.util.HashMap;
@@ -25,7 +25,12 @@ class IntroSwingSection extends IntroSection implements iEventListener
     {
         super(_position, _playerNumber, "XBoxTop", "XBoxTopTongue", 1.85f);
         Vec2 tile = mPosition.sub(new Vec2(1,3));
-        sEvents.unblockEvent("MapClickEventL"+mPlayerNumber);
+        sEvents.unblockEvent("MapClickEvent"+"Tongue"+mPlayerNumber);
+        sEvents.unblockEvent("MapClickReleaseEvent"+"Tongue"+mPlayerNumber);
+        sEvents.unblockEvent("MapClickEvent"+"TongueHammer"+mPlayerNumber);
+        sEvents.unblockEvent("MapClickReleaseEvent"+"TongueHammer"+mPlayerNumber);
+        sEvents.subscribeToEvent("MapClickReleaseEvent"+"TongueHammer"+mPlayerNumber, this);
+        sEvents.subscribeToEvent("MapClickEvent"+"TongueHammer"+mPlayerNumber, this);
         sLevel.placeTile((int)tile.x,(int)tile.y, 17);
         HashMap params = new HashMap();
         params.put("ref", "SignTutorialSwing");
@@ -49,8 +54,22 @@ class IntroSwingSection extends IntroSection implements iEventListener
 
     public boolean trigger(iEvent _event)
     {
-        mSection = new IntroEndSection(mPosition, mPlayerNumber);
-        return false;
+        if (_event.getName().equals("MapClickEvent"))
+        {
+            sEvents.triggerEvent(new GenericStringEvent("MapClickEvent", "Tongue"+mPlayerNumber));
+            return true;
+        }
+        else if (_event.getName().equals("MapClickReleaseEvent"))
+        {
+            sEvents.triggerEvent(new GenericStringEvent("MapClickReleaseEvent", "Tongue"+mPlayerNumber));
+            return true;
+        }
+        else
+        {
+            if (mSection == this)
+                mSection = new IntroEndSection(mPosition, mPlayerNumber);
+            return false;
+        }
     }
     
 }

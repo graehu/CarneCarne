@@ -3,14 +3,14 @@
 <emitter imageName="" name="Default" renderType="inherit" useAdditive="false" useOriented="false">
 <spawnInterval enabled="true" max="30.0" min="30.0"/>
 <spawnCount enabled="true" max="1.0" min="1.0"/>
-<initialLife enabled="true" max="400.0" min="400.0"/>
+<initialLife enabled="true" max="100.0" min="400.0"/>
 <initialSize enabled="true" max="120.0" min="120.0"/>
 <xOffset enabled="true" max="0.0" min="0.0"/>
 <yOffset enabled="true" max="0.0" min="0.0"/>
 <initialDistance enabled="false" max="0.0" min="0.0"/>
 <speed enabled="true" max="5.0" min="5.0"/>
 <length enabled="false" max="1000.0" min="1000.0"/>
-<emitCount enabled="false" max="1000.0" min="1000.0"/>
+<emitCount enabled="false" max="100.0" min="100.0"/>
 <spread type="random" value="360.0"/>
 <angularOffset type="simple" value="0.0"/>
 <growthFactor type="simple" value="-64.0"/>
@@ -84,14 +84,14 @@
 <emitter imageName="" name="DeekDeekDeek, these are sparks" renderType="inherit" useAdditive="false" useOriented="false">
 <spawnInterval enabled="true" max="300.0" min="150.0"/>
 <spawnCount enabled="true" max="3.0" min="1.0"/>
-<initialLife enabled="true" max="2000.0" min="1000.0"/>
+<initialLife enabled="true" max="1000.0" min="500.0"/>
 <initialSize enabled="true" max="15.0" min="10.0"/>
 <xOffset enabled="true" max="20.0" min="-20.0"/>
 <yOffset enabled="true" max="20.0" min="-20.0"/>
 <initialDistance enabled="false" max="0.0" min="0.0"/>
 <speed enabled="true" max="300.0" min="50.0"/>
 <length enabled="false" max="1000.0" min="1000.0"/>
-<emitCount enabled="false" max="1000.0" min="1000.0"/>
+<emitCount enabled="false" max="100.0" min="100.0"/>
 <spread type="random" value="80.0"/>
 <angularOffset type="simple" value="177.0"/>
 <growthFactor type="simple" value="0.0"/>
@@ -130,14 +130,14 @@
 <emitter imageName="" name="Default_clone" renderType="inherit" useAdditive="false" useOriented="false">
 <spawnInterval enabled="true" max="40.0" min="20.0"/>
 <spawnCount enabled="true" max="1.0" min="1.0"/>
-<initialLife enabled="true" max="800.0" min="800.0"/>
+<initialLife enabled="true" max="400.0" min="400.0"/>
 <initialSize enabled="true" max="70.0" min="50.0"/>
 <xOffset enabled="true" max="20.0" min="-20.0"/>
 <yOffset enabled="true" max="-40.0" min="-40.0"/>
 <initialDistance enabled="false" max="0.0" min="0.0"/>
 <speed enabled="true" max="50.0" min="50.0"/>
 <length enabled="false" max="1000.0" min="1000.0"/>
-<emitCount enabled="false" max="1000.0" min="1000.0"/>
+<emitCount enabled="false" max="100.0" min="100.0"/>
 <spread type="random" value="360.0"/>
 <angularOffset type="simple" value="0.0"/>
 <growthFactor type="simple" value="-5.0"/>

@@ -44,7 +44,7 @@ public class DeathListener implements iListener
         {
             boolean kill = true;
             if (_contact.m_fixtureA.m_body.m_userData != null)
-                kill = ((FireParticle)_contact.m_fixtureB.m_body.m_userData).killedOpponent((Entity)_contact.m_fixtureB.m_body.m_userData);
+                kill = ((Entity)_contact.m_fixtureB.m_body.m_userData).killedOpponent((Entity)_contact.m_fixtureB.m_body.m_userData);
             if (kill)
             {
                 sEvents.triggerDelayedEvent(new EntityDeathEvent(((Entity)_contact.m_fixtureA.m_body.m_userData), mCauseOfDeath, _contact.m_fixtureB));

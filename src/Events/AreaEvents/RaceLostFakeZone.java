@@ -51,7 +51,7 @@ public class RaceLostFakeZone extends CheckPointZone
     @Override
     public void renderRaceState(int _raceTimer)
     {
-        sGraphicsManager.drawString("You lost. So hard. You got place " + placeString() + " in " + getTimeString(_raceTimer) + " seconds.", 0f, 0);
+       // sGraphicsManager.drawString("You lost. So hard. You got place " + placeString() + " in " + getTimeString(_raceTimer) + " seconds.", 0f, 0);
     }
     @Override
     public void enter(AIEntity _entity)

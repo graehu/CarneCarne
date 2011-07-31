@@ -16,8 +16,14 @@ class IntroStartSection extends IntroSection
     public IntroStartSection(Vec2 _position, int _playerNumber)
     {
         super(_position, _playerNumber, null, null, 0.0f);
-        sEvents.blockEvent("MapClickEventL"+mPlayerNumber);
-        sEvents.blockEvent("MapClickEventR"+mPlayerNumber);
+        sEvents.blockEvent("MapClickEvent"+"Spit"+mPlayerNumber);
+        sEvents.blockEvent("MapClickEvent"+"TongueHammer"+mPlayerNumber);
+        sEvents.blockEvent("MapClickEvent"+"Tongue"+mPlayerNumber);
+        sEvents.blockEvent("MapClickEvent"+"Hammer"+mPlayerNumber);
+        sEvents.blockEvent("MapClickReleaseEvent"+"Spit"+mPlayerNumber);
+        sEvents.blockEvent("MapClickReleaseEvent"+"TongueHammer"+mPlayerNumber);
+        sEvents.blockEvent("MapClickReleaseEvent"+"Tongue"+mPlayerNumber);
+        sEvents.blockEvent("MapClickReleaseEvent"+"Hammer"+mPlayerNumber);
         sEvents.blockEvent("KeyDownEvent"+'w'+mPlayerNumber);
     }
 

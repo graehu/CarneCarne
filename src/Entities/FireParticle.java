@@ -73,9 +73,12 @@ public class FireParticle extends Entity
                         kill(CauseOfDeath.eMundane, null);
                     tile.setOnFire();
                     ParticleSysBase system = sParticleManager.createSystem(animationName + "FireHit", position.add(new Vec2(0.5f,0.5f)).mul(64.0f), 2);
-                    direction.normalize();
-                    float offset = (float)Math.atan2(direction.y, direction.x) * 180.0f/(float)Math.PI;
-                    system.setAngularOffset(offset-90.0f);
+                    if(system != null) //catch if system doesn't exist
+                    {
+                        direction.normalize();
+                        float offset = (float)Math.atan2(direction.y, direction.x) * 180.0f/(float)Math.PI;
+                        system.setAngularOffset(offset-90.0f);
+                    }
                     break;
                 }
             }

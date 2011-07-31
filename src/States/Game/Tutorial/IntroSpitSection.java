@@ -8,7 +8,6 @@ import Events.MapClickEvent;
 import Events.iEvent;
 import Events.iEventListener;
 import Events.sEvents;
-import Graphics.Skins.iSkin;
 import Graphics.Skins.sSkinFactory;
 import java.util.HashMap;
 import org.jbox2d.common.Vec2;
@@ -23,12 +22,13 @@ class IntroSpitSection extends IntroSection implements iEventListener
     public IntroSpitSection(Vec2 _position, int _playerNumber)
     {
         super(_position, _playerNumber, "XBoxTop", "XBoxTopSpit", 1.85f);
-        sEvents.blockEvent("MapClickEventL"+mPlayerNumber);
-        sEvents.unblockEvent("MapClickEventR"+mPlayerNumber);
+        sEvents.unblockEvent("MapClickEvent"+"Spit"+mPlayerNumber);
+        sEvents.blockEvent("MapClickEvent"+"Hammer"+mPlayerNumber);
+        sEvents.blockEvent("MapClickEvent"+"TongueHammer"+mPlayerNumber);
         HashMap params = new HashMap();
         params.put("ref", "SignTutorialSpit");
         mSkin = sSkinFactory.create("static", params);
-        sEvents.subscribeToEvent("MapClickEventR"+mPlayerNumber, this);
+        sEvents.subscribeToEvent("MapClickEvent"+"Spit"+mPlayerNumber, this);
         mReturn = this;
     }
 

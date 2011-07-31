@@ -12,8 +12,8 @@ import World.ContactListeners.GumListener;
 import World.ContactListeners.FlipListener;
 import World.ContactListeners.DeathListener;
 import World.ContactListeners.TileBreakListener;
-import World.ContactListeners.CheckPointListener;
 import Entities.Entity.CauseOfDeath;
+import World.ContactListeners.SpikeListener;
 import World.sWorld.BodyCategories;
 import org.jbox2d.callbacks.ContactImpulse;
 import org.jbox2d.callbacks.ContactListener;
@@ -47,7 +47,7 @@ public class WorldContactListener implements ContactListener{
         }
         iListener gumListener = new GumListener();
         iListener fireListener = new DeathListener(CauseOfDeath.eFire);
-        iListener spikeListener = new DeathListener(CauseOfDeath.eSpikes);
+        iListener spikeListener = new SpikeListener();
         iListener acidListener = new DeathListener(CauseOfDeath.eAcid);
         iListener spikeTileListener = new TileBreakListener(1 << BodyCategories.eSpikes.ordinal());
         iListener acidTileListener = new TileBreakListener(1 << BodyCategories.eAcid.ordinal());
@@ -63,7 +63,7 @@ public class WorldContactListener implements ContactListener{
         set(BodyCategories.eEnemy.ordinal(),BodyCategories.eFire.ordinal(),fireListener);
         set(BodyCategories.eAcid.ordinal(),BodyCategories.eEnemy.ordinal(),acidListener);
         set(BodyCategories.eCarcass.ordinal(),BodyCategories.eFire.ordinal(),fireListener);
-        set(BodyCategories.eCheckPoint.ordinal(), BodyCategories.ePlayer.ordinal(), new CheckPointListener());
+        //set(BodyCategories.eCheckPoint.ordinal(), BodyCategories.ePlayer.ordinal(), new CheckPointListener());
         
         set(BodyCategories.eEdibleTiles.ordinal(),BodyCategories.eSpikes.ordinal(),spikeTileListener);
         set(BodyCategories.eEdibleTiles.ordinal(),BodyCategories.eAcid.ordinal(),acidTileListener);

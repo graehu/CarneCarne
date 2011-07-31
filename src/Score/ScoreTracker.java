@@ -28,8 +28,11 @@ abstract public class ScoreTracker
     private int mBestEverTime;
     private float mRenderedScore;
     private int mWinnerTimer;
+    private int mGUIManager;
     private GraphicalComponent mTacoImage;
-    private GraphicalComponent mWinnerImage;
+    private GraphicalComponent mRaceWinnerImage;
+    private GraphicalComponent mGoalImage;
+    private GraphicalComponent mDisplayComponent;
     private Text mScoreText;
 
 
@@ -46,25 +49,53 @@ abstract public class ScoreTracker
     
     protected ScoreTracker(int _GUIManager) 
     {
+        mGUIManager = _GUIManager;
         mTacoImage = (GraphicalComponent)GUIManager.use(_GUIManager)
                 .createRootComponent(GUIManager.ComponentType.eGraphical, new Vector2f(1500,50), new Vector2f()); //FIXME: assumes 1680x1050
         mTacoImage.setImage("ui/HUD/taco.png");
-        
-        mWinnerImage = (GraphicalComponent)GUIManager.use(_GUIManager)
-                .createRootComponent(GUIManager.ComponentType.eGraphical, new Vector2f(), new Vector2f());
-        mWinnerImage.setImage("ui/HUD/winner.png");
-        mWinnerImage.setIsVisible(false);
         
         mScoreText = new Text(sGraphicsManager.getGUIContext(), sFontLoader.createFont("GringoNights", 30), "SCORE", new Vector2f(30,40));
         mTacoImage.addChild(mScoreText);
         
         mRenderedScore = mScore = 0;
         mBestTime = mBestEverTime = Integer.MAX_VALUE;
+        
+        loadGoalImage();
     }
     
+    private void loadWinnerImage()
+    {
+        if (mRaceWinnerImage == null)
+        {
+            mDisplayComponent = mRaceWinnerImage = (GraphicalComponent)GUIManager.use(mGUIManager)
+                    .createRootComponent(GUIManager.ComponentType.eGraphical, new Vector2f(), new Vector2f());
+            mRaceWinnerImage.setImage("ui/HUD/winner.png");
+            mRaceWinnerImage.setIsVisible(false);
+            if (mGoalImage != null)
+            {
+                mGoalImage.destroy();
+                mGoalImage = null;
+            }
+        }
+    }
+    private void loadGoalImage()
+    {
+        if (mGoalImage == null)
+        {
+            mDisplayComponent = mGoalImage = (GraphicalComponent)GUIManager.use(mGUIManager)
+                    .createRootComponent(GUIManager.ComponentType.eGraphical, new Vector2f(), new Vector2f());
+            mGoalImage.setImage("ui/HUD/goal.png");
+            mGoalImage.setIsVisible(false);
+            if (mRaceWinnerImage != null)
+            {
+                mRaceWinnerImage.destroy();
+                mRaceWinnerImage = null;
+            }
+        }
+    }
     public void score(ScoreEvent _event)
     {
-        if (_event.equals(ScoreEvent.eWonRace))
+        if (_event.equals(ScoreEvent.eWonRace) || _event.equals(ScoreEvent.eScoredGoal))
         {
             throw new UnsupportedOperationException("Call winRace instead, not this directly");
         }
@@ -73,6 +104,7 @@ abstract public class ScoreTracker
     abstract public void scoreimpl(ScoreEvent _event);
     public void winRace(int _time, PlayerEntity _player)
     {
+        loadWinnerImage();
         scoreimpl(ScoreEvent.eWonRace);
         if (_time < mBestTime)
         {
@@ -83,12 +115,19 @@ abstract public class ScoreTracker
                 sEvents.triggerEvent(new NewHighScoreEvent(_time, _player));
             }
         }
-        mWinnerImage.setIsVisible(true);
+        mRaceWinnerImage.setIsVisible(true);
         mWinnerTimer = 180;
         sParticleManager.createFirework("Green", new Vec2(500,500), new Vec2(-5,0));
         sParticleManager.createFirework("Green", new Vec2(500,500), new Vec2(5,0));
         sParticleManager.createFirework("Green", new Vec2(500,500), new Vec2(0,-5));
         sParticleManager.createFirework("Green", new Vec2(500,500), new Vec2(0,5));
+    }
+    public void scoreGoal()
+    {
+        loadGoalImage();
+        scoreimpl(ScoreEvent.eScoredGoal);
+        mGoalImage.setIsVisible(true);
+        mWinnerTimer = 180;
     }
     public void raceEnded()
     {
@@ -122,11 +161,11 @@ abstract public class ScoreTracker
         mScoreText.setColor(stringColour);
         mScoreText.setTextString(String.valueOf(renderedScore));
         
-        if (mWinnerImage.isVisible())
+        if (mDisplayComponent.isVisible())
         {
             mWinnerTimer--;
             if (mWinnerTimer == 0)
-                mWinnerImage.setIsVisible(false);
+                mDisplayComponent.setIsVisible(false);
         }
     }
 }

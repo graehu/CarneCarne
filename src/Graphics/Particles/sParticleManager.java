@@ -5,6 +5,7 @@
 package Graphics.Particles;
 
 import Graphics.sGraphicsManager;
+import World.sWorld;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -13,6 +14,7 @@ import java.util.logging.Logger;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.particles.ParticleIO;
 import org.newdawn.slick.particles.ParticleSystem;
 
@@ -35,15 +37,15 @@ public class sParticleManager {
     {
         //warm the pool here
         //FIXME: these are warmed due to icefirehit spawning too many
-        for(int i = 0; i < 20; i++)
-            createSystem("IceFireHit1", new Vec2(-1000,-1000),0);
-        for(int i = 0; i < 20; i++)
-            createSystem("IceFireHit2", new Vec2(-1000,-1000),0);
-        
-        for(int i = 0; i < 4; i++)
-            createSystem("Fire1", new Vec2(-1000,-1000),0);
-        for(int i = 0; i < 4; i++)
-            createSystem("Fire2", new Vec2(-1000,-1000),0);
+//        for(int i = 0; i < 20; i++)
+//            createSystem("IceFireHit1", new Vec2(-1000,-1000),0);
+//        for(int i = 0; i < 20; i++)
+//            createSystem("IceFireHit2", new Vec2(-1000,-1000),0);
+//        
+//        for(int i = 0; i < 4; i++)
+//            createSystem("Fire1", new Vec2(-1000,-1000),0);
+//        for(int i = 0; i < 4; i++)
+//            createSystem("Fire2", new Vec2(-1000,-1000),0);
     }
     /*
      * _ref:        classpath dir of system's .xml
@@ -218,9 +220,23 @@ public class sParticleManager {
         //assumes equal length arrays: mInstancedSystems & mInstancedSysPos
         for(ParticleSysBase particle : mInstancedSystems)
         {
-            //calc positions in screenspace
-            Vec2 position = particle.getPosition();
-            particle.render(position.x + _x, position.y + _y);
+            if(cull(particle))
+            {
+                //calc positions in screenspace
+                Vec2 position = particle.getPosition();
+                particle.render(position.x + _x, position.y + _y);
+            }
         }
+    }
+    private static boolean cull(ParticleSysBase _p)
+    {
+        Rectangle clip = sGraphicsManager.getClip();
+        Vec2 offset = sWorld.getPixelTranslation();
+        Rectangle particle = new Rectangle(_p.getPosition().x + offset.x, _p.getPosition().y + offset.y, clip.getWidth(), clip.getHeight());
+        if(clip.intersects(particle))
+        {
+            return true;
+        }
+        return false;
     }
 }

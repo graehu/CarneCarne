@@ -23,8 +23,8 @@ public class CarcassFactory implements iEntityFactory
     {
         mTextures = new String[Entity.CauseOfDeath.eCauseOfDeathMax.ordinal()];
         mOffsets = new Vec2[Entity.CauseOfDeath.eCauseOfDeathMax.ordinal()];
-        mTextures[Entity.CauseOfDeath.eSpikes.ordinal()] = "characters/testdeath";
-        mTextures[Entity.CauseOfDeath.eFire.ordinal()] = "characters/burnt";
+        mTextures[Entity.CauseOfDeath.eSpikes.ordinal()] = "characters/spikes";
+        mTextures[Entity.CauseOfDeath.eFire.ordinal()] = "characters/fire";
 
         mOffsets[Entity.CauseOfDeath.eSpikes.ordinal()] = new Vec2(-19,-19);
         mOffsets[Entity.CauseOfDeath.eFire.ordinal()] = new Vec2(0,0);
@@ -32,7 +32,7 @@ public class CarcassFactory implements iEntityFactory
     public Entity useFactory(HashMap _parameters)
     {
         int cause = ((Entity.CauseOfDeath)_parameters.get("causeOfDeath")).ordinal();
-        _parameters.put("ref", mTextures[cause]);
+        _parameters.put("ref", mTextures[cause] + (String)_parameters.get("characterType"));
         iSkin skin = sSkinFactory.create("static", _parameters);
         Entity entity = new Carcass(skin, _parameters.get("killer"),mOffsets[cause]);
 

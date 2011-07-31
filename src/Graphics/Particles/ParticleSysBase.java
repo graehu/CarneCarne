@@ -16,6 +16,7 @@ public interface ParticleSysBase
     
     //accessor for mIsDead
     public boolean isDead();
+    public boolean isPersistant();
     
     public void kill();
     
@@ -46,4 +47,5 @@ public interface ParticleSysBase
     public Vec2 getPosition();
 
     public void setPosition(Vec2 mul);
+    public void setScale(float _s);
 }

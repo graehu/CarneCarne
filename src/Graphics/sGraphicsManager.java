@@ -32,7 +32,7 @@ public class sGraphicsManager {
 
     private static Vec2 mNativeScreenDimentions = new Vec2(0,0);
     private static Vec2 mScreenDimensions = new Vec2(0,0);
-    private static Rectangle mClip;
+    private static Rectangle mClip, mWorldClip;
     private static boolean mAllowTransform = false;
     private static boolean mIsFullScreen = false;
     private static DisplayMode mLastDisplayMode = null;
@@ -69,7 +69,9 @@ public class sGraphicsManager {
     }
     public static void onResize()
     {
-        sEvents.triggerEvent(new WindowResizeEvent(new Vec2(Display.getDisplayMode().getWidth(), Display.getDisplayMode().getHeight())));
+        Vec2 dim = new Vec2(Display.getDisplayMode().getWidth(), Display.getDisplayMode().getHeight());
+        sEvents.triggerEvent(new WindowResizeEvent(dim));
+        mWorldClip.setBounds(0, 0, dim.x, dim.y);
     }
     static public void init(AppGameContainer _gc) throws SlickException
     {
@@ -79,7 +81,7 @@ public class sGraphicsManager {
         mNativeScreenDimentions.x = Display.getDesktopDisplayMode().getWidth();
         mNativeScreenDimentions.y = Display.getDesktopDisplayMode().getHeight();
         sFontLoader.setDefaultFont("default");
-        
+        mWorldClip = new Rectangle(0,0,mScreenDimensions.x,mScreenDimensions.y);
     }
     public static void beginTransform()
     {
@@ -105,6 +107,10 @@ public class sGraphicsManager {
     public static Rectangle getClip()
     {
         return mClip;
+    }
+    public static Rectangle getWorldClip()
+    {
+        return mWorldClip;
     }
     public static void translate(float _x, float _y)
     {

@@ -18,6 +18,8 @@ import Graphics.sGraphicsManager;
 import GUI.HUD.sHud;
 import Input.sInput;
 import Sound.sSound;
+import States.Game.Adventure.AdventureMode;
+import States.Game.FootballMode.FootballMode;
 import States.Game.RaceMode.RaceMode;
 import States.Menu.StateMenu;
 import States.StateChanger;
@@ -161,6 +163,7 @@ public class StateGame extends BasicGameState implements iEventListener {
         //mGameMode = new FootballMode();
         mGameMode = new RaceMode();
         //mGameMode = new IntroMode();
+        //mGameMode = new AdventureMode();
         
         //subscribe to events (must be done before further initialisation)  
         sEvents.subscribeToEvent("PlayerCreatedEvent", this);

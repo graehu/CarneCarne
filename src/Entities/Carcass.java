@@ -18,16 +18,22 @@ public class Carcass extends Entity
     int mTimer;
     Object mKilledMe;
     Vec2 mOffset;
+    int mSpawnTimer;
     public Carcass(iSkin _skin, Object _killedMe, Vec2 _offset)
     {
         super(_skin);
         mTimer = 0;
         mKilledMe = _killedMe;
         mOffset = _offset;
+        mSpawnTimer = 50;
     }
     @Override
     public void update()
     {
+        if (mSpawnTimer != 0)
+        {
+            mSpawnTimer--;
+        }
         try
         {
             PrismaticJoint attachment = (PrismaticJoint)mBody.getJointList().joint;
@@ -65,7 +71,7 @@ public class Carcass extends Entity
     @Override
     public void kill(CauseOfDeath _causeOfDeath, Object _killer)
     {
-        if (mKilledMe != _killer)
+        if (mKilledMe != _killer && mSpawnTimer == 0)
         {
             super.kill(_causeOfDeath, _killer);
         }

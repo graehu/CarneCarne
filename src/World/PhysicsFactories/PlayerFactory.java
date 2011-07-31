@@ -40,6 +40,7 @@ public class PlayerFactory implements iPhysicsFactory {
         circleFixture.filter.categoryBits = (1 << category.ordinal());
         circleFixture.filter.maskBits = Integer.MAX_VALUE;
         circleFixture.shape = wheelShape;
+        circleFixture.friction = 5;
         BodyDef def = new BodyDef();
         def.type = BodyType.DYNAMIC;
         def.userData = entity;

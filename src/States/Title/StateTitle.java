@@ -49,6 +49,7 @@ public class StateTitle extends BasicGameState {
     @Override
     public void enter(final GameContainer _gc, final StateBasedGame _sbg) throws SlickException 
     {
+        cont = _gc;
         if(!inited) //we do this here so if the state is not used it is not inited
         {
             inited = true;
@@ -117,9 +118,9 @@ public class StateTitle extends BasicGameState {
             mOptionsButton.addText(_gc, mUIFont, "OptionS", true);
             mHighScoresButton = new Button(_gc, new Vector2f(), buttonDim);
             mHighScoresButton.addText(_gc, mUIFont, "HighScorES", true);
-            mParticlesToggle = new Button(_gc, new Vector2f(), buttonDim);
+            mParticlesToggle = new Button(_gc, new Vector2f(200,-200), buttonDim);
             mParticlesToggle.addText(_gc, mUIFont, "ParticlES On", true);
-            mLightingToggle = new Button(_gc, new Vector2f(), buttonDim);
+            mLightingToggle = new Button(_gc, new Vector2f(200,-125), buttonDim);
             mLightingToggle.addText(_gc, mUIFont, "Lighting On", true);
 
             mParalax0.addChild(mParticlesToggle);
@@ -158,15 +159,11 @@ public class StateTitle extends BasicGameState {
                 }
             });
         }
-        else
-        {
-            GUIManager.get().setAcceptingInput(true);
-        }
+        GUIManager.get().setAcceptingInput(true);
         GUIManager.set(mGUIManager);
-        cont = _gc;
-        super.enter(_gc, _sbg);
         //container.setMouseCursor("ui/title/mouse.png", 0, 62); //FIXME: break in fullscreen
-        sSound.playAsMusic("menu1", true);
+        //sSound.playAsMusic("menu1", true);
+        super.enter(_gc, _sbg);
     }
 
     @Override
@@ -206,7 +203,7 @@ public class StateTitle extends BasicGameState {
     public void render(GameContainer _gc, StateBasedGame _sbg, Graphics _grphcs) throws SlickException {
         if(mGUIManager != null)
         {
-            GUIManager.get().render(false);
+            GUIManager.get().render(true);
         }
     }
 

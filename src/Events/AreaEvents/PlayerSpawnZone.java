@@ -19,7 +19,7 @@ public class PlayerSpawnZone extends CheckPointZone
     @Override
     public void renderRaceState(int _raceTimer)
     {
-        sGraphicsManager.drawString("Head to the race's starting point", 0f, 0);
+      //  sGraphicsManager.drawString("Head to the race's starting point", 0f, 0);
     }
     @Override
     public boolean incrementRaceTimer()

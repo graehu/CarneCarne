@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <system additive="false" points="false">
-<emitter imageName="particleSystems\SpitParticle2.png" name="NewEmitter_1310550230079" renderType="quads" useAdditive="false" useOriented="true">
+<emitter imageName="Z:\NecessaryEvil\Sprites\particles\DefaultTongueHit.xml" name="NewEmitter_1310550230079" renderType="quads" useAdditive="false" useOriented="true">
 <spawnInterval enabled="true" max="100.0" min="10.0"/>
 <spawnCount enabled="true" max="1.0" min="1.0"/>
 <initialLife enabled="true" max="300.0" min="100.0"/>
@@ -11,8 +11,8 @@
 <speed enabled="true" max="150.0" min="50.0"/>
 <length enabled="true" max="150.0" min="100.0"/>
 <emitCount enabled="false" max="1000.0" min="1000.0"/>
-<spread type="random" value="104.0"/>
-<angularOffset type="simple" value="327.0"/>
+<spread type="random" value="360.0"/>
+<angularOffset type="simple" value="360.0"/>
 <growthFactor type="simple" value="0.0"/>
 <gravityFactor type="simple" value="0.0"/>
 <windFactor type="simple" value="0.0"/>
@@ -39,7 +39,7 @@
 <step b="0.8" g="0.0" offset="1.0" r="0.0"/>
 </color>
 </emitter>
-<emitter imageName="C:\Users\G203948\Desktop\SpriteSheets\SpitParticle2.png" name="NewEmitter_1310550230079_clone" renderType="quads" useAdditive="false" useOriented="true">
+<emitter imageName="Z:\NecessaryEvil\Sprites\particles\DefaultTongueHit.xml" name="NewEmitter_1310550230079_clone" renderType="quads" useAdditive="false" useOriented="true">
 <spawnInterval enabled="true" max="100.0" min="10.0"/>
 <spawnCount enabled="true" max="1.0" min="1.0"/>
 <initialLife enabled="true" max="700.0" min="500.0"/>
@@ -78,7 +78,7 @@
 <step b="0.8" g="0.0" offset="1.0" r="0.0"/>
 </color>
 </emitter>
-<emitter imageName="C:\Users\G203948\Desktop\SpriteSheets\SpitParticle2.png" name="NewEmitter_1310550230079_clone_clone" renderType="quads" useAdditive="false" useOriented="true">
+<emitter imageName="Z:\NecessaryEvil\Sprites\particles\DefaultTongueHit.xml" name="NewEmitter_1310550230079_clone_clone" renderType="quads" useAdditive="false" useOriented="true">
 <spawnInterval enabled="true" max="100.0" min="10.0"/>
 <spawnCount enabled="true" max="1.0" min="1.0"/>
 <initialLife enabled="true" max="300.0" min="100.0"/>

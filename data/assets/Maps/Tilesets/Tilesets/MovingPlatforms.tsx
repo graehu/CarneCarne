@@ -25,4 +25,14 @@
    <property name="Type" value="NonEdible"/>
   </properties>
  </tile>
+ <tile id="9">
+  <properties>
+   <property name="Anchor" value="True"/>
+   <property name="Animationsname" value="NonEdible"/>
+   <property name="Direction" value="Right"/>
+   <property name="Material" value="NonEdible"/>
+   <property name="MaxHealth" value="2"/>
+   <property name="Type" value="Line"/>
+  </properties>
+ </tile>
 </tileset>

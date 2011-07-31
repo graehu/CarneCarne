@@ -44,6 +44,5 @@ public class Firework extends MovingParticleSys
     public void recycle()
     {
         super.recycle();
-    }
-    
+    }    
 }

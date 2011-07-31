@@ -839,7 +839,7 @@ public class TongueStateMachine {
                 ((PlayerEntity)mAIController.mEntity).changeBodyType(mTile.getTileType());
                 if (mTile.getTileType().equals(TileType.eChilli) && mMouthParticles == null)
                 {
-                    mMouthParticles = sParticleManager.createMovingSystem("CarneFire", -1, mAIController.mEntity.getBody(), new Vec2(0,0), new Vec2(0.5f,0.5f));
+                    mMouthParticles = sParticleManager.createMovingSystem("CarneFire", 1, mAIController.mEntity.getBody(), new Vec2(0,0), new Vec2(0.5f,0.5f));
                 }
                 //no tongue
                 mAIController.mEntity.mSkin.deactivateSubSkin("tng");

@@ -6,7 +6,7 @@
    <property name="Anchor" value="True"/>
    <property name="BarrierName" value="StartGate"/>
    <property name="Material" value="NonEdible"/>
-   <property name="Size" value="1"/>
+   <property name="Size" value="4"/>
    <property name="Spawn" value="StartBarrier"/>
    <property name="Type" value="NonEdible"/>
   </properties>

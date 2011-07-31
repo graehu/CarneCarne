@@ -16,6 +16,10 @@ public class NullParticleSys implements ParticleSysBase
     public boolean isDead() {
         return true;
     }
+    
+    public boolean isPersistant() {
+        return false;
+    }
 
     public void kill() {
         
@@ -61,7 +65,8 @@ public class NullParticleSys implements ParticleSysBase
         return null;
     }
     public void setPosition(Vec2 mul) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    }
+    public void setScale(float _s){
     }
     
 }
