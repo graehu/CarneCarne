@@ -5,7 +5,9 @@
 package Level;
 
 import Graphics.Particles.sParticleManager;
+import Graphics.Skins.sSkinFactory;
 import Level.sLevel.TileType;
+import Sound.sSound;
 import java.util.HashMap;
 import java.util.Stack;
 import org.jbox2d.common.Vec2;
@@ -107,12 +109,15 @@ public class Tile
     {
         return ((ZoomzoomTile)mRootId).getBoostDirection();
     }
-    public boolean damageTile(boolean _particles)
+    public boolean damageTile(boolean _effects)
     {
         if (mHealth > 1)
         {
-            if (_particles)
+            if (_effects)
+            {
                 sParticleManager.createSystem(mRootId.getAnimationsName(RootTile.AnimationType.eDamage) + "DamageParticle", mTileGrid.mBody.getWorldPoint(new Vec2(mXTile,mYTile)).mul(64.0f).add(new Vec2(32,32)), 1f);
+                sSound.play(sSound.Sound.eTileSmash, mRootId.getTileType());
+            }
             mRootId = mRootId.getNext();
             mHealth--;
             Stack<Integer> stack = new Stack<Integer>();
@@ -126,9 +131,10 @@ public class Tile
             }
             return false;
         }
-        if (_particles)
+        if (_effects)
         {
             sParticleManager.createSystem(mRootId.getAnimationsName(RootTile.AnimationType.eDamage) + "DestroyParticle", mTileGrid.mBody.getWorldPoint(new Vec2(mXTile,mYTile)).mul(64.0f).add(new Vec2(32,32)), 1f);
+            sSound.play(sSound.Sound.eTileSmash, mRootId.getTileType());
         }
         return true;
     }

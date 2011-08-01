@@ -4,6 +4,9 @@
  */
 package Sound;
 
+import Sound.SoundPlayers.NullPlayer;
+import Sound.SoundPlayers.SimplePlayer;
+import Sound.SoundPlayers.SinglePlayBlocker;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.logging.Level;
@@ -20,7 +23,33 @@ import org.newdawn.slick.openal.SoundStore;
 public class sSound
 {
     static float mDefaultGain = 0.5f;
-    private static HashMap<String, Audio> mSounds = new HashMap();    
+    private static HashMap<String, Audio> mSounds = new HashMap();
+
+    public enum Sound
+    {
+        ePlayerUnderwater,
+        
+        ePlayerJump, /// Parameter is sLevel.TileType (including eEmpty)
+        ePlayerDeath, /// Parameter is Entity.CauseOfDeath
+        eLaunchFireball,
+        eFireHitWater,
+        eFireHitObject, 
+        eSpitBlock,
+        eTileEat, /// Parameter is sLevel.TileType
+        eTileSmash, /// Parameter is sLevel.TileType
+        eTongueFire,
+        eFireParticleBurn,
+        eTarFireBurn,
+        
+        eFootballDeath, /// Parameter is Entity.CauseOfDeath
+        eBroccoliExplode,
+        
+        eRaceWin,
+        eGoalScore,
+        eCheckPointHit,
+        eSoundsMax
+    }
+    private static iSoundPlayer mSoundPlayers[];
        
     private sSound()
     {
@@ -28,6 +57,14 @@ public class sSound
     public static void init()
     {
         SoundStore.get().init();
+        mSoundPlayers = new iSoundPlayer[Sound.eSoundsMax.ordinal()];
+        iSoundPlayer nullPlayer = new NullPlayer();
+        for (int i = 0; i < mSoundPlayers.length; i++)
+        {
+            mSoundPlayers[i] = nullPlayer;
+        }
+        mSoundPlayers[Sound.ePlayerUnderwater.ordinal()] = new SinglePlayBlocker(new SimplePlayer("underwater"));
+        loadSound("underwater", "assets/sfx/underwater_1.ogg");
     }
     public static void poll(int _delta)
     {
@@ -42,6 +79,22 @@ public class sSound
             return null;
         }
         return audio;
+    }
+    public static void play(Sound _sound)
+    {
+        play(_sound, null);
+    }
+    public static void stop(Sound _sound)
+    {
+        stop(_sound, null);
+    }
+    public static void play(Sound _sound, Object _parameter)
+    {
+        mSoundPlayers[_sound.ordinal()].play(_parameter);
+    }
+    public static void stop(Sound _sound, Object _parameter)
+    {
+        mSoundPlayers[_sound.ordinal()].stop(_parameter);
     }
     public static void play(String _soundName)
     {
@@ -80,13 +133,13 @@ public class sSound
         Audio audio = getSound(_soundName);
         audio.playAsMusic(1.0f, mDefaultGain, _loop);
     }   
-    public static void stop(String _soundName)
+    public static void stop(String _soundName) /// This function doesn't work
     {
         Audio audio = getSound(_soundName);
         if(audio != null)
             mSounds.get(_soundName).stop();
     }
-    public static void loadSound(String _soundName, String _soundFile) throws SlickException
+    public static void loadSound(String _soundName, String _soundFile)
     {
         Audio newAudio = null;
         try {newAudio = SoundStore.get().getOggStream(_soundFile);} 

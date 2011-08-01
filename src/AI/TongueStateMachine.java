@@ -14,6 +14,7 @@ import GUI.HUD.sHud;
 import Level.RootTile.AnimationType;
 import Level.Tile;
 import Level.sLevel.TileType;
+import Sound.sSound;
 import World.TongueAnchor;
 import World.sWorld;
 import java.util.HashMap;
@@ -234,6 +235,7 @@ public class TongueStateMachine {
                     }
                     case eIce:
                     case eIndestructible:
+                    case eTar:
                     {
                         Vec2 pos = sWorld.translateToWorld(mTonguePosition).sub(sWorld.getPixelTranslation());
                         pos = pos.add(new Vec2(32,32));
@@ -799,7 +801,7 @@ public class TongueStateMachine {
             case eFiringTongue:
             {
                 //sound 
-                //sSound.play("tongueFire");
+                sSound.play(sSound.Sound.eTongueFire);
                 mTongueDir = mAIController.mPlayerDir; //assume nomalised
                 //render tongue
                 mAIController.mEntity.mSkin.activateSubSkin("tng", false, 0.0f);

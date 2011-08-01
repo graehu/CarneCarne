@@ -46,7 +46,7 @@ public class ZoomzoomListener implements iListener
         _contact.setEnabled(false);
     }
 
-    public void postSolve(Contact _contact, ContactImpulse _impulse) {
+    public void postSolve(Contact _contact, ContactImpulse _impulse)
+    {
     }
-    
 }

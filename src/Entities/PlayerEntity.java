@@ -17,6 +17,7 @@ import GUI.HUD.Revolver;
 import Level.sLevel.TileType;
 import Score.RaceScoreTracker;
 import Score.ScoreTracker;
+import Sound.sSound;
 import States.Game.Tutorial.IntroSection;
 import World.sWorld;
 import java.util.HashMap;
@@ -156,6 +157,7 @@ public class PlayerEntity extends AIEntity
             {
                 mCheckPoint = _checkPoint;
                 mCheckPointPosition = getBody().getPosition().clone();
+                sSound.play(sSound.Sound.eCheckPointHit);
                 //sEvents.triggerDelayedEvent(new ShowDirectionEvent(this));
             }
         }
@@ -173,6 +175,7 @@ public class PlayerEntity extends AIEntity
             {
                 if (mWasIReallyKilled)
                 {
+                    sSound.play(sSound.Sound.ePlayerDeath, _causeOfDeath);
                     mDeaths++;
                     mScoreTracker.score(ScoreTracker.ScoreEvent.eDied);
                     HashMap params = new HashMap();
@@ -223,6 +226,7 @@ public class PlayerEntity extends AIEntity
             ((PlayerInputController)mController).kill();
         }
     }
+    
     boolean compareFloat(float a, float b, float epsilon)
     {
         return (a < b + epsilon && a > b - epsilon);
@@ -231,6 +235,10 @@ public class PlayerEntity extends AIEntity
     @Override
     protected void subUpdate()
     {
+        if (mWaterHeight != 0)
+            sSound.play(sSound.Sound.ePlayerUnderwater);
+        else
+            sSound.stop(sSound.Sound.ePlayerUnderwater);
         if (mCheckPoint != null && mCheckPoint.incrementRaceTimer()) /// FIXME - put this null check in as a quick fix for IntroMode
         {
             mRaceTimer++;

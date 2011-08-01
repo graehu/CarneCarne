@@ -5,6 +5,7 @@
 package Level;
 
 import Graphics.Particles.sParticleManager;
+import Sound.sSound;
 import java.util.LinkedList;
 import java.util.Queue;
 import org.jbox2d.common.Vec2;
@@ -49,6 +50,7 @@ class TileFire
             Vec2 localPosition = _tile.getLocalPosition();
             sParticleManager.createMovingSystem("TarBurn", 180/60.0f,body, localPosition, new Vec2(0,0));
         }
+        sSound.play(sSound.Sound.eTarFireBurn);
     }
     void update()
     {

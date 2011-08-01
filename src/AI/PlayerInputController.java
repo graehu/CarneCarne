@@ -20,6 +20,7 @@ import Events.sEvents;
 import Events.RightStickEvent;
 import Graphics.Particles.sParticleManager;
 import Level.Tile;
+import Sound.sSound;
 import World.sWorld;
 import java.util.HashMap;
 import java.util.Random;
@@ -253,6 +254,7 @@ public class PlayerInputController extends iAIController implements iEventListen
     }
     public void spitBlock(final Tile _tile)
     {
+        sSound.play(sSound.Sound.eSpitBlock);
         HashMap parameters = new HashMap();
         //intialise velocity relative to carne's
         parameters.put("velocity", mPlayerDir.mul(20.0f).add(mEntity.getBody().getLinearVelocityFromLocalPoint(new Vec2(0,0))));
@@ -264,6 +266,7 @@ public class PlayerInputController extends iAIController implements iEventListen
     }
     public void breathFire()
     {
+        sSound.play(sSound.Sound.eLaunchFireball);
         HashMap parameters = new HashMap();
         //intialise velocity relative to carne's
         parameters.put("velocity", mPlayerDir.mul(20.0f));//.add(mEntity.getBody().getLinearVelocity()));

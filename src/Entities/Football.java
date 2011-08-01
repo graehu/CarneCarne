@@ -10,6 +10,7 @@ import Events.AreaEvents.sAreaEvents;
 import Graphics.Skins.iSkin;
 import Level.Tile;
 import Level.sLevel.TileType;
+import Sound.sSound;
 import States.Game.FootballMode.FootballMode;
 import java.util.HashMap;
 import org.jbox2d.common.Vec2;
@@ -100,6 +101,7 @@ public class Football extends Pea
     {
         if (mBody != null)
         {
+            sSound.play(sSound.Sound.eFootballDeath, _cause);
             HashMap params = new HashMap();
             switch (_cause)
             {
