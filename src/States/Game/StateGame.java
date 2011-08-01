@@ -161,8 +161,8 @@ public class StateGame extends BasicGameState implements iEventListener {
         sWorld.init();
         
 
-        //mGameMode = new FootballMode();
-        mGameMode = new RaceMode();
+        mGameMode = new FootballMode();
+        //mGameMode = new RaceMode();
         //mGameMode = new IntroMode();
         //mGameMode = new AdventureMode();
         

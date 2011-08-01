@@ -48,6 +48,7 @@ public class sLevel
         eMelonFlesh,
         eMelonSkin,
         eSpikes,
+        eZoomzoom,
         eTileTypesMax,
     }
     public static TileType getTileType(int _id)

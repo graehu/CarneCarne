@@ -3,10 +3,12 @@
  <image source="Images/Flags/PlatformFlags.png" width="256" height="256"/>
  <tile id="0">
   <properties>
+   <property name="Direction" value="Right"/>
    <property name="Movement" value="Horizontal"/>
    <property name="PlatformType" value="Simple"/>
    <property name="Spawn" value="Platform"/>
    <property name="Speed" value="2"/>
+   <property name="Type" value="Zoomzoom"/>
   </properties>
  </tile>
  <tile id="1">

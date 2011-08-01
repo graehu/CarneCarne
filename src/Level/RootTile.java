@@ -78,18 +78,6 @@ public abstract class RootTile
             mSpikeNormals[3] = new Vec2(-1,0);
         }
     }
-    /*public RootTile(TileShape _shape, int _id, sLevel.TileType _tileType, String _animationsNames[], int _slopeType, int _maxHealth)
-    {
-        mShape = _shape;
-        mId = _id;
-        mTileType = _tileType;
-        mSlopeType = _slopeType;
-        mAnimationsNames = _animationsNames;
-        mRegrows = false;
-        mAnchor = false;
-        mIsFlammable = false;
-        mMaxHealth = _maxHealth;
-    }*/
     
     public TileType getTileType()
     {
@@ -146,6 +134,10 @@ public abstract class RootTile
         {
             fixture.filter.categoryBits = (1 << BodyCategories.eSpikes.ordinal());
             fixture.restitution = 0.0f;
+        }
+        else if (mTileType.equals(TileType.eZoomzoom))
+        {
+            fixture.filter.categoryBits = (1 << BodyCategories.eZoomzoom.ordinal());
         }
         fixture.shape = _shape;
         fixture.userData = _userData; /// FIXME make this body data instead

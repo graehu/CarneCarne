@@ -103,6 +103,10 @@ public class Tile
             }
         }
     }
+    public Vec2 getBoostDirection()
+    {
+        return ((ZoomzoomTile)mRootId).getBoostDirection();
+    }
     public boolean damageTile(boolean _particles)
     {
         if (mHealth > 1)

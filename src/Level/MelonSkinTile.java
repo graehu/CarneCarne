@@ -20,7 +20,6 @@ class MelonSkinTile extends BlockTile {
         eRight,
         eDown,
         eLeft,
-        eDiagonal,
         eDownRight,
         eDownLeft,
         eUpLeft,
@@ -157,10 +156,6 @@ class MelonSkinTile extends BlockTile {
             case eDownLeft:
             {
                 return !(_direction.equals(Direction.eFromUp)||_direction.equals(Direction.eFromRight));
-            }
-            case eDiagonal:
-            {
-                return true;
             }
         }
         return false;

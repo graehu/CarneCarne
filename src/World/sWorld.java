@@ -118,6 +118,7 @@ public class sWorld
         eEtherealEnemy,
         eCarcass,
         eSelfSensor,
+        eZoomzoom,
         eBodyCategoriesMax;
     }
     private sWorld()

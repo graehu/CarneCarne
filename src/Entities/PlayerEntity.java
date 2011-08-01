@@ -334,14 +334,14 @@ public class PlayerEntity extends AIEntity
                 }
                 else if (mFootball != null)
                 {
-                    Vec2 location = new Vec2(1500,900);
-                    //mHUDFootball.setLocalTranslation(new Vector2f(1500,900));
+                    Vec2 nativeScreenDim = new Vec2(1500,900);
+                    Vec2 location = nativeScreenDim.clone();
                     Vec2 direction = mFootball.getBody().getPosition().sub(getBody().getPosition());
-                    direction.normalize();
+                    float length = direction.normalize();
                     Vec2 screenDimensions = sGraphicsManager.getScreenDimensions();
                     Vec2 scale = screenDimensions.clone();
-                    scale.x = direction.x / scale.x;
-                    scale.y = direction.y / scale.y;
+                    scale.x = direction.x / location.x;
+                    scale.y = direction.y / location.y;
                     float dimScale = screenDimensions.y/screenDimensions.x;
                     if (scale.x * scale.x > scale.y * scale.y)
                     {
@@ -353,7 +353,7 @@ public class PlayerEntity extends AIEntity
                         {
                             location.x = 0;
                         }
-                        location.y = location.y * ((direction.y * dimScale) + 0.5f);
+                        location.y = location.y * ((direction.y) + 0.5f);
                     }
                     else
                     {
@@ -366,6 +366,15 @@ public class PlayerEntity extends AIEntity
                             location.y = 0;
                         }
                         location.x = location.x * ((direction.x * dimScale) + 0.5f);
+                    }
+                    float locationLength = sWorld.translateToPhysics(location).sub(mBody.getPosition()).normalize();
+                    if (locationLength > length)
+                    {
+                        mHUDFootball.setIsVisible(false);
+                    }
+                    else
+                    {
+                        mHUDFootball.setIsVisible(true);
                     }
                     mHUDFootball.setLocalTranslation(new Vector2f(location.x, location.y).add(mHUDFootball.getDimensions()));
                     rotation = (float)Math.atan2(direction.y, direction.x);

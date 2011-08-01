@@ -39,7 +39,7 @@ public class RaceMode implements iGameMode, iEventListener
         sEvents.subscribeToEvent("PlayerCreatedEvent", this);
         sEvents.subscribeToEvent("RaceResetEvent", this);
         sEvents.subscribeToEvent("BarrierOpenEvent" + "StartGate", this);
-        sLevel.newLevel("Ice_Race");
+        sLevel.newLevel("RaceReloaded");
 
     }
     public iGameMode update(Graphics _graphics, float _time)
