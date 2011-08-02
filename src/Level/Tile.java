@@ -5,8 +5,9 @@
 package Level;
 
 import Graphics.Particles.sParticleManager;
-import Graphics.Skins.sSkinFactory;
 import Level.sLevel.TileType;
+import Sound.MovingSoundAnchor;
+import Sound.SoundScape;
 import Sound.sSound;
 import java.util.HashMap;
 import java.util.Stack;
@@ -116,7 +117,7 @@ public class Tile
             if (_effects)
             {
                 sParticleManager.createSystem(mRootId.getAnimationsName(RootTile.AnimationType.eDamage) + "DamageParticle", mTileGrid.mBody.getWorldPoint(new Vec2(mXTile,mYTile)).mul(64.0f).add(new Vec2(32,32)), 1f);
-                sSound.play(sSound.Sound.eTileSmash, mRootId.getTileType());
+                sSound.playPositional(SoundScape.Sound.eTileSmash, new MovingSoundAnchor(mTileGrid.getBody(), getLocalPosition()), mRootId.getTileType());
             }
             mRootId = mRootId.getNext();
             mHealth--;
@@ -134,7 +135,7 @@ public class Tile
         if (_effects)
         {
             sParticleManager.createSystem(mRootId.getAnimationsName(RootTile.AnimationType.eDamage) + "DestroyParticle", mTileGrid.mBody.getWorldPoint(new Vec2(mXTile,mYTile)).mul(64.0f).add(new Vec2(32,32)), 1f);
-            sSound.play(sSound.Sound.eTileSmash, mRootId.getTileType());
+            sSound.playPositional(SoundScape.Sound.eTileSmash, new MovingSoundAnchor(mTileGrid.getBody(), getLocalPosition()), mRootId.getTileType());
         }
         return true;
     }

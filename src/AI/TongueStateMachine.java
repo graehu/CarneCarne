@@ -14,6 +14,7 @@ import GUI.HUD.sHud;
 import Level.RootTile.AnimationType;
 import Level.Tile;
 import Level.sLevel.TileType;
+import Sound.SoundScape.Sound;
 import Sound.sSound;
 import World.TongueAnchor;
 import World.sWorld;
@@ -801,7 +802,7 @@ public class TongueStateMachine {
             case eFiringTongue:
             {
                 //sound 
-                sSound.play(sSound.Sound.eTongueFire);
+                sSound.playPositional(Sound.eTongueFire, mAIController.mEntity.getBody().getPosition());
                 mTongueDir = mAIController.mPlayerDir; //assume nomalised
                 //render tongue
                 mAIController.mEntity.mSkin.activateSubSkin("tng", false, 0.0f);

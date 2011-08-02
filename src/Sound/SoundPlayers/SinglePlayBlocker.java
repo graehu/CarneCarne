@@ -4,6 +4,7 @@
  */
 package Sound.SoundPlayers;
 
+import Sound.iSoundAnchor;
 import Sound.iSoundPlayer;
 
 /**
@@ -32,6 +33,14 @@ public class SinglePlayBlocker implements iSoundPlayer
     public boolean isPlaying()
     {
         return mPlayer.isPlaying();
+    }
+
+    public void playPositional(iSoundAnchor _position, Object _parameter)
+    {
+        if (!mPlayer.isPlaying())
+        {
+            mPlayer.playPositional(_position, _parameter);
+        }
     }
     
 }

@@ -31,6 +31,8 @@ import Level.RootTile;
 import Level.Tile;
 import Level.sLevel;
 import Level.sLevel.TileType;
+import Sound.MovingSoundAnchor;
+import Sound.SoundScape;
 import Sound.sSound;
 import World.PhysicsFactories.BroccoliExplosionBody;
 import World.PhysicsFactories.CarcassBodyFactory;
@@ -268,7 +270,7 @@ public class sWorld
                 case eMelonFlesh:
                 case eChilli:
                 {
-                    sSound.play(sSound.Sound.eTileEat, tileType);
+                    sSound.playPositional(SoundScape.Sound.eTileEat, new MovingSoundAnchor(tile.getTileGrid().getBody(), tile.getLocalPosition()),tileType);
                     sParticleManager.createSystem(tile.getAnimationsName(RootTile.AnimationType.eNom) + "Nom", tile.getWorldPosition().mul(64.0f).add(new Vec2(32,32)), 1);
                     ret = tile.clone();
                     sEvents.triggerEvent(new TileDestroyedEvent((int)callback.getFixture().m_body.getPosition().x, (int)callback.getFixture().m_body.getPosition().y));

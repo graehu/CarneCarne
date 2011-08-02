@@ -4,9 +4,11 @@
  */
 package Sound.SoundPlayers;
 
+import Sound.iSoundAnchor;
 import Sound.iSoundPlayer;
 import Sound.sSound;
 import java.util.Random;
+import org.jbox2d.common.Vec2;
 
 /**
  *
@@ -36,6 +38,12 @@ public class RandomSelectionPlayer implements iSoundPlayer
     {
         int rand = mRandom.nextInt(mNames.length);
         sSound.play(mNames[rand], false);
+    }
+    public void playPositional(iSoundAnchor _position, Object _parameter)
+    {
+        int rand = mRandom.nextInt(mNames.length);
+        Vec2 position = _position.getPosition();
+        sSound.play3D(mNames[rand], position.x, position.y, 0);
     }
     public void stop(Object _parameter)
     {

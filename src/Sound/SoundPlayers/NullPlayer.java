@@ -4,6 +4,7 @@
  */
 package Sound.SoundPlayers;
 
+import Sound.iSoundAnchor;
 import Sound.iSoundPlayer;
 
 /**
@@ -23,6 +24,10 @@ public class NullPlayer implements iSoundPlayer
     }
 
     public void stop(Object _parameter)
+    {
+    }
+
+    public void playPositional(iSoundAnchor _position, Object _parameter)
     {
     }
     

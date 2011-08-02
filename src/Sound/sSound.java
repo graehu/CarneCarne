@@ -4,14 +4,13 @@
  */
 package Sound;
 
-import Sound.SoundPlayers.NullPlayer;
-import Sound.SoundPlayers.SimplePlayer;
-import Sound.SoundPlayers.SinglePlayBlocker;
+import Entities.PlayerEntity;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.newdawn.slick.SlickException;
+import org.jbox2d.common.Vec2;
 import org.newdawn.slick.openal.Audio;
 import org.newdawn.slick.openal.SoundStore;
 
@@ -24,47 +23,20 @@ public class sSound
 {
     static float mDefaultGain = 0.5f;
     private static HashMap<String, Audio> mSounds = new HashMap();
-
-    public enum Sound
-    {
-        ePlayerUnderwater,
-        
-        ePlayerJump, /// Parameter is sLevel.TileType (including eEmpty)
-        ePlayerDeath, /// Parameter is Entity.CauseOfDeath
-        eLaunchFireball,
-        eFireHitWater,
-        eFireHitObject, 
-        eSpitBlock,
-        eTileEat, /// Parameter is sLevel.TileType
-        eTileSmash, /// Parameter is sLevel.TileType
-        eTongueFire,
-        eFireParticleBurn,
-        eTarFireBurn,
-        
-        eFootballDeath, /// Parameter is Entity.CauseOfDeath
-        eBroccoliExplode,
-        
-        eRaceWin,
-        eGoalScore,
-        eCheckPointHit,
-        eSoundsMax
-    }
-    private static iSoundPlayer mSoundPlayers[];
+    private static ArrayList<SoundScape> mSoundScapes;
        
-    private sSound()
-    {
-    }
     public static void init()
     {
         SoundStore.get().init();
-        mSoundPlayers = new iSoundPlayer[Sound.eSoundsMax.ordinal()];
-        iSoundPlayer nullPlayer = new NullPlayer();
-        for (int i = 0; i < mSoundPlayers.length; i++)
-        {
-            mSoundPlayers[i] = nullPlayer;
-        }
-        mSoundPlayers[Sound.ePlayerUnderwater.ordinal()] = new SinglePlayBlocker(new SimplePlayer("underwater"));
-        loadSound("underwater", "assets/sfx/underwater_1.ogg");
+        mSoundScapes = new ArrayList<SoundScape>();
+    }
+    public static void addPlayer(PlayerEntity _player)
+    {
+        mSoundScapes.add(new SoundScape(_player.getBody()));
+    }
+    public static void clearPlayers()
+    {
+        mSoundScapes.clear();
     }
     public static void poll(int _delta)
     {
@@ -80,21 +52,38 @@ public class sSound
         }
         return audio;
     }
-    public static void play(Sound _sound)
+    public static void play(SoundScape.Sound _sound, int _player)
     {
-        play(_sound, null);
+        play(_sound, _player, null);
     }
-    public static void stop(Sound _sound)
+    public static void stop(SoundScape.Sound _sound, int _player)
     {
-        stop(_sound, null);
+        stop(_sound, _player, null);
     }
-    public static void play(Sound _sound, Object _parameter)
+    public static void playPositional(SoundScape.Sound _sound, Vec2 _position)
     {
-        mSoundPlayers[_sound.ordinal()].play(_parameter);
+        playPositional(_sound, new StaticSoundAnchor(_position), null);
     }
-    public static void stop(Sound _sound, Object _parameter)
+    public static void playPositional(SoundScape.Sound _sound, Vec2 _position, Object _parameter)
     {
-        mSoundPlayers[_sound.ordinal()].stop(_parameter);
+        playPositional(_sound, new StaticSoundAnchor(_position), _parameter);
+    }
+    public static void playPositional(SoundScape.Sound _sound, iSoundAnchor _position)
+    {
+        playPositional(_sound, _position, null);
+    }
+    public static void playPositional(SoundScape.Sound _sound, iSoundAnchor _position, Object _parameter)
+    {
+        for (int i = 0; i < mSoundScapes.size(); i++)
+            mSoundScapes.get(i).playPositional(_sound, _position, _parameter);
+    }
+    public static void play(SoundScape.Sound _sound, int _player, Object _parameter)
+    {
+        mSoundScapes.get(_player).play(_sound,_parameter);
+    }
+    public static void stop(SoundScape.Sound _sound, int _player, Object _parameter)
+    {
+        mSoundScapes.get(_player).stop(_sound,_parameter);
     }
     public static void play(String _soundName)
     {
@@ -166,7 +155,7 @@ public class sSound
     {
         SoundStore.get().setSoundVolume(_volume);
     }
-        public static void setMusicVolume(float _volume)
+    public static void setMusicVolume(float _volume)
     {
         SoundStore.get().setMusicVolume(_volume);
     }
@@ -178,5 +167,6 @@ public class sSound
     {
         SoundStore.get().setMusicOn(_mute);
     }
+
     
 }
