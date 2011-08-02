@@ -35,7 +35,7 @@ public class ZoomzoomTile extends NonEdibleTile
             
             for (int i = 0; i < mBoostDirections.length; i++)
             {
-                mBoostDirections[i] = mBoostDirections[i].mul(5.0f); /// This is the scalar
+                mBoostDirections[i] = mBoostDirections[i].mul(0.5f); /// This is the scalar
             }
         }
     }
