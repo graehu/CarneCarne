@@ -7,6 +7,8 @@ package Entities;
 import Graphics.Particles.ParticleSysBase;
 import Graphics.Particles.sParticleManager;
 import Graphics.Skins.iSkin;
+import Sound.MovingSoundAnchor;
+import Sound.SoundScape;
 import Sound.sSound;
 import World.sWorld;
 import java.util.HashMap;
@@ -300,7 +302,7 @@ public class Broccoli extends AIEntity
                     params.put("radius", 5.0f);
                     params.put("duration", 30);
                     sEntityFactory.create("BroccoliExplosion", params);
-                    sSound.play(sSound.Sound.eBroccoliExplode);
+                    sSound.playPositional(SoundScape.Sound.eBroccoliExplode, mBody.getPosition());
                     
                     ParticleSysBase sys = sParticleManager.createSystem("broccoliExplode1", 
                         sWorld.translateToWorld(mBody.getPosition()).sub(sWorld.getPixelTranslation()).add(new Vec2(32,32))

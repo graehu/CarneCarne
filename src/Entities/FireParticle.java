@@ -11,11 +11,14 @@ import Level.RootTile.AnimationType;
 import Level.Tile;
 import Level.sLevel.TileType;
 import Score.ScoreTracker.ScoreEvent;
+import Sound.MovingSoundAnchor;
+import Sound.SoundScape;
 import Sound.sSound;
 import World.sWorld;
 import World.sWorld.BodyCategories;
 import java.util.HashMap;
 import org.jbox2d.common.Vec2;
+import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.Fixture;
 import org.jbox2d.dynamics.contacts.ContactEdge;
 
@@ -39,6 +42,12 @@ public class FireParticle extends Entity
         mTimer = 100;
     }
     @Override
+    public void setBody(Body _body)
+    {
+        super.setBody(_body);
+        sSound.playPositional(SoundScape.Sound.eFireParticleBurn, new MovingSoundAnchor(_body, new Vec2(0,0)));
+    }
+    @Override
     public void update()
     {
         mTimer--;
@@ -48,7 +57,6 @@ public class FireParticle extends Entity
         }
         else
         {
-            sSound.play(sSound.Sound.eFireParticleBurn);
             //mVelocity.y += 0.2f;
             getBody().setLinearVelocity(mVelocity);
             int tileMask = (1 << BodyCategories.eEdibleTiles.ordinal()) |
@@ -73,15 +81,15 @@ public class FireParticle extends Entity
                     String animationName = tile.getAnimationsName(AnimationType.eFireHit);
                     if (!tile.getTileType().equals(TileType.eIce))
                     {
-                        kill(CauseOfDeath.eMundane, null);
                         if (tile.getTileType().equals(TileType.eWater))
                         {
-                            sSound.play(sSound.Sound.eFireHitWater);
+                            sSound.playPositional(SoundScape.Sound.eFireHitWater, mBody.getPosition());
                         }
                         else
                         {
-                            sSound.play(sSound.Sound.eFireHitObject);
+                            sSound.playPositional(SoundScape.Sound.eFireHitObject, mBody.getPosition());
                         }
+                        kill(CauseOfDeath.eMundane, null);
                     }
                     tile.setOnFire();
                     ParticleSysBase system = sParticleManager.createSystem(animationName + "FireHit", position.add(new Vec2(0.5f,0.5f)).mul(64.0f), 2);

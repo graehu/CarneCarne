@@ -6,6 +6,7 @@ package Events.AreaEvents;
 
 import Entities.AIEntity;
 import Entities.Football;
+import Sound.SoundScape;
 import Sound.sSound;
 import States.Game.FootballMode.FootballMode;
 
@@ -34,7 +35,7 @@ public class GoalZone extends AreaEvent
         //try
         {
             Football football = (Football)_entity;
-            sSound.play(sSound.Sound.eGoalScore);
+            sSound.play(SoundScape.Sound.eGoalScore, 0);
             mGameMode.score(mGoalNumber, football);
         }
         //catch (ClassCastException e)

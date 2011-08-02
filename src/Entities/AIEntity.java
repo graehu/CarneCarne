@@ -14,8 +14,8 @@ import Graphics.Skins.iSkin;
 import Level.RootTile.AnimationType;
 import Level.Tile;
 import Level.sLevel.TileType;
+import Sound.SoundScape;
 import Sound.sSound;
-import States.Game.FootballMode.FootballMode;
 import World.sWorld;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Fixture;
@@ -351,17 +351,17 @@ public class AIEntity extends Entity
                     if(mTouchingTile != null)
                     {
                         sParticleManager.createSystem(mTouchingTile.getAnimationsName(AnimationType.eJump) + "Jump", sWorld.translateToWorld(getBody().getPosition()).sub(sWorld.getPixelTranslation()).add(new Vec2(32,64)), 1f);
-                        sSound.play(sSound.Sound.ePlayerJump, mTouchingTile.getTileType());
+                        sSound.playPositional(SoundScape.Sound.ePlayerJump, mBody.getPosition(), mTouchingTile.getTileType());
                     }
                     else if (mLastTouchingTile != null)
                     {
                         sParticleManager.createSystem(mLastTouchingTile.getAnimationsName(AnimationType.eJump) + "Jump", sWorld.translateToWorld(getBody().getPosition()).sub(sWorld.getPixelTranslation()).add(new Vec2(32,64)), 1f);
-                        sSound.play(sSound.Sound.ePlayerJump, mLastTouchingTile.getTileType());
+                        sSound.playPositional(SoundScape.Sound.ePlayerJump, mBody.getPosition(), mLastTouchingTile.getTileType());
                     }       
                     else
                     {
                         sParticleManager.createSystem("cloud", sWorld.translateToWorld(getBody().getPosition()).sub(sWorld.getPixelTranslation()).add(new Vec2(32,64)), 1f);
-                        sSound.play(sSound.Sound.ePlayerJump, TileType.eEmpty);
+                        sSound.playPositional(SoundScape.Sound.ePlayerJump, mBody.getPosition(), TileType.eEmpty);
                     }
                 }
                 catch (NullPointerException e)

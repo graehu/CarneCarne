@@ -10,6 +10,7 @@ import Events.RaceWonEvent;
 import Events.iEvent;
 import Events.iEventListener;
 import Events.sEvents;
+import Sound.SoundScape;
 import Sound.sSound;
 
 /**
@@ -39,7 +40,7 @@ public class RaceEndZone extends CheckPointZone implements iEventListener
         {
             _entity.placeCheckPoint(this);
             mWinner = (PlayerEntity)_entity;
-            sSound.play(sSound.Sound.eRaceWin);
+            sSound.play(SoundScape.Sound.eRaceWin, 0);
             sEvents.triggerDelayedEvent(new RaceWonEvent(mWinner));
         }
         else

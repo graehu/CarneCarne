@@ -10,6 +10,7 @@ import Events.AreaEvents.sAreaEvents;
 import Graphics.Skins.iSkin;
 import Level.Tile;
 import Level.sLevel.TileType;
+import Sound.SoundScape;
 import Sound.sSound;
 import States.Game.FootballMode.FootballMode;
 import java.util.HashMap;
@@ -101,7 +102,7 @@ public class Football extends Pea
     {
         if (mBody != null)
         {
-            sSound.play(sSound.Sound.eFootballDeath, _cause);
+            sSound.playPositional(SoundScape.Sound.eFootballDeath, mBody.getPosition());
             HashMap params = new HashMap();
             switch (_cause)
             {
