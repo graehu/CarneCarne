@@ -24,6 +24,7 @@ import Events.TutorialSpawnEvent;
 import Events.sEvents;
 import Level.Lighting.sLightsManager;
 import Level.sLevel.TileType;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Stack;
 import java.util.Vector;
@@ -183,7 +184,9 @@ public class FlagProcessor
                         }
                         case eTooltip:
                         {
-                            ToolTipZone zone = new ToolTipZone(lowestX, lowestY, highestX, highestY, _tiledMap.getTileProperty(id, "String", "Herpa derpa der?"));
+                            String string1 = _tiledMap.getTileProperty(id, "String1", "None");
+                            String string2 = _tiledMap.getTileProperty(id, "String2", "None");
+                            ToolTipZone zone = new ToolTipZone(lowestX, lowestY, highestX, highestY, string1, string2);
                             break;
                         }
                     }

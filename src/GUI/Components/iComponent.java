@@ -36,6 +36,7 @@ public abstract class iComponent extends AbstractComponent {
     private ArrayList<iComponent> mChildren = new ArrayList<iComponent>();
     private Vector2f    mDimensions = new Vector2f(0,0);
     private boolean     mMaintainNativeSize = false;
+    private Vector2f    mLocalSizeScale = new Vector2f(1.0f,1.0f);
     private Vector2f    mLocalScale = new Vector2f(1.0f,1.0f);
     private float       mLocalRotation = 0.0f;
     private Vector2f    mLocalTranslation = new Vector2f(0,0);
@@ -118,7 +119,9 @@ public abstract class iComponent extends AbstractComponent {
             if(mIsVisible)
             {
                 grphcs.setColor(mColor);
-                renderSelf(guic, grphcs, trans);
+                grphcs.scale(mLocalSizeScale.x, mLocalSizeScale.y);
+                    renderSelf(guic, grphcs, trans);
+                grphcs.scale(1/mLocalSizeScale.x, 1/mLocalSizeScale.y);
             }
 
             //render children
@@ -135,7 +138,9 @@ public abstract class iComponent extends AbstractComponent {
     private final void renderInternalDebug(Graphics _graphics)
     {
         _graphics.setColor(Color.white);
-        renderSelfDebug(_graphics) ;
+        _graphics.scale(mLocalSizeScale.x, mLocalSizeScale.y);
+            renderSelfDebug(_graphics) ;
+        _graphics.scale(mLocalSizeScale.x, mLocalSizeScale.y);
         
         //render children
         Iterator<iComponent> itr = getChildIterator();
@@ -216,6 +221,12 @@ public abstract class iComponent extends AbstractComponent {
             translation = translation.add(mParent.getGlobalTranslation());
         }
         return translation;
+    }
+    public final Vector2f getLocalSizeScale(){return mLocalSizeScale.copy();}
+    public final void setLocalSizeScale(Vector2f _scaleFactor)
+    {
+        mLocalSizeScale.x = _scaleFactor.x;
+        mLocalSizeScale.y = _scaleFactor.y;
     }
     public final Vector2f getLocalScale(){return mLocalScale.copy();}
     public final void setLocalScale(Vector2f _scaleFactor)
