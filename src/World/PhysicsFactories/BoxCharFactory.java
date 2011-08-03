@@ -29,7 +29,10 @@ public class BoxCharFactory implements iPhysicsFactory
         BodyCategories category = (BodyCategories)_parameters.get("category");
         
         BodyDef def = new BodyDef();
-        def.type = BodyType.DYNAMIC;
+        if (!_parameters.containsKey("isDead"))
+        {
+            def.type = BodyType.DYNAMIC;
+        }
         def.userData = entity;
         def.position = position;
         def.fixedRotation = true;

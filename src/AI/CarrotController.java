@@ -8,8 +8,9 @@ import AI.iPathFinding.Command;
 import Entities.AIEntity;
 import Entities.Carrot;
 import Entities.Entity;
-import Entities.FlyingAI;
 import Level.sLevel;
+import World.sWorld;
+import java.util.HashMap;
 import org.jbox2d.common.Vec2;
 
 /**
@@ -55,7 +56,7 @@ public class CarrotController extends iAIController
         int x = (int)(mEntity.getBody().getPosition().x);
         int y = (int)(mEntity.getBody().getPosition().y);
         
-        if(mTargetY != ty || mTargetX != tx)
+        if((mTargetY != ty || mTargetX != tx) && mState == CarrotState.ePathing)
         {
             /*mTargetX = (int)(mTarget.mBody.getPosition().x);
             mTargetY = (int)(mTarget.mBody.getPosition().y);*/
@@ -113,6 +114,14 @@ public class CarrotController extends iAIController
         {
             mEntity.setAnimation("car_stu");
             mEntity.getBody().m_fixtureList.setSensor(false);
+            HashMap params = new HashMap();
+            params.put("position", mEntity.getBody().getPosition());
+            params.put("aIEntity", mEntity);
+            params.put("category", sWorld.BodyCategories.eEnemy);
+            params.put("isDead", true);
+            
+            mEntity.getBody().getWorld().destroyBody(mEntity.getBody());
+            mEntity.setBody(sWorld.useFactory("BoxCharFactory", params));
         }
         
         

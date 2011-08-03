@@ -17,19 +17,19 @@
  <tileset firstgid="238" source="Tilesets/PlatformFlags.tsx"/>
  <tileset firstgid="254" source="Tilesets/Light.tsx"/>
  <tileset firstgid="255" source="Tilesets/Spawns.tsx"/>
- <layer name="Background" width="70" height="50" visible="0">
+ <layer name="Background" width="70" height="50">
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAC+3BMQEAAADCoPVPbQhfoAAAAAAAAAAAAAAAAADgN2YIZcmwNgAA
   </data>
  </layer>
  <layer name="Level" width="70" height="50">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC+2VPU7DQBBGl98AUhAUFClTUNECR8gRKCgoOMQejSOgFIgjUOQAnIE1rMVo+BzbybAeR9+TnmStnHjmyVFiCCFSauRh8mDH3DfqsmuwC4ZdMOyCYRcMu2DYBcMuGHbBsAuGXTDsgmEXDLtg2AXDLhh2wbALhl0w7IKx6HKZvMrOkjdFN7DhOvzuMcvyffkLf0cY6y6nLVbcJu+S9z3mXDRcd2GT51l0kZ616B3LFieFZy/BJHTf/3ygGT1xEdgFwS6YbbpEcf0p3JTH8PMf9J6trh+2+D5EbL/lmy5dqhk/wGef8v0LoNxt6LPaatZnsMcqf6Zvl9ihjfYl6+Gsdl0T/R6hLpVT1WVdm9fkXFnj4WyeZ9TIJrLLNOAmuo08Q22W4Jne0DPqJnWXtiayjT7Tbd7+YQ9r5IyoSdOufW36TXmnqYmlY2tTosnY2pRsItscJ/ecejRAk7EbHMzgUXZhF3ZhF3ax2dWKoXfx7Bee9Tm+sDYAAA==
+   H4sIAAAAAAAAC+2VO47CMBRFPV9oGEFBQUlBRcuwBJZAQUHBIrK0WQKiQCyBggWwBhzhiKfHDZOAsR10j3SkyErI81FCMmNMRqknP60fL+a7py6vBrtg2AXDLhh2wbALhl0w7IJhFwy7YNgFwy4YdsGwC4ZdMOyCYRcMu2DYBcMuGB9deta+c2AdB92BH0bmso+Bk8/LNXyPMDG6TKy/1mmNa2Ylx8+6n48u0qbjs0U78OwhaJnq+/+JNGNKdA27INgF80gX+f97FN7Lwpy/QTtnfjx/4PcQVb8ZVbrkM+7BtUt3/gwo9xZ7rTCfdQX2cXDX1O2SVWij/XOmsFZ4q4l+jlCX3I7qcqvN2jpUFqSwNnQzamQT2aVjcBPdRq6hNhtwz9TQM+omRZf/msg2ek232T5hH76RM6ImZXuta9k7lTplTXzatDYhmjStTcgmss239S1RvyI0oZRSSimN6QmcWmnfsDYAAA==
   </data>
  </layer>
  <layer name="Flags" width="70" height="50">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC+3WWwqEIBiA0YRq/yttCRHDPHThzwYbMuoc8Fn9ULFpAAAo0abaKwAAAACA5xkePh+xsfYCLvDLHru0Hm/Rp/XY0kWXJV1i/+pS8h7XfsNz8zsvsVyXT09dvmN7tnRxj5Z0iekSO+oC7DhxX2r/Ua/whj0C9+T9mWmRNwEorAE+sDYAAA==
+   H4sIAAAAAAAAC+3XgQqCMBAGYAfV+z9pjxAREblxrZDpSX4fHA5Btv3MQ6cJAIAlTiV7BQAAALAC/7tAsuufz0fslr2ADfyyx3Op6ygupa7WmrmUUtf83mv86do+N1pmLnsml9ioXJb04+we3pvfeYn1cnnkKZdntWdLLt6jObnE5BL7lgswXvY36haOsEdgn/SfN1n03QE39Oc7sDYAAA==
   </data>
  </layer>
 </map>
