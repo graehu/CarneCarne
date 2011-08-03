@@ -184,9 +184,9 @@ public class FlagProcessor
                         }
                         case eTooltip:
                         {
-                            String string1 = _tiledMap.getTileProperty(id, "String1", "None");
-                            String string2 = _tiledMap.getTileProperty(id, "String2", "None");
-                            ToolTipZone zone = new ToolTipZone(lowestX, lowestY, highestX, highestY, string1, string2);
+                            String string = _tiledMap.getTileProperty(id, "String", "None");
+                            String tooltipType = _tiledMap.getTileProperty(id, "TooltipType", "None");
+                            ToolTipZone zone = new ToolTipZone(lowestX, lowestY, highestX, highestY, string, tooltipType);
                             break;
                         }
                     }
@@ -388,13 +388,13 @@ public class FlagProcessor
             {
                 areaEvents[_x][_y] = event;
                 _tiles.add(new Tile(_x, _y));
-                if (_x < lowestX)
+                if (_x <= lowestX)
                     lowestX = _x;
-                if (_y < lowestY)
+                if (_y <= lowestY)
                     lowestY = _y;
-                if (_x > highestX)
+                if (_x >= highestX)
                     highestX = _x;
-                if (_y > highestY)
+                if (_y >= highestY)
                     highestY = _y;
             }
         }

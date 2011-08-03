@@ -86,11 +86,24 @@ public class sSound
         if(audio != null)
             mSounds.get(_soundName).stop();
     }
-    public static void loadSound(String _soundName, String _soundFile) throws SlickException
+    public static void loadStream(String _soundName, String _soundFile)
     {
-        Audio newAudio = null;
+         Audio newAudio = null;
         try {newAudio = SoundStore.get().getOggStream(_soundFile);} 
         catch (IOException ex) {Logger.getLogger(sSound.class.getName()).log(Level.SEVERE, null, ex);}
+        if(newAudio == null)
+        {
+            System.err.println("No such sound resource: " + _soundFile);
+            return;
+        }
+        mSounds.put(_soundName, newAudio);
+    }
+    public static void loadFile(String _soundName, String _soundFile) throws SlickException
+    {
+        Audio newAudio = null;
+        try {newAudio = SoundStore.get().getOgg(_soundFile);} 
+        catch (IOException ex) {Logger.getLogger(sSound.class.getName()).log(Level.SEVERE, null, ex);}
+        
         if(newAudio == null)
         {
             System.err.println("No such sound resource: " + _soundFile);

@@ -58,7 +58,7 @@ public class StateTitle extends BasicGameState {
             GUIManager.set(mGUIManager); //make sure we're using the right instance
 
             //initalise music
-            sSound.loadSound("menu1", "assets/music/Menu1.ogg");
+            sSound.loadFile("menu1", "assets/music/Menu1.ogg");
 
             //initialise fonts
             mUIFont = sFontLoader.createFont("manastirka",72);    
@@ -177,7 +177,7 @@ public class StateTitle extends BasicGameState {
         GUIManager.get().setAcceptingInput(true);
         GUIManager.set(mGUIManager);
         //container.setMouseCursor("ui/title/mouse.png", 0, 62); //FIXME: break in fullscreen
-        //sSound.playAsMusic("menu1", true);
+        sSound.playAsMusic("menu1", true);
         super.enter(_gc, _sbg);
     }
 

@@ -147,9 +147,8 @@ public class StateGame extends BasicGameState implements iEventListener {
         GUIManager.set(mGUIRef) ;
         
         //initialise sound
-        sSound.loadSound("level1", "assets/music/Level1.ogg");
-        sSound.loadSound("jump", "assets/sfx/fart_4.ogg");
-        sSound.loadSound("tongueFire", "assets/sfx/tongueFire.ogg");
+        sSound.loadFile("jump", "assets/sfx/fart_4.ogg");
+        sSound.loadFile("tongueFire", "assets/sfx/tongueFire.ogg");
         
 
         //initialise game
