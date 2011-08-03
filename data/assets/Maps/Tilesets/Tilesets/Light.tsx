@@ -3,6 +3,7 @@
  <image source="Images/Flags/light.png" width="128" height="128"/>
  <tile id="0">
   <properties>
+<<<<<<< HEAD
    <property name="Radius" value="200"/>
    <property name="Spawn" value="Light"/>
   </properties>

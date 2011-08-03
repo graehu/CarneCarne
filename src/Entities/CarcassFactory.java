@@ -25,9 +25,12 @@ public class CarcassFactory implements iEntityFactory
         mOffsets = new Vec2[Entity.CauseOfDeath.eCauseOfDeathMax.ordinal()];
         mTextures[Entity.CauseOfDeath.eSpikes.ordinal()] = "characters/spikes";
         mTextures[Entity.CauseOfDeath.eFire.ordinal()] = "characters/fire";
+        mTextures[Entity.CauseOfDeath.eAcid.ordinal()] = "characters/spikes";
 
+        Vec2 noOffset = new Vec2(0,0);
         mOffsets[Entity.CauseOfDeath.eSpikes.ordinal()] = new Vec2(-19,-19);
-        mOffsets[Entity.CauseOfDeath.eFire.ordinal()] = new Vec2(0,0);
+        mOffsets[Entity.CauseOfDeath.eFire.ordinal()] = noOffset;
+        mOffsets[Entity.CauseOfDeath.eAcid.ordinal()] = noOffset;
     }
     public Entity useFactory(HashMap _parameters)
     {

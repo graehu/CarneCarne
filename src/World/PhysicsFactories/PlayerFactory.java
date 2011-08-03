@@ -36,6 +36,7 @@ public class PlayerFactory implements iPhysicsFactory {
         wheelShape.m_radius = 0.45f;
         circleFixture.density = 4;
         circleFixture.friction = 5;
+        //circleFixture.restitution = 0.01f;
         circleFixture.filter.categoryBits = (1 << category.ordinal());
         circleFixture.filter.maskBits = Integer.MAX_VALUE;
         circleFixture.shape = wheelShape;

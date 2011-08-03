@@ -31,6 +31,9 @@ import Level.RootTile;
 import Level.Tile;
 import Level.sLevel;
 import Level.sLevel.TileType;
+import Sound.MovingSoundAnchor;
+import Sound.SoundScape;
+import Sound.sSound;
 import World.PhysicsFactories.BroccoliExplosionBody;
 import World.PhysicsFactories.CarcassBodyFactory;
 import World.PhysicsFactories.ExplosionBody;
@@ -118,6 +121,7 @@ public class sWorld
         eEtherealEnemy,
         eCarcass,
         eSelfSensor,
+        eZoomzoom,
         eBodyCategoriesMax;
     }
     private sWorld()
@@ -192,6 +196,7 @@ public class sWorld
                     (1 << BodyCategories.eSpatTiles.ordinal())|
                     (1 << BodyCategories.ePlayer.ordinal())|
                     (1 << BodyCategories.eEnemy.ordinal())|
+                    (1 << BodyCategories.eTar.ordinal())|
                     (1 << BodyCategories.eIce.ordinal());
         }
         public float reportFixture(Fixture _fixture, Vec2 _p1, Vec2 _p2, float _fraction)
@@ -265,6 +270,7 @@ public class sWorld
                 case eMelonFlesh:
                 case eChilli:
                 {
+                    sSound.playPositional(SoundScape.Sound.eTileEat, new MovingSoundAnchor(tile.getTileGrid().getBody(), tile.getLocalPosition()),tileType);
                     sParticleManager.createSystem(tile.getAnimationsName(RootTile.AnimationType.eNom) + "Nom", tile.getWorldPosition().mul(64.0f).add(new Vec2(32,32)), 1);
                     ret = tile.clone();
                     sEvents.triggerEvent(new TileDestroyedEvent((int)callback.getFixture().m_body.getPosition().x, (int)callback.getFixture().m_body.getPosition().y));
@@ -273,9 +279,13 @@ public class sWorld
                     //    tile.getTileGrid().destroyTile((int)callback.getFixture().m_body.getPosition().x, (int)callback.getFixture().m_body.getPosition().y);
                     break;
                 }
-                case eSwingable:
-                case eIce:
+                case eTar:
                 case eIndestructible:
+                case eIce:
+                {
+                    break;
+                }
+                case eSwingable:
                 {
                     Tile hitTile = (Tile)mLastHit.getUserData();
                     mLastTongueAnchor = new MovingBodyTongueAnchor(hitTile.getFixture(), hitTile.getLocalPosition());

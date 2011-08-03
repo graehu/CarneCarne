@@ -4,6 +4,7 @@
  */
 package Level;
 
+import Sound.sSound;
 import World.sWorld;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.tiled.TiledMap;
@@ -44,6 +45,7 @@ public class LevelEditor {
         if(tileGrid != null)
                 tileGrid.destroy();
         sWorld.destroy();
+        sSound.clearPlayers();
         //init new level
         mTiledMap = _tiledMap;
         layerIndex = mTiledMap.getLayerIndex("Level");

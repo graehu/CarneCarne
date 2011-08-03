@@ -220,7 +220,7 @@ public class sParticleManager {
         //assumes equal length arrays: mInstancedSystems & mInstancedSysPos
         for(ParticleSysBase particle : mInstancedSystems)
         {
-            //if(cull(particle))
+            if(cull(particle))
             {
                 //calc positions in screenspace
                 Vec2 position = particle.getPosition();

@@ -10,6 +10,8 @@ import Events.AreaEvents.sAreaEvents;
 import Graphics.Skins.iSkin;
 import Level.Tile;
 import Level.sLevel.TileType;
+import Sound.SoundScape;
+import Sound.sSound;
 import States.Game.FootballMode.FootballMode;
 import java.util.HashMap;
 import org.jbox2d.common.Vec2;
@@ -34,6 +36,10 @@ public class Football extends Pea
     @Override
     public void update()
     {
+        if (mWaterHeight != 0)
+        {
+            buoyancy();
+        }
         ContactEdge edge = getBody().m_contactList;
         while (edge != null)
         {
@@ -96,6 +102,7 @@ public class Football extends Pea
     {
         if (mBody != null)
         {
+            sSound.playPositional(SoundScape.Sound.eFootballDeath, mBody.getPosition());
             HashMap params = new HashMap();
             switch (_cause)
             {

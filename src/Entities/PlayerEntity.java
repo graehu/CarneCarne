@@ -18,6 +18,8 @@ import GUI.HUD.Revolver;
 import Level.sLevel.TileType;
 import Score.RaceScoreTracker;
 import Score.ScoreTracker;
+import Sound.SoundScape;
+import Sound.sSound;
 import States.Game.Tutorial.IntroSection;
 import Utils.sFontLoader;
 import World.sWorld;
@@ -51,6 +53,7 @@ public class PlayerEntity extends AIEntity
     private     Text                mTooltipText = null;
     private     int                 mTooltipTimer = 0;
     private     int                 mTooltipLife = 180; //FIXME: Assumes 60fps
+    private     GraphicalComponent  mHUDFootball;
     private     Rectangle           mViewPort;
     private     int                 mRaceTimer;
     private     Football            mFootball;
@@ -79,7 +82,12 @@ public class PlayerEntity extends AIEntity
         GUIManager.use(mGUIManager).addRootComponent(mHUDArrow);
         mHUDArrow.setImage("ui/HUD/Arrow.png");
         mHUDArrow.setDimentionsToImage();
-        mHUDArrow.setMaintainNativeSize(true);
+        
+        mHUDFootball = new GraphicalComponent(sGraphicsManager.getGUIContext(), new Vector2f(0,0), new Vector2f(0,0));
+        GUIManager.use(mGUIManager).addRootComponent(mHUDFootball);
+        mHUDFootball.setImage("assets/characters/football.png");
+        mHUDFootball.setDimentionsToImage();
+        //mHUDArrow.setMaintainNativeSize(true);
         
         mTooltipWindow = new GraphicalComponent(sGraphicsManager.getGUIContext(), new Vector2f(50,50), new Vector2f(0,0));
         GUIManager.use(mGUIManager).addRootComponent(mTooltipWindow);
@@ -171,6 +179,7 @@ public class PlayerEntity extends AIEntity
             {
                 mCheckPoint = _checkPoint;
                 mCheckPointPosition = getBody().getPosition().clone();
+                sSound.play(SoundScape.Sound.eCheckPointHit, 0);
                 //sEvents.triggerDelayedEvent(new ShowDirectionEvent(this));
             }
         }
@@ -188,6 +197,7 @@ public class PlayerEntity extends AIEntity
             {
                 if (mWasIReallyKilled)
                 {
+                    sSound.play(SoundScape.Sound.eCheckPointHit, 0, _causeOfDeath);
                     mDeaths++;
                     mScoreTracker.score(ScoreTracker.ScoreEvent.eDied);
                     HashMap params = new HashMap();
@@ -199,6 +209,7 @@ public class PlayerEntity extends AIEntity
                             params.put("attachment", killer);
                             /// Purposefully not breaking
                             case eFire:
+                            case eAcid:
                             {
                                 params.put("characterType", "Carne");
                                 try
@@ -237,6 +248,7 @@ public class PlayerEntity extends AIEntity
             ((PlayerInputController)mController).kill();
         }
     }
+    
     boolean compareFloat(float a, float b, float epsilon)
     {
         return (a < b + epsilon && a > b - epsilon);
@@ -245,6 +257,10 @@ public class PlayerEntity extends AIEntity
     @Override
     protected void subUpdate()
     {
+        if (mWaterHeight != 0)
+            sSound.play(SoundScape.Sound.ePlayerUnderwater, 0);
+        else
+            sSound.stop(SoundScape.Sound.ePlayerUnderwater, 0);
         if (mCheckPoint != null && mCheckPoint.incrementRaceTimer()) /// FIXME - put this null check in as a quick fix for IntroMode
         {
             mRaceTimer++;
@@ -348,11 +364,52 @@ public class PlayerEntity extends AIEntity
                 }
                 else if (mFootball != null)
                 {
+                    Vec2 nativeScreenDim = new Vec2(1500,900);
+                    Vec2 location = nativeScreenDim.clone();
                     Vec2 direction = mFootball.getBody().getPosition().sub(getBody().getPosition());
-                    direction.normalize();
+                    float length = direction.normalize();
+                    Vec2 screenDimensions = sGraphicsManager.getScreenDimensions();
+                    Vec2 scale = screenDimensions.clone();
+                    scale.x = direction.x / location.x;
+                    scale.y = direction.y / location.y;
+                    float dimScale = screenDimensions.y/screenDimensions.x;
+                    if (scale.x * scale.x > scale.y * scale.y)
+                    {
+                        if (scale.x > 0.0f)
+                        {
+                            
+                        }
+                        else
+                        {
+                            location.x = 0;
+                        }
+                        location.y = location.y * ((direction.y) + 0.5f);
+                    }
+                    else
+                    {
+                        if (scale.y > 0.0f)
+                        {
+                            
+                        }
+                        else
+                        {
+                            location.y = 0;
+                        }
+                        location.x = location.x * ((direction.x * dimScale) + 0.5f);
+                    }
+                    float locationLength = sWorld.translateToPhysics(location).sub(mBody.getPosition()).normalize();
+                    if (locationLength > length)
+                    {
+                        mHUDFootball.setIsVisible(false);
+                    }
+                    else
+                    {
+                        mHUDFootball.setIsVisible(true);
+                    }
+                    mHUDFootball.setLocalTranslation(new Vector2f(location.x, location.y).add(mHUDFootball.getDimensions()));
                     rotation = (float)Math.atan2(direction.y, direction.x);
                 }
-                    mHUDArrow.setLocalRotation(rotation*180.0f/(float)Math.PI);
+                mHUDArrow.setLocalRotation(rotation*180.0f/(float)Math.PI);
                     
                // sGraphicsManager.drawString("You have died " + mDeaths + " times", 0f, 0.1f);
             }

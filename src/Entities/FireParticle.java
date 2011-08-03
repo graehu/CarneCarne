@@ -11,10 +11,14 @@ import Level.RootTile.AnimationType;
 import Level.Tile;
 import Level.sLevel.TileType;
 import Score.ScoreTracker.ScoreEvent;
+import Sound.MovingSoundAnchor;
+import Sound.SoundScape;
+import Sound.sSound;
 import World.sWorld;
 import World.sWorld.BodyCategories;
 import java.util.HashMap;
 import org.jbox2d.common.Vec2;
+import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.Fixture;
 import org.jbox2d.dynamics.contacts.ContactEdge;
 
@@ -36,6 +40,12 @@ public class FireParticle extends Entity
         mTimer = 10000;
         mParticles = sParticleManager.createSystem("Fire", new Vec2(0, 0),-1);
         mTimer = 100;
+    }
+    @Override
+    public void setBody(Body _body)
+    {
+        super.setBody(_body);
+        sSound.playPositional(SoundScape.Sound.eFireParticleBurn, new MovingSoundAnchor(_body, new Vec2(0,0)));
     }
     @Override
     public void update()
@@ -70,7 +80,17 @@ public class FireParticle extends Entity
                     Vec2 direction = this.getBody().getLinearVelocity();
                     String animationName = tile.getAnimationsName(AnimationType.eFireHit);
                     if (!tile.getTileType().equals(TileType.eIce))
+                    {
+                        if (tile.getTileType().equals(TileType.eWater))
+                        {
+                            sSound.playPositional(SoundScape.Sound.eFireHitWater, mBody.getPosition());
+                        }
+                        else
+                        {
+                            sSound.playPositional(SoundScape.Sound.eFireHitObject, mBody.getPosition());
+                        }
                         kill(CauseOfDeath.eMundane, null);
+                    }
                     tile.setOnFire();
                     ParticleSysBase system = sParticleManager.createSystem(animationName + "FireHit", position.add(new Vec2(0.5f,0.5f)).mul(64.0f), 2);
                     if(system != null) //catch if system doesn't exist

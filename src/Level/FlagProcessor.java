@@ -24,7 +24,7 @@ import Events.TutorialSpawnEvent;
 import Events.sEvents;
 import Level.Lighting.sLightsManager;
 import Level.sLevel.TileType;
-import java.util.ArrayList;
+import Sound.sSound;
 import java.util.HashMap;
 import java.util.Stack;
 import java.util.Vector;
@@ -350,6 +350,7 @@ public class FlagProcessor
             parameters.put("checkPoint", new PlayerSpawnZone((int)position.x, (int)position.y, (int)position.x+1, (int)position.y+1, startZone));
             PlayerEntity player = (PlayerEntity)sEntityFactory.create("Player",parameters);
             sPathFinding.addPlayer(player);
+            sSound.addPlayer(player);
         }
     }
     private class Tile
@@ -388,13 +389,13 @@ public class FlagProcessor
             {
                 areaEvents[_x][_y] = event;
                 _tiles.add(new Tile(_x, _y));
-                if (_x <= lowestX)
+                if (_x < lowestX)
                     lowestX = _x;
-                if (_y <= lowestY)
+                if (_y < lowestY)
                     lowestY = _y;
-                if (_x >= highestX)
+                if (_x > highestX)
                     highestX = _x;
-                if (_y >= highestY)
+                if (_y > highestY)
                     highestY = _y;
             }
         }

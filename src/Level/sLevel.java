@@ -48,6 +48,7 @@ public class sLevel
         eMelonFlesh,
         eMelonSkin,
         eSpikes,
+        eZoomzoom,
         eTileTypesMax,
     }
     public static TileType getTileType(int _id)
@@ -91,21 +92,6 @@ public class sLevel
     {
         return mLevelEditor.rootTiles.get(_rootId);
     }    
-    
-    void radiusDestroy(Vec2 _position, float _radius)
-    {
-        //(x-posx)^2 + (y-posy)^2 = r^2;
-        
-        int centerX = (int)_position.x;
-        int CenterY = (int)_position.y;
-        
-        
-        
-        /*if((x - centerX)^2 + (y - centerX)^2 < _radius^2)
-        {
-            
-        }*/
-    }
     
     public void destroyTile(int _xTile, int _yTile)
     {

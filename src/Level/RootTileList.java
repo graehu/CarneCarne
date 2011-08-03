@@ -192,6 +192,13 @@ public class RootTileList {
                         mRootTiles.add(new WaterTile(rootId, type, animationsNames));
                     }
                 }
+                else if (shape.equals("Zoomzoom"))
+                {
+                    String directionString = _tiledMap.getTileProperty(i, "Direction", "Right");
+                    SkinDirection direction = directionMap.get(directionString);
+                    mRootTiles.add(new ZoomzoomTile(i, direction));
+                    i++;
+                }
                 else if (shape.equals("MelonSkin"))
                 {
                     for (int rootId = i; i < rootId + 16; i++)
@@ -255,7 +262,10 @@ public class RootTileList {
                         maxHealth = health;
                     }
                 }
-                else i++;
+                else
+                {
+                    throw new UnsupportedOperationException("Tileshape " + shape + " not recognised");
+                }
             }
             else
             {
