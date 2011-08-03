@@ -35,7 +35,8 @@ public class TileTypePlayer implements iSoundPlayer
     public void play(Object _parameter)
     {
         TileType tileType = (TileType)_parameter;
-        mPlayers[tileType.ordinal()].play(_parameter);
+        if(tileType != null)
+            mPlayers[tileType.ordinal()].play(_parameter);
     }
 
     public boolean isPlaying()
