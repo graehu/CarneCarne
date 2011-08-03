@@ -9,6 +9,7 @@ import Events.AreaEvents.AreaEvent;
 import Events.AreaEvents.CheckPointZone;
 import Events.AreaEvents.sAreaEvents;
 import GUI.Components.GraphicalComponent;
+import GUI.Components.Text;
 import GUI.GUIManager;
 import Graphics.Skins.iSkin;
 import Graphics.sGraphicsManager;
@@ -20,12 +21,14 @@ import Score.ScoreTracker;
 import Sound.SoundScape;
 import Sound.sSound;
 import States.Game.Tutorial.IntroSection;
+import Utils.sFontLoader;
 import World.sWorld;
 import java.util.HashMap;
 import java.util.HashSet;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Fixture;
 import org.jbox2d.dynamics.joints.Joint;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Vector2f;
 
@@ -46,6 +49,10 @@ public class PlayerEntity extends AIEntity
     public      Reticle             mReticle;
     protected   Revolver            mRevolver;
     private     GraphicalComponent  mHUDArrow;
+    private     GraphicalComponent  mTooltipWindow = null;
+    private     Text                mTooltipText = null;
+    private     int                 mTooltipTimer = 0;
+    private     int                 mTooltipLife = 180; //FIXME: Assumes 60fps
     private     GraphicalComponent  mHUDFootball;
     private     Rectangle           mViewPort;
     private     int                 mRaceTimer;
@@ -81,6 +88,20 @@ public class PlayerEntity extends AIEntity
         mHUDFootball.setImage("assets/characters/football.png");
         mHUDFootball.setDimentionsToImage();
         //mHUDArrow.setMaintainNativeSize(true);
+        
+        mTooltipWindow = new GraphicalComponent(sGraphicsManager.getGUIContext(), new Vector2f(50,50), new Vector2f(0,0));
+        GUIManager.use(mGUIManager).addRootComponent(mTooltipWindow);
+        mTooltipWindow.setImage("ui/TooltipWindow.png");
+        mTooltipWindow.setDimentionsToImage();
+        mTooltipWindow.setIsVisible(false);
+        
+        mTooltipText = new Text(sGraphicsManager.getGUIContext(), sFontLoader.createFont("Trading Post Bold", 42), "No Text Defined", new Vector2f(50,45), false);
+        mTooltipText.setDimensions(new Vector2f(315,130));
+        mTooltipWindow.addChild(mTooltipText);
+        mTooltipText.setColor(Color.yellow);
+        mTooltipText.setIsVisible(false);
+        mTooltipText.setIsTextSizedToFit(true);
+        mTooltipText.setIsWrapped(true);
         
         mTeam = 0;
     }
@@ -470,8 +491,13 @@ public class PlayerEntity extends AIEntity
         mFootball = _football;
     }
 
-    public void displayTooltip(String _text)
+    public void displayTooltip(String _text, String _type)
     {
-        throw new UnsupportedOperationException("Tooltip text: " + _text);
+        //if time has past...
+        //change tooltipwindow based on type
+        mTooltipText.setTextString(_text);
+        mTooltipWindow.setIsVisible(true);
+        mTooltipText.setIsVisible(true);
+        //throw new UnsupportedOperationException("Tooltip text: " + _text);
     }
 }

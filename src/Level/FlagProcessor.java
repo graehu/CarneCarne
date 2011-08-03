@@ -184,7 +184,9 @@ public class FlagProcessor
                         }
                         case eTooltip:
                         {
-                            ToolTipZone zone = new ToolTipZone(lowestX, lowestY, highestX, highestY, _tiledMap.getTileProperty(id, "String", "Herpa derpa der?"));
+                            String string = _tiledMap.getTileProperty(id, "String", "None");
+                            String tooltipType = _tiledMap.getTileProperty(id, "TooltipType", "None");
+                            ToolTipZone zone = new ToolTipZone(lowestX, lowestY, highestX, highestY, string, tooltipType);
                             break;
                         }
                     }

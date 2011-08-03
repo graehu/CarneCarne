@@ -3,7 +3,11 @@
  */
 package Graphics.Particles;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.jbox2d.common.Vec2;
+import org.newdawn.slick.Image;
+import org.newdawn.slick.SlickException;
 import org.newdawn.slick.particles.ParticleSystem;
 
 /**
@@ -12,7 +16,19 @@ import org.newdawn.slick.particles.ParticleSystem;
  */
 public class NullParticleSys implements ParticleSysBase 
 {
-
+    static ParticleSystem sys = null;
+    
+    NullParticleSys()
+    {
+        try 
+        {
+            if(sys == null)
+                sys = new ParticleSystem(new Image(1, 1));
+        } 
+        catch (SlickException ex) {
+            Logger.getLogger(NullParticleSys.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     public boolean isDead() {
         return true;
     }
@@ -62,7 +78,7 @@ public class NullParticleSys implements ParticleSysBase
     }
 
     public ParticleSystem getSystem() {
-        return null;
+        return sys;
     }
     public void setPosition(Vec2 mul) {
     }

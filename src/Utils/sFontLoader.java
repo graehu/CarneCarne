@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.newdawn.slick.Font;
+import org.newdawn.slick.SlickException;
 import org.newdawn.slick.UnicodeFont;
 import org.newdawn.slick.font.effects.ColorEffect;
 import org.newdawn.slick.font.effects.OutlineEffect;
@@ -73,4 +74,22 @@ public class sFontLoader {
             return font;
         }
     }
+    public static UnicodeFont scaleFont(UnicodeFont _font, float _scalar)
+    {
+        try {
+            UnicodeFont out = new UnicodeFont(_font.getFont().deriveFont(_font.getFont().getSize2D() *_scalar));
+            //initialise font
+            out.addAsciiGlyphs();   //Add Glyphs
+            out.addGlyphs(400, 600); //Add Glyphs
+            out.addNeheGlyphs();
+            out.addGlyphs("_");
+            out.getEffects().add(new ColorEffect(java.awt.Color.WHITE)); //Add Effects
+            out.loadGlyphs();  //Load Glyphs
+            return out;
+        } catch (SlickException ex) {
+            Logger.getLogger(sFontLoader.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+    
 }

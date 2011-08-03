@@ -12,6 +12,7 @@ import Level.sLevel;
 import World.sWorld;
 import java.util.HashMap;
 import org.jbox2d.common.Vec2;
+import org.jbox2d.dynamics.BodyType;
 
 /**
  *
@@ -114,14 +115,17 @@ public class CarrotController extends iAIController
         {
             mEntity.setAnimation("car_stu");
             mEntity.getBody().m_fixtureList.setSensor(false);
-            HashMap params = new HashMap();
-            params.put("position", mEntity.getBody().getPosition());
-            params.put("aIEntity", mEntity);
-            params.put("category", sWorld.BodyCategories.eEnemy);
-            params.put("isDead", true);
-            
-            mEntity.getBody().getWorld().destroyBody(mEntity.getBody());
-            mEntity.setBody(sWorld.useFactory("BoxCharFactory", params));
+            if (mEntity.getBody().getType().equals(BodyType.DYNAMIC))
+            {
+                HashMap params = new HashMap();
+                params.put("position", mEntity.getBody().getPosition());
+                params.put("aIEntity", mEntity);
+                params.put("category", sWorld.BodyCategories.eEnemy);
+                params.put("isDead", true);
+
+                mEntity.getBody().getWorld().destroyBody(mEntity.getBody());
+                mEntity.setBody(sWorld.useFactory("BoxCharFactory", params));
+            }
         }
         
         

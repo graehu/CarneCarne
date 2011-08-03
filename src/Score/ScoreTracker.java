@@ -56,7 +56,7 @@ abstract public class ScoreTracker
         mTacoImage.setDimentionsToImage();
         //mTacoImage.setMaintainNativeSize(true);
         
-        mScoreText = new Text(sGraphicsManager.getGUIContext(), sFontLoader.createFont("GringoNights", 30), "SCORE", new Vector2f(30,40));
+        mScoreText = new Text(sGraphicsManager.getGUIContext(), sFontLoader.createFont("GringoNights", 30), "SCORE", new Vector2f(30,40), false);
         mTacoImage.addChild(mScoreText);
         
         mRenderedScore = mScore = 0;

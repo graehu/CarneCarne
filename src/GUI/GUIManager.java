@@ -124,7 +124,7 @@ public class GUIManager implements iEventListener
             }
             case eText:
             {
-                component = new Text(mContainer, null, "", null);
+                component = new Text(mContainer, null, "", null, false);
                 component.setLocalScale(scale);
                 mManagedRoots.put(IDCounter, component);
                 IDCounter++;
