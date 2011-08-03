@@ -30,6 +30,11 @@ public class sLevel
         return mLevelEditor.tileGrid;
     }
 
+    public static Vec2 getLevelDimensions()
+    {
+        return new Vec2(mLevelEditor.tileGrid.mTiles.length, mLevelEditor.tileGrid.mTiles[0].length);
+    }
+
     
     public static enum TileType
     {

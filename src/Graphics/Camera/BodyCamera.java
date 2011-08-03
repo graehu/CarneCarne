@@ -11,7 +11,6 @@ import Events.CaveInEvent;
 import Events.iEvent;
 import Events.iEventListener;
 import Events.sEvents;
-import GUI.GUIManager;
 import Graphics.Particles.sParticleManager;
 import Graphics.sGraphicsManager;
 import Level.Lighting.sLightsManager;
@@ -19,7 +18,6 @@ import Level.sLevel;
 import Utils.Shader.LightSource;
 import Utils.Shader.LightingShader;
 import Utils.Shader.Shader;
-import Utils.Throw;
 import World.sWorld;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -275,6 +273,16 @@ public class BodyCamera extends iCamera implements iEventListener
         {
             mTranslation.y -= ((mTranslation.y)-mPosition.y);
         }        
+        Vec2 dimensions = sLevel.getLevelDimensions();
+        Vec2 rightBorder = dimensions.sub(s.mul(0.5f/64f));
+        if (mPosition.x > rightBorder.x)
+        {
+            mTranslation.x += mPosition.x-rightBorder.x;
+        }
+        if (mPosition.y > rightBorder.y)
+        {
+            mTranslation.y += mPosition.y-rightBorder.y;
+        }
         mTranslation = mTranslation.mul(64.0f);
         mTranslation = mTranslation.add(mShake);
         sGraphicsManager.setScreenDimensions(s);

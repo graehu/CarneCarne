@@ -165,7 +165,7 @@ public class AIEntity extends Entity
                 {
                     if(edge.contact.isTouching())
                     {
-                        if(((Tile)other.getUserData()) != null && !other.isSensor())
+                        if(((Tile)other.getUserData()) != null && !other.isSensor() )
                         {
                             mTouchingTile = ((Tile)other.getUserData());
                             mJumpContacts++;
