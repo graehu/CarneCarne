@@ -128,6 +128,7 @@ public class sLevel
     public static void newLevel(String _map)
     {
         //clean up old level
+        sWorld.destroy();
         sLightsManager.destroyAllLightSources();
         try
         {

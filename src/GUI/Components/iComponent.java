@@ -1,4 +1,5 @@
 
+
 package GUI.Components;
 
 import Graphics.sGraphicsManager;
@@ -19,7 +20,8 @@ import org.newdawn.slick.gui.GUIContext;
  *
  * @author Aaron
  */
-public abstract class iComponent extends AbstractComponent {
+public abstract class iComponent extends AbstractComponent 
+{
     protected iComponent(GUIContext _context) 
     {
         super(_context);
@@ -35,7 +37,9 @@ public abstract class iComponent extends AbstractComponent {
     private iComponent  mParent;
     private ArrayList<iComponent> mChildren = new ArrayList<iComponent>();
     private Vector2f    mDimensions = new Vector2f(0,0);
-    private boolean     mMaintainNativeSize = false;
+    private boolean     mIsAlignUp = true;
+    private boolean     mIsAlignLeft = true;
+    private boolean     mMaintainRatio = false;
     private Vector2f    mLocalSizeScale = new Vector2f(1.0f,1.0f);
     private Vector2f    mLocalScale = new Vector2f(1.0f,1.0f);
     private float       mLocalRotation = 0.0f;
@@ -106,13 +110,39 @@ public abstract class iComponent extends AbstractComponent {
         Vector2f trans = getLocalTranslation().add(_globalPos);
         Vector2f center = new Vector2f(trans.x + (getWidth() * 0.5f), trans.y + (getHeight() * 0.5f));
         
-        if(mMaintainNativeSize) //if true: only scale translation 
+        if(mMaintainRatio)
         {
-            trans.x *= scale.x; trans.y *= scale.y;
-            center.x *= scale.x; center.y *= scale.y;
-            scale.y = scale.x;
+            //FIXME: THIS IS THE MOST HORRIBLE CODE I'VE EVER WRITTEN
+            float scalar = sGraphicsManager.getTrueScreenDimensions().x / 1680;
+            float Sx = sGraphicsManager.getScreenDimensions().x / sGraphicsManager.getTrueScreenDimensions().x;
+            if(scale.x != scale.y)
+            {
+                trans.x *= Sx;
+                center.x *= Sx;
+                float Sy = sGraphicsManager.getScreenDimensions().y / sGraphicsManager.getTrueScreenDimensions().y;
+                trans.y *= Sy * 0.85f;
+                center.y *= Sy * 0.85f;
+                scale.y = scale.x = scalar;
+            }
+            else if(Sx != 1)
+            {
+                trans.x *= (sGraphicsManager.getScreenDimensions().x / sGraphicsManager.getTrueScreenDimensions().x) - 0.045;
+                trans.y *= (sGraphicsManager.getScreenDimensions().y / sGraphicsManager.getTrueScreenDimensions().y) - 0.07;
+                scale.y = scale.x = scalar;                
+            }
         }
-
+        else if(scale.x != scale.y)
+        {
+            float scalar = sGraphicsManager.getScreenDimensions().y / 1050;
+            float Sx = sGraphicsManager.getScreenDimensions().x / sGraphicsManager.getTrueScreenDimensions().x;
+            trans.x *= Sx * 1.3f;
+            center.x *= Sx * 1.3f;
+            float Sy = sGraphicsManager.getScreenDimensions().y / sGraphicsManager.getTrueScreenDimensions().y;
+            trans.y *= Sy * 1.5f;;
+            center.y *= Sy * 1.5f;;
+            scale.y = scale.x = scalar * 1.5f;
+        }
+        
         grphcs.scale(scale.x, scale.y);
         grphcs.rotate(center.x, center.y, rot);
         {
@@ -135,6 +165,7 @@ public abstract class iComponent extends AbstractComponent {
         grphcs.rotate(center.x, center.y, -rot);
         grphcs.scale(1/scale.x, 1/scale.y);
     }
+    
     private final void renderInternalDebug(Graphics _graphics)
     {
         _graphics.setColor(Color.white);
@@ -162,8 +193,13 @@ public abstract class iComponent extends AbstractComponent {
     /*
      * ----------various getters and setters-------------
      */
-    public final boolean getMaintainNativeSize(){return mMaintainNativeSize;}
-    public final void setMaintainNativeSize(boolean _maintain) {mMaintainNativeSize = _maintain;}
+    public final void setAlignment(boolean _isUp, boolean _isLeft)
+    {
+        mIsAlignUp = _isUp;
+        mIsAlignLeft = _isLeft;
+    }
+    public final boolean getMaintainRatio(){return mMaintainRatio;}
+    public final void setMaintainRatio(boolean _maintain) {mMaintainRatio = _maintain;}
     //returns shape translated in global space
     public final Shape getShape(){return mShape;}
     public final Transform getGlobalTransform(){return new Transform(mGlobalTransform);}
@@ -173,15 +209,46 @@ public abstract class iComponent extends AbstractComponent {
         Vector2f scale = getLocalScale();
         Vector2f trans = getLocalTranslation();
         Vector2f center = new Vector2f(trans.x + (getWidth() * 0.5f), trans.y + (getHeight() * 0.5f));          
-        Transform scaleT = Transform.createScaleTransform(scale.x, scale.y);
         
-        if(mMaintainNativeSize) //if true: scale size by x only
+        if(mMaintainRatio)
         {
-            trans.x *= scale.x; trans.y *= scale.y;
-            center.x *= scale.x; center.y *= scale.y;
-            scale.y = scale.x;
+            //FIXME: THIS IS THE MOST HORRIBLE CODE I'VE EVER WRITTEN
+            float scalar = sGraphicsManager.getTrueScreenDimensions().x / 1680;
+            float Sx = sGraphicsManager.getScreenDimensions().x / sGraphicsManager.getTrueScreenDimensions().x;
+            if(scale.x != scale.y)
+            {
+                trans.x *= Sx;
+                center.x *= Sx;
+                float Sy = sGraphicsManager.getScreenDimensions().y / sGraphicsManager.getTrueScreenDimensions().y;
+                trans.y *= Sy * 0.85f;
+                center.y *= Sy * 0.85f;
+                scale.y = scale.x = scalar;
+                trans.x *= 2.0f;
+                center.x *= 2.0f;
+            }
+            else if(Sx != 1)
+            {
+                trans.x *= (sGraphicsManager.getScreenDimensions().x / sGraphicsManager.getTrueScreenDimensions().x) - 0.045;
+                trans.y *= (sGraphicsManager.getScreenDimensions().y / sGraphicsManager.getTrueScreenDimensions().y) - 0.07;
+                scale.y = scale.x = scalar;                
+            }
+            
         }
-        
+        else if(scale.x != scale.y)
+        {
+            float scalar = sGraphicsManager.getScreenDimensions().y / 1050;
+            float Sx = sGraphicsManager.getScreenDimensions().x / sGraphicsManager.getTrueScreenDimensions().x;
+            trans.x *= Sx * 1.3f;
+            center.x *= Sx * 1.3f;
+            float Sy = sGraphicsManager.getScreenDimensions().y / sGraphicsManager.getTrueScreenDimensions().y;
+            trans.y *= Sy * 1.5f;;
+            center.y *= Sy * 1.5f;;
+            scale.y = scale.x = scalar * 1.5f;
+            trans.x *= 2.0f;
+            center.x *= 2.0f;
+        }
+            
+        Transform scaleT = Transform.createScaleTransform(scale.x, scale.y);
         Transform rotateT = Transform.createRotateTransform(rot, center.x, center.y);
         Transform translateT = Transform.createTranslateTransform(trans.x, trans.y);
         Transform transform = scaleT.concatenate(rotateT).concatenate(translateT);
@@ -239,7 +306,30 @@ public abstract class iComponent extends AbstractComponent {
     {
         mLocalRotation =_degrees;
     }
-    public final Vector2f getLocalTranslation(){return mLocalTranslation.copy();}
+    //always returns translation in up/left alignment
+    public final Vector2f getLocalTranslation()
+    {
+        Vector2f trans = new Vector2f(0,0);
+        if(mIsAlignLeft)
+            trans.x = mLocalTranslation.x;
+        else
+        {
+            if(mParent != null)
+                trans.x = mParent.getDimensions().x - mLocalTranslation.x;
+            else
+                trans.x = 1680.0f - mLocalTranslation.x;
+        }
+        if(mIsAlignUp)
+            trans.y = mLocalTranslation.y;
+        else
+        {
+            if(mParent != null)
+                trans.y = mParent.getDimensions().y - mLocalTranslation.y;
+            else
+                trans.y = 1050.0f - mLocalTranslation.y;
+        }
+        return trans;
+    }
     public final void setLocalTranslation(Vector2f _position)
     {
         mLocalTranslation.x = _position.x;

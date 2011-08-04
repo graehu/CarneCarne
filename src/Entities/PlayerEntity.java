@@ -74,26 +74,30 @@ public class PlayerEntity extends AIEntity
         mDeaths = mRaceTimer = 0;
         mReticle = new Reticle(this);
         
-        mRevolver = new Revolver("ui/revolver.png", new Vector2f(1510+38,880+48)); 
+        mRevolver = new Revolver("ui/revolver.png", new Vector2f(1520,890)); //+28+38
         GUIManager.use(mGUIManager).addRootComponent(mRevolver);
         mRevolver.setDimentionsToImage();
+        mRevolver.setAlignment(false, false);
+        //mRevolver.setLocalTranslation(new Vector2f(mRevolver.getImageWidth()*0.7f,mRevolver.getImageWidth()*0.65f));
+        mRevolver.setLocalTranslation(mRevolver.getOffset());
         
-        mHUDArrow = new GraphicalComponent(sGraphicsManager.getGUIContext(), new Vector2f(0,0), new Vector2f(0,0));
+        mHUDArrow = new GraphicalComponent(sGraphicsManager.getGUIContext(), new Vector2f(761,75), new Vector2f(0,0));
         GUIManager.use(mGUIManager).addRootComponent(mHUDArrow);
         mHUDArrow.setImage("ui/HUD/Arrow.png");
         mHUDArrow.setDimentionsToImage();
+        //mHUDArrow.setMaintainRatio(true); 
         
         mHUDFootball = new GraphicalComponent(sGraphicsManager.getGUIContext(), new Vector2f(0,0), new Vector2f(0,0));
         GUIManager.use(mGUIManager).addRootComponent(mHUDFootball);
         mHUDFootball.setImage("assets/characters/football.png");
         mHUDFootball.setDimentionsToImage();
-        //mHUDArrow.setMaintainNativeSize(true);
         
         mTooltipWindow = new GraphicalComponent(sGraphicsManager.getGUIContext(), new Vector2f(50,50), new Vector2f(0,0));
         GUIManager.use(mGUIManager).addRootComponent(mTooltipWindow);
         mTooltipWindow.setImage("ui/TooltipWindow.png");
         mTooltipWindow.setDimentionsToImage();
         mTooltipWindow.setIsVisible(false);
+        //mTooltipWindow.setMaintainRatio(true);
         
         mTooltipText = new Text(sGraphicsManager.getGUIContext(), sFontLoader.createFont("Trading Post Bold", 42), "No Text Defined", new Vector2f(50,45), false);
         mTooltipText.setDimensions(new Vector2f(315,130));
@@ -102,6 +106,7 @@ public class PlayerEntity extends AIEntity
         mTooltipText.setIsVisible(false);
         mTooltipText.setIsTextSizedToFit(true);
         mTooltipText.setIsWrapped(true);
+        //mTooltipText.setMaintainRatio(true);
         
         mTeam = 0;
     }
@@ -257,6 +262,11 @@ public class PlayerEntity extends AIEntity
     @Override
     protected void subUpdate()
     {
+        if(++mTooltipTimer > mTooltipLife)
+        {
+            mTooltipWindow.setIsVisible(false);
+            mTooltipText.setIsVisible(false);
+        }
         if (mWaterHeight != 0)
             sSound.play(SoundScape.Sound.ePlayerUnderwater, 0);
         else
@@ -493,7 +503,7 @@ public class PlayerEntity extends AIEntity
 
     public void displayTooltip(String _text, String _type)
     {
-        //if time has past...
+        mTooltipTimer = 0;
         //change tooltipwindow based on type
         mTooltipText.setTextString(_text);
         mTooltipWindow.setIsVisible(true);

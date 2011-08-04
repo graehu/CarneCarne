@@ -18,7 +18,7 @@ import Graphics.sGraphicsManager;
 import GUI.HUD.sHud;
 import Input.sInput;
 import Sound.sSound;
-import States.Game.RaceMode.RaceMode;
+import States.Game.Adventure.AdventureMode;
 import States.Menu.StateMenu;
 import States.StateChanger;
 import World.sWorld;
@@ -109,7 +109,6 @@ public class StateGame extends BasicGameState implements iEventListener {
     public void render(GameContainer _gc, StateBasedGame _sbg, Graphics _grphcs) throws SlickException
     {
         Vec2 s = sGraphicsManager.getScreenDimensions();
-        
         mGameMode.render(_grphcs);
         //cleanup texture data
         //screen.flushPixelData();
@@ -159,9 +158,9 @@ public class StateGame extends BasicGameState implements iEventListener {
         
 
         //mGameMode = new FootballMode();
-        mGameMode = new RaceMode();
+        //mGameMode = new RaceMode();
         //mGameMode = new IntroMode();
-        //mGameMode = new AdventureMode();
+        mGameMode = new AdventureMode();
         
         //subscribe to events (must be done before further initialisation)  
         sEvents.subscribeToEvent("PlayerCreatedEvent", this);

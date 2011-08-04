@@ -29,4 +29,10 @@
    <property name="TooltipType" value="Spit"/>
   </properties>
  </tile>
+ <tile id="4">
+  <properties>
+   <property name="Event" value="Tooltip"/>
+   <property name="String" value="You found a secret area... *cough*"/>
+  </properties>
+ </tile>
 </tileset>
