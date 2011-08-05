@@ -175,7 +175,8 @@ public class AIEntity extends Entity
                         if(((Tile)other.getUserData()) != null && !other.isSensor() )
                         {
                             mTouchingTile = ((Tile)other.getUserData());
-                            mJumpContacts++;
+                            if (!((Tile)other.getUserData()).getTileType().equals(TileType.eZoomzoom))
+                                mJumpContacts++;
                             createContactParticle(collisionNorm);
                         }
                     }
@@ -189,7 +190,8 @@ public class AIEntity extends Entity
                             mTouchingTile = ((Tile)other.getUserData());
                         mContactParticleDelay = 5;
                         createContactParticle(collisionNorm);
-                        mJumpContacts++; //allow jump on slopes
+                        if (!((Tile)other.getUserData()).getTileType().equals(TileType.eZoomzoom))
+                            mJumpContacts++; //allow jump on slopes
                         mAllowRoll = true;
                     }
                     mFloorNormal = collisionNorm.clone();

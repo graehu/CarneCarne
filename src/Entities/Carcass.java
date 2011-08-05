@@ -4,6 +4,7 @@
  */
 package Entities;
 
+import Graphics.Particles.sParticleManager;
 import Graphics.Skins.iSkin;
 import World.sWorld;
 import org.jbox2d.common.Vec2;
@@ -75,6 +76,8 @@ public class Carcass extends Entity
     {
         if (mKilledMe != _killer && mSpawnTimer == 0)
         {
+            if (_causeOfDeath.equals(CauseOfDeath.eImpact))
+                sParticleManager.createSystem("CarcassImpactCarne", mBody.getPosition(), 1);
             super.kill(_causeOfDeath, _killer);
         }
     }

@@ -45,7 +45,6 @@ public class StickShake
                 shakeCounter = 0;
                 zeroValueTimer = 0;
             }
-            System.err.println("Zero value");
             return false;
         }
         else
