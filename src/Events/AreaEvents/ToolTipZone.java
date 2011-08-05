@@ -13,20 +13,21 @@ import Entities.PlayerEntity;
  */
 public class ToolTipZone extends AreaEvent
 {
-    private String mToolTipText;
-    public ToolTipZone(int _x, int _y, int _x2, int _y2, String _toolTipText)
+    private String mStr, mType;
+    public ToolTipZone(int _x, int _y, int _x2, int _y2, String _str, String _type)
     {
         super(_x, _y, _x2, _y2);
-        mToolTipText = _toolTipText;
+        mStr = _str;
+        mType = _type;
     }
     @Override
     public void enter(AIEntity _entity)
     {
-        //try
+        try
         {
-            ((PlayerEntity)_entity).displayTooltip(mToolTipText);
+            ((PlayerEntity)_entity).displayTooltip(mStr,mType);
         }
-        //catch (ClassCastException e)
+        catch (ClassCastException e)
         {
             
         }

@@ -28,6 +28,7 @@ import org.newdawn.slick.geom.Vector2f;
 //this class provides multiplue instances o9f itself to allow for persistance GUIs between states
 public class GUIManager implements iEventListener
 {    
+    
     static private int keyCount = 0;
     static private HashMap<Integer, GUIManager> instances = new HashMap<Integer, GUIManager>();
     static GUIManager currentInstance = null;
@@ -124,7 +125,7 @@ public class GUIManager implements iEventListener
             }
             case eText:
             {
-                component = new Text(mContainer, null, "", null);
+                component = new Text(mContainer, null, "", null, false);
                 component.setLocalScale(scale);
                 mManagedRoots.put(IDCounter, component);
                 IDCounter++;

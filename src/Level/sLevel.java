@@ -30,6 +30,11 @@ public class sLevel
         return mLevelEditor.tileGrid;
     }
 
+    public static Vec2 getLevelDimensions()
+    {
+        return new Vec2(mLevelEditor.tileGrid.mTiles.length, mLevelEditor.tileGrid.mTiles[0].length);
+    }
+
     
     public static enum TileType
     {
@@ -123,6 +128,7 @@ public class sLevel
     public static void newLevel(String _map)
     {
         //clean up old level
+        sWorld.destroy();
         sLightsManager.destroyAllLightSources();
         try
         {

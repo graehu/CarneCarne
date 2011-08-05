@@ -264,7 +264,7 @@ public class TongueStateMachine {
             {
                 mCurrentStateTimer--;
                 extendTongue(false);
-                if (mCurrentStateTimer == 0)
+                if (mCurrentStateTimer <= 0)
                 {
                     changeState(State.eStart);
                 }
@@ -282,7 +282,7 @@ public class TongueStateMachine {
             {
                 mCurrentStateTimer--;
                 extendTongue(false);
-                if (mCurrentStateTimer == 0)
+                if (mCurrentStateTimer <= 0)
                 {
                     if (mTile.getTileType().equals(TileType.eMelonFlesh))
                     {
@@ -312,7 +312,7 @@ public class TongueStateMachine {
                 {
                     changeState(State.eRetractingHammer);
                 }
-                else if (mCurrentStateTimer == tongueFiringTimeout)
+                else if (mCurrentStateTimer >= tongueFiringTimeout)
                 {
                     changeState(State.eRetractingHammer);
                 }
@@ -322,7 +322,7 @@ public class TongueStateMachine {
             {
                 mCurrentStateTimer--;
                 extendTongue(false);
-                if (mCurrentStateTimer == 0)
+                if (mCurrentStateTimer <= 0)
                 {
                     changeState(State.eFoodInMouth);
                 }
@@ -331,7 +331,7 @@ public class TongueStateMachine {
             case eSpittingBlock:
             {
                 mCurrentStateTimer--;
-                if (mCurrentStateTimer == 0)
+                if (mCurrentStateTimer <= 0)
                 {
                     if (hasFood())
                     {
@@ -347,7 +347,7 @@ public class TongueStateMachine {
             case ePlacingBlock:
             {
                 mCurrentStateTimer--;
-                if (mCurrentStateTimer == 0)
+                if (mCurrentStateTimer <= 0)
                 {
                     mTile = null;
                     changeState(State.eStart);
@@ -357,7 +357,7 @@ public class TongueStateMachine {
             case eSpitting:
             {
                 mCurrentStateTimer--;
-                if (mCurrentStateTimer == 0)
+                if (mCurrentStateTimer <= 0)
                 {
                     if (mAmmoLeft == 0)
                         changeState(State.eStart);
@@ -369,7 +369,7 @@ public class TongueStateMachine {
             case eIdleAnimation:
             {
                 mCurrentStateTimer--;
-                if (mCurrentStateTimer == 0)
+                if (mCurrentStateTimer <= 0)
                 {
                     changeState(State.eStart);
                 }

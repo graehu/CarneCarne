@@ -18,8 +18,6 @@ import Graphics.sGraphicsManager;
 import GUI.HUD.sHud;
 import Input.sInput;
 import Sound.sSound;
-import States.Game.Adventure.AdventureMode;
-import States.Game.FootballMode.FootballMode;
 import States.Game.RaceMode.RaceMode;
 import States.Menu.StateMenu;
 import States.StateChanger;
@@ -111,7 +109,6 @@ public class StateGame extends BasicGameState implements iEventListener {
     public void render(GameContainer _gc, StateBasedGame _sbg, Graphics _grphcs) throws SlickException
     {
         Vec2 s = sGraphicsManager.getScreenDimensions();
-        
         mGameMode.render(_grphcs);
         //cleanup texture data
         //screen.flushPixelData();
@@ -147,9 +144,8 @@ public class StateGame extends BasicGameState implements iEventListener {
         GUIManager.set(mGUIRef) ;
         
         //initialise sound
-        sSound.loadSound("level1", "assets/music/Level1.ogg");
-        sSound.loadSound("jump", "assets/sfx/fart_4.ogg");
-        sSound.loadSound("tongueFire", "assets/sfx/tongueFire.ogg");
+        sSound.loadFile("jump", "assets/sfx/fart_4.ogg");
+        sSound.loadFile("tongueFire", "assets/sfx/tongueFire.ogg");
         
 
         //initialise game
@@ -161,8 +157,9 @@ public class StateGame extends BasicGameState implements iEventListener {
         sWorld.init();
         
 
-        mGameMode = new FootballMode();
-        //mGameMode = new RaceMode();
+
+        //mGameMode = new FootballMode();
+        mGameMode = new RaceMode();
         //mGameMode = new IntroMode();
         //mGameMode = new AdventureMode();
         

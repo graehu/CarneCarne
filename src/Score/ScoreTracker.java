@@ -21,6 +21,7 @@ import org.newdawn.slick.geom.Vector2f;
  *
  * @author alasdair
  */
+
 abstract public class ScoreTracker
 {
     protected int mScore;
@@ -51,12 +52,13 @@ abstract public class ScoreTracker
     {
         mGUIManager = _GUIManager;
         mTacoImage = (GraphicalComponent)GUIManager.use(_GUIManager)
-                .createRootComponent(GUIManager.ComponentType.eGraphical, new Vector2f(1200,50), new Vector2f()); //FIXME: assumes 1680x1050
+                .createRootComponent(GUIManager.ComponentType.eGraphical, new Vector2f(143+30,30), new Vector2f()); //FIXME: assumes 1680x1050
         mTacoImage.setImage("ui/HUD/taco.png");
         mTacoImage.setDimentionsToImage();
-        //mTacoImage.setMaintainNativeSize(true);
+        mTacoImage.setAlignment(true, false);
+        mTacoImage.setMaintainRatio(true);
         
-        mScoreText = new Text(sGraphicsManager.getGUIContext(), sFontLoader.createFont("GringoNights", 30), "SCORE", new Vector2f(30,40));
+        mScoreText = new Text(sGraphicsManager.getGUIContext(), sFontLoader.createFont("score", 30), "SCORE", new Vector2f(30,40), false);
         mTacoImage.addChild(mScoreText);
         
         mRenderedScore = mScore = 0;

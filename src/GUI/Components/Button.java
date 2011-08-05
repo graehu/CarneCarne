@@ -5,9 +5,9 @@
 package GUI.Components;
 
 import org.newdawn.slick.Color;
-import org.newdawn.slick.Font;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
+import org.newdawn.slick.UnicodeFont;
 import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.gui.GUIContext;
@@ -153,11 +153,11 @@ public class Button extends GraphicalComponent{
         }
     }
 
-    public void addText(GUIContext _context, Font _font, String _str)
+    public void addText(GUIContext _context, UnicodeFont _font, String _str)
     {
          addText(_context, _font, _str, false);
     }
-    public void addText(GUIContext _context, Font _font, String _str, boolean _sizeToText)
+    public void addText(GUIContext _context, UnicodeFont _font, String _str, boolean _sizeToText)
     {
         if(mText != null)
         {
@@ -167,7 +167,7 @@ public class Button extends GraphicalComponent{
         }
         Vector2f pos = new Vector2f(    (getWidth() - _font.getWidth(_str)) * 0.5f,
                                         (getHeight() - _font.getHeight(_str)) * 0.5f);
-        mText = new Text(_context, _font, _str, pos);
+        mText = new Text(_context, _font, _str, pos, true);
         addChild(mText);
         mText.setColor(getColor());
         

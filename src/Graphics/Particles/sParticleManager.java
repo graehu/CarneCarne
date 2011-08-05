@@ -97,12 +97,12 @@ public class sParticleManager {
                 {
                     //load first system
                     ParticleSysBase sys = createSystemImplementation(_ref + "1", _position, _lifeTime, false, _store);
-                    if(sys == null) return null;
+                    if(sys == null) return new NullParticleSys();
                     system = sys.getSystem();
                     
                     //load second
                     sys = createSystemImplementation(_ref + "2", _position, _lifeTime, false, _store);
-                    if(sys == null) return null;
+                    if(sys == null) return new NullParticleSys();
                     ParticleSystem system2 = sys.getSystem();
                     
                     //combine them
@@ -114,7 +114,7 @@ public class sParticleManager {
                 else
                 {
                     System.err.println(ex.getMessage());
-                    return null;
+                    return new NullParticleSys();
                 }
             }
             putLoadedSystem(_ref, system);
