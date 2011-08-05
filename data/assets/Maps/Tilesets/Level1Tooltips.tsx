@@ -35,4 +35,10 @@
    <property name="String" value="You found a secret area... *cough*"/>
   </properties>
  </tile>
+ <tile id="5">
+  <properties>
+   <property name="Event" value="Tooltip"/>
+   <property name="String" value="Can you smell taco?"/>
+  </properties>
+ </tile>
 </tileset>

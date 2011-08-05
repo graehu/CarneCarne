@@ -124,13 +124,13 @@ public class XBoxController
         }
         
         //handle shoulder triggers
-        float xAxis = _input.getAxisValue(mPlayer, 1);
         float xStickEpsilon = 0.5f;
         if (leftStickHit)
         {
-            if (xAxis > xStickEpsilon || xAxis < -xStickEpsilon)
+            float length = leftStick.length();
+            if (length > xStickEpsilon)
             {
-                sEvents.triggerEvent(new AnalogueStickEvent(xAxis, mPlayer)); //move
+                sEvents.triggerEvent(new AnalogueStickEvent(leftStick.x,leftStick.y, mPlayer)); //move
             }
         }
         

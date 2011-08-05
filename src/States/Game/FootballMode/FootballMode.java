@@ -43,7 +43,7 @@ public class FootballMode implements iGameMode, iEventListener
         sEvents.subscribeToEvent("PlayerCreatedEvent", this);
         sEvents.subscribeToEvent("FootballSpawnEvent", this);
         sEvents.subscribeToEvent("GoalSpawnEvent", this);
-        sLevel.newLevel("The_Match");
+        sLevel.newLevel("Football");
     }
     
     public iGameMode update(Graphics _graphics, float _time)

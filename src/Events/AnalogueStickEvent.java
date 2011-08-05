@@ -10,17 +10,22 @@ package Events;
  */
 public class AnalogueStickEvent extends iEvent {
     
-    private float mValue;
+    private float mHValue, mVValue;
     private int mPlayer;
-    public AnalogueStickEvent(float _value, int _player)
+    public AnalogueStickEvent(float _hValue, float _vValue, int _player)
     {
-        mValue = _value;
+        mHValue = _hValue;
+        mVValue = _vValue;
         mPlayer = _player;
     }
     
-    public float getValue()
+    public float getHValue()
     {
-        return mValue;
+        return mHValue;
+    }
+    public float getVValue()
+    {
+        return mVValue;
     }
 
     @Override
