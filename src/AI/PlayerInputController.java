@@ -368,8 +368,8 @@ public class PlayerInputController extends iAIController implements iEventListen
             else if (_event.getType().equals("AnalogueStickEvent"))
             {
                 AnalogueStickEvent event = (AnalogueStickEvent)_event;
-                mEntity.walk(event.getValue());
-                mLeftStickValueThisFrame = event.getValue();
+                mLeftStickValueThisFrame = event.getHValue();
+                mEntity.walk(event.getHValue());
             }
             else if (_event.getType().equals("KeyUpEvent"))
             {

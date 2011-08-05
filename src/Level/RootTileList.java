@@ -123,21 +123,23 @@ public class RootTileList {
                 }
                 else if (shape.equals("Slope"))
                 {
-                    
-  
                     RootTile tile = new RightDownSlope(i,type, animationsNames, regrows, anchor, isFlammable, maxHealth);
+                    tile.mNext = tile;
                     for (int rootId = i; i < rootId + 4; i++)
                         mRootTiles.add(tile); 
                     
                     tile = new LeftDownSlope(i,type, animationsNames, regrows, anchor, isFlammable, maxHealth);
+                    tile.mNext = tile;
                     for (int rootId = i; i < rootId + 4; i++)
                         mRootTiles.add(tile); 
                     
                     tile = new LeftUpSlope(i,type, animationsNames, regrows, anchor, isFlammable, maxHealth);
+                    tile.mNext = tile;
                     for (int rootId = i; i < rootId + 4; i++)
                         mRootTiles.add(tile); 
                     
                     tile = new RightUpSlope(i,type, animationsNames, regrows, anchor, isFlammable, maxHealth);
+                    tile.mNext = tile;
                     for (int rootId = i; i < rootId + 4; i++)
                         mRootTiles.add(tile);
                         

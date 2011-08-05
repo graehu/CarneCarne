@@ -87,7 +87,21 @@ public class Button extends GraphicalComponent{
         mState = _newState;
         mText.setColor(getColor());
     }
-    
+    public void reset()
+    {
+        changeState(ButtonState.eDefault);
+    }
+    public void hoverOver()
+    {
+        changeState(ButtonState.eHoverOver);
+    }
+    public void select()
+    {
+        changeState(ButtonState.eSelected);
+        if(mCallback != null)
+            mCallback.run();
+        //changeState(ButtonState.eHoverOver);
+    }
     @Override
     public void mouseMoved(int oldx, int oldy, int newx, int newy) {
         if(mState != ButtonState.eSelected)

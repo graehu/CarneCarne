@@ -38,6 +38,7 @@ import org.newdawn.slick.geom.Vector2f;
  */
 public class PlayerEntity extends AIEntity
 {
+    protected   String              mSkinType = "mexican";
     protected   String              mBodyType = "bdy";
     private     CheckPointZone      mOriginalSpawnPoint;
     private     CheckPointZone      mCheckPoint;
@@ -432,7 +433,7 @@ public class PlayerEntity extends AIEntity
             
             mReticle.render(); //always render ontop
             
-            GUIManager.use(mGUIManager).render(true);
+            GUIManager.use(mGUIManager).render(false);
         }
     }
     

@@ -12,6 +12,7 @@ import GUI.Components.TextField;
 import GUI.Components.ToggleButton;
 import GUI.GUIManager;
 import Graphics.sGraphicsManager;
+import Input.sInput;
 import Sound.sSound;
 import Utils.sFontLoader;
 import org.jbox2d.common.Vec2;
@@ -47,7 +48,11 @@ public class StateTitle extends BasicGameState
 
     GameContainer cont = null;
     boolean inited = false;
-    Integer mGUIManager = null;
+    Integer mGUIManagerGlobal = null;
+    Integer mCurrentGUIState = null;
+    Integer mGUIManagerCenter = null;
+    Integer mGUIManagerLeft = null;
+    Integer mGUIManagerRight = null;
     
     
     @Override
@@ -57,8 +62,11 @@ public class StateTitle extends BasicGameState
         if(!inited) //we do this here so if the state is not used it is not inited
         {
             inited = true;
-            mGUIManager = GUIManager.create(_gc);
-            GUIManager.set(mGUIManager); //make sure we're using the right instance
+            mGUIManagerGlobal = GUIManager.create(_gc);
+            mGUIManagerCenter = GUIManager.create(_gc);
+            mGUIManagerLeft = GUIManager.create(_gc);
+            mGUIManagerRight = GUIManager.create(_gc);
+            mCurrentGUIState = mGUIManagerCenter;
 
             //initalise music
             sSound.loadFile("menu1", "assets/music/Menu1.ogg");
@@ -131,23 +139,31 @@ public class StateTitle extends BasicGameState
             mLightingToggle.addText(_gc, mUIFont, "Lighting On", true);
             mLightingToggle.setToggleText("Lighting On", "Lighting Off");
             
+            mDone = new Button(_gc, new Vector2f(200,-50), buttonDim);
+            mDone.addText(_gc, mUIFont, "Done", true);
+            
             mParalax0.addChild(mParticlesToggle);
             mParalax0.addChild(mLightingToggle);
+            mParalax0.addChild(mDone);
             
             //add to GUIManager in render order
-            GUIManager.get().addRootComponent(mBackground);
+            GUIManager.use(mGUIManagerGlobal).addRootComponent(mBackground);
             
-            GUIManager.get().addRootComponent(mParalax2);
-            GUIManager.get().addRootComponent(mParalax1);
-            GUIManager.get().addRootComponent(mParalax0);
+            GUIManager.use(mGUIManagerGlobal).addRootComponent(mParalax2);
+            GUIManager.use(mGUIManagerGlobal).addRootComponent(mParalax1);
+            GUIManager.use(mGUIManagerGlobal).addRootComponent(mParalax0);
             
-            GUIManager.get().addRootComponent(mNameField);
-            GUIManager.get().addRootComponent(mAdventureButton);
-            GUIManager.get().addRootComponent(mRaceButton);
-            GUIManager.get().addRootComponent(mOptionsButton);
-            GUIManager.get().addRootComponent(mHighScoresButton);
+            GUIManager.use(mGUIManagerCenter).addRootComponent(mNameField);
+            GUIManager.use(mGUIManagerCenter).addRootComponent(mAdventureButton);
+            GUIManager.use(mGUIManagerCenter).addRootComponent(mRaceButton);
+            GUIManager.use(mGUIManagerCenter).addRootComponent(mOptionsButton);
+            GUIManager.use(mGUIManagerCenter).addRootComponent(mHighScoresButton);
             
-            GUIManager.get().addRootComponent(mForeground);
+            GUIManager.use(mGUIManagerGlobal).addRootComponent(mForeground);
+            
+            GUIManager.use(mGUIManagerLeft).addSelectable(mParticlesToggle);
+            GUIManager.use(mGUIManagerLeft).addSelectable(mLightingToggle);
+            GUIManager.use(mGUIManagerLeft).addSelectable(mDone);
             
             calcUI();
 
@@ -181,9 +197,14 @@ public class StateTitle extends BasicGameState
                     sGraphicsManager.setAllowShaders(true);}});
             mLightingToggle.setOffCallback(new Runnable() { public void run() {
                     sGraphicsManager.setAllowShaders(false);}});
+            
+            mDone.setCallback(new Runnable() {
+                public void run() {
+                    mState = MenuState.eCenter;
+                }
+            });
         }
-        GUIManager.get().setAcceptingInput(true);
-        GUIManager.set(mGUIManager);
+        GUIManager.use(mCurrentGUIState).setAcceptingInput(true);
         //container.setMouseCursor("ui/title/mouse.png", 0, 62); //FIXME: break in fullscreen
         sSound.playAsMusic("menu1", true);
         super.enter(_gc, _sbg);
@@ -194,7 +215,7 @@ public class StateTitle extends BasicGameState
         super.leave(container, game);
         container.setDefaultMouseCursor();
         sSound.stop("menu1");
-        GUIManager.get().setAcceptingInput(false);
+        GUIManager.use(mCurrentGUIState).setAcceptingInput(false);
     }
     
     
@@ -213,6 +234,7 @@ public class StateTitle extends BasicGameState
     ToggleButton mParticlesToggle = null;
     ToggleButton mLightingToggle = null;
     ToggleButton mFullScreenButton = null;
+    Button mDone = null;
     float mScale = 1.0f;
     float mOffset = 0.0f;
     MenuState mState = MenuState.eCenter;
@@ -225,25 +247,44 @@ public class StateTitle extends BasicGameState
     }
     
     public void render(GameContainer _gc, StateBasedGame _sbg, Graphics _grphcs) throws SlickException {
-        if(mGUIManager != null)
-        {
-            GUIManager.get().render(false);
-        }
+        if(mGUIManagerGlobal != null)
+            GUIManager.use(mGUIManagerGlobal).render(false);
+        if(mGUIManagerCenter != null)
+            GUIManager.use(mGUIManagerCenter).render(false);
+        if(mGUIManagerLeft != null)
+            GUIManager.use(mGUIManagerLeft).render(false);
+        if(mGUIManagerRight != null)
+            GUIManager.use(mGUIManagerRight).render(false);
     }
 
     public void update(GameContainer _gc, StateBasedGame _sbg, int _i) throws SlickException 
     {
         sSound.poll(_i);
-        
+        sInput.update(_i);
         Input input = _gc.getInput();
         if(input.isKeyDown(Input.KEY_F11))
             sGraphicsManager.toggleFullscreen();  
         
         updateMenuState();
         
-        GUIManager.get().update(_i);
+        if(mGUIManagerGlobal != null)
+        {
+            GUIManager.use(mGUIManagerGlobal).update(_i);
+        }
+        if(mCurrentGUIState != null)
+        {
+            GUIManager.use(mCurrentGUIState).update(_i);
+        }
     }
-    
+    private void changeGUIState(int _newState)
+    {
+        if(mCurrentGUIState == _newState)
+            return;
+        
+        GUIManager.use(mCurrentGUIState).setAcceptingInput(false);
+        GUIManager.use(_newState).setAcceptingInput(true);
+        mCurrentGUIState = _newState;
+    }
     protected void updateMenuState()
     {
         float scrollTime = 0.5f;
@@ -251,6 +292,7 @@ public class StateTitle extends BasicGameState
         {
             case eLeft:
             {
+                changeGUIState(mGUIManagerLeft);
                 mParalax0.scrollTo(new Vector2f(0,0), new Vector2f(scrollTime, 0));
                 mParalax1.scrollTo(new Vector2f(0,0), new Vector2f(scrollTime, 0));
                 mParalax2.scrollTo(new Vector2f(0,0), new Vector2f(scrollTime, 0));
@@ -258,6 +300,7 @@ public class StateTitle extends BasicGameState
             }
             case eCenter:
             {
+                changeGUIState(mGUIManagerCenter);
                 mParalax0.scrollTo(new Vector2f(0.5f,0), new Vector2f(scrollTime, 0));
                 mParalax1.scrollTo(new Vector2f(0.5f,0), new Vector2f(scrollTime, 0));
                 mParalax2.scrollTo(new Vector2f(0.5f,0), new Vector2f(scrollTime, 0));
@@ -265,6 +308,7 @@ public class StateTitle extends BasicGameState
             }
             case eRight:
             {
+                changeGUIState(mGUIManagerRight);
                 mParalax0.scrollTo(new Vector2f(1f,0), new Vector2f(scrollTime, 0));
                 mParalax1.scrollTo(new Vector2f(1f,0), new Vector2f(scrollTime, 0));
                 mParalax2.scrollTo(new Vector2f(1f,0), new Vector2f(scrollTime, 0));
