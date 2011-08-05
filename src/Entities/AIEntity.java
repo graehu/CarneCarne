@@ -40,6 +40,7 @@ public class AIEntity extends Entity
     protected Vec2 mFloorNormal;
     protected static int mJumpReload = 60; /// NOTE frame rate change
     protected float mMoveSpeed;
+    protected int mStunTimer;
     protected Command mCommand;
     protected AIEntityState mAIEntityState;
     protected int mContactParticleTimer = 0;
@@ -59,6 +60,7 @@ public class AIEntity extends Entity
         mMoveSpeed = 1;
         mAnimSpeed = 1;
         mTouchingTile = null;
+        mStunTimer = 0;
     }
     @Override
     public void kill(CauseOfDeath _causeOfDeath, Object _killer)
@@ -76,7 +78,10 @@ public class AIEntity extends Entity
     public void update()
     {
         mContactParticleTimer++;
-        
+        if (mStunTimer != 0)
+        {
+            mStunTimer--;
+        }
         //dampen
         getBody().setAngularDamping(8);
         
@@ -432,7 +437,11 @@ public class AIEntity extends Entity
     }
     void stun()
     {
-        mAIEntityState.stun();
+        if (mStunTimer == 0)
+        {
+            mAIEntityState.stun();
+            mStunTimer = 60 * 5;
+        }
     }
 
     public void crouch()

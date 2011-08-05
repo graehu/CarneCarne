@@ -68,8 +68,10 @@ public class PlayerInputController extends iAIController implements iEventListen
     protected String mFaceDirAnim;
     public Vec2 mPlayerDir = new Vec2(1,0);
     public int mPlayer;
+    private StickShake mStickShake;
     int actionTimer = 0, actionDelay = 10;
     int idleTimer = 0, idleDelay = 0;
+    float mStickValueThisFrame = 0.0f;
     Random rand = new Random();
     
     public PlayerInputController(AIEntity _entity, int _player)
@@ -97,6 +99,7 @@ public class PlayerInputController extends iAIController implements iEventListen
         sEvents.subscribeToEvent("AnalogueStickEvent"+_player, this);
         sEvents.subscribeToEvent("RightStickEvent"+_player, this);
         mTongueState = new TongueStateMachine(this);
+        mStickShake = new StickShake();
     }
     @Override
     public void destroy() /// FIXME more memory leaks to clean up in here
@@ -124,7 +127,12 @@ public class PlayerInputController extends iAIController implements iEventListen
     }
     
     public void update()
-    {       
+    {
+        if (mStickShake.shake(mStickValueThisFrame))
+        {
+            mEntity.jump();
+        }
+        mStickValueThisFrame = 0.0f;
         if(idleTimer == -1)
             mEntity.stopIdle();
         if (mStunTimer != 0)
@@ -353,6 +361,7 @@ public class PlayerInputController extends iAIController implements iEventListen
             {
                 AnalogueStickEvent event = (AnalogueStickEvent)_event;
                 mEntity.walk(event.getValue());
+                mStickValueThisFrame = event.getValue();
             }
             else if (_event.getType().equals("KeyUpEvent"))
             {

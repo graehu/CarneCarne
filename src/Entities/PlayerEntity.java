@@ -293,6 +293,7 @@ public class PlayerEntity extends AIEntity
         {//when player is within half a tile of checkpoint destroy joint
             if (compareFloat(getBody().getPosition().x, mCheckPointPosition.x, 0.5f) && compareFloat(getBody().getPosition().y, mCheckPointPosition.y, 0.5f))
             {
+                mBody.setLinearVelocity(new Vec2(0,0));
                 sWorld.destroyMouseJoint(mDeathJoint);
                 mDeathJoint = null;
                 Fixture fixture = getBody().getFixtureList();
@@ -336,9 +337,12 @@ public class PlayerEntity extends AIEntity
     @Override
     void stun()
     {
-        super.stun();
-        ((PlayerInputController)mController).stun();
-        mSkin.activateSubSkin("pea_stun_large", true, 0.0f);
+        if (mStunTimer == 0)
+        {
+            super.stun();
+            ((PlayerInputController)mController).stun();
+            mSkin.activateSubSkin("pea_stun_large", true, 0.0f);
+        }
     }
 
     @Override
