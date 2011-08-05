@@ -1,36 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" width="70" height="50" tilewidth="64" tileheight="64">
- <tileset firstgid="1" source="Tilesets/Bouncy.tsx"/>
- <tileset firstgid="9" source="Tilesets/Zoomzoom.tsx"/>
- <tileset firstgid="25" source="Tilesets/Water.tsx"/>
- <tileset firstgid="29" source="Tilesets/Spikes.tsx"/>
- <tileset firstgid="33" source="Tilesets/BoneHorizontalSpine.tsx"/>
- <tileset firstgid="45" source="Tilesets/BoneEnds.tsx"/>
- <tileset firstgid="65" source="Tilesets/MovingPlatforms.tsx"/>
- <tileset firstgid="86" source="Tilesets/MeatEdible.tsx"/>
- <tileset firstgid="102" source="Tilesets/MeatSlopes.tsx"/>
- <tileset firstgid="118" source="Tilesets/MeatBoneDown.tsx"/>
- <tileset firstgid="134" source="Tilesets/MeatNonEdible.tsx"/>
- <tileset firstgid="198" source="Tilesets/Tar.tsx"/>
- <tileset firstgid="214" source="Tilesets/Chilli.tsx"/>
- <tileset firstgid="222" source="Tilesets/Ice.tsx"/>
- <tileset firstgid="238" source="Tilesets/IceSlopes.tsx"/>
- <tileset firstgid="254" source="Tilesets/PlatformFlags.tsx"/>
- <tileset firstgid="270" source="Tilesets/Light.tsx"/>
- <tileset firstgid="271" source="Tilesets/Spawns.tsx"/>
- <layer name="Background" width="70" height="50" visible="0">
+ <tileset firstgid="1" source="Tilesets/BouncySlopes.tsx"/>
+ <tileset firstgid="17" source="Tilesets/Bouncy.tsx"/>
+ <tileset firstgid="25" source="Tilesets/Zoomzoom.tsx"/>
+ <tileset firstgid="41" source="Tilesets/Water.tsx"/>
+ <tileset firstgid="45" source="Tilesets/Spikes.tsx"/>
+ <tileset firstgid="49" source="Tilesets/BoneHorizontalSpine.tsx"/>
+ <tileset firstgid="61" source="Tilesets/BoneEnds.tsx"/>
+ <tileset firstgid="81" source="Tilesets/MovingPlatforms.tsx"/>
+ <tileset firstgid="102" source="Tilesets/MeatEdible.tsx"/>
+ <tileset firstgid="118" source="Tilesets/MeatSlopes.tsx"/>
+ <tileset firstgid="134" source="Tilesets/MeatBoneDown.tsx"/>
+ <tileset firstgid="150" source="Tilesets/MeatNonEdible.tsx"/>
+ <tileset firstgid="214" source="Tilesets/Tar.tsx"/>
+ <tileset firstgid="230" source="Tilesets/Chilli.tsx"/>
+ <tileset firstgid="238" source="Tilesets/Ice.tsx"/>
+ <tileset firstgid="254" source="Tilesets/IceSlopes.tsx"/>
+ <tileset firstgid="270" source="Tilesets/PlatformFlags.tsx"/>
+ <tileset firstgid="286" source="Tilesets/Light.tsx"/>
+ <tileset firstgid="287" source="Tilesets/Spawns.tsx"/>
+ <tileset firstgid="295" source="Tilesets/footballbackground.tsx"/>
+ <tileset firstgid="750" source="Tilesets/goalpost.tsx"/>
+ <layer name="Background1" width="70" height="50">
+  <properties>
+   <property name="ScaleX" value="0.3"/>
+   <property name="ScaleY" value="0.3"/>
+  </properties>
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC+3BMQEAAADCoPVPbQhfoAAAAAAAAAAAAAAAAADgN2YIZcmwNgAA
+   H4sIAAAAAAAAC+3Q044mWACF0aoa2zbbtm3btm3btm3btm3bY7PXXPYT9D/J+ZJ1v7OjokKhUCgUCoX+X8WKjoqKTRziEo/4JCAhiUhMEpKSjOSkICWpSE0a0pKO9GQgI5nITBayko3s5CAnuchNnujH/cSj5bUnH/kpQEEKUZgiFKUYxSlBSUpRmjKUpRzlqUBFKlGZKlSlGtWpQU1qUZs61KUe9SPslwb2NKQRjWlCU5rRnBa0pBWtaUNb2tGeDnSkE53pQle60Z0e9KQXvelDX/rRnwEMZFCE/TLYniEMZRjDGcFIRjGaMYxlHOOZwEQmMZkpTGUa05nBTGYxmznMZR7zWcBCFrGYJSyNsF+W2bOcFaxkFatZw1rWsZ4NbGQTm9nCVraxnR3sZBe72cNe9rGfAxzkEIc5wlGOcZwTEfbLSXtOcZoznOUc57nARS5xmStc5RrXucFNbnGbO9zlHvd5wDd8y3d8zw/8yE/8zC/8ym8R9svv9vzBn/zF3/zDv//tjImKiiaGJ3iSp3iaZ3iW53ieF3iRl3iZV3iV13idN3iTt3ibd3iX93ifD2Ie9xOP9qE9H/Exn/Apn/E5X/AlX/E1sYhNHOISj/gkICGJSEwSkpKM5KQgJalITRrSko70ZCBjhP2SyZ7MZCEr2chODnKSi9zkIS/5yE8BClKIwhShKMUoTglKUorSlKEs5ShPBSpSicpUibBfqtpTjerUoCa1qE0d6lKP+jSgIY1oTBOa0ozmtKAlrWhNG9rSjvZ0oCOd6EwXutKN7hH2Sw97etKL3vShL/3ozwAGMojBDGEowxjOCEYyitGMYSzjGM8EJjKJyUxhKtOYzgxmMivCfpltzxzmMo/5LGAhi1jMEpayjOWsYCWrWM0a1rKO9WxgI5vYzBa2so3t7GAnu9jNHvZG2C/77NnPAQ5yiMMc4SjHOM4JTnKK05zhLOc4zwUuconLXOEq17jODW5yi9vc4S73uM+DCPslFAqFQqFQKBQKhUKhUCgUCoVCoVAoFAqFQqHQ4+shESaa07A2AAA=
+  </data>
+ </layer>
+ <layer name="Background0" width="70" height="50">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+3QIRKDQBAEwOVQIIJLHDj4/9OCA5V9Qk5QCXXdesTMRAAAAAAAAAAA/+RdIvby6xbXe/QRU/99/shPzgZ+eeYnr4pfusyWivxdzblxqdg5ZHZs4Jc1N24N7AQAAADgPj72vbrQsDYAAA==
   </data>
  </layer>
  <layer name="Level" width="70" height="50">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC+2VPU7EMBBGh3+uANKiUFBsuQUVLXCEPQIFBQWH8NE4AtoCcQQKDoCwwRGj4cs6Ccbxrr4nPcmyks34KdE6EXGUZnLfu7dl7mbqsm2wC4ZdMOyCYRcMu2DYBcMuGHbBsAuGXTDsgmEXDLtg2AXDLhh2wbALhl0w7ILJ0eXcexGde6+KniAPl/JzjnmU78tv+B1hcnc5SRi49t54bwfMuexY92HM83J00Z4mrJ2cLY4Lz16CI+l//rOJZqyJRtgF0Qi7IBoZ38Wp9YdyLPfy/R/0Gg3ruz/8HsKlL/mikXSXMOMbuPchXr8E6rNNvdcaZn0E53iP9wzt4nq0sT5Fa9hrXdfEvkeoS3Bmuqxr8+xdGFtq2FvEGS26ie4yE9zEttF7qM0KPLM27Iy2Sdsl1US3sXu2zcs/nCM3ekbUpOusQ+36pmqnq0lON61NiSab1qZkE93m0LtTqQcTNKGUUkopndJPEsWmwrA2AAA=
+   H4sIAAAAAAAAC+2VMW7CQBBFB24QQhIuAQoFBSUFFW3gCBwhRQqKHMJHyxFQiogjRKzltVgN346tDOs1+k96ElpheebJhkxEMkqNHDsf78yRUZd7g10w7IJhFwy7YNgFwy4YdsGwC4ZdMOyCYRcMu2DYBcMuGHbBsAuGXTDsgmEXjEWXuXPhXTo3UTewYS2XPZZePi/X8D3CdNHlzbl17lpcs6/4fKv7WXQJ7TuWLSaRZ4/BizTff9bRjCnxKuyCYBfMf7pY//5+SPEfdPLmn9+N79F05iZd8hl/wbUH//09MNyt67PSfNZPsMdwUFzTtkvWoI32y5vCWWldE/0coS65U9Wlrs3RuVKWpHC28jNqwiZhl6ngJrpNeIbafIN7poaeUTcpu/zVJGyjz3Sbn1ssYkw4I2pStWtbq96p1KlqYmnf2sRo0rc2MZuEbZ6dD4n6JPGbUEoppZR26RlbvI4VsDYAAA==
   </data>
  </layer>
- <layer name="Flags" width="70" height="50">
+ <layer name="Foreground0" width="70" height="50">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC+3X0QqDIBiAUX2B6GLb+z9p7Gos48eGSMY8B7w2P9QqJQAAWjzy6CcAAACAvlb/usANbH8+H7FlgnfQL2t85nLM4pXLcaSLLnu6xHp1abmPR9/htfntl1ity5J1+Yzj3tLFOdrTJaZL7KwL0N/ob9QrzLBG4J7cP19a1L0BWdZr/7A2AAA=
+   H4sIAAAAAAAAC+3UawcCQQCF4bEXoo2udCUqovr//6qiKxWd1SwrW9YqW+Z9OF8z+5rJGAAAAAAAAAAAAABAWVq+MW2t45d9kvwmOutUm33xzAP99lAb/VGXhc661FYFz7zzHltrG23rffZ8v6iuVg2tqYVaLaNd3OSiHbWTdnagS1cdelrfdgledEnaHOImf/RWihrrG33bI7R7drFNrtpNqzjQZa5vrGqRfUNZXZL7srd9XFGzXaIX/y/P98UVUapL1n2JJV1cui/BmzeU5tp9CXI0SbjUJW8TAAAAAHDVHaya1/qwNgAA
+  </data>
+ </layer>
+ <layer name="Flags" width="70" height="50" visible="0">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+3XywmAMBRFQdOAJYgLtf8SXfrhgiASg87AWyecQOB1HQAAd0zl7RsAAADAs0a7LtCAvvJfVPs82jE0+PZz2eZPlnKcs32XP7XRJdMl0yXTJdMl0yXTJdMl0yW76gIAAF+0AnabVduwNgAA
   </data>
  </layer>
 </map>

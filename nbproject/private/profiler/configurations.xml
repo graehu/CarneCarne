@@ -6,7 +6,7 @@
 <entry key="0_profiler.settings.instrumentation.filter.selectedprofiler.filter.type">profiler.simple.filter</entry>
 <entry key="0_profiler.settings.instrument.empty.methods">false</entry>
 <entry key="0_profiler.settings.instrumentation.filter.selectedprofiler.simple.filter.name"/>
-<entry key="1_profiler.settings.profiling.type">8</entry>
+<entry key="1_profiler.settings.profiling.type">16</entry>
 <entry key="0_profiler.settings.cpu.exclude.wait.time">true</entry>
 <entry key="0_profiler.settings.override.working.dir"/>
 <entry key="1_profiler.settings.thread.cpu.timer.on">false</entry>

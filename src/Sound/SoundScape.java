@@ -101,6 +101,10 @@ public class SoundScape
         soundPlayers[Sound.eCheckPointHit.ordinal()] = new SinglePlayBlocker(new SimplePlayer("checkpoint_hit"));
         
         sSound.loadSound("underwater", "assets/sfx/underwater_1.ogg");
+        sSound.loadSound("eat_meat", "assets/sfx/meat_rip_1.ogg");
+        sSound.loadSound("spit_meat", "assets/sfx/spit_1.ogg");
+        //sSound.loadSound("underwater", "assets/sfx/underwater_1.ogg");
+        
         //sSound.loadSound("ice_jump", "assets/sfx/ice_jump.ogg");
         return soundPlayers;
     }

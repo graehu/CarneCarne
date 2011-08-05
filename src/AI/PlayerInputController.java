@@ -255,7 +255,7 @@ public class PlayerInputController extends iAIController implements iEventListen
     }
     public void spitBlock(final Tile _tile)
     {
-        sSound.playPositional(Sound.eSpitBlock, mEntity.getBody().getPosition());
+        sSound.playPositional(Sound.eSpitBlock, mEntity.getBody().getPosition(), _tile.getTileType());
         HashMap parameters = new HashMap();
         //intialise velocity relative to carne's
         parameters.put("velocity", mPlayerDir.mul(20.0f).add(mEntity.getBody().getLinearVelocityFromLocalPoint(new Vec2(0,0))));

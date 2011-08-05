@@ -339,7 +339,7 @@ public class AIEntity extends Entity
     public void jump(float scale)
     {
         float canJump = mAIEntityState.canJump(getBody().getLinearVelocity().y) * scale;
-        if (canJump != 0.0f )
+        if (canJump != 0.0f)
         {
             getBody().setLinearVelocity(new Vec2(getBody().getLinearVelocity().x, canJump));
             mJumpTimer = mJumpReload;

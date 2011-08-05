@@ -51,7 +51,7 @@ public class FireParticle extends Entity
     public void update()
     {
         mTimer--;
-        if (mTimer == 0)
+        if (mTimer <= 0)
         {
             kill(CauseOfDeath.eMundane, null);
         }
@@ -90,6 +90,10 @@ public class FireParticle extends Entity
                             sSound.playPositional(SoundScape.Sound.eFireHitObject, mBody.getPosition());
                         }
                         kill(CauseOfDeath.eMundane, null);
+                    }
+                    else
+                    {
+                        mTimer-= 15;
                     }
                     tile.setOnFire();
                     ParticleSysBase system = sParticleManager.createSystem(animationName + "FireHit", position.add(new Vec2(0.5f,0.5f)).mul(64.0f), 2);
