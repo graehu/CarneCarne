@@ -16,7 +16,9 @@ import Level.Tile;
 import Level.sLevel.TileType;
 import Sound.SoundScape;
 import Sound.sSound;
+import World.BreakableTongueAnchor;
 import World.sWorld;
+import java.util.Stack;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Fixture;
 import org.jbox2d.dynamics.contacts.ContactEdge;
@@ -430,10 +432,11 @@ public class AIEntity extends Entity
         }
         return 0;
     }
-
+    private Stack<BreakableTongueAnchor> mAnchors = new Stack<BreakableTongueAnchor>();
     public void stun(Vec2 _direction)
     {
         mBody.applyLinearImpulse(_direction.mul(20.0f), getBody().getWorldCenter());
+            breakTongueContacts();
     }
     void stun()
     {
@@ -441,6 +444,17 @@ public class AIEntity extends Entity
         {
             mAIEntityState.stun();
             mStunTimer = 60 * 5;
+        }
+    }
+    public void addAnchor(BreakableTongueAnchor _anchor)
+    {
+        mAnchors.add(_anchor);
+    }
+    public void breakTongueContacts()
+    {
+        while (!mAnchors.isEmpty())
+        {
+            mAnchors.pop().breakContact();
         }
     }
 
@@ -453,4 +467,5 @@ public class AIEntity extends Entity
         Vec2 pixelPosition = sWorld.translateToWorld(getBody().getPosition());
         mSkin.render(pixelPosition.x,pixelPosition.y);
     }
+
 }

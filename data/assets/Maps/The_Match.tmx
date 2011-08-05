@@ -17,8 +17,8 @@
  <tileset firstgid="238" source="Tilesets/IceSlopes.tsx"/>
  <tileset firstgid="254" source="Tilesets/PlatformFlags.tsx"/>
  <tileset firstgid="270" source="Tilesets/Light.tsx"/>
- <tileset firstgid="271" source="Tilesets/Spawns.tsx"/>
- <layer name="Background" width="70" height="50" visible="0">
+ <tileset firstgid="274" source="Tilesets/Spawns.tsx"/>
+ <layer name="Background" width="70" height="50">
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAC+3BMQEAAADCoPVPbQhfoAAAAAAAAAAAAAAAAADgN2YIZcmwNgAA
   </data>
@@ -26,13 +26,11 @@
  <layer name="Level" width="70" height="50">
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAC+2VPU7EMBBGh3+uANKiUFBsuQUVLXCEPQIFBQWH8NE4AtoCcQQKDoCwwRGj4cs6Ccbxrr4nPcmyks34KdE6EXGUZnLfu7dl7mbqsm2wC4ZdMOyCYRcMu2DYBcMuGHbBsAuGXTDsgmEXDLtg2AXDLhh2wbALhl0w7ILJ0eXcexGde6+KniAPl/JzjnmU78tv+B1hcnc5SRi49t54bwfMuexY92HM83J00Z4mrJ2cLY4Lz16CI+l//rOJZqyJRtgF0Qi7IBoZ38Wp9YdyLPfy/R/0Gg3ruz/8HsKlL/mikXSXMOMbuPchXr8E6rNNvdcaZn0E53iP9wzt4nq0sT5Fa9hrXdfEvkeoS3Bmuqxr8+xdGFtq2FvEGS26ie4yE9zEttF7qM0KPLM27Iy2Sdsl1US3sXu2zcs/nCM3ekbUpOusQ+36pmqnq0lON61NiSab1qZkE93m0LtTqQcTNKGUUkopndJPEsWmwrA2AAA=
-
   </data>
  </layer>
  <layer name="Flags" width="70" height="50">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC+3X0QqDIBiAUX2B6GLb+z9p7Gos48eGSMY8B7w2P9QqJQAAWjzy6CcAAACAvlb/usANbH8+H7FlgnfQL2t85nLM4pXLcaSLLnu6xHp1abmPR9/htfntl1ity5J1+Yzj3tLFOdrTJaZL7KwL0N/ob9QrzLBG4J7cP19a1L0BWdZr/7A2AAA=
-
+   H4sIAAAAAAAAC+3XQQqDMBBAUXOBbFy0vf89S1dSDUNaJBhJ3oOsYz5x0GUBAOCMR+r9BAAAANDWOsi/7ijngFm9B9+PWJ5gdv9zxmc6rlm80nGVdNFlT5dYqy5n5nHvGV7b332J1brkpMu2yruli/doT5eYLrFfXYD2en+jXmGGMwL3ZP58aVH3AdhtraOwNgAA
   </data>
  </layer>
 </map>
