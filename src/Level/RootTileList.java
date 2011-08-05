@@ -123,6 +123,8 @@ public class RootTileList {
                 }
                 else if (shape.equals("Slope"))
                 {
+                    
+  
                     RootTile tile = new RightDownSlope(i,type, animationsNames, regrows, anchor, isFlammable, maxHealth);
                     for (int rootId = i; i < rootId + 4; i++)
                         mRootTiles.add(tile); 

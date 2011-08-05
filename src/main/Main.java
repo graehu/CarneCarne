@@ -77,8 +77,4 @@ public class Main extends StateBasedGame
         //enterState(2, null, new BlobbyTransition(new Color(0,0,0)));
         enterState(2, null, null);
     }
-
-    
-    
-
 }
