@@ -11,7 +11,8 @@ import org.newdawn.slick.gui.GUIContext;
  *
  * @author a203945
  */
-public class ToggleButton extends Button {
+public class ToggleButton extends Button 
+{
     public ToggleButton(GUIContext _context, Vector2f _position, Vector2f _dimensions, boolean _initialState) {
         super(_context, _position, _dimensions);
         mToggleState = _initialState;

@@ -4,7 +4,49 @@
  <tileset firstgid="65" source="Tilesets/Bouncy.tsx"/>
  <tileset firstgid="73" source="Tilesets/MeatEdible.tsx"/>
  <tileset firstgid="89" source="Tilesets/CheckpointFlags.tsx"/>
- <tileset firstgid="105" source="Tilesets/Level1Tooltips.tsx"/>
+ <tileset firstgid="105" name="Level1Tooltips" tilewidth="64" tileheight="64">
+  <image source="Tilesets/Images/Flags/ToolTips.png" width="256" height="256"/>
+  <tile id="0">
+   <properties>
+    <property name="Event" value="Tooltip"/>
+    <property name="String" value="Use Carne's tongue to swing on bone"/>
+    <property name="ToolType" value="Swing"/>
+   </properties>
+  </tile>
+  <tile id="1">
+   <properties>
+    <property name="Event" value="Tooltip"/>
+    <property name="String" value="Formula #1 Meat + Bone = SMASH"/>
+    <property name="TooltipType" value="Eat"/>
+   </properties>
+  </tile>
+  <tile id="2">
+   <properties>
+    <property name="Event" value="Tooltip"/>
+    <property name="String" value="Didn't you mother ever tell you not to swing on a full stomach?!"/>
+    <property name="TooltipType" value="Spit"/>
+   </properties>
+  </tile>
+  <tile id="3">
+   <properties>
+    <property name="Event" value="Tooltip"/>
+    <property name="String" value="Formula #2: Tar + Fire = DEATH"/>
+    <property name="TooltipType" value="Spit"/>
+   </properties>
+  </tile>
+  <tile id="4">
+   <properties>
+    <property name="Event" value="Tooltip"/>
+    <property name="String" value="You found a secret area... *cough*"/>
+   </properties>
+  </tile>
+  <tile id="5">
+   <properties>
+    <property name="Event" value="Tooltip"/>
+    <property name="String" value="Can you smell taco?"/>
+   </properties>
+  </tile>
+ </tileset>
  <tileset firstgid="121" source="Tilesets/StartFinish.tsx"/>
  <tileset firstgid="123" source="Tilesets/Water.tsx"/>
  <tileset firstgid="127" source="Tilesets/BoneSlopes.tsx"/>
@@ -75,7 +117,7 @@
  </layer>
  <layer name="Level" width="100" height="50">
   <data encoding="base64" compression="gzip">
-   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
+   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
   </data>
  </layer>
  <layer name="Static Foreground" width="100" height="50">
@@ -85,7 +127,7 @@
  </layer>
  <layer name="Flags" width="100" height="50">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC+3bSQrCQBBGYbPXAzodwOECegYVj+cRnMBAHLY2WEIbXcSQdFcq74N/4yaSZwhK7HSgWRrwWFPZQOabyYqYy/KGsiZbeKtbmR7r5Ps1yz1Csn59/PrsaGaxx941OLgd3U70+BCjx9k12MkuSnqsCr4Piz1Sr0dWUY+i51O7GD2u7tzd3O5uDyPnsSqx7+cAAADQy8p3EABAc/W4F6m0oYsafW+Ijx660KMeE9m/6FGPsj1QrffvJ/TQhR66hOqRBTiGBVwfAAAA7VbmOQALzw4svSE+euhCD720/m9um7wWwyi3NhjLNKJH9bpKr3sLOLcAAABAeE8ALyfwIE4AAA==
+   H4sIAAAAAAAAC+3bSwrCMBRG4TrXBVp1AT7nugZ1rYIbcJJCCK0kIcm9Sc4HPzgr9FiqUocBmn0KHWc0O1mvU9uZ1eo+s1zGmdnOZq7Xyv8Y9PA3XRv2bEs9Qkj3CHnvSEvV4/Jn0j1qQo9ynh7Xaez9w9VDD5/zWYNWerSCHn27Lgwy6AEA0KaV7yAAgHptuBep9KaLGltrkEcPXeiRx9EsFD3yiO2BtKbfT+ihCz10KdXjW+AYLeD6AAAA6FvMcwAtPDvwsAZ59NCFHnpJ/2/uJnv4WXtnPTiY0UOH3D3WDXzukuDTg3MLAAAAlPcDwAS/PCBOAAA=
   </data>
  </layer>
 </map>

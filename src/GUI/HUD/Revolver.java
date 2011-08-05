@@ -38,10 +38,10 @@ public class Revolver extends GraphicalComponent
     }
     private void init(String _ref)
     {
-        //setMaintainNativeSize(true);
+        setMaintainRatio(true);
         try 
         {
-            mSpriteSheet = new SpriteSheet(_ref, 190,181);
+            mSpriteSheet = new SpriteSheet(_ref,206,200);
         }
         catch (SlickException ex) 
         {
@@ -52,6 +52,11 @@ public class Revolver extends GraphicalComponent
         setDimentionsToImage();
     }
     
+    public Vector2f getOffset()
+    {
+        float s = 0.75f;
+        return new Vector2f(mSpriteSheet.getWidth()/mSpriteSheet.getHorizontalCount()*s,mSpriteSheet.getHeight()*s);
+    }
     int mTargetFrame = defaultAmmo;
     int mCurrentFrame = defaultAmmo;
     SpriteSheet mSpriteSheet = null;

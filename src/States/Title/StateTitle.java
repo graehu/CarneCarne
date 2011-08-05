@@ -1,5 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
+
+/* To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
 package States.Title;
@@ -31,7 +31,8 @@ import org.newdawn.slick.state.transition.BlobbyTransition;
  *
  * @author Aaron
  */
-public class StateTitle extends BasicGameState {
+public class StateTitle extends BasicGameState 
+{
    // @Override
     public int getID() {
        return 2;
@@ -47,6 +48,8 @@ public class StateTitle extends BasicGameState {
     GameContainer cont = null;
     boolean inited = false;
     Integer mGUIManager = null;
+    
+    
     @Override
     public void enter(final GameContainer _gc, final StateBasedGame _sbg) throws SlickException 
     {
@@ -151,6 +154,11 @@ public class StateTitle extends BasicGameState {
             mAdventureButton.setCallback(new Runnable() {
                 public void run() {
                     _sbg.enterState(3, null, new BlobbyTransition(Color.black));
+                }
+            });
+            mRaceButton.setCallback(new Runnable() {
+                public void run() {
+                    //_sbg.enterState(3, null, new BlobbyTransition(Color.black));
                 }
             });
             mOptionsButton.setCallback(new Runnable() {
@@ -264,7 +272,6 @@ public class StateTitle extends BasicGameState {
             }
         }
     }
-    
     //calculates the positions relative to the background
     protected void calcUI()
     {

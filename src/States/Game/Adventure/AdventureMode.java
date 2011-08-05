@@ -4,6 +4,7 @@
  */
 package States.Game.Adventure;
 
+import Entities.Entity.CauseOfDeath;
 import Entities.PlayerEntity;
 import Events.PlayerCreatedEvent;
 import Events.iEvent;
@@ -24,16 +25,24 @@ import org.newdawn.slick.Graphics;
 public class AdventureMode implements iGameMode, iEventListener
 {
     Collection<PlayerEntity> players = new LinkedList<PlayerEntity>();
+    boolean mIsCompleted = false;
     int mTimer;
+    int level = 1;
     public AdventureMode()
     {
         mTimer = 0;
         sEvents.subscribeToEvent("PlayerCreatedEvent", this);
-        sEvents.subscribeToEvent("RaceResetEvent", this);
-        sLevel.newLevel("Level1");
+        sEvents.subscribeToEvent("RaceWonEvent", this);
+        sLevel.newLevel("Level"+level);
     }
     public iGameMode update(Graphics _graphics, float _time)
     {
+        if(mIsCompleted)
+        {
+            mIsCompleted = false;
+            level++;
+            sLevel.newLevel("Level"+level);
+        }
         mTimer++;
         sLevel.update();
         sWorld.update(_graphics, _time);
@@ -52,9 +61,10 @@ public class AdventureMode implements iGameMode, iEventListener
             PlayerCreatedEvent event = (PlayerCreatedEvent)_event;
             players.add(event.getPlayer());
         }
-        else if (_event.getName().equals("RaceResetEvent"))
+        else if (_event.getName().equals("RaceWonEvent"))
         {
             //on finish
+            mIsCompleted = true;
         }
         return true;
     }

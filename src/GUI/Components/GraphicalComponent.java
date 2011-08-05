@@ -16,6 +16,7 @@ import org.newdawn.slick.gui.GUIContext;
  *
  * @author a203945
  */
+
 public class GraphicalComponent extends iComponent{
     
     public GraphicalComponent(GUIContext _context, Vector2f _position, Vector2f _dimensions) {

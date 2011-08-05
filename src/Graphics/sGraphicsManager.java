@@ -129,8 +129,12 @@ public class sGraphicsManager {
     }
     public static void scale(float _s)
     {
+        scale(_s,_s);
+    }
+    public static void scale(float _x, float _y)
+    {
         if(mAllowTransform)
-            mGameContainer.getGraphics().scale(_s, _s);
+            mGameContainer.getGraphics().scale(_x, _y);
     }
     public static void setColor(Color _color)
     {

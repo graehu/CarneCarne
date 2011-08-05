@@ -9,8 +9,9 @@ import java.util.ArrayDeque;
 
 /**
  *
- * @author a203945
+ * @author Aaron
  */
+
 public class ComponentEffectLayer {
     
     ComponentEffectLayer(iComponent _component)

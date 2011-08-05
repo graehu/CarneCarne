@@ -24,7 +24,8 @@ import org.newdawn.slick.gui.GUIContext;
  * 
  * @author kevin
  */
-public class TextField extends iComponent {
+public class TextField extends iComponent 
+{
 	/** The key repeat interval */
 	private static final int INITIAL_KEY_REPEAT_INTERVAL = 400;
 	/** The key repeat interval */
