@@ -36,14 +36,14 @@ public class FootballMode implements iGameMode, iEventListener
     ArrayList<AreaEvent> goals = new ArrayList<AreaEvent>();
     ArrayList<Integer> scores = new ArrayList<Integer>();
     Football mFootball;
-    public FootballMode()
+    public FootballMode(String _level)
     {
         mTimer = 0;
         ballSpawnPosition = null;
         sEvents.subscribeToEvent("PlayerCreatedEvent", this);
         sEvents.subscribeToEvent("FootballSpawnEvent", this);
         sEvents.subscribeToEvent("GoalSpawnEvent", this);
-        sLevel.newLevel("Football");
+        sLevel.newLevel(_level);
     }
     
     public iGameMode update(Graphics _graphics, float _time)
@@ -123,5 +123,14 @@ public class FootballMode implements iGameMode, iEventListener
         HashMap parameters = new HashMap();
         parameters.put("position",ballSpawnPosition);
         sEvents.triggerEvent(new FootballSpawnEvent((Football)sEntityFactory.create("Football",parameters)));
+    }
+    
+    public void cleanup() 
+    {
+        for(PlayerEntity player : players)
+        {
+            player.destroy();
+            sWorld.destroyBody(player.getBody());
+        }
     }
 }

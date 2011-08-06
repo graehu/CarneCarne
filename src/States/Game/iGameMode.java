@@ -14,4 +14,5 @@ public interface iGameMode {
     
     public iGameMode update(Graphics _graphics, float _time);
     public void render(Graphics _graphics);
+    public void cleanup();
 }

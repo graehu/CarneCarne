@@ -4,6 +4,8 @@
  */
 package Level;
 
+import Events.AreaEvents.sAreaEvents;
+import Graphics.Particles.sParticleManager;
 import Graphics.sGraphicsManager;
 import Level.Lighting.sLightsManager;
 import World.sWorld;
@@ -124,11 +126,13 @@ public class sLevel
         }
         flagsLayer = mTiledMap.getLayerIndex("Flags");
     }
-    
-    public static void newLevel(String _map)
+    //returns next level
+    public static String newLevel(String _map)
     {
         //clean up old level
+        sAreaEvents.clearEvents();
         sWorld.destroy();
+        sParticleManager.cleanupInstancedSystems();
         sLightsManager.destroyAllLightSources();
         try
         {
@@ -154,6 +158,7 @@ public class sLevel
         flagsLayer = mTiledMap.getLayerIndex("Flags");
         midLayer = mTiledMap.getLayerIndex("Level");
         mLevelEditor.newLevel(mTiledMap);
+        return mTiledMap.getMapProperty("NextMap", null);
     }
     public static void update()
     {

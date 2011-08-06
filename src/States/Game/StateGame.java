@@ -18,6 +18,8 @@ import Graphics.sGraphicsManager;
 import GUI.HUD.sHud;
 import Input.sInput;
 import Sound.sSound;
+import States.Game.Adventure.AdventureMode;
+import States.Game.FootballMode.FootballMode;
 import States.Game.RaceMode.RaceMode;
 import States.Menu.StateMenu;
 import States.StateChanger;
@@ -39,19 +41,19 @@ public class StateGame extends BasicGameState implements iEventListener {
 
     public enum GameType
     {
-        eRaceGame,
+        eAdventure,
+        eRace,
+        eFootball,
         eGameTypesMax
     }
-    private GameType mGameType;
-    GameType getGameType()
-    {
-        return mGameType;
-    }
+    private static GameType gameType = GameType.eGameTypesMax;
+    private static String levelRef = "NoLevel";
     private int mGUIRef;
-    private iGameMode mGameMode; 
+    private static iGameMode mGameMode; 
     StateChanger mChangeToMenu;
     static private int mPlayers;
     static public Vec2 mMousePos = new Vec2(0,0);
+    boolean mInited = false;
     
     
     public StateGame()
@@ -98,7 +100,8 @@ public class StateGame extends BasicGameState implements iEventListener {
         sInput.update(_delta);
         
         //update game
-        mGameMode = mGameMode.update(_gc.getGraphics(), _delta);
+        if(mGameMode != null)
+            mGameMode = mGameMode.update(_gc.getGraphics(), _delta);
         
         //update particles
         sParticleManager.update(_delta);
@@ -108,6 +111,11 @@ public class StateGame extends BasicGameState implements iEventListener {
     }
     public void render(GameContainer _gc, StateBasedGame _sbg, Graphics _grphcs) throws SlickException
     {
+        if(!mInited) //need to catch this as transition uses render call before enter() is called
+        {
+            mInited = true;
+            subInit();
+        }
         Vec2 s = sGraphicsManager.getScreenDimensions();
         mGameMode.render(_grphcs);
         //cleanup texture data
@@ -119,7 +127,7 @@ public class StateGame extends BasicGameState implements iEventListener {
     @Override
     //callback for when the game enters this state
     public void enter(GameContainer container, StateBasedGame game) throws SlickException 
-    {
+    {        
         //set GUI to this
         GUIManager.set(mGUIRef);
         container.setMouseGrabbed(true);
@@ -147,19 +155,15 @@ public class StateGame extends BasicGameState implements iEventListener {
         sSound.loadFile("jump", "assets/sfx/fart_4.ogg");
         sSound.loadFile("tongueFire", "assets/sfx/tongueFire.ogg");
         
-
         //initialise game
-        mGameType = GameType.eRaceGame;
         sHud.init();
         sEntityFactory.init();
         sSkinFactory.init();
         sSpriteFactory.init();
         sWorld.init();
         
-
-
         //mGameMode = new FootballMode();
-        mGameMode = new RaceMode();
+        //mGameMode = new RaceMode("RaceReloaded");
         //mGameMode = new IntroMode();
         //mGameMode = new AdventureMode();
         
@@ -172,4 +176,32 @@ public class StateGame extends BasicGameState implements iEventListener {
         mChangeToMenu = new StateChanger(4, null, new BlobbyTransition(Color.black), _sbg);
     }
 
+    private void subInit()
+    {
+        if(mGameMode != null)
+            mGameMode.cleanup();
+        switch(gameType)
+        {
+            case eAdventure:
+            {
+                mGameMode = new AdventureMode(levelRef);
+                break;
+            }
+            case eFootball:
+            {
+                mGameMode = new FootballMode(levelRef);
+                break;
+            }
+            case eRace:
+            {
+                mGameMode = new RaceMode(levelRef);
+                break;
+            }    
+        }
+    }
+    public static void setGameType(GameType _type, String _level)
+    {
+        gameType = _type;
+        levelRef = _level;
+    }
 }

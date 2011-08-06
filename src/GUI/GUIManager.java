@@ -83,7 +83,7 @@ public class GUIManager implements iEventListener
     boolean mIsAcceptingInput = false;
     int mInputTimer = 0;
     HashMap<Integer, iComponent> mManagedRoots = new HashMap<Integer, iComponent>();
-    ArrayList<iComponent> mSelectables = new ArrayList<iComponent>();
+    ArrayList<Button> mSelectables = new ArrayList<Button>();
     int mCurrentSelection = 0;
     int mPlayerInControl = 0;
     GameContainer mContainer = null;
@@ -108,9 +108,10 @@ public class GUIManager implements iEventListener
     
     public void addRootComponent(iComponent _component)
     {
-        if(_component.getClass().equals(Button.class) || _component.getClass().equals(Button.class))
+        _component.setAcceptingInput(false);
+        if(_component.getClass().equals(Button.class))
         {
-            addSelectable(_component);
+            addSelectable((Button)_component);
         }
         _component.setLocalScale(scale);
         if(_component.isRoot())
@@ -148,13 +149,14 @@ public class GUIManager implements iEventListener
             }       
         }
     }
-    public void addSelectable(iComponent _component)
+    public ArrayList<Button> getSelectableList() {return mSelectables;}
+    public void addSelectable(Button _component)
     {
         if(mSelectables.size() == 0)
-            ((Button)_component).hoverOver();
+            _component.hoverOver();
         mSelectables.add(_component);
     }
-    public void removeSelectable(iComponent _component)
+    public void removeSelectable(Button _component)
     {
         mSelectables.remove(_component);
     }
@@ -262,11 +264,15 @@ public class GUIManager implements iEventListener
     public void setAcceptingInput(boolean _isAccepting)
     {
         mIsAcceptingInput = _isAccepting;
-        Iterator<iComponent> itr = mManagedRoots.values().iterator();
-        while(itr.hasNext())
+//        Iterator<iComponent> itr = mManagedRoots.values().iterator();
+//        while(itr.hasNext())
+//        {
+//            iComponent c = itr.next();
+//            c.setAcceptingInput(_isAccepting);
+//        }
+        for(Button b : mSelectables)
         {
-            iComponent c = itr.next();
-            c.setAcceptingInput(_isAccepting);
+            b.setAcceptingInput(_isAccepting);
         }
     }
     
@@ -287,7 +293,7 @@ public class GUIManager implements iEventListener
     
     public void gotoNextSelectable()
     {
-        if(mIsAcceptingInput)
+        if(mIsAcceptingInput && !mSelectables.isEmpty())
         {
             ((Button)mSelectables.get(mCurrentSelection)).reset();
             mCurrentSelection++;
@@ -299,7 +305,7 @@ public class GUIManager implements iEventListener
     }
     public void gotoPreviousSelectable()
     {
-        if(mIsAcceptingInput)
+        if(mIsAcceptingInput && !mSelectables.isEmpty())
         {
             ((Button)mSelectables.get(mCurrentSelection)).reset();
             mCurrentSelection--;
@@ -310,14 +316,14 @@ public class GUIManager implements iEventListener
     }
     public void unclickSelected()
     {
-        if(mIsAcceptingInput)
+        if(mIsAcceptingInput && !mSelectables.isEmpty())
         {
             ((Button)mSelectables.get(mCurrentSelection)).hoverOver();
         }
     }
     public void clickSelected()
     {
-        if(mIsAcceptingInput)
+        if(mIsAcceptingInput && !mSelectables.isEmpty())
         {
             ((Button)mSelectables.get(mCurrentSelection)).select();
         }

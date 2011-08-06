@@ -138,11 +138,11 @@ class ParticleSys implements ParticleSysBase
             mIsDead = false;
             for(int i = 0; i < mSystem.getEmitterCount(); i++)
             {
-                //stop emitter producing
-                mSystem.getEmitter(i).wrapUp();
                 //when all particles expire declare system dead
                 if(mSystem.getEmitter(i).completed())
                 {
+                    //stop emitter producing
+                    mSystem.getEmitter(i).wrapUp();
                     if(false == mCompletedEmittors.contains(i))
                     {
                         mCompletedEmittors.add(i);

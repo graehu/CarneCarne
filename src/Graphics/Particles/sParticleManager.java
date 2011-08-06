@@ -239,4 +239,9 @@ public class sParticleManager {
         }
         return false;
     }
+    
+    public static void cleanupInstancedSystems()
+    {
+        mInstancedSystems.clear();
+    }
 }
