@@ -452,6 +452,10 @@ public class AIEntity extends Entity
     {
         mAnchors.add(_anchor);
     }
+    public void removeAnchor(BreakableTongueAnchor _anchor)
+    {
+        mAnchors.remove(_anchor);
+    }
     public void breakTongueContacts()
     {
         while (!mAnchors.isEmpty())
@@ -469,5 +473,6 @@ public class AIEntity extends Entity
         Vec2 pixelPosition = sWorld.translateToWorld(getBody().getPosition());
         mSkin.render(pixelPosition.x,pixelPosition.y);
     }
+
 
 }

@@ -42,5 +42,11 @@ public class BreakableTongueAnchor extends TongueAnchor
         sParticleManager.createSystem("Snap", mAnchor.getBody().getPosition().mul(64).add(new Vec2(32,32)), 1);
         mAnchor = null;
     }
+    @Override
+    public void release()
+    {
+        if (mAnchor != null)
+            mAnchor.removeAnchor(this);
+    }
     
 }
