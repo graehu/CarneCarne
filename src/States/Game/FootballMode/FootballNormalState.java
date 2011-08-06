@@ -14,6 +14,7 @@ import Graphics.Skins.sSkinFactory;
 import Graphics.sGraphicsManager;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 import org.jbox2d.common.Vec2;
 
 /**
@@ -24,15 +25,17 @@ public class FootballNormalState extends FootballState
 {
     int mLastRandomEventSpawn = 0;
     Football mFootball;
+    Random mRand;
     private Vec2 ballSpawnPosition;
     private static final int mColonWidth = 25;
     private static final int mLetterHeight = 50;
     private static final int mLetterWidth = 50;
     iSkin mScoreColonRender;
     iSkin mDigitSkins[];
-    public FootballNormalState(FootballMode _mode)
+    public FootballNormalState(FootballMode _mode, Vec2 _ballSpawnPosition)
     {
         super(_mode, true);
+        ballSpawnPosition = _ballSpawnPosition;
         HashMap params = new HashMap();
         params.put("ref", "Numbers/Colon");
         mScoreColonRender = sSkinFactory.create("static", params);
@@ -45,6 +48,7 @@ public class FootballNormalState extends FootballState
             mDigitSkins[i] = sSkinFactory.create("static", params);
             mDigitSkins[i].setDimentions(mLetterWidth, mLetterHeight*2);
         }
+        mRand = new Random(System.currentTimeMillis());
     }
     
     @Override
@@ -128,17 +132,36 @@ public class FootballNormalState extends FootballState
             mLastRandomEventSpawn++;
             if (mLastRandomEventSpawn == 3)
             {
-                return new FootballMultiballState(mMode);
+                mLastRandomEventSpawn = 0;
+                return randomEvent();
             }
         }
         return this;
     }
-
+    private FootballState randomEvent()
+    {
+        int event = mRand.nextInt()%2;
+        switch (event)
+        {
+            case 0:
+            {
+                return new FootballMultiballState(mMode, ballSpawnPosition);
+            }
+            case 1:
+            {
+                HashMap params = new HashMap();
+                params.put("position", ballSpawnPosition);
+                sEntityFactory.create("Broccoli", params);
+                break;
+            }
+        }
+        return this;
+    }
     @Override
     FootballState footballDied(Football _football)
     {
         HashMap parameters = new HashMap();
-        parameters.put("position",new Vec2(26,20));
+        parameters.put("position",ballSpawnPosition);
         mFootball = (Football)sEntityFactory.create("Football",parameters);
         sEvents.triggerEvent(new FootballSpawnEvent(mFootball));
         return this;

@@ -36,9 +36,9 @@ public class FootballMode implements iGameMode, iEventListener
     FootballState mState;
     public FootballMode()
     {
-        mTimer = 5  * 60;
+        mTimer = 5 * 60 * 60;
         ballSpawnPosition = null;
-        mState = new FootballNormalState(this);
+        mState = new FootballNormalState(this, null);
         scores.add(0);
         scores.add(0);
         sEvents.subscribeToEvent("PlayerCreatedEvent", this);

@@ -23,9 +23,11 @@ public class FootballMultiballState extends FootballState
     private ArrayList<Football> mBalls;
     private iSkin mSkin;
     private float mSkinPosition;
-    public FootballMultiballState(FootballMode _mode)
+    private Vec2 mBallSpawnPosition;
+    public FootballMultiballState(FootballMode _mode, Vec2 _ballSpawnPosition)
     {
         super(_mode, false);
+        mBallSpawnPosition = _ballSpawnPosition;
         mBalls = new ArrayList<Football>();
         HashMap parameters = new HashMap();
         
@@ -83,7 +85,7 @@ public class FootballMultiballState extends FootballState
         }
         if (mBalls.isEmpty())
         {
-            return new FootballNormalState(mMode);
+            return new FootballNormalState(mMode, mBallSpawnPosition);
         }
         return this;
     }
@@ -94,7 +96,7 @@ public class FootballMultiballState extends FootballState
         mBalls.remove(_football);
         if (mBalls.isEmpty())
         {
-            return new FootballNormalState(mMode);
+            return new FootballNormalState(mMode, mBallSpawnPosition);
         }
         return this;
     }
