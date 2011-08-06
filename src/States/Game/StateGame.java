@@ -53,7 +53,7 @@ public class StateGame extends BasicGameState implements iEventListener {
     StateChanger mChangeToMenu;
     static private int mPlayers;
     static public Vec2 mMousePos = new Vec2(0,0);
-    boolean mInited = false;
+    static boolean mInited = false;
     
     
     public StateGame()
@@ -122,6 +122,7 @@ public class StateGame extends BasicGameState implements iEventListener {
         //screen.flushPixelData();
         GUIManager.get().render(false);
         
+        sGraphicsManager.drawString("Bodies: " + sWorld.getBodyCount(), 0.2f, 0.2f);
 
     }
     @Override
@@ -140,6 +141,7 @@ public class StateGame extends BasicGameState implements iEventListener {
     //callback for when the game leaves this state
     public void leave(GameContainer container, StateBasedGame game) throws SlickException 
     {
+        mInited = false;
         sEvents.blockListener(this);
         container.setMouseGrabbed(false);
         sSound.stop("level1");
@@ -201,6 +203,7 @@ public class StateGame extends BasicGameState implements iEventListener {
     }
     public static void setGameType(GameType _type, String _level)
     {
+        mInited = false;
         gameType = _type;
         levelRef = _level;
     }

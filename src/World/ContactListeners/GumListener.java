@@ -11,6 +11,7 @@ import Level.Tile;
 import World.sWorld.BodyCategories;
 import org.jbox2d.callbacks.ContactImpulse;
 import org.jbox2d.collision.Manifold;
+import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.contacts.Contact;
 
 /**
@@ -19,22 +20,27 @@ import org.jbox2d.dynamics.contacts.Contact;
  */
 public class GumListener implements iListener {
 
-    public GumListener() {
+    public GumListener()
+    {
     }
 
     public void beginContact(Contact _contact)
     {
-        if (_contact.m_fixtureA.m_filter.categoryBits == (1 << BodyCategories.eGum.ordinal()))
+        if(_contact.isTouching())
         {
-            int rootId = ((SpatBlock)_contact.m_fixtureA.getBody().getUserData()).getRootId();
-            Tile tile = (Tile)_contact.m_fixtureB.getUserData();
-            sEvents.triggerDelayedEvent(new GumLandEvent(_contact.m_fixtureA.m_body,rootId,tile));
-        }
-        else
-        {
-            int rootId = ((SpatBlock)_contact.m_fixtureB.getBody().getUserData()).getRootId();
-            Tile tile = (Tile)_contact.m_fixtureA.getUserData();
-            sEvents.triggerDelayedEvent(new GumLandEvent(_contact.m_fixtureB.m_body,rootId,tile));
+            Vec2 norm = _contact.getManifold().localNormal;
+            if (_contact.m_fixtureA.m_filter.categoryBits == (1 << BodyCategories.eGum.ordinal()))
+            {
+                int rootId = ((SpatBlock)_contact.m_fixtureA.getBody().getUserData()).getRootId();
+                Tile tile = (Tile)_contact.m_fixtureB.getUserData();
+                sEvents.triggerDelayedEvent(new GumLandEvent(norm, _contact.m_fixtureA.m_body,rootId, tile));
+            }
+            else
+            {
+                int rootId = ((SpatBlock)_contact.m_fixtureB.getBody().getUserData()).getRootId();
+                Tile tile = (Tile)_contact.m_fixtureA.getUserData();
+                sEvents.triggerDelayedEvent(new GumLandEvent(norm, _contact.m_fixtureB.m_body,rootId,tile));
+            }
         }
     }
 
