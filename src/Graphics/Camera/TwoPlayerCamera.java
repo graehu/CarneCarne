@@ -19,7 +19,7 @@ class TwoPlayerCamera extends BodyCamera {
     Body mBodyB;
     public TwoPlayerCamera(Body _bodyA, Body _bodyB, Rectangle _viewPort, boolean _topSplit)
     {
-        super(_bodyA, _viewPort, _topSplit);
+        super(_bodyA, _viewPort, _topSplit, false);
         mBodyB = _bodyB;
     }
 

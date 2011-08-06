@@ -40,6 +40,29 @@ public class Football extends Pea
         {
             buoyancy();
         }
+        if (mDoomTimer != 0)
+        {
+            mDoomTimer--;
+            if (mDoomTimer == 0)
+            {
+                kill(CauseOfDeath.eMundane, this);
+                mBody = null;
+                return;
+            }
+        }
+        else
+        {
+            AreaEvent event = sAreaEvents.collidePoint(mBody.getPosition()); 
+            try
+            {
+                GoalZone zone = (GoalZone)event;
+                zone.enter(this);
+            }
+            catch (Throwable e) /// Null pointer and class cass
+            {
+
+            }
+        }
         ContactEdge edge = getBody().m_contactList;
         while (edge != null)
         {
@@ -67,28 +90,6 @@ public class Football extends Pea
                 }
             }
             edge = edge.next;
-        }
-        if (mDoomTimer != 0)
-        {
-            mDoomTimer--;
-            if (mDoomTimer == 0)
-            {
-                kill(CauseOfDeath.eMundane, this);
-                mBody = null;
-            }
-        }
-        else
-        {
-            AreaEvent event = sAreaEvents.collidePoint(mBody.getPosition()); 
-            try
-            {
-                GoalZone zone = (GoalZone)event;
-                zone.enter(this);
-            }
-            catch (Throwable e) /// Null pointer and class cass
-            {
-
-            }
         }
     }
 

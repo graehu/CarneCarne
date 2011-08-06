@@ -5,6 +5,7 @@
 package World;
 
 import Entities.AIEntity;
+import Graphics.Particles.sParticleManager;
 import org.jbox2d.common.Vec2;
 
 /**
@@ -38,6 +39,7 @@ public class BreakableTongueAnchor extends TongueAnchor
     
     public void breakContact()
     {
+        sParticleManager.createSystem("Snap", mAnchor.getBody().getPosition().mul(64).add(new Vec2(32,32)), 1);
         mAnchor = null;
     }
     
