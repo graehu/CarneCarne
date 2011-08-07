@@ -76,6 +76,7 @@ public class PlayerInputController extends iAIController implements iEventListen
     float mRightStickValueThisFrame = 0.0f;
     private int mGrabImmunityTimer;
     Random rand = new Random();
+    boolean mIsAcceptingInput = true; //used to stop input being cause when paused
     
     public PlayerInputController(AIEntity _entity, int _player)
     {
@@ -307,19 +308,21 @@ public class PlayerInputController extends iAIController implements iEventListen
         sParticleManager.createSystem("DragonBreath", mEntity.getBody().getPosition().add(new Vec2(0.5f,0.5f)).add(mPlayerDir.mul(0.5f)).mul(64.0f), 1f)
                 .setAngularOffset(((float)Math.atan2(mPlayerDir.y, mPlayerDir.x) * 180.0f/(float)Math.PI)-270.0f);
     }
-
+    
     public boolean trigger(final iEvent _event)
     {
         if(_event.getType().equals("GamePaused"))
         {
-            sEvents.blockListener(this);
+            mIsAcceptingInput = false;
             return true;
         }
         else if(_event.getType().equals("GameUnpaused"))
         {
-            sEvents.unblockListener(this);
+            mIsAcceptingInput = true;
             return true;
         }
+        if(mIsAcceptingInput == false)
+            return true;
         if(mEntity.isIdle())
             ((PlayerEntity)mEntity).stopIdle();
         if (mStunTimer == 0)
