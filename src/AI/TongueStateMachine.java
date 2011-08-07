@@ -82,6 +82,7 @@ public class TongueStateMachine {
     protected boolean mIsTongueActive = false;
     private String mBlockMaterial;
     private Tile mTile;
+    private TongueAnchor tongueAttachment;
 
     void layBlock()
     {
@@ -411,6 +412,7 @@ public class TongueStateMachine {
                 }
                 else
                 {
+                    tongueAttachment.release();
                     tongueAttachment = null;
                     changeState(State.eRetractingTongue);
                     tick(_entity);
@@ -652,6 +654,7 @@ public class TongueStateMachine {
             }
             case eSwinging:
             {
+                tongueAttachment.release();
                 tongueAttachment = null;
                 changeState(State.eRetractingTongue);
             }
@@ -922,7 +925,6 @@ public class TongueStateMachine {
         mState = _state;
     }
     //private DistanceJoint mJoint;
-    private TongueAnchor tongueAttachment;
     private void spitBlock()
     {
         mAmmoLeft--;

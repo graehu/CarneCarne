@@ -16,7 +16,9 @@ import Level.Tile;
 import Level.sLevel.TileType;
 import Sound.SoundScape;
 import Sound.sSound;
+import World.BreakableTongueAnchor;
 import World.sWorld;
+import java.util.Stack;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Fixture;
 import org.jbox2d.dynamics.contacts.ContactEdge;
@@ -40,6 +42,7 @@ public class AIEntity extends Entity
     protected Vec2 mFloorNormal;
     protected static int mJumpReload = 60; /// NOTE frame rate change
     protected float mMoveSpeed;
+    protected int mStunTimer;
     protected Command mCommand;
     protected AIEntityState mAIEntityState;
     protected int mContactParticleTimer = 0;
@@ -59,6 +62,7 @@ public class AIEntity extends Entity
         mMoveSpeed = 1;
         mAnimSpeed = 1;
         mTouchingTile = null;
+        mStunTimer = 0;
     }
     @Override
     public void kill(CauseOfDeath _causeOfDeath, Object _killer)
@@ -76,7 +80,10 @@ public class AIEntity extends Entity
     public void update()
     {
         mContactParticleTimer++;
-        
+        if (mStunTimer != 0)
+        {
+            mStunTimer--;
+        }
         //dampen
         getBody().setAngularDamping(8);
         
@@ -168,7 +175,8 @@ public class AIEntity extends Entity
                         if(((Tile)other.getUserData()) != null && !other.isSensor() )
                         {
                             mTouchingTile = ((Tile)other.getUserData());
-                            mJumpContacts++;
+                            if (!((Tile)other.getUserData()).getTileType().equals(TileType.eZoomzoom))
+                                mJumpContacts++;
                             createContactParticle(collisionNorm);
                         }
                     }
@@ -182,7 +190,8 @@ public class AIEntity extends Entity
                             mTouchingTile = ((Tile)other.getUserData());
                         mContactParticleDelay = 5;
                         createContactParticle(collisionNorm);
-                        mJumpContacts++; //allow jump on slopes
+                        if (!((Tile)other.getUserData()).getTileType().equals(TileType.eZoomzoom))
+                            mJumpContacts++; //allow jump on slopes
                         mAllowRoll = true;
                     }
                     mFloorNormal = collisionNorm.clone();
@@ -425,14 +434,34 @@ public class AIEntity extends Entity
         }
         return 0;
     }
-
+    private Stack<BreakableTongueAnchor> mAnchors = new Stack<BreakableTongueAnchor>();
     public void stun(Vec2 _direction)
     {
         mBody.applyLinearImpulse(_direction.mul(20.0f), getBody().getWorldCenter());
+            breakTongueContacts();
     }
     void stun()
     {
-        mAIEntityState.stun();
+        if (mStunTimer == 0)
+        {
+            mAIEntityState.stun();
+            mStunTimer = 60 * 5;
+        }
+    }
+    public void addAnchor(BreakableTongueAnchor _anchor)
+    {
+        mAnchors.add(_anchor);
+    }
+    public void removeAnchor(BreakableTongueAnchor _anchor)
+    {
+        mAnchors.remove(_anchor);
+    }
+    public void breakTongueContacts()
+    {
+        while (!mAnchors.isEmpty())
+        {
+            mAnchors.pop().breakContact();
+        }
     }
 
     public void crouch()
@@ -444,4 +473,6 @@ public class AIEntity extends Entity
         Vec2 pixelPosition = sWorld.translateToWorld(getBody().getPosition());
         mSkin.render(pixelPosition.x,pixelPosition.y);
     }
+
+
 }

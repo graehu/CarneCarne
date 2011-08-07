@@ -20,4 +20,8 @@ public abstract class TongueAnchor
     }
 
     abstract public TongueAnchor stun();
+    public void release()
+    {
+        
+    }
 }

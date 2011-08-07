@@ -249,13 +249,13 @@ public class sWorld
         if (callback.getFixture().m_filter.categoryBits == (1 << BodyCategories.ePlayer.ordinal()))
         {
             mLastHit = callback.getFixture();
-            mLastTongueAnchor = new PlayerTongueAnchor(mLastHit, new Vec2(0.0f, 0.0f));
+            mLastTongueAnchor = new BreakableTongueAnchor((AIEntity)mLastHit.getBody().getUserData());
             return new FakeTile(mLastHit.getBody());
         }
         if (callback.getFixture().m_filter.categoryBits == (1 << BodyCategories.eEnemy.ordinal()))
         {
             mLastHit = callback.getFixture();
-            mLastTongueAnchor = new MovingBodyTongueAnchor(mLastHit, new Vec2(0.0f, 0.0f));
+            mLastTongueAnchor = new BreakableTongueAnchor((AIEntity)mLastHit.getBody().getUserData());
             return new FakeTile(mLastHit.getBody());
         }
         Tile tile = (Tile)callback.getFixture().getUserData();

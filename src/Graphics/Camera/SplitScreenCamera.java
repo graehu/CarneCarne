@@ -20,14 +20,16 @@ class SplitScreenCamera extends iCamera
     Rectangle viewPortA, viewPortB;
     boolean lastSplit;
     boolean mTopSplit;
-    public SplitScreenCamera(Body _bodyA, Body _bodyB, Rectangle _viewPort, boolean _topSplit)
+    boolean mFourPlayerReady;
+    public SplitScreenCamera(Body _bodyA, Body _bodyB, Rectangle _viewPort, boolean _topSplit, boolean _fourPlayerReady)
     {
         super(_viewPort);
+        mFourPlayerReady = _fourPlayerReady;
         lastSplit = false;
         mTopSplit = _topSplit;
         split();
-        mCameraA = new PartialViewportCamera(_bodyA, viewPortA, !mTopSplit);
-        mCameraB = new PartialViewportCamera(_bodyB, viewPortB, !mTopSplit);
+        mCameraA = new PartialViewportCamera(_bodyA, viewPortA, !mTopSplit, !mFourPlayerReady);
+        mCameraB = new PartialViewportCamera(_bodyB, viewPortB, !mTopSplit, !mFourPlayerReady);
         mActiveCamera = mCameraA;
     }
 
@@ -54,20 +56,41 @@ class SplitScreenCamera extends iCamera
         mActiveCamera.render(_graphics);
     }
     
+    @Override
     public iCamera addPlayer(Body _body)
     {
         if (lastSplit)
+        {
             mCameraA = mCameraA.addPlayer(_body);
+        }
         else
+        {
             mCameraB = mCameraB.addPlayer(_body);
+            if (!mFourPlayerReady)
+            {
+                mCameraA.transposeBody(mCameraB);
+                mFourPlayerReady = true;
+            }
+        }
         lastSplit = !lastSplit;
         return this;
+    }
+    @Override
+    void transposeBody(iCamera _cameraB)
+    {
+        mCameraB.transposeBody(_cameraB);
+    }
+    @Override
+    Body switchBody(Body _body)
+    {
+        return mCameraA.switchBody(_body);
     }
     public void update(Graphics _graphics)
     {
         mCameraA.update(_graphics);
         mCameraB.update(_graphics);
     }
+    @Override
     public void resize(Rectangle _viewPort)
     {
         super.resize(_viewPort);

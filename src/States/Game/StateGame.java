@@ -11,11 +11,11 @@ import Events.iEvent;
 import Events.iEventListener;
 import Events.sEvents;
 import GUI.GUIManager;
+import GUI.HUD.sHud;
 import Graphics.Particles.sParticleManager;
 import Graphics.Skins.sSkinFactory;
 import Graphics.Sprites.sSpriteFactory;
 import Graphics.sGraphicsManager;
-import GUI.HUD.sHud;
 import Input.sInput;
 import Sound.sSound;
 import States.Game.Adventure.AdventureMode;
@@ -163,11 +163,6 @@ public class StateGame extends BasicGameState implements iEventListener {
         sSkinFactory.init();
         sSpriteFactory.init();
         sWorld.init();
-        
-        //mGameMode = new FootballMode();
-        //mGameMode = new RaceMode("RaceReloaded");
-        //mGameMode = new IntroMode();
-        //mGameMode = new AdventureMode();
         
         //subscribe to events (must be done before further initialisation)  
         sEvents.subscribeToEvent("PlayerCreatedEvent", this);
