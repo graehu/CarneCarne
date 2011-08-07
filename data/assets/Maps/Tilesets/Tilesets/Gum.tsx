@@ -6,7 +6,6 @@
    <property name="Material" value="Gum"/>
    <property name="Regrows" value="False"/>
    <property name="Type" value="Block"/>
-   <property name="Animationsname" value="Gum"/>
   </properties>
  </tile>
 </tileset>

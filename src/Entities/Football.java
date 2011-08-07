@@ -91,6 +91,36 @@ public class Football extends Pea
             }
             edge = edge.next;
         }
+        if (mDoomTimer != 0)
+        {
+            mDoomTimer--;
+            if (mDoomTimer == 0)
+            {
+                kill(CauseOfDeath.eMundane, this);
+                mBody = null;
+            }
+        }
+        else
+        {
+            try
+            {
+                AreaEvent event = sAreaEvents.collidePoint(mBody.getPosition()); 
+                try
+                {
+                    GoalZone zone = (GoalZone)event;
+                    zone.enter(this);
+                }
+                catch (Throwable e) /// Null pointer and class cass
+                {
+
+                }
+            }
+            catch(Throwable e)
+            {
+                
+            }
+
+        }
     }
 
     public void setGameMode(FootballMode _gameMode)

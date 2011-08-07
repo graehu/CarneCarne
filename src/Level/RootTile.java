@@ -143,7 +143,8 @@ public abstract class RootTile
         fixture.userData = _userData; /// FIXME make this body data instead
         if (_body.m_type.equals(BodyType.DYNAMIC))
         {
-            fixture.density = 100.0f;
+            fixture.density = 1.0f;
+            //fixture.restitution = 0.5f;
         }
         return _body.createFixture(fixture);
     }
