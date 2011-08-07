@@ -91,7 +91,7 @@ public class BodyCamera extends iCamera implements iEventListener
     {
         mLookOffset.y = 0;
         float v = mBody.getLinearVelocity().x;
-        v = ((PlayerInputController)((AIEntity)mBody.getUserData()).mController).mPlayerDir.x;
+        v = ((PlayerInputController)((AIEntity)mBody.getUserData()).getController()).mPlayerDir.x;
         boolean oldLookDirection = mLookDirection;
         float widthScale = mViewPort.getWidth()/1680.0f;
         if (v > 0.0f)

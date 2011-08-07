@@ -32,7 +32,7 @@ public class AIEntity extends Entity
 
     final static float root2 = (float) Math.sqrt(2);
     static int mContactParticleDelay = 10;
-    public iAIController mController;
+    protected iAIController mController;
     protected boolean mAllowRoll = false;
     protected int mJumpTimer;
     protected Tile mTouchingTile;
@@ -76,6 +76,14 @@ public class AIEntity extends Entity
             mAIEntityState.destroy();
             mAIEntityState = null;
         }
+    }
+    public void setController(iAIController _controller)
+    {
+        mController = _controller;
+    }
+    public iAIController getController()
+    {
+        return mController;
     }
     public void update()
     {
@@ -142,6 +150,7 @@ public class AIEntity extends Entity
                             if (((Tile)other.getUserData()).isOnFire())
                             {
                                 kill(CauseOfDeath.eFire, other.getUserData());
+                                return;
                             }
                             else
                             {
@@ -155,6 +164,7 @@ public class AIEntity extends Entity
                                 if (Vec2.dot(collisionNorm, ((Tile)other.getUserData()).getRootTile().getSpikeNormal()) > 0.8f)
                                 {
                                     kill(CauseOfDeath.eSpikes, other); 
+                                    return;
                                 }
                             }
                             break;
@@ -437,8 +447,8 @@ public class AIEntity extends Entity
     private Stack<BreakableTongueAnchor> mAnchors = new Stack<BreakableTongueAnchor>();
     public void stun(Vec2 _direction)
     {
-        mBody.applyLinearImpulse(_direction.mul(20.0f), getBody().getWorldCenter());
-            breakTongueContacts();
+        mBody.applyLinearImpulse(_direction.mul(10.0f).mul(mBody.getMass()), getBody().getWorldCenter());
+        breakTongueContacts();
     }
     void stun()
     {
@@ -463,6 +473,10 @@ public class AIEntity extends Entity
             mAnchors.pop().breakContact();
         }
     }
+    public boolean hasTongueContacts()
+    {
+        return !mAnchors.isEmpty();
+    }
 
     public void crouch()
     {
@@ -473,6 +487,7 @@ public class AIEntity extends Entity
         Vec2 pixelPosition = sWorld.translateToWorld(getBody().getPosition());
         mSkin.render(pixelPosition.x,pixelPosition.y);
     }
+
 
 
 }

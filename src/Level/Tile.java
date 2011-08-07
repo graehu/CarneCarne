@@ -70,7 +70,14 @@ public class Tile
     }
     public String getAnimationsName(RootTile.AnimationType _animationType)
     {
-        return mRootId.getAnimationsName(_animationType);
+        try
+        {
+            return mRootId.getAnimationsName(_animationType);
+        }
+        catch (NullPointerException e)
+        {
+            return "Default";
+        }
     }
     public Fixture getFixture()
     {

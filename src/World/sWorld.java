@@ -254,14 +254,22 @@ public class sWorld
         if (callback.getFixture().m_filter.categoryBits == (1 << BodyCategories.ePlayer.ordinal()))
         {
             mLastHit = callback.getFixture();
-            mLastTongueAnchor = new BreakableTongueAnchor((AIEntity)mLastHit.getBody().getUserData());
-            return new FakeTile(mLastHit.getBody());
+            AIEntity entity = (AIEntity)mLastHit.getBody().getUserData();
+            if (entity.isGrabbable())
+            {
+                mLastTongueAnchor = new BreakableTongueAnchor(entity);
+                return new FakeTile(mLastHit.getBody(), TileType.eSwingable);
+            }
+            else
+            {
+                return new FakeTile(mLastHit.getBody(), TileType.eIndestructible);
+            }
         }
         if (callback.getFixture().m_filter.categoryBits == (1 << BodyCategories.eEnemy.ordinal()))
         {
             mLastHit = callback.getFixture();
             mLastTongueAnchor = new BreakableTongueAnchor((AIEntity)mLastHit.getBody().getUserData());
-            return new FakeTile(mLastHit.getBody());
+            return new FakeTile(mLastHit.getBody(), TileType.eSwingable);
         }
         Tile tile = (Tile)callback.getFixture().getUserData();
         Tile ret = tile;

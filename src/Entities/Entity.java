@@ -67,6 +67,10 @@ abstract public class Entity {
     {
         return true;
     }
+    public boolean isGrabbable()
+    {
+        return true;
+    }
     /*protected void buoyancy()
     {
         Vec2 areac = new Vec2(0, 0);

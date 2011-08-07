@@ -10,7 +10,7 @@ package AI;
  */
 public class StickShake
 {
-    private final static int shakeNumRequired = 3;
+    private final static int shakeNumRequired = 5;
     private final static int edgeHitTimeout = 10;
     private final static int zeroValueTimeout = 10;
     int shakeCounter;
