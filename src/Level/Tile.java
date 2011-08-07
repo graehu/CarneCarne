@@ -214,9 +214,6 @@ public class Tile
     }
     public void checkEdges(Stack<Integer> _stack, TileGrid _tileGrid)
     {
-        Tile notNull = this;
-        int silly = notNull.mHealth;
-        
         mRootId.checkEdges(mXTile, mYTile, _stack, _tileGrid);
     }
     boolean boundaryFrom(Direction _direction, TileType _tileType, MaterialEdges _materialEdges)

@@ -1,10 +1,12 @@
 
 package GUI;
 
+import Events.AnalogueStickEvent;
 import Events.WindowResizeEvent;
 import Events.iEvent;
 import Events.iEventListener;
 import Events.sEvents;
+import GUI.Components.Button;
 import GUI.Components.GraphicalComponent;
 import GUI.Components.Text;
 import GUI.Components.iComponent;
@@ -13,7 +15,6 @@ import Utils.Throw;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import org.jbox2d.common.Vec2;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
@@ -28,7 +29,8 @@ import org.newdawn.slick.geom.Vector2f;
 //this class provides multiplue instances o9f itself to allow for persistance GUIs between states
 public class GUIManager implements iEventListener
 {    
-    
+    static private int scrollDelay = 200; //miliseconds
+    static private int clickDelay = 50; //miliseconds
     static private int keyCount = 0;
     static private HashMap<Integer, GUIManager> instances = new HashMap<Integer, GUIManager>();
     static GUIManager currentInstance = null;
@@ -68,7 +70,7 @@ public class GUIManager implements iEventListener
     }
     public static void destroy(int _inst)
     {
-        instances.get(_inst).destroyAllComponents();
+        instances.get(_inst).destroy();
         instances.remove(_inst);
     }
     public enum ComponentType
@@ -78,7 +80,12 @@ public class GUIManager implements iEventListener
         eComponentTypeCount
     }
     
+    boolean mIsAcceptingInput = false;
+    int mInputTimer = 0;
     HashMap<Integer, iComponent> mManagedRoots = new HashMap<Integer, iComponent>();
+    ArrayList<Button> mSelectables = new ArrayList<Button>();
+    int mCurrentSelection = 0;
+    int mPlayerInControl = 0;
     GameContainer mContainer = null;
     int IDCounter = 0;
     Vector2f scale = new Vector2f(1.0f,1.0f);
@@ -94,10 +101,18 @@ public class GUIManager implements iEventListener
             Throw.err("Null GUIContext given!");
         //subscribe to events
         sEvents.subscribeToEvent("WindowResizeEvent", this);
+        sEvents.subscribeToEvent("AnalogueStickEvent"+mPlayerInControl, this);
+        sEvents.subscribeToEvent("KeyDownEvent"+'w'+mPlayerInControl, this);
+        sEvents.subscribeToEvent("KeyUpEvent"+'w'+mPlayerInControl, this);
     }
     
     public void addRootComponent(iComponent _component)
     {
+        _component.setAcceptingInput(false);
+        if(_component.getClass().equals(Button.class))
+        {
+            addSelectable((Button)_component);
+        }
         _component.setLocalScale(scale);
         if(_component.isRoot())
         {
@@ -117,18 +132,14 @@ public class GUIManager implements iEventListener
             case eGraphical:
             {
                 component = new GraphicalComponent(mContainer, _position, _dimensions);
-                component.setLocalScale(scale);
-                mManagedRoots.put(IDCounter, component);
-                IDCounter++;
+                addRootComponent(component);
                 return component;
                 //break;
             }
             case eText:
             {
                 component = new Text(mContainer, null, "", null, false);
-                component.setLocalScale(scale);
-                mManagedRoots.put(IDCounter, component);
-                IDCounter++;
+                addRootComponent(component);
                 return component;
             }
             default:
@@ -138,18 +149,34 @@ public class GUIManager implements iEventListener
             }       
         }
     }
+    public ArrayList<Button> getSelectableList() {return mSelectables;}
+    public void addSelectable(Button _component)
+    {
+        if(mSelectables.size() == 0)
+            _component.hoverOver();
+        mSelectables.add(_component);
+    }
+    public void removeSelectable(Button _component)
+    {
+        mSelectables.remove(_component);
+    }
     public void removeRootComponent(Integer _ref)
     {
         mManagedRoots.remove(_ref);
+        mSelectables.remove(_ref);
     }
     public void removeRootComponentList(ArrayList<Integer> _list)
     {
         for(Integer i : _list)
+        {
+            mSelectables.remove(mManagedRoots.get(i));
             mManagedRoots.remove(i);
+        }
     }
     
     public void update(int _delta)
     {
+        mInputTimer += _delta;
         Iterator<iComponent> itr = mManagedRoots.values().iterator();
         while(itr.hasNext())
         {
@@ -195,26 +222,110 @@ public class GUIManager implements iEventListener
                 scale.y = mDimensions.y / 1050;
             }
         }
+        else if(mInputTimer < scrollDelay) //timer to slow iterating over selectables
+            return true;
+        else if (_event.getType().equals("KeyUpEvent"))
+        {
+            mInputTimer = 0;
+            //assume only key caught is A
+            unclickSelected();
+        }
+        else if (_event.getType().equals("KeyDownEvent"))
+        {
+            //assume only key caught is A
+            clickSelected();
+        }
+        else if(mInputTimer < scrollDelay) //timer to slow iterating over selectables
+            return true;
+        else if (_event.getType().equals("AnalogueStickEvent"))
+        {
+            mInputTimer = 0;
+            AnalogueStickEvent event = (AnalogueStickEvent)_event;
+            if(event.getVValue() > 0)
+               gotoNextSelectable();
+            else if(event.getVValue() < 0)
+               gotoPreviousSelectable();
+        }
         return true; //do not unsubscribe
     }
     
+    public void listenToPlayer(int _player)
+    {
+        //unsubscribe from old player
+        sEvents.unsubscribeToEvent("AnalogueStickEvent"+mPlayerInControl, this);
+        sEvents.unsubscribeToEvent("KeyDownEvent"+'w'+mPlayerInControl, this);
+        sEvents.unsubscribeToEvent("KeyUpEvent"+'w'+mPlayerInControl, this);
+        //subscribe to new player
+        sEvents.subscribeToEvent("AnalogueStickEvent"+_player, this);
+        sEvents.subscribeToEvent("KeyDownEvent"+'w'+_player, this);
+        sEvents.subscribeToEvent("KeyUpEvent"+'w'+_player, this);
+        mPlayerInControl = _player;
+    }
     public void setAcceptingInput(boolean _isAccepting)
     {
-        Iterator<iComponent> itr = mManagedRoots.values().iterator();
-        while(itr.hasNext())
+        mIsAcceptingInput = _isAccepting;
+//        Iterator<iComponent> itr = mManagedRoots.values().iterator();
+//        while(itr.hasNext())
+//        {
+//            iComponent c = itr.next();
+//            c.setAcceptingInput(_isAccepting);
+//        }
+        for(Button b : mSelectables)
         {
-            iComponent c = itr.next();
-            c.setAcceptingInput(_isAccepting);
+            b.setAcceptingInput(_isAccepting);
         }
     }
     
-    private void destroyAllComponents()
+    private void destroy()
     {
         Iterator<iComponent> itr = mManagedRoots.values().iterator();
         while(itr.hasNext())
         {
             iComponent c = itr.next();
             c.destroy();
+        }
+        mManagedRoots.clear();
+        mSelectables.clear();
+        sEvents.subscribeToEvent("AnalogueStickEvent"+mPlayerInControl, this);
+        sEvents.subscribeToEvent("KeyDownEvent"+'w'+mPlayerInControl, this);
+        sEvents.subscribeToEvent("KeyUpEvent"+'w'+mPlayerInControl, this);
+    }
+    
+    public void gotoNextSelectable()
+    {
+        if(mIsAcceptingInput && !mSelectables.isEmpty())
+        {
+            ((Button)mSelectables.get(mCurrentSelection)).reset();
+            mCurrentSelection++;
+            if(mCurrentSelection >= mSelectables.size())
+                mCurrentSelection = 0;
+            ((Button)mSelectables.get(mCurrentSelection)).hoverOver();
+        }
+        
+    }
+    public void gotoPreviousSelectable()
+    {
+        if(mIsAcceptingInput && !mSelectables.isEmpty())
+        {
+            ((Button)mSelectables.get(mCurrentSelection)).reset();
+            mCurrentSelection--;
+            if(mCurrentSelection < 0)
+                mCurrentSelection = mSelectables.size() - 1;
+            ((Button)mSelectables.get(mCurrentSelection)).hoverOver();
+        }
+    }
+    public void unclickSelected()
+    {
+        if(mIsAcceptingInput && !mSelectables.isEmpty())
+        {
+            ((Button)mSelectables.get(mCurrentSelection)).hoverOver();
+        }
+    }
+    public void clickSelected()
+    {
+        if(mIsAcceptingInput && !mSelectables.isEmpty())
+        {
+            ((Button)mSelectables.get(mCurrentSelection)).select();
         }
     }
     

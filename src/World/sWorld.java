@@ -43,6 +43,8 @@ import java.util.HashMap;
 import org.jbox2d.callbacks.QueryCallback;
 import org.jbox2d.callbacks.RayCastCallback;
 import org.jbox2d.collision.AABB;
+import org.jbox2d.collision.RayCastInput;
+import org.jbox2d.collision.RayCastOutput;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyDef;
@@ -53,8 +55,6 @@ import org.jbox2d.dynamics.joints.DistanceJoint;
 import org.jbox2d.dynamics.joints.DistanceJointDef;
 import org.jbox2d.dynamics.joints.Joint;
 import org.jbox2d.dynamics.joints.PrismaticJointDef;
-import org.jbox2d.structs.collision.RayCastInput;
-import org.jbox2d.structs.collision.RayCastOutput;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Rectangle;
 /**
@@ -254,13 +254,13 @@ public class sWorld
         if (callback.getFixture().m_filter.categoryBits == (1 << BodyCategories.ePlayer.ordinal()))
         {
             mLastHit = callback.getFixture();
-            mLastTongueAnchor = new PlayerTongueAnchor(mLastHit, new Vec2(0.0f, 0.0f));
+            mLastTongueAnchor = new BreakableTongueAnchor((AIEntity)mLastHit.getBody().getUserData());
             return new FakeTile(mLastHit.getBody());
         }
         if (callback.getFixture().m_filter.categoryBits == (1 << BodyCategories.eEnemy.ordinal()))
         {
             mLastHit = callback.getFixture();
-            mLastTongueAnchor = new MovingBodyTongueAnchor(mLastHit, new Vec2(0.0f, 0.0f));
+            mLastTongueAnchor = new BreakableTongueAnchor((AIEntity)mLastHit.getBody().getUserData());
             return new FakeTile(mLastHit.getBody());
         }
         Tile tile = (Tile)callback.getFixture().getUserData();
@@ -479,26 +479,30 @@ public class sWorld
         parameters.put("aIEntity", _entity);
         return useFactory("CharacterFactory",parameters);
     }*/
+    private static int mBodyCount;
     public static void update(Graphics _graphics, float _time)
     {
+        
         float secondsPerFrame = 16.666f;
-        try
+        //try
         {
-            mWorld.step(secondsPerFrame/1000.0f, 14000, 10000);
+            mWorld.step(secondsPerFrame/1000.0f, 6, 4);
         }
-        catch (ArrayIndexOutOfBoundsException e)
+        //catch (ArrayIndexOutOfBoundsException e)
         {
             
         }
-            Body body = mWorld.getBodyList();
-            while (body != null)
-            {
-                Entity entity = (Entity)body.getUserData();
-                if (entity != null)
-                    entity.update();
-                body = body.getNext();
-            }
-        
+
+        mBodyCount = 0;
+        Body body = mWorld.getBodyList();
+        while (body != null)
+        {
+            mBodyCount++;
+            Entity entity = (Entity)body.getUserData();
+            if (entity != null)
+                entity.update();
+            body = body.getNext();
+        }
         mCamera.update(_graphics);
     }
 
@@ -521,6 +525,11 @@ public class sWorld
         AABB aabb = new AABB(sWorld.translateToPhysics(new Vec2(0,0)), sWorld.translateToPhysics(sGraphicsManager.getScreenDimensions()));
         mWorld.queryAABB(new RenderCallback(), aabb);
         mWorld.drawDebugData();
+        
+    }
+    public static int getBodyCount()
+    {
+        return mBodyCount;
     }
 }
 

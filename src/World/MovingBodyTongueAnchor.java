@@ -5,7 +5,6 @@
 package World;
 
 import Entities.AIEntity;
-import Entities.Football;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Fixture;
 

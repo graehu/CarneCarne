@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <system additive="false" points="false">
-<emitter imageName="particleSystems\DefaultTongueHit.xml" name="NewEmitter_1310550230079" renderType="quads" useAdditive="false" useOriented="true">
+<emitter imageName="Z:\NecessaryEvil\Sprites\particles\DefaultTongueHit.xml" name="NewEmitter_1310550230079" renderType="quads" useAdditive="false" useOriented="true">
 <spawnInterval enabled="true" max="100.0" min="10.0"/>
 <spawnCount enabled="true" max="1.0" min="1.0"/>
 <initialLife enabled="true" max="300.0" min="100.0"/>

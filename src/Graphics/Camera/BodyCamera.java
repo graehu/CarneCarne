@@ -57,6 +57,7 @@ public class BodyCamera extends iCamera implements iEventListener
     
     Vec2        mShake = new Vec2(0,0);
     boolean     mTopSplit;
+    boolean mFourPlayerReady;
     CaveInEvent mCaveInEvent;
     CameraGrabber mGrabber = null;
     
@@ -64,9 +65,10 @@ public class BodyCamera extends iCamera implements iEventListener
     Image       mLightBlendBase = null;
     LightingShader mLightingShader = null;
     
-    public BodyCamera(Body _body, Rectangle _viewPort, boolean _topSplit)
+    public BodyCamera(Body _body, Rectangle _viewPort, boolean _topSplit, boolean _fourPlayerReady)
     {
         super(_viewPort);
+        mFourPlayerReady = _fourPlayerReady;
         mBody = _body;
         ((PlayerEntity)_body.getUserData()).setClip(_viewPort);
         mTopSplit = _topSplit;
@@ -253,7 +255,7 @@ public class BodyCamera extends iCamera implements iEventListener
     @Override
     public iCamera addPlayer(Body _body)
     {
-        return new SplitScreenCamera(_body, mBody, mViewPort, mTopSplit);
+        return new SplitScreenCamera(_body, mBody, mViewPort, mTopSplit, mFourPlayerReady);
     }
     protected void calculatePosition()
     {
@@ -287,7 +289,6 @@ public class BodyCamera extends iCamera implements iEventListener
         mTranslation = mTranslation.add(mShake);
         sGraphicsManager.setScreenDimensions(s);
     }
-    
     public boolean trigger(iEvent _event)
     {
         mCaveInEvent = (CaveInEvent)_event;

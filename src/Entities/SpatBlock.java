@@ -59,7 +59,8 @@ public class SpatBlock extends Entity {
                 {
                     
                 }
-                kill(CauseOfDeath.eMundane, null);
+                if (mBody.getFixtureList().getFilterData().categoryBits != (1 << BodyCategories.eGum.ordinal()))
+                    kill(CauseOfDeath.eMundane, null);
                 break;
             }
         }

@@ -82,6 +82,7 @@ public class TongueStateMachine {
     protected boolean mIsTongueActive = false;
     private String mBlockMaterial;
     private Tile mTile;
+    private TongueAnchor tongueAttachment;
 
     void layBlock()
     {
@@ -105,15 +106,15 @@ public class TongueStateMachine {
         iSprite chilliHammer, meatHammer, melonHammer, gumHammer;
         HashMap params = new HashMap();
         
-        params.put("ref", "chilliHammer");
+        params.put("ref", "ChilliHammer");
         chilliHammer = sSpriteFactory.create("simple", params);
         chilliHammer.setVisible(false);
         
-        params.put("ref", "meatHammer");
+        params.put("ref", "MeatHammer");
         meatHammer = sSpriteFactory.create("simple", params);
         meatHammer.setVisible(false);
         
-        params.put("ref", "melonHammer");
+        params.put("ref", "MelonHammer");
         melonHammer = sSpriteFactory.create("simple", params);
         melonHammer.setVisible(false);
         
@@ -411,6 +412,7 @@ public class TongueStateMachine {
                 }
                 else
                 {
+                    tongueAttachment.release();
                     tongueAttachment = null;
                     changeState(State.eRetractingTongue);
                     tick(_entity);
@@ -652,6 +654,7 @@ public class TongueStateMachine {
             }
             case eSwinging:
             {
+                tongueAttachment.release();
                 tongueAttachment = null;
                 changeState(State.eRetractingTongue);
             }
@@ -922,7 +925,6 @@ public class TongueStateMachine {
         mState = _state;
     }
     //private DistanceJoint mJoint;
-    private TongueAnchor tongueAttachment;
     private void spitBlock()
     {
         mAmmoLeft--;

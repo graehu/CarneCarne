@@ -34,4 +34,14 @@ public abstract class iCamera {
     {
         return this;
     }
+
+    void transposeBody(iCamera mCameraB)
+    {
+        throw new UnsupportedOperationException("Invalid class for this operation");
+    }
+
+    Body switchBody(Body mBody)
+    {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
 }

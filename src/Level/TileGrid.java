@@ -52,6 +52,10 @@ abstract public class TileGrid {
             for (int ii = 0; ii < mHeight; ii++)
             {
                 int id = getTileId(i, ii);
+                if (id == 1)
+                {
+                    id = 1;
+                }
                 if (rootTiles.get(id).mTileType.equals(TileType.eWater)||
                         rootTiles.get(id).mTileType.equals(TileType.eAcid))
                 {
@@ -234,7 +238,8 @@ abstract public class TileGrid {
     {
         while (!mCavedInBodies.isEmpty())
         {
-            mCavedInBodies.pop().destroy();
+            //mCavedInBodies.pop().destroy();
+            break;
         }
         sWorld.destroyBody(mBody);
     }

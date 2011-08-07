@@ -43,6 +43,26 @@ public class Button extends GraphicalComponent{
     ButtonState mState = ButtonState.eDefault;
     Runnable mCallback = null;    
     
+    public void setButtonStateColors(Color _default, Color _hover, Color _selected)
+    {
+        if(_default != null)
+            mDefaultColor = _default;
+        if(_hover != null)
+            mMouseOverColor = _hover;
+        if(_selected != null)
+            mSelectedColor = _selected;
+        updateButtonPropeties();
+    }
+    public void setButtonStateImages(Image _default, Image _hover, Image _selected)
+    {
+        if(_default != null)
+            mDefaultImage = _default;
+        if(_hover != null)
+            mMouseOverImage = _hover;
+        if(_selected != null)
+            mSelectedImage = _selected;
+        updateButtonPropeties();
+    }
     public void setCallback(Runnable _callback)
     {
         mCallback = _callback;
@@ -53,8 +73,13 @@ public class Button extends GraphicalComponent{
         //do not process if already in _newState
         if(mState == _newState)
             return;
-        
-        switch(_newState)
+        mState = _newState;
+        updateButtonPropeties();
+    }
+    
+    private void updateButtonPropeties()
+    {
+        switch(mState)
         {
             case eSelected:
             {
@@ -84,10 +109,24 @@ public class Button extends GraphicalComponent{
                 break;
             }
         } 
-        mState = _newState;
-        mText.setColor(getColor());
+        if(mText != null)
+            mText.setColor(getColor());
     }
-    
+    public void reset()
+    {
+        changeState(ButtonState.eDefault);
+    }
+    public void hoverOver()
+    {
+        changeState(ButtonState.eHoverOver);
+    }
+    public void select()
+    {
+        changeState(ButtonState.eSelected);
+        if(mCallback != null)
+            mCallback.run();
+        //changeState(ButtonState.eHoverOver);
+    }
     @Override
     public void mouseMoved(int oldx, int oldy, int newx, int newy) {
         if(mState != ButtonState.eSelected)

@@ -18,12 +18,14 @@ import org.jbox2d.dynamics.Body;
 public class GumLandEvent extends iEvent
 {
     Body mBody;
-    Tile mTile;
+    Vec2 mNormal;
     int mRootId;
-    public GumLandEvent(Body _body, int _rootId, Tile _tile)
+    Tile mTile;
+    public GumLandEvent(Vec2 _normal, Body _body, int _rootId, Tile _tile)
     {
         mBody = _body;
         mRootId = _rootId;
+        mNormal = _normal.clone();
         mTile = _tile;
     }
     public String getName()
@@ -39,69 +41,51 @@ public class GumLandEvent extends iEvent
     @Override
     public boolean process()
     {
-        if (mTile != null)
+        if(mTile != null && mBody.getFixtureList() != null)
         {
-            //Vec2 position = mTile.getTileGrid().getBody().getWorldPoint(mTile.getLocalPosition());//mBody.getPosition();
-            Vec2 velocity = mBody.getLinearVelocity();
-            int xPos = (int)mBody.getPosition().x;
-            int yPos = (int)mBody.getPosition().y;
-            
-            if (velocity.x* velocity.x > velocity.y*velocity.y)
+            int xPos = (int)mTile.getLocalPosition().x;//Math.round(mBody.getPosition().x);
+            int yPos = (int)mTile.getLocalPosition().y;//Math.round(mBody.getPosition().y);
+
+            if(mNormal.x == 1)
             {
-                if (!tryX(xPos, yPos, velocity))
-                {
-                    if (!tryY(xPos, yPos, velocity))
-                    {
-                        if (tryDiagonal(xPos, yPos, velocity))
-                        {
-                            sWorld.destroyBody(mBody);
-                        }
-                    }
-                }
+                place(xPos+1, yPos);
             }
-            else if (!tryY(xPos, yPos, velocity))
+            else if(mNormal.x == -1)
             {
-                if (!tryX(xPos, yPos, velocity))
-                {
-                    if (tryDiagonal(xPos, yPos, velocity))
-                    {
-                        sWorld.destroyBody(mBody);
-                    }
-                }
+                place(xPos-1, yPos);
             }
+            else if(mNormal.y == 1)
+            {
+                place(xPos, yPos+1);
+            }
+            else if(mNormal.y == -1)
+            {
+                place(xPos, yPos-1);
+            }     
+            else if(mNormal.x > 0) //test for corner collisions that give non-axis-aligned normals
+            {
+                if(Math.abs(mNormal.x) > Math.abs(mNormal.y)) //if x out weighs y, do in direction of x
+                    place(xPos+1, yPos);
+                else if(mNormal.y > 0) //else determine top or bottom
+                    place(xPos, yPos+1);
+                else if(mNormal.y > 0)
+                    place(xPos, yPos-1);
+            }
+            else if(mNormal.x < 0)
+            {
+                if(Math.abs(mNormal.x) > Math.abs(mNormal.y)) //if x out weighs y, do in direction of x
+                    place(xPos-1, yPos);
+                else if(mNormal.y > 0) //else determine top or bottom
+                    place(xPos, yPos+1);
+                else if(mNormal.y > 0)
+                    place(xPos, yPos-1);
+            }
+            sWorld.destroyBody(mBody);
             mTile = null;
         }
         return false;
     }
     
-    private boolean tryX(int _x, int _y, Vec2 _velocity)
-    {
-        if (_velocity.x > 0.0f)
-            _x--;
-        else
-            _x++;
-        return place(_x, _y);
-    }
-    private boolean tryY(int _x, int _y, Vec2 _velocity)
-    {
-        if (_velocity.y > 0.0f)
-            _y--;
-        else
-            _y++;
-        return place(_x, _y);
-    }
-    private boolean tryDiagonal(int _x, int _y, Vec2 _velocity)
-    {
-        if (_velocity.x > 0.0f)
-            _x--;
-        else
-            _x++;
-        if (_velocity.y > 0.0f)
-            _y--;
-        else
-            _y++;
-        return place(_x, _y);
-    }
     private boolean place(int _x, int _y)
     {
         if (sLevel.getTileGrid().get(_x, _y).getRootTile().getTileType().equals(TileType.eEmpty))

@@ -6,7 +6,6 @@ package States.Game.FootballMode;
 
 import Entities.Football;
 import Entities.PlayerEntity;
-import Entities.sEntityFactory;
 import Events.AreaEvents.AreaEvent;
 import Events.AreaEvents.GoalZone;
 import Events.FootballSpawnEvent;
@@ -15,12 +14,11 @@ import Events.PlayerCreatedEvent;
 import Events.iEvent;
 import Events.iEventListener;
 import Events.sEvents;
+import Graphics.sGraphicsManager;
 import Level.sLevel;
-import Score.ScoreTracker.ScoreEvent;
 import States.Game.iGameMode;
 import World.sWorld;
 import java.util.ArrayList;
-import java.util.HashMap;
 import org.jbox2d.common.Vec2;
 import org.newdawn.slick.Graphics;
 
@@ -36,18 +34,27 @@ public class FootballMode implements iGameMode, iEventListener
     ArrayList<AreaEvent> goals = new ArrayList<AreaEvent>();
     ArrayList<Integer> scores = new ArrayList<Integer>();
     Football mFootball;
-    public FootballMode()
+    FootballState mState;
+    public FootballMode(String _level)
     {
-        mTimer = 0;
+        mTimer = 5 * 60 * 60;
         ballSpawnPosition = null;
+        mState = new FootballNormalState(this, null);
+        scores.add(0);
+        scores.add(0);
         sEvents.subscribeToEvent("PlayerCreatedEvent", this);
         sEvents.subscribeToEvent("FootballSpawnEvent", this);
         sEvents.subscribeToEvent("GoalSpawnEvent", this);
-        sLevel.newLevel("The_Match");
+        sLevel.newLevel(_level);
     }
     
     public iGameMode update(Graphics _graphics, float _time)
     {
+        mTimer--;
+        if (mTimer == 0)
+        {
+            mState = new FootballWonState(this, scores.get(0), scores.get(1));
+        }
         sLevel.update();
         sWorld.update(_graphics, _time);
         sEvents.processEvents();
@@ -57,6 +64,25 @@ public class FootballMode implements iGameMode, iEventListener
     public void render(Graphics _graphics)
     {
         sWorld.getCamera().render(_graphics);
+        mState.render(scores.get(0), scores.get(1));
+        sGraphicsManager.drawString("Timeleft: " + getTimeString(mTimer), 0f, 0);
+    }
+    private String getTimeString(int _timer)
+    {
+        int seconds = _timer / 60;
+        int minutes = seconds / 60;
+        seconds -= minutes * 60;
+        return minutes + ":" + seconds;
+        /*String timer = String.valueOf(_timer/60.0f);
+        if (timer.length() > 5)
+        {
+            timer = timer.substring(0, 5);
+        }
+        else while (timer.length() < 5)
+        {
+            timer = timer + "0";
+        }
+        return timer;*/
     }
 
     public boolean trigger(iEvent _event)
@@ -66,22 +92,15 @@ public class FootballMode implements iGameMode, iEventListener
             PlayerCreatedEvent event = (PlayerCreatedEvent)_event;
             event.getPlayer().setTeam(players.size() % 2);
             players.add(event.getPlayer());
-            scores.add(0);
-            if (mFootball != null)
+            if (((FootballNormalState)mState).mFootball != null)
             {
-                event.getPlayer().setFootball(mFootball);
+                event.getPlayer().setFootball(((FootballNormalState)mState).mFootball);
             }
         }
         else if (_event.getName().equals("FootballSpawnEvent"))
         {
             FootballSpawnEvent event = (FootballSpawnEvent)_event;
-            mFootball = event.getFootball();
-            ballSpawnPosition = mFootball.getBody().getPosition().clone();
-            mFootball.setGameMode(this);
-            for (PlayerEntity player: players)
-            {
-                player.setFootball(mFootball);
-            }
+            mState.spawnFootball(event.getFootball());
         }
         else if (_event.getName().equals("GoalSpawnEvent"))
         {
@@ -95,33 +114,35 @@ public class FootballMode implements iGameMode, iEventListener
 
     public void score(int _team, Football _football)
     {
-        if (_football == mFootball)
+        mState = mState.score(_team, _football, players);
+    }
+    private void multiBall()
+    {
+        /*mFootball = null;
+        ArrayList<Football> multiBall = new ArrayList<Football>();
+        for (int i = 0; i < 3; i++)
         {
-            mFootball.doom();
-            mFootball = null;
-            scores.set(_team, scores.get(_team)+1);
-            for (int i = 0; i < players.size(); i++)
-            {
-                if (i % goals.size() == _team)
-                {
-                    players.get(i).mScoreTracker.scoreGoal();
-                }
-            }
-            /*PlayerEntity scoredPlayer = players.get(_team);
-            scoredPlayer.mScoreTracker.scoreGoal();
-            for (PlayerEntity player: players)
-            {
-                if (player != scoredPlayer)
-                {
-                    player.mScoreTracker.score(ScoreEvent.eConceededGoal);
-                }
-            }*/
+            footballDied(null);
+            mMultiBall.add(mFootball);
         }
+        mMultiBall = multiBall;
+        mFootball = null;
+        for (PlayerEntity player: players)
+        {
+            player.setFootball(null);
+        }*/
     }
     public void footballDied(Football _football)
     {
-        HashMap parameters = new HashMap();
-        parameters.put("position",ballSpawnPosition);
-        sEvents.triggerEvent(new FootballSpawnEvent((Football)sEntityFactory.create("Football",parameters)));
+        mState = mState.footballDied(_football);
+    }
+    
+    public void cleanup() 
+    {
+        for(PlayerEntity player : players)
+        {
+            player.destroy();
+            sWorld.destroyBody(player.getBody());
+        }
     }
 }

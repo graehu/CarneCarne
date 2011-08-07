@@ -38,6 +38,7 @@ import org.newdawn.slick.geom.Vector2f;
  */
 public class PlayerEntity extends AIEntity
 {
+    protected   String              mSkinType = "mexican";
     protected   String              mBodyType = "bdy";
     private     CheckPointZone      mOriginalSpawnPoint;
     private     CheckPointZone      mCheckPoint;
@@ -267,10 +268,11 @@ public class PlayerEntity extends AIEntity
             mTooltipWindow.setIsVisible(false);
             mTooltipText.setIsVisible(false);
         }
-        if (mWaterHeight != 0)
-            sSound.play(SoundScape.Sound.ePlayerUnderwater, 0);
-        else
-            sSound.stop(SoundScape.Sound.ePlayerUnderwater, 0);
+        //FIXME: crash: out of memory
+//        if (mWaterHeight != 0)
+//            sSound.play(SoundScape.Sound.ePlayerUnderwater, 0);
+//        else
+//            sSound.stop(SoundScape.Sound.ePlayerUnderwater, 0);
         if (mCheckPoint != null && mCheckPoint.incrementRaceTimer()) /// FIXME - put this null check in as a quick fix for IntroMode
         {
             mRaceTimer++;
@@ -303,6 +305,7 @@ public class PlayerEntity extends AIEntity
         {//when player is within half a tile of checkpoint destroy joint
             if (compareFloat(getBody().getPosition().x, mCheckPointPosition.x, 0.5f) && compareFloat(getBody().getPosition().y, mCheckPointPosition.y, 0.5f))
             {
+                mBody.setLinearVelocity(new Vec2(0,0));
                 sWorld.destroyMouseJoint(mDeathJoint);
                 mDeathJoint = null;
                 Fixture fixture = getBody().getFixtureList();
@@ -346,9 +349,12 @@ public class PlayerEntity extends AIEntity
     @Override
     void stun()
     {
-        super.stun();
-        ((PlayerInputController)mController).stun();
-        mSkin.activateSubSkin("pea_stun_large", true, 0.0f);
+        if (mStunTimer == 0)
+        {
+            super.stun();
+            ((PlayerInputController)mController).stun();
+            mSkin.activateSubSkin("pea_stun_large", true, 0.0f);
+        }
     }
 
     @Override

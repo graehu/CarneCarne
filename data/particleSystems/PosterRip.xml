@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <system additive="false" points="false">
-<emitter imageName="PosterParticle1.png" name="Default" renderType="quads" useAdditive="false" useOriented="true">
+<emitter imageName="particleSystems/PosterParticle1.png" name="Default" renderType="quads" useAdditive="false" useOriented="true">
 <spawnInterval enabled="true" max="30.0" min="30.0"/>
 <spawnCount enabled="true" max="3.0" min="1.0"/>
 <initialLife enabled="true" max="1000.0" min="50.0"/>
@@ -79,7 +79,7 @@
 <step b="0.3529412" g="0.40392157" offset="1.0" r="0.6745098"/>
 </color>
 </emitter>
-<emitter imageName="PosterParticle2.png" name="Default_clone" renderType="quads" useAdditive="false" useOriented="true">
+<emitter imageName="particleSystems/PosterParticle2.png" name="Default_clone" renderType="quads" useAdditive="false" useOriented="true">
 <spawnInterval enabled="true" max="30.0" min="30.0"/>
 <spawnCount enabled="true" max="3.0" min="1.0"/>
 <initialLife enabled="true" max="1000.0" min="50.0"/>
@@ -178,7 +178,7 @@
 <step b="0.3529412" g="0.40392157" offset="1.0" r="0.6745098"/>
 </color>
 </emitter>
-<emitter imageName="PosterParticle3.png" name="Default_clone" renderType="quads" useAdditive="false" useOriented="true">
+<emitter imageName="particleSystems/PosterParticle3.png" name="Default_clone" renderType="quads" useAdditive="false" useOriented="true">
 <spawnInterval enabled="true" max="30.0" min="30.0"/>
 <spawnCount enabled="true" max="3.0" min="1.0"/>
 <initialLife enabled="true" max="1000.0" min="50.0"/>
@@ -257,7 +257,7 @@
 <step b="0.3529412" g="0.40392157" offset="1.0" r="0.6745098"/>
 </color>
 </emitter>
-<emitter imageName="PosterParticle4.png" name="Default_clone_clone" renderType="quads" useAdditive="false" useOriented="true">
+<emitter imageName="particleSystems/PosterParticle4.png" name="Default_clone_clone" renderType="quads" useAdditive="false" useOriented="true">
 <spawnInterval enabled="true" max="30.0" min="30.0"/>
 <spawnCount enabled="true" max="3.0" min="1.0"/>
 <initialLife enabled="true" max="1000.0" min="50.0"/>

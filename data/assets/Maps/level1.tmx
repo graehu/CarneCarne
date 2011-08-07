@@ -1,52 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" width="100" height="50" tilewidth="64" tileheight="64">
+ <properties>
+  <property name="NextMap" value="Level1"/>
+ </properties>
  <tileset firstgid="1" source="Tilesets/MeatNonEdible.tsx"/>
  <tileset firstgid="65" source="Tilesets/Bouncy.tsx"/>
  <tileset firstgid="73" source="Tilesets/MeatEdible.tsx"/>
  <tileset firstgid="89" source="Tilesets/CheckpointFlags.tsx"/>
- <tileset firstgid="105" name="Level1Tooltips" tilewidth="64" tileheight="64">
-  <image source="Tilesets/Images/Flags/ToolTips.png" width="256" height="256"/>
-  <tile id="0">
-   <properties>
-    <property name="Event" value="Tooltip"/>
-    <property name="String" value="Use Carne's tongue to swing on bone"/>
-    <property name="ToolType" value="Swing"/>
-   </properties>
-  </tile>
-  <tile id="1">
-   <properties>
-    <property name="Event" value="Tooltip"/>
-    <property name="String" value="Formula #1 Meat + Bone = SMASH"/>
-    <property name="TooltipType" value="Eat"/>
-   </properties>
-  </tile>
-  <tile id="2">
-   <properties>
-    <property name="Event" value="Tooltip"/>
-    <property name="String" value="Didn't you mother ever tell you not to swing on a full stomach?!"/>
-    <property name="TooltipType" value="Spit"/>
-   </properties>
-  </tile>
-  <tile id="3">
-   <properties>
-    <property name="Event" value="Tooltip"/>
-    <property name="String" value="Formula #2: Tar + Fire = DEATH"/>
-    <property name="TooltipType" value="Spit"/>
-   </properties>
-  </tile>
-  <tile id="4">
-   <properties>
-    <property name="Event" value="Tooltip"/>
-    <property name="String" value="You found a secret area... *cough*"/>
-   </properties>
-  </tile>
-  <tile id="5">
-   <properties>
-    <property name="Event" value="Tooltip"/>
-    <property name="String" value="Can you smell taco?"/>
-   </properties>
-  </tile>
- </tileset>
+ <tileset firstgid="105" source="Tilesets/Level1Tooltips.tsx"/>
  <tileset firstgid="121" source="Tilesets/StartFinish.tsx"/>
  <tileset firstgid="123" source="Tilesets/Water.tsx"/>
  <tileset firstgid="127" source="Tilesets/BoneSlopes.tsx"/>
@@ -127,7 +88,7 @@
  </layer>
  <layer name="Flags" width="100" height="50">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC+3bSwrCMBRG4TrXBVp1AT7nugZ1rYIbcJJCCK0kIcm9Sc4HPzgr9FiqUocBmn0KHWc0O1mvU9uZ1eo+s1zGmdnOZq7Xyv8Y9PA3XRv2bEs9Qkj3CHnvSEvV4/Jn0j1qQo9ynh7Xaez9w9VDD5/zWYNWerSCHn27Lgwy6AEA0KaV7yAAgHptuBep9KaLGltrkEcPXeiRx9EsFD3yiO2BtKbfT+ihCz10KdXjW+AYLeD6AAAA6FvMcwAtPDvwsAZ59NCFHnpJ/2/uJnv4WXtnPTiY0UOH3D3WDXzukuDTg3MLAAAAlPcDwAS/PCBOAAA=
+   H4sIAAAAAAAAC+3bSw6CMBRGYZzrAkVdgM85rkFdq4kbcFKShhRsse29tOdL/sQZCUeCGmwaaPbOdJzW7GS9jm1ntlSdY6m0jtnOZkPPlf8x6OGvvzbs2cZ6hJDuEfLekRarx2Vi0j2WhB75PDyuU3r48zmf//p1P4+hlB6loEfdriODDHoAALTJ8R0EAIApG+5FKr3oosbWGuTRQxd6pHE0C0WPNOb2QFz97yf00IUeuuTq8clwjBJwfQAAANRtznMAJTw7cLcGefTQhR56Sf9v7iZ7eKf9YDU4mNFDh9Q91gV87pLg04NzCwAAAOT3BbE49s4gTgAA
   </data>
  </layer>
 </map>

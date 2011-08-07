@@ -105,6 +105,9 @@ public abstract class iComponent extends AbstractComponent
     }
     private void renderInternal(GUIContext guic, Graphics grphcs, Vector2f _globalPos) throws SlickException
     {      
+        if(!mIsVisible)
+            return;
+        
         float rot = getLocalRotation();
         Vector2f scale = getLocalScale();
         Vector2f trans = getLocalTranslation().add(_globalPos);
@@ -146,13 +149,10 @@ public abstract class iComponent extends AbstractComponent
         grphcs.scale(scale.x, scale.y);
         grphcs.rotate(center.x, center.y, rot);
         {
-            if(mIsVisible)
-            {
-                grphcs.setColor(mColor);
-                grphcs.scale(mLocalSizeScale.x, mLocalSizeScale.y);
-                    renderSelf(guic, grphcs, trans);
-                grphcs.scale(1/mLocalSizeScale.x, 1/mLocalSizeScale.y);
-            }
+            grphcs.setColor(mColor);
+            grphcs.scale(mLocalSizeScale.x, mLocalSizeScale.y);
+                renderSelf(guic, grphcs, trans);
+            grphcs.scale(1/mLocalSizeScale.x, 1/mLocalSizeScale.y);
 
             //render children
             Iterator<iComponent> itr = getChildIterator();
