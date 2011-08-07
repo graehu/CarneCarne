@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<system additive="false" points="false">
+<emitter imageName="particleSystems/K.png" name="NewEmitter_1312586657577" renderType="inherit" useAdditive="false" useOriented="false">
+<spawnInterval enabled="true" max="1000.0" min="1000.0"/>
+<spawnCount enabled="true" max="1.0" min="1.0"/>
+<initialLife enabled="false" max="1000.0" min="1000.0"/>
+<initialSize enabled="true" max="40.0" min="40.0"/>
+<xOffset enabled="true" max="-60.0" min="-60.0"/>
+<yOffset enabled="false" max="0.0" min="0.0"/>
+<initialDistance enabled="false" max="0.0" min="0.0"/>
+<speed enabled="true" max="60.0" min="60.0"/>
+<length enabled="false" max="1000.0" min="1000.0"/>
+<emitCount enabled="false" max="1000.0" min="1000.0"/>
+<spread type="random" value="0.0"/>
+<angularOffset type="simple" value="91.0"/>
+<growthFactor type="simple" value="0.0"/>
+<gravityFactor type="simple" value="0.0"/>
+<windFactor type="simple" value="0.0"/>
+<startAlpha type="simple" value="255.0"/>
+<endAlpha type="simple" value="0.0"/>
+<alpha active="true" max="255" min="0" type="linear">
+<point x="0.0" y="0.0"/>
+<point x="0.04338843" y="124.53488"/>
+<point x="0.10950413" y="195.69766"/>
+<point x="0.49380165" y="241.65697"/>
+<point x="0.84090906" y="212.00581"/>
+<point x="0.9338843" y="136.39534"/>
+<point x="1.0" y="0.0"/>
+</alpha>
+<size active="false" max="255" min="0" type="linear">
+<point x="0.0" y="0.0"/>
+<point x="1.0" y="255.0"/>
+</size>
+<velocity active="true" max="1" min="0" type="linear">
+<point x="0.0" y="0.011627907"/>
+<point x="0.33471075" y="0.017441861"/>
+<point x="0.37603307" y="0.11046512"/>
+<point x="0.45041323" y="0.1627907"/>
+<point x="0.53099173" y="0.023255814"/>
+<point x="1.0" y="0.023255814"/>
+</velocity>
+<scaleY active="false" max="1" min="0" type="linear">
+<point x="0.0" y="0.0"/>
+<point x="1.0" y="1.0"/>
+</scaleY>
+<color>
+<step b="0.8" g="0.8" offset="0.0" r="0.8"/>
+<step b="0.8" g="0.8" offset="1.0" r="0.8"/>
+</color>
+</emitter>
+<emitter imageName="particleSystems/dot.png" name="NewEmitter_1312586657577_clone" renderType="inherit" useAdditive="false" useOriented="false">
+<spawnInterval enabled="true" max="1000.0" min="1000.0"/>
+<spawnCount enabled="true" max="1.0" min="1.0"/>
+<initialLife enabled="false" max="1000.0" min="1000.0"/>
+<initialSize enabled="true" max="10.0" min="10.0"/>
+<xOffset enabled="true" max="-35.0" min="-35.0"/>
+<yOffset enabled="true" max="15.0" min="15.0"/>
+<initialDistance enabled="false" max="0.0" min="0.0"/>
+<speed enabled="true" max="1.0" min="1.0"/>
+<length enabled="false" max="1000.0" min="1000.0"/>
+<emitCount enabled="false" max="1000.0" min="1000.0"/>
+<spread type="random" value="0.0"/>
+<angularOffset type="simple" value="89.0"/>
+<growthFactor type="simple" value="0.0"/>
+<gravityFactor type="simple" value="0.0"/>
+<windFactor type="simple" value="0.0"/>
+<startAlpha type="simple" value="255.0"/>
+<endAlpha type="simple" value="0.0"/>
+<alpha active="true" max="255" min="0" type="linear">
+<point x="0.0" y="0.0"/>
+<point x="0.037190083" y="128.98256"/>
+<point x="0.10123967" y="194.2151"/>
+<point x="0.50619835" y="235.72673"/>
+<point x="0.8987603" y="197.18022"/>
+<point x="0.95247936" y="137.8779"/>
+<point x="1.0" y="0.0"/>
+</alpha>
+<size active="false" max="255" min="0" type="linear">
+<point x="0.0" y="0.0"/>
+<point x="1.0" y="255.0"/>
+</size>
+<velocity active="true" max="1" min="0" type="linear">
+<point x="0.0" y="0.011627907"/>
+<point x="0.17355372" y="0.029069768"/>
+<point x="0.22520661" y="0.12790698"/>
+<point x="0.3161157" y="0.15116279"/>
+<point x="0.39256197" y="0.017441861"/>
+<point x="1.0" y="0.05232558"/>
+</velocity>
+<scaleY active="false" max="1" min="0" type="linear">
+<point x="0.0" y="0.0"/>
+<point x="1.0" y="1.0"/>
+</scaleY>
+<color>
+<step b="0.8" g="0.8" offset="0.0" r="0.8"/>
+<step b="0.8" g="0.8" offset="1.0" r="0.8"/>
+</color>
+</emitter>
+<emitter imageName="particleSystems/O.png" name="NewEmitter_1312586657577_clone_clone" renderType="inherit" useAdditive="false" useOriented="false">
+<spawnInterval enabled="true" max="1000.0" min="1000.0"/>
+<spawnCount enabled="true" max="1.0" min="1.0"/>
+<initialLife enabled="false" max="1000.0" min="1000.0"/>
+<initialSize enabled="true" max="40.0" min="40.0"/>
+<xOffset enabled="true" max="-25.0" min="-25.0"/>
+<yOffset enabled="false" max="0.0" min="0.0"/>
+<initialDistance enabled="false" max="0.0" min="0.0"/>
+<speed enabled="true" max="1.0" min="1.0"/>
+<length enabled="false" max="1000.0" min="1000.0"/>
+<emitCount enabled="false" max="1000.0" min="1000.0"/>
+<spread type="random" value="0.0"/>
+<angularOffset type="simple" value="91.0"/>
+<growthFactor type="simple" value="0.0"/>
+<gravityFactor type="simple" value="0.0"/>
+<windFactor type="simple" value="0.0"/>
+<startAlpha type="simple" value="255.0"/>
+<endAlpha type="simple" value="0.0"/>
+<alpha active="true" max="255" min="0" type="linear">
+<point x="0.0" y="0.0"/>
+<point x="0.024793388" y="128.98256"/>
+<point x="0.08057851" y="188.28488"/>
+<point x="0.49380165" y="235.72673"/>
+<point x="0.9152893" y="192.73256"/>
+<point x="0.9731405" y="133.43022"/>
+<point x="1.0" y="0.0"/>
+</alpha>
+<size active="false" max="255" min="0" type="linear">
+<point x="0.0" y="0.0"/>
+<point x="1.0" y="255.0"/>
+</size>
+<velocity active="true" max="1" min="0" type="linear">
+<point x="0.0" y="0.029069768"/>
+<point x="0.1983471" y="0.023255814"/>
+<point x="0.24793388" y="0.12209302"/>
+<point x="0.3140496" y="0.19186047"/>
+<point x="0.4318182" y="0.029069768"/>
+<point x="1.0" y="0.029069768"/>
+</velocity>
+<scaleY active="false" max="1" min="0" type="linear">
+<point x="0.0" y="0.0"/>
+<point x="1.0" y="1.0"/>
+</scaleY>
+<color>
+<step b="0.8" g="0.8" offset="0.0" r="0.8"/>
+<step b="0.8" g="0.8" offset="1.0" r="0.8"/>
+</color>
+</emitter>
+<emitter imageName="particleSystems/dot.png" name="NewEmitter_1312586657577_clone_clone_clone" renderType="inherit" useAdditive="false" useOriented="false">
+<spawnInterval enabled="true" max="1000.0" min="1000.0"/>
+<spawnCount enabled="true" max="1.0" min="1.0"/>
+<initialLife enabled="false" max="1000.0" min="1000.0"/>
+<initialSize enabled="false" max="10.0" min="10.0"/>
+<xOffset enabled="true" max="-10.0" min="-10.0"/>
+<yOffset enabled="true" max="15.0" min="15.0"/>
+<initialDistance enabled="false" max="0.0" min="0.0"/>
+<speed enabled="true" max="1.0" min="1.0"/>
+<length enabled="false" max="1000.0" min="1000.0"/>
+<emitCount enabled="false" max="1000.0" min="1000.0"/>
+<spread type="random" value="0.0"/>
+<angularOffset type="simple" value="91.0"/>
+<growthFactor type="simple" value="0.0"/>
+<gravityFactor type="simple" value="0.0"/>
+<windFactor type="simple" value="0.0"/>
+<startAlpha type="simple" value="255.0"/>
+<endAlpha type="simple" value="0.0"/>
+<alpha active="true" max="255" min="0" type="linear">
+<point x="0.0" y="0.0"/>
+<point x="0.035123967" y="140.84302"/>
+<point x="0.09297521" y="206.07558"/>
+<point x="0.52272725" y="238.69185"/>
+<point x="0.91322315" y="195.69766"/>
+<point x="0.9731405" y="128.98256"/>
+<point x="1.0" y="0.0"/>
+</alpha>
+<size active="false" max="255" min="0" type="linear">
+<point x="0.0" y="0.0"/>
+<point x="1.0" y="255.0"/>
+</size>
+<velocity active="true" max="1" min="0" type="linear">
+<point x="0.0" y="0.023255814"/>
+<point x="0.09504132" y="0.023255814"/>
+<point x="0.16115703" y="0.1744186"/>
+<point x="0.2376033" y="0.21511628"/>
+<point x="0.30578512" y="0.029069768"/>
+<point x="1.0" y="0.023255814"/>
+</velocity>
+<scaleY active="false" max="1" min="0" type="linear">
+<point x="0.0" y="0.0"/>
+<point x="1.0" y="1.0"/>
+</scaleY>
+<color>
+<step b="0.8" g="0.8" offset="0.0" r="0.8"/>
+<step b="0.8" g="0.8" offset="1.0" r="0.8"/>
+</color>
+</emitter>
+</system>

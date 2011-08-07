@@ -61,6 +61,8 @@ public class PlayerFactory implements iEntityFactory {
             subSkins.add(new CharacterSkin.CharacterSubSkin("pea_stun_large", CharacterSubSkin.SubType.eAnimated, 107, 39, new Vec2(-21.5f,0)));
             //draw tongue last
             subSkins.add(new CharacterSkin.CharacterSubSkin("tng", CharacterSubSkin.SubType.eStatic, 5, 5, new Vec2(32,32)));
+            int player = (Integer)_parameters.get("playerNumber");
+            subSkins.add(new CharacterSkin.CharacterSubSkin("Player" + (player+1), CharacterSubSkin.SubType.eStatic, 32, 32, new Vec2(16,-64)));
             
             
             HashMap params = new HashMap();
@@ -70,20 +72,19 @@ public class PlayerFactory implements iEntityFactory {
             iSkin skin = sSkinFactory.create("character", params);
             
             skin.activateSubSkin("bdy", false, 0);
+            skin.activateSubSkin("Player" + (player+1), false, 0);
 
             PlayerEntity entity = new PlayerEntity(skin, checkPoint);
             HashMap parameters = new HashMap();
             parameters.put("position", position);
             parameters.put("aIEntity", entity);
             parameters.put("category", sWorld.BodyCategories.ePlayer);
-            int player = (Integer)_parameters.get("playerNumber");
             entity.setBody(sWorld.useFactory("PlayerFactory",parameters));
             PlayerInputController controller = new PlayerInputController(entity, player);
-            entity.mController = controller;
+            entity.setController(controller);
             sWorld.addPlayer(entity.getBody());
             sEvents.triggerEvent(new PlayerCreatedEvent(entity, player));
             return entity;
         }
     }
-
 }

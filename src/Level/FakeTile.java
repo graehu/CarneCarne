@@ -4,7 +4,7 @@
  */
 package Level;
 
-import Entities.Entity;
+import Level.RootTile.AnimationType;
 import Level.sLevel.TileType;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
@@ -16,16 +16,18 @@ import org.jbox2d.dynamics.Body;
 public class FakeTile extends Tile
 {
     Body mBody;
-    public FakeTile(Body _body)
+    TileType mTileType;
+    public FakeTile(Body _body, TileType _tileType)
     {
         super(-1, null, null, -1, -1);
         mBody = _body;
+        mTileType = _tileType;
     }
     
     @Override
     public TileType getTileType()
     {
-        return TileType.eSwingable;
+        return mTileType;
     }
     @Override
     public Vec2 getWorldPosition()

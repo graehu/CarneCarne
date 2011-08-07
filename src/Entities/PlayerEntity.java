@@ -5,6 +5,7 @@
 package Entities;
 
 import AI.PlayerInputController;
+import AI.iAIController;
 import Events.AreaEvents.AreaEvent;
 import Events.AreaEvents.CheckPointZone;
 import Events.AreaEvents.sAreaEvents;
@@ -15,6 +16,8 @@ import Graphics.Skins.iSkin;
 import Graphics.sGraphicsManager;
 import GUI.HUD.Reticle;
 import GUI.HUD.Revolver;
+import Graphics.Particles.sParticleManager;
+import Graphics.Skins.sSkinFactory;
 import Level.sLevel.TileType;
 import Score.RaceScoreTracker;
 import Score.ScoreTracker;
@@ -62,6 +65,8 @@ public class PlayerEntity extends AIEntity
     private     boolean             mWasIReallyKilled = true;
     public      ScoreTracker        mScoreTracker;
     private     Integer             mGUIManager;
+    private int mStickShakeDisplayTimer;
+    private iSkin mStickShakeDisplay;
     
     public PlayerEntity(iSkin _skin, CheckPointZone _spawnPoint)
     {
@@ -110,6 +115,7 @@ public class PlayerEntity extends AIEntity
         //mTooltipText.setMaintainRatio(true);
         
         mTeam = 0;
+        mStickShakeDisplayTimer = 0;
     }
     
     public void destroy() /// FIXME more memory leaks to cleanup in here
@@ -122,6 +128,13 @@ public class PlayerEntity extends AIEntity
     {
         mTeam = _team;
     }
+    @Override
+    public void setController(iAIController _controller)
+    {
+        super.setController(_controller);
+        HashMap params = new HashMap();
+        params.put("ref", "Player" + ((PlayerInputController)mController).mPlayer);
+    }
     
     public void setClip(Rectangle _viewPort)
     {
@@ -132,6 +145,11 @@ public class PlayerEntity extends AIEntity
     public CheckPointZone getCheckPoint()
     {
         return mCheckPoint;
+    }
+    @Override
+    public boolean isGrabbable()
+    {
+        return ((PlayerInputController)mController).isGrabbable();
     }
     
     @Override
@@ -354,6 +372,7 @@ public class PlayerEntity extends AIEntity
             super.stun();
             ((PlayerInputController)mController).stun();
             mSkin.activateSubSkin("pea_stun_large", true, 0.0f);
+            sParticleManager.createSystem("KO", mBody.getPosition().mul(64.0f).add(new Vec2(32,32)), 1);
         }
     }
 
@@ -362,6 +381,7 @@ public class PlayerEntity extends AIEntity
     {
         mSkin.setRotation(mBodyType, getBody().getAngle()*(180/(float)Math.PI));
         super.render();
+        //mPlayerNumberDisplay.render(root2, root2);
     }
     
     public void renderHUD()
@@ -431,6 +451,26 @@ public class PlayerEntity extends AIEntity
             }
             if (mIntroSection != null)
                 mIntroSection.render();
+            
+            if (hasTongueContacts())
+            {
+                mStickShakeDisplayTimer++;
+                if (mStickShakeDisplayTimer > 30)
+                {
+                    if (mStickShakeDisplay == null)
+                    {
+                        HashMap params = new HashMap();
+                        params.put("ref", "ShakeYourStick");
+                        params.put("width", 112);
+                        params.put("height", 151);
+                        //params.put("duration", 2);
+                        mStickShakeDisplay = sSkinFactory.create("animated", params);
+                        mStickShakeDisplay.setIsLooping(true);
+                        mStickShakeDisplay.setSpeed(0.05f);
+                    }
+                    mStickShakeDisplay.render(0, 0);
+                }
+            }
             
             mReticle.render(); //always render ontop
             

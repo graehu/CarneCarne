@@ -73,6 +73,7 @@ public class PlayerInputController extends iAIController implements iEventListen
     int idleTimer = 0, idleDelay = 0;
     float mLeftStickValueThisFrame = 0.0f;
     float mRightStickValueThisFrame = 0.0f;
+    private int mGrabImmunityTimer;
     Random rand = new Random();
     
     public PlayerInputController(AIEntity _entity, int _player)
@@ -102,6 +103,7 @@ public class PlayerInputController extends iAIController implements iEventListen
         mTongueState = new TongueStateMachine(this);
         mLeftStickShake = new StickShake();
         mRightStickShake = new StickShake();
+        mGrabImmunityTimer = 0;
     }
     @Override
     public void destroy() /// FIXME more memory leaks to clean up in here
@@ -134,11 +136,15 @@ public class PlayerInputController extends iAIController implements iEventListen
         if (mLeftStickShake.shake(mLeftStickValueThisFrame))
         {
             mEntity.breakTongueContacts();
+            mGrabImmunityTimer = 2 * 60;
         }
         if (mRightStickShake.shake(mRightStickValueThisFrame))
         {
             mEntity.breakTongueContacts();
+            mGrabImmunityTimer = 2 * 60;
         }
+        if (mGrabImmunityTimer != 0)
+            mGrabImmunityTimer--;
         mLeftStickValueThisFrame = mRightStickValueThisFrame = 0.0f;
         if(idleTimer == -1)
             mEntity.stopIdle();
@@ -206,6 +212,10 @@ public class PlayerInputController extends iAIController implements iEventListen
         }
     }
     
+    public boolean isGrabbable()
+    {
+        return mGrabImmunityTimer == 0;
+    }
     public Tile grabBlock(final Vec2 _position)
     {
         return sWorld.eatTiles(mEntity.getBody().getPosition(),_position);

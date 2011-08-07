@@ -32,7 +32,7 @@ public class AIEntity extends Entity
 
     final static float root2 = (float) Math.sqrt(2);
     static int mContactParticleDelay = 10;
-    public iAIController mController;
+    protected iAIController mController;
     protected boolean mAllowRoll = false;
     protected int mJumpTimer;
     protected Tile mTouchingTile;
@@ -76,6 +76,14 @@ public class AIEntity extends Entity
             mAIEntityState.destroy();
             mAIEntityState = null;
         }
+    }
+    public void setController(iAIController _controller)
+    {
+        mController = _controller;
+    }
+    public iAIController getController()
+    {
+        return mController;
     }
     public void update()
     {
