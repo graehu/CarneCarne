@@ -106,15 +106,15 @@ public class TongueStateMachine {
         iSprite chilliHammer, meatHammer, melonHammer, gumHammer;
         HashMap params = new HashMap();
         
-        params.put("ref", "chilliHammer");
+        params.put("ref", "ChilliHammer");
         chilliHammer = sSpriteFactory.create("simple", params);
         chilliHammer.setVisible(false);
         
-        params.put("ref", "meatHammer");
+        params.put("ref", "MeatHammer");
         meatHammer = sSpriteFactory.create("simple", params);
         meatHammer.setVisible(false);
         
-        params.put("ref", "melonHammer");
+        params.put("ref", "MelonHammer");
         melonHammer = sSpriteFactory.create("simple", params);
         melonHammer.setVisible(false);
         

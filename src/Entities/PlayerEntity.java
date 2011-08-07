@@ -268,10 +268,11 @@ public class PlayerEntity extends AIEntity
             mTooltipWindow.setIsVisible(false);
             mTooltipText.setIsVisible(false);
         }
-        if (mWaterHeight != 0)
-            sSound.play(SoundScape.Sound.ePlayerUnderwater, 0);
-        else
-            sSound.stop(SoundScape.Sound.ePlayerUnderwater, 0);
+        //FIXME: crash: out of memory
+//        if (mWaterHeight != 0)
+//            sSound.play(SoundScape.Sound.ePlayerUnderwater, 0);
+//        else
+//            sSound.stop(SoundScape.Sound.ePlayerUnderwater, 0);
         if (mCheckPoint != null && mCheckPoint.incrementRaceTimer()) /// FIXME - put this null check in as a quick fix for IntroMode
         {
             mRaceTimer++;

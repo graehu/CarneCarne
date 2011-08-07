@@ -25,7 +25,6 @@ public class RaceEndZone extends CheckPointZone implements iEventListener
     {
         super(_x, _y, _x2, _y2, _numCheckPoints, null);
         mWinner = null;
-        sEvents.subscribeToEvent("RaceResetEvent", this);
     }
     @Override
     public void renderRaceState(int _raceTimer)

@@ -61,7 +61,7 @@ public class IntroMode implements iGameMode, iEventListener
             Vec2 s = sGraphicsManager.getTrueScreenDimensions();
             sWorld.switchCamera(new FreeCamera(new Rectangle(0,0,s.x, 0 + s.y)));
             cleanup();
-            iGameMode raceMode = new RaceMode();
+            iGameMode raceMode = new RaceMode("RaceReloaded"); //FIXME: this should be abstracted and be based on a menu selection
             sEvents.unsubscribeToEvent("TutorialSpawnEvent", this);
             return raceMode;
         }
@@ -69,15 +69,6 @@ public class IntroMode implements iGameMode, iEventListener
         sWorld.update(_graphics, _time);
         sEvents.processEvents();
         return this;
-    }
-    private void cleanup()
-    {
-        //sWorld.destroyBody(mGroundBody);
-        for (PlayerEntity player: mPlayers)
-        {
-            player.destroy();
-            sWorld.destroyBody(player.getBody());
-        }
     }
     public void render(Graphics _graphics)
     {
@@ -114,5 +105,14 @@ public class IntroMode implements iGameMode, iEventListener
             }
         }
         return true;
+    }
+    
+    public void cleanup() 
+    {
+        for(PlayerEntity player : mPlayers)
+        {
+            player.destroy();
+            sWorld.destroyBody(player.getBody());
+        }
     }
 }

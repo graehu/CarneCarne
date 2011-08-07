@@ -13,6 +13,7 @@ import States.Menu.StateMenu;
 import States.Splash.StateSplash;
 import States.Title.StateTitle;
 import org.newdawn.slick.state.BasicGameState;
+import org.newdawn.slick.state.GameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 public class Main extends StateBasedGame
@@ -75,6 +76,8 @@ public class Main extends StateBasedGame
         
         //FIXME: should start on splash
         //enterState(2, null, new BlobbyTransition(new Color(0,0,0)));
+        //StateGame.setGameType(StateGame.GameType.eRace, "RaceReloaded");
         enterState(2, null, null);
+        
     }
 }

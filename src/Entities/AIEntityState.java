@@ -368,7 +368,7 @@ class AIEntityState
                                                     sWorld.translateToWorld(mEntity.getBody().getPosition())
                                                         .sub(sWorld.getPixelTranslation())
                                                         .add(new Vec2(32,64)), /*Offset to bottom of carne*/
-                                                    1.0f);
+                                                    3.0f);
             }
         }
         switch(_newState)
@@ -396,7 +396,7 @@ class AIEntityState
                                                     sWorld.translateToWorld(mEntity.getBody().getPosition())
                                                         .sub(sWorld.getPixelTranslation())
                                                         .add(new Vec2(32,64)), /*Offset to bottom of carne*/
-                                                    1.0f);
+                                                    3.0f);
                 }
             }
         }

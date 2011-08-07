@@ -4,7 +4,7 @@
  <tileset firstgid="65" source="Tilesets/Bouncy.tsx"/>
  <tileset firstgid="73" source="Tilesets/MeatEdible.tsx"/>
  <tileset firstgid="89" source="Tilesets/CheckpointFlags.tsx"/>
- <tileset firstgid="105" source="Tilesets/Level1Tooltips.tsx"/>
+ <tileset firstgid="105" source="Tilesets/Level2Tooltips.tsx"/>
  <tileset firstgid="121" source="Tilesets/StartFinish.tsx"/>
  <tileset firstgid="123" source="Tilesets/Water.tsx"/>
  <tileset firstgid="127" source="Tilesets/BoneSlopes.tsx"/>
@@ -75,7 +75,7 @@
  </layer>
  <layer name="Level" width="100" height="100">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC+3UW1LEIBSEYbJuL2txqb6MpVFCYODQDf5d1Q8zMQTO5+RIKR2UUpp8o54LHueo5+LQnnn0znP0/SOzoscx6N5n1ogOHh4OLXuJNFFY9vpFZgUP9f5nxtHDbf8zs9K+v57z8qN4xPwmWvv6KB4eHm+P4uHh8f4oHnhEZlWP2XueFTzwUM8XDzxqgwce6vk6m+CBh3q2ziZ4eJng4WWCh5eHa9Qzx+Mc9cxL/TjGVH2OXYqFV7Hwaa8FHnjsXjy8iodXU+Fzynwu3UtjPXI+eHh4pIq/pXM8chZXRjTW427ueGg8au+nsR4p813LddrvkQrXa9ag4zx+m/R67BqFR+2zS3+3ayI9fq+fbq63/EZ2zcx3Vu7z3R6uru8apUdp3njoPK72UXNtt8z2yD2z9H1p7R0z0+Pu/YNHW/CIT89sa+4hbYn0iHoH7hw8vIKHV/DwCh5ewcMreHgFD6/g4RU8vDLSo3VNPP4GD6/g4RU8vBLhcbV2z/PxwEORUR7Rz8ejz6N2lnicg4dXZnqM6O7Bwyt4eGWER+/aeHwHD6+s5kHxcCweXsXDq3h4FQ+v4uFVPLyKR/25e4JH/gz/3cMtO3qsnJU9It4X6qyw50iPmnPP/F9w/30oG73XZ+cSEfWs8Wh/rrrRe312LhFRz3rWOVeJevZ4nKOe/cqNiPpMKzci6jNRulM/AegiBDpAnAAA
+   H4sIAAAAAAAAC+2Xy1EcMRCGNWRHJuQAhoM5UMWFEByCQ/CRmGwM7BaoELN6dEtqdUv7f1X/YWc0evQ3mtJuzrkNWT4e7XlYzENQoPtNpu4lRr8HM9HLyXOiAGGbm+30Gnyc0urBh9Jv63hcH9S210Fy7e461NO/lym4eyR0kHLh58WF8o5L+LjZpdYJZ26cOnBcSPv4e8i/Q16Yc6W2/RFJbT1H+Uh56OUjNuZj5Vy5Pm4jkfZR6ovqggPXB7Vdbx+hk9Z3u9UHpT3XQ9h377ZSPmrr3zK/XvOhzpPrPuTn57X9WUSqjlyO/V9HMtpHeL10bqutiXdRu5+pCc9J+zEp2Z/JSueyXqG8ozFqfMTqUhq7x7tW+zz3XNYjl668F3pRci3ho2Zv+HDPZb18jHKi4aO1Dw0fxzMWdX0tzOhjdPx/D2q9/x/yGuSN+FyqNqX78CHPqLpJ9Qsf5+MjzNMWzwjgg+7jmKuL9oxez+w+fvtFRNCe27n5+LV9JOVEe37n4sN7CJPbJy3AB99Fysmf7SMtwEe9j72TS0LgY6yTEEr9Z0HbAccJZV9Q94dVtOtP9VHL8VntNc2enj6017JCYj5qor2OlQIftgIf9gIftgIftuIyv13kd+5ZRNZHzA982PDhCG2RMT5iLlKOEFkfpbrDh44P6vOIrA8Xuca5j7T7cJn7lD6Qfj72Tlp9rIqGD+rYuXarIulj378r3OfskVUZ+c2K/S7NIXV/VTR95OoNH3o+UvOg3FuN0T5iY+au5/pekZE+St8f+OABH/K01JbyDOAh6UPqG7gy8GEL+LAFfNgCPmwBH7aAD1vAhy3gwxbwYYuePrh9wscp8GEL+LAFfNhCwkeq75bx4QM+NOjlQ3p8+GjzQa0lfHwHPmwx0kePrA582AI+bNHDR2vf8PEFfNhiNh8IfFgMfNgKfNgKfNgKfNgKfNgKfNgKfNDX3QJ8xNdw7j6ssaKPmZnZh8T3QpsZ5izpg7Luke+C9f2hGem51tZFAu1awwd/XO1Iz7W2LhJo13rUOmdBu/bw8R3t2s8cCbTXNHMk0F4TgqyUdyiUETBAnAAA
   </data>
  </layer>
  <layer name="Static Foreground" width="100" height="100">
@@ -85,7 +85,7 @@
  </layer>
  <layer name="Flags" width="100" height="100">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC+3BMQEAAADCoPVP7WULoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgBt5RKnmQJwAAA==
+   H4sIAAAAAAAAC+3XOwrCQBSG0aTXBfpaQJZgZ2Hhcl2CCFOMIcYQhLm5nAM/JJBi4IOBdB3kcygjBj1i0SOWzD0e/ef7vZ/+bquG1gcozqPN2SdrUIvUY+r5l1uyNu8e19FaWNsjm0g9lt5XmQ1fttbzH4cCAGDWLtk/GwAAyxyr0Z4ebM2pjBj0iEWPWPQAAAAAAAAAAIC4LtVoT49Y9IhFDwAAAAAAAAAAAAAAAAAAAAAAsnsBmckTKUCcAAA=
   </data>
  </layer>
 </map>

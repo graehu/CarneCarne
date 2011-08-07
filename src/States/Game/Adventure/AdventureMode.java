@@ -27,21 +27,27 @@ public class AdventureMode implements iGameMode, iEventListener
     Collection<PlayerEntity> players = new LinkedList<PlayerEntity>();
     boolean mIsCompleted = false;
     int mTimer;
-    int level = 1;
-    public AdventureMode()
+    String nextMap = null;
+    public AdventureMode(String _level)
     {
         mTimer = 0;
         sEvents.subscribeToEvent("PlayerCreatedEvent", this);
         sEvents.subscribeToEvent("RaceWonEvent", this);
-        sLevel.newLevel("Level"+level);
+        nextMap = sLevel.newLevel(_level);
     }
     public iGameMode update(Graphics _graphics, float _time)
     {
         if(mIsCompleted)
         {
+            mTimer = 0;
             mIsCompleted = false;
-            level++;
-            sLevel.newLevel("Level"+level);
+            cleanup();
+            if(nextMap == null)
+            {
+                //FIXME: EXIT TO TITLE
+            }
+            else
+                nextMap = sLevel.newLevel(nextMap);
         }
         mTimer++;
         sLevel.update();
@@ -65,7 +71,17 @@ public class AdventureMode implements iGameMode, iEventListener
         {
             //on finish
             mIsCompleted = true;
+            
         }
         return true;
+    }
+
+    public void cleanup() {
+        for(PlayerEntity player : players)
+        {
+            player.destroy();
+            sWorld.destroyBody(player.getBody());
+        }
+        players.clear();
     }
 }

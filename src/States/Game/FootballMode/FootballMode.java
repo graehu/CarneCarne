@@ -33,8 +33,9 @@ public class FootballMode implements iGameMode, iEventListener
     ArrayList<PlayerEntity> players = new ArrayList<PlayerEntity>();
     ArrayList<AreaEvent> goals = new ArrayList<AreaEvent>();
     ArrayList<Integer> scores = new ArrayList<Integer>();
+    Football mFootball;
     FootballState mState;
-    public FootballMode()
+    public FootballMode(String _level)
     {
         mTimer = 5 * 60 * 60;
         ballSpawnPosition = null;
@@ -44,7 +45,7 @@ public class FootballMode implements iGameMode, iEventListener
         sEvents.subscribeToEvent("PlayerCreatedEvent", this);
         sEvents.subscribeToEvent("FootballSpawnEvent", this);
         sEvents.subscribeToEvent("GoalSpawnEvent", this);
-        sLevel.newLevel("Football");
+        sLevel.newLevel(_level);
     }
     
     public iGameMode update(Graphics _graphics, float _time)
@@ -134,5 +135,14 @@ public class FootballMode implements iGameMode, iEventListener
     public void footballDied(Football _football)
     {
         mState = mState.footballDied(_football);
+    }
+    
+    public void cleanup() 
+    {
+        for(PlayerEntity player : players)
+        {
+            player.destroy();
+            sWorld.destroyBody(player.getBody());
+        }
     }
 }

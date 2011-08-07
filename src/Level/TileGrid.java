@@ -238,7 +238,8 @@ abstract public class TileGrid {
     {
         while (!mCavedInBodies.isEmpty())
         {
-            mCavedInBodies.pop().destroy();
+            //mCavedInBodies.pop().destroy();
+            break;
         }
         sWorld.destroyBody(mBody);
     }

@@ -90,7 +90,7 @@ public class XBoxController
         //handle start and back buttons
         if(_input.isButtonPressed(7, mPlayer)) //start
         {
-            sEvents.triggerEvent(new KeyDownEvent('Q', 0)); //menu
+            sEvents.triggerEvent(new KeyDownEvent('Q', mPlayer)); //menu
         }
         if(_input.isButtonPressed(6, mPlayer)) //back
         {
