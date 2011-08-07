@@ -33,7 +33,8 @@ public class AdventureMode implements iGameMode, iEventListener
         mTimer = 0;
         sEvents.subscribeToEvent("PlayerCreatedEvent", this);
         sEvents.subscribeToEvent("RaceWonEvent", this);
-        sLevel.newLevel("Level"+level);
+        //sLevel.newLevel("Level"+level);
+        sLevel.newLevel("single");
     }
     public iGameMode update(Graphics _graphics, float _time)
     {

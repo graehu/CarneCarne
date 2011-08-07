@@ -86,6 +86,11 @@ public class sWorld
         Vec2 s = sGraphicsManager.getTrueScreenDimensions();
         mCamera = new FreeCamera(new Rectangle(0,0,s.x, s.y));
     }
+
+    public static boolean isLocked()
+    {
+        return mWorld.isLocked();
+    }
     static class ResizeListener implements iEventListener
     {
         ResizeListener()
@@ -158,7 +163,7 @@ public class sWorld
     {
         if (mWorld.isLocked())
         {
-            throw new UnsupportedOperationException("World is locked");
+            //throw new UnsupportedOperationException("World is locked");
         }
         return factories.get(_factory).useFactory(_parameters, mWorld);
     }
@@ -479,20 +484,21 @@ public class sWorld
         float secondsPerFrame = 16.666f;
         try
         {
-            mWorld.step(secondsPerFrame/1000.0f, 4, 2);
+            mWorld.step(secondsPerFrame/1000.0f, 14000, 10000);
         }
         catch (ArrayIndexOutOfBoundsException e)
         {
             
         }
-        Body body = mWorld.getBodyList();
-        while (body != null)
-        {
-            Entity entity = (Entity)body.getUserData();
-            if (entity != null)
-                entity.update();
-            body = body.getNext();
-        }
+            Body body = mWorld.getBodyList();
+            while (body != null)
+            {
+                Entity entity = (Entity)body.getUserData();
+                if (entity != null)
+                    entity.update();
+                body = body.getNext();
+            }
+        
         mCamera.update(_graphics);
     }
 

@@ -79,16 +79,24 @@ public class Football extends Pea
         }
         else
         {
-            AreaEvent event = sAreaEvents.collidePoint(mBody.getPosition()); 
             try
             {
-                GoalZone zone = (GoalZone)event;
-                zone.enter(this);
-            }
-            catch (Throwable e) /// Null pointer and class cass
-            {
+                AreaEvent event = sAreaEvents.collidePoint(mBody.getPosition()); 
+                try
+                {
+                    GoalZone zone = (GoalZone)event;
+                    zone.enter(this);
+                }
+                catch (Throwable e) /// Null pointer and class cass
+                {
 
+                }
             }
+            catch(Throwable e)
+            {
+                
+            }
+
         }
     }
 

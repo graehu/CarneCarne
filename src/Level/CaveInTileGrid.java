@@ -79,9 +79,16 @@ public class CaveInTileGrid extends TileGrid
         parameters.put("body",mBody);
         parameters.put("width",ids.length);
         parameters.put("height",ids[0].length);
+        //try
+        {
         mBody.setUserData(sEntityFactory.create("CaveIn", parameters)); /// FIXME put a nullpointerexception catch around this
         mBody.setLinearVelocity(mLinearVelocity);
         mBody.setAngularVelocity(mAngularVelocity);
+        }
+        //catch (NullPointerException e)
+        {
+            
+        }
     }
     @Override
     int getTileId(int _x, int _y)

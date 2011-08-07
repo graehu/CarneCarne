@@ -76,10 +76,10 @@ public class AIEntity extends Entity
     public void update()
     {
         mContactParticleTimer++;
-        
+
         //dampen
         getBody().setAngularDamping(8);
-        
+
         //count contacts
         int numContacts = 0;
         ContactEdge edgeCounter = getBody().m_contactList;
@@ -88,7 +88,7 @@ public class AIEntity extends Entity
             numContacts++;
             edgeCounter = edgeCounter.next;
         }
-        
+
         ContactEdge edge = getBody().m_contactList;
         int mTar = 0;
         int mIce = 0;
@@ -97,7 +97,7 @@ public class AIEntity extends Entity
         if(mTouchingTile != null)
             mLastTouchingTile = mTouchingTile;
         mTouchingTile = null;
-        
+
         while (edge != null)
         {
             Fixture other = edge.contact.m_fixtureA;
@@ -119,10 +119,10 @@ public class AIEntity extends Entity
 //            if (other.m_filter.categoryBits == (1 << sWorld.BodyCategories.eEnemy.ordinal())||
 //                other.m_filter.categoryBits == (1 << sWorld.BodyCategories.ePlayer.ordinal()))
 //                mJumpContacts++;
-                
+
             //if (other.getUserData() != null)
             {
-                
+
                 if (other.getUserData() != null)
                 {
                     TileType tileType = ((Tile)other.getUserData()).getTileType();
@@ -156,7 +156,7 @@ public class AIEntity extends Entity
                             break;
                     }
                 }
-                
+
                 if(collisionNorm.y > 1/root2) //up
                 {
                     createContactParticle(collisionNorm);
@@ -276,6 +276,7 @@ public class AIEntity extends Entity
             case eFallingDoubleJumped:
             {
                 mBody.m_fixtureList.m_friction = 1;
+                // continue;
             }
             case eJumping:
             {
@@ -341,7 +342,7 @@ public class AIEntity extends Entity
         float canJump = mAIEntityState.canJump(getBody().getLinearVelocity().y) * scale;
         if (canJump != 0.0f)
         {
-            getBody().setLinearVelocity(new Vec2(getBody().getLinearVelocity().x, canJump));
+            //getBody().setLinearVelocity(new Vec2(getBody().getLinearVelocity().x, canJump));
             mJumpTimer = mJumpReload;
             mAIEntityState.jump();
             if (!mAIEntityState.getState().equals(State.eSwimming))

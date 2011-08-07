@@ -35,7 +35,7 @@ public class CauseOfDeathPlayer implements iSoundPlayer
     public void play(Object _parameter)
     {
         CauseOfDeath tileType = (CauseOfDeath)_parameter;
-        mPlayers[tileType.ordinal()].play(_parameter);
+        //mPlayers[tileType.ordinal()].play(_parameter);
     }
 
     public boolean isPlaying()

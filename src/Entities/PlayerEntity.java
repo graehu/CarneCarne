@@ -428,7 +428,7 @@ public class PlayerEntity extends AIEntity
             
             mReticle.render(); //always render ontop
             
-            GUIManager.use(mGUIManager).render(true);
+            GUIManager.use(mGUIManager).render(false);
         }
     }
     

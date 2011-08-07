@@ -3,9 +3,9 @@
  <image source="Images/Special/IceSlopes.png" width="256" height="256"/>
  <tile id="0">
   <properties>
+   <property name="Animationsname " value="Ice"/>
    <property name="FireHitAnimation" value="Ice"/>
    <property name="JumpAnimation" value="Ice"/>
-   <property name="Animationsname " value="Ice"/>
    <property name="Material" value="Ice"/>
    <property name="Regrows" value="False"/>
    <property name="SpitAnimation" value="Default"/>

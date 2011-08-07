@@ -3,7 +3,7 @@
  <image source="Images/Bones/BoneEnds.png" width="128" height="640"/>
  <tile id="0">
   <properties>
-   <property name="Anchor" value="True"/>
+   <property name="Anchor" value="False"/>
    <property name="Animationsname" value="Bone"/>
    <property name="Direction" value="Down"/>
    <property name="Material" value="Swingable"/>
@@ -14,7 +14,7 @@
  </tile>
  <tile id="4">
   <properties>
-   <property name="Anchor" value="True"/>
+   <property name="Anchor" value="False"/>
    <property name="Animationsname" value="Bone"/>
    <property name="Direction" value="Up"/>
    <property name="Material" value="Swingable"/>
@@ -25,7 +25,7 @@
  </tile>
  <tile id="8">
   <properties>
-   <property name="Anchor" value="True"/>
+   <property name="Anchor" value="False"/>
    <property name="Animationsname" value="Bone"/>
    <property name="Direction" value="Right"/>
    <property name="Material" value="Swingable"/>
@@ -36,7 +36,7 @@
  </tile>
  <tile id="14">
   <properties>
-   <property name="Anchor" value="True"/>
+   <property name="Anchor" value="False"/>
    <property name="Animationsname" value="Bone"/>
    <property name="Direction" value="Left"/>
    <property name="Material" value="Swingable"/>

@@ -34,6 +34,10 @@ class MaterialEdges
         {
             /// All anchor edges are true, for the moment anyway
         }
+        for (int i = 0; i < TileType.eTileTypesMax.ordinal(); i++)
+        {
+            flags[i][TileType.eZoomzoom.ordinal()] = false;
+        }
     }
     
     private void setFalse(int i, int ii)

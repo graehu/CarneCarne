@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="70" height="50" tilewidth="64" tileheight="64">
+ <tileset firstgid="1" source="Tilesets/BouncySlopes.tsx"/>
+ <tileset firstgid="17" source="Tilesets/Bouncy.tsx"/>
+ <tileset firstgid="25" source="Tilesets/Zoomzoom.tsx"/>
+ <tileset firstgid="41" source="Tilesets/Water.tsx"/>
+ <tileset firstgid="45" source="Tilesets/Spikes.tsx"/>
+ <tileset firstgid="49" source="Tilesets/BoneHorizontalSpine.tsx"/>
+ <tileset firstgid="61" source="Tilesets/BoneEnds.tsx"/>
+ <tileset firstgid="81" source="Tilesets/MovingPlatforms.tsx"/>
+ <tileset firstgid="102" source="Tilesets/MeatEdible.tsx"/>
+ <tileset firstgid="118" source="Tilesets/MeatSlopes.tsx"/>
+ <tileset firstgid="134" source="Tilesets/MeatBoneDown.tsx"/>
+ <tileset firstgid="150" source="Tilesets/MeatNonEdible.tsx"/>
+ <tileset firstgid="214" source="Tilesets/MeatNonEdibleSlopes.tsx"/>
+ <tileset firstgid="234" source="Tilesets/Tar.tsx"/>
+ <tileset firstgid="250" source="Tilesets/Chilli.tsx"/>
+ <tileset firstgid="258" source="Tilesets/Ice.tsx"/>
+ <tileset firstgid="274" source="Tilesets/IceSlopes.tsx"/>
+ <tileset firstgid="290" source="Tilesets/PlatformFlags.tsx"/>
+ <tileset firstgid="306" source="Tilesets/Light.tsx"/>
+ <tileset firstgid="310" source="Tilesets/Spawns.tsx"/>
+ <tileset firstgid="318" source="Tilesets/footballbackground.tsx"/>
+ <tileset firstgid="773" source="Tilesets/goalpost.tsx"/>
+ <layer name="Background1" width="70" height="50">
+  <properties>
+   <property name="ScaleX" value="0.3"/>
+   <property name="ScaleY" value="0.3"/>
+  </properties>
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+3VQ5MmSBiF0eqqHtu2bc+0bdu2bdu2bdu2bdt2z+ll/4CJ+mIin4izf/NuMioqFAqF/pvixYmKik8CEpKIxCQhKclITgpSkorUpCEt6UhPBjKSicxkISvZyE4OcpKL3OQhL/nIT4E4sb3EwxV0TyEKU4SiFKM4JShJKUpThrKUozwVqEglKlOFqlSjOjWoSS1qU4e61KM+DWhIIxpH2C5N3NOUZjSnBS1pRWva0JZ2tKcDHelEZ7rQlW50pwc96UVv+tCXfvRnAAMZxGCGMJRhEbbLcPeMYCSjGM0YxjKO8UxgIpOYzBSmMo3pzGAms5jNHOYyj/ksYCGLWMwSlrKM5axgZYTtsso9q1nDWtaxng1sZBOb2cJWtrGdHexkF7vZw172sZ8DHOQQhznCUY5xnBOc5BSnORNhu5x1zznOc4GLXOIyV7jKNa5zg5vc4jZ3uMs97j94V3RUVByiiSEuj/Aoj/E4T/AkT/E0z/Asz0XH9hIP97x7XuBFXuJlXuFVXuN13uBN3uJt3uFd3uN9PuBDPuJjPuFTPuNzvuBLvuJrvuFbvuN7fuDHCNvlJ/f8zC/8ym/8zh/8yV/8zT/EIz4JSEgiEpOEpCQjOSlISSpSk4a0pCM9GchIJjKThawRtks292QnBznJRW7ykJd85KcABSlEYYpQlGIUpwQlKUVpylCWcpSnAhWpRGWqUJVqVKdGhO1S0z21qE0d6lKP+jSgIY1oTBOa0ozmtKAlrWhNG9rSjvZ0oCOd6EwXutKN7vSgJ73oHWG79HFPX/rRnwEMZBCDGcJQhjGcEYxkFKMZw1jGMZ4JTGQSk5nCVKYxnRnMZBazmcNc5kXYLvPds4CFLGIxS1jKMpazgpWsYjVrWMs61rOBjWxiM1vYyja2s4Od7GI3e9jLPvZzgIMRtssh9xzmCEc5xnFOcJJTnOYMZznHeS5wkUtc5gpXucZ1bnCTW9zmDne5x/0HG8T404kmhrgxsb1EKBQKhUKhUCgUCoVCoVAoFAqFQqFQKBQKhUKhUCgU+r/3L0rG4B6wNgAA
+  </data>
+ </layer>
+ <layer name="Background0" width="70" height="50">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+3QoRHAIBAAwZ/BEAcOXOi/Sd7jE8RuBTcXAQAAAAAAAADcpJaIp/xdcZ+WT7ovh5FPpi+HN58sXwAAAADgcxvlXjpbsDYAAA==
+  </data>
+ </layer>
+ <layer name="Level" width="70" height="50">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+3aUW7CMAwG4BRusIdKIA31Apv2uD1ymR1jDzsER6NwmxFNVk3mpk7sQBb8S9amtkqcjxXWloNz7mDFrlX3GJXj8unaLnMxF3Mxl9pcWo+50DEXOuZCx1zomAsdc6FjLnTMhY650DEXOrkum8vPp4I+/WXsHTH+tis/r4/EZVWoxzkTSCmbvpvOBakLx6ZPWMeSCSTFhjM/mOC15bpsu2WbnnEMPpZjAuHYcObHx+wUXAZ3bSOtFBNsozn/s9Nx0eotx0TTBubXdJH2JjHRnl/bxWefWVrRmL+ESwuRumj9/dcWfD7muLRo4jO4yWbJ4fVeTVaUN2cuVMxlyvvauY/17+/mcp19gku4/0yMNxbqUyNHYtvJ/V0XTo7LC1F++6bSivWc4gLjzLnM1b3XH3PhFIQyo2y448a+LxDujx0P69EYC/ZzXZZMsM0tXb6Ry9eNXVLWmlJSF28C1ytwPUbZlHJJLXwPByd8T5e4gEnoQtlIXKjPUun1NBXq8y61zshkRNuPyEZrHiolXMAGry23xqD3U2CTW9DfXCQu/h7yEBk7PMdqyhDZ5/uG++A5Lhyb/xZsInEBm1aCTaQupW1Snj9pzaPlEus55Vkjp1fJWJznatouVM+S13quV+lYsR5LubRW0v+PHq1+AL/pVCKwNgAA
+  </data>
+ </layer>
+ <layer name="Foreground0" width="70" height="50">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+3SbQfCYBiG4Yep6JUVkejDRq/0SlRE9f9/U9f0jIy1UYru8+D8OHZfHucAAAAAAAAAAAAAAN8yC5ybq0Xw6z/5nINuOarTGzdt9O1W7f5ol4tuuapbyZvqwaOKqqraH22RZ6wbJ2qqBr6sZJNQtVRbdQzsstSNK7Uu2CXdpqn6BnbZ68ZhpqzQb9JVPTUysMtZN8Z+jzhnl/S9NPw+ViR7RL4y78WKqGCXRLqLpffyvMsrVt9LGdZ2AQAAAADkuwOd6sWBsDYAAA==
+  </data>
+ </layer>
+ <layer name="Flags" width="70" height="50">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+3aOw6CUBRAQVkUsVD3vy1DYYGeqBRKgJnk9nDepyCcTgAc1Tis/QR86zrMZ7Ln9Xu8222Yz7PqcgS6NF2aLk2XpkvTpenSdGm6NF2aLk2XpkvTpW2hyxrfe7bQZQ26NF2aLm1pl3/fgZcV1mIclnU5Eueo6dJ0ab/sct5wR/ul6dJ0abo0XdqnLgAA7+z5v1j2zd59NTW5A+ELhAKwNgAA
+  </data>
+ </layer>
+</map>

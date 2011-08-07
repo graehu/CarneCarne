@@ -11,4 +11,24 @@
    <property name="Type" value="NonEdible"/>
   </properties>
  </tile>
+ <tile id="1">
+  <properties>
+   <property name="Anchor" value="True"/>
+  </properties>
+ </tile>
+ <tile id="2">
+  <properties>
+   <property name="Anchor" value="True"/>
+  </properties>
+ </tile>
+ <tile id="3">
+  <properties>
+   <property name="Anchor" value="True"/>
+  </properties>
+ </tile>
+ <tile id="40">
+  <properties>
+   <property name="Anchor" value="True"/>
+  </properties>
+ </tile>
 </tileset>

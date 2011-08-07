@@ -3,7 +3,7 @@
  <image source="Images/Flags/PlatformFlags.png" width="256" height="256"/>
  <tile id="0">
   <properties>
-   <property name="Direction" value="UpRight"/>
+   <property name="Direction" value="Right"/>
    <property name="Movement" value="Horizontal"/>
    <property name="PlatformType" value="Simple"/>
    <property name="Spawn" value="Platform"/>
