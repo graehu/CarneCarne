@@ -310,7 +310,8 @@ public class PlayerInputController extends iAIController implements iEventListen
                 {
                     look(mPlayerDir);
                 }
-                mRightStickValueThisFrame = event.getDirection().x;
+                if (mEntity.hasTongueContacts())
+                    mRightStickValueThisFrame = event.getDirection().x;
             }
             else if (_event.getType().equals("MouseMoveEvent"))
             {
@@ -368,7 +369,8 @@ public class PlayerInputController extends iAIController implements iEventListen
             else if (_event.getType().equals("AnalogueStickEvent"))
             {
                 AnalogueStickEvent event = (AnalogueStickEvent)_event;
-                mLeftStickValueThisFrame = event.getHValue();
+                if (mEntity.hasTongueContacts())
+                    mLeftStickValueThisFrame = event.getHValue();
                 mEntity.walk(event.getHValue());
             }
             else if (_event.getType().equals("KeyUpEvent"))
