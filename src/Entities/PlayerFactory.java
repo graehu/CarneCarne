@@ -47,7 +47,7 @@ public class PlayerFactory implements iEntityFactory {
             //create a CharacterSubSkin for each layer of the character skin
             ArrayList<CharacterSubSkin> subSkins = new ArrayList<CharacterSubSkin>();
             //they must be in render order
-            ArrayList<String> bodies = new ArrayList(Arrays.asList("bdy","edi","spi","wtr"));
+            ArrayList<String> bodies = new ArrayList(Arrays.asList("bdy","gum","edi","spi","wtr"));
             for(String body : bodies) 
             {
                 subSkins.add(new CharacterSkin.CharacterSubSkin(body, CharacterSubSkin.SubType.eStatic, 64, 64, new Vec2(0,0)));
