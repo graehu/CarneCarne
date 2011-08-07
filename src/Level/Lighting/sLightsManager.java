@@ -26,8 +26,12 @@ public class sLightsManager
     }
     
     private static HashMap<Integer, LightSource> mLightSources = new HashMap<Integer, LightSource>();
+    static int mVisibleLightCount;
     static int mKeyCount = 0;
     static float mAmbience = 0.8f;
+    
+    public static int getInstancedLightCount() {return mLightSources.size();}
+    public static int getVisibleLightCount() {return mVisibleLightCount;}
     
     public static void setAmbience(float _ambience){mAmbience = _ambience;}
     public static float getAmbience(){return mAmbience;}
@@ -60,6 +64,7 @@ public class sLightsManager
             if(_viewport.intersects(light))
                 visibleList.add(source);
         }
+        mVisibleLightCount = visibleList.size();
         return visibleList;
     }
     

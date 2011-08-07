@@ -149,8 +149,7 @@ public class XBoxController
             {
                 changeState(TriggerState.eNotPressed, rightStick);
             }
-        }     
-        
+        }   
         return true;
     }
     //statemachine required to determine releases for triggers

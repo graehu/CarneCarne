@@ -4,6 +4,7 @@
  */
 package States.Menu;
 
+import Events.GenericEvent;
 import Events.iEvent;
 import Events.iEventListener;
 import Events.sEvents;
@@ -115,6 +116,8 @@ public class StateMenu extends BasicGameState implements iEventListener
         mPausedByPlayerText.resizeToText();
         mPausedByPlayerText.setLocalTranslation(new Vector2f(730,200));
         
+        sInput.update(16);
+        
         super.leave(container, game);
     }
     
@@ -167,6 +170,7 @@ public class StateMenu extends BasicGameState implements iEventListener
     
     private void returnToGame()
     {
+        sEvents.triggerEvent(new GenericEvent("GameUnpaused"));
         mChangeToGame.setTransitions(null, new BlobbyTransition(Color.black));
         mChangeToGame.run();
     }

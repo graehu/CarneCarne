@@ -7,10 +7,15 @@ package Graphics;
 
 import Events.WindowResizeEvent;
 import Events.sEvents;
+import Graphics.Particles.sParticleManager;
 import Graphics.Sprites.iSprite;
+import Level.Lighting.sLightsManager;
+import Level.sLevel;
 import Utils.sFontLoader;
 import World.sWorld;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.jbox2d.common.Vec2;
@@ -38,6 +43,7 @@ public class sGraphicsManager {
     private static DisplayMode mLastDisplayMode = null;
     private static boolean mAllowShaders = true;
     private static boolean mAllowParticles = true;
+    private static boolean mRenderDebugInfo = false;
     
     private static ArrayList<iSprite> mManagedSprites = new ArrayList<iSprite>();
     private static AppGameContainer mGameContainer;
@@ -92,6 +98,11 @@ public class sGraphicsManager {
     {
         mAllowTransform = false;
         mGameContainer.getGraphics().popTransform();    
+    }
+    
+    public static void toggleRenderDebugInfo() 
+    {
+        mRenderDebugInfo = !mRenderDebugInfo;
     }
     
     public static boolean getAllowShaders(){return mAllowShaders;}
@@ -165,6 +176,45 @@ public class sGraphicsManager {
         }
     }
     
+    public static void renderDebugInfo()
+    {
+        if(mRenderDebugInfo)
+        {
+            float pos = 30f;
+            float step = 20f;
+            
+            List<String> lines = Arrays.asList( "Physics Bodies:             " + sWorld.getBodyCount(),
+                                                "",
+                                                "Visible Graphical Entities  " + sWorld.getVisibleEntityCount(),
+                                                "Visible Tiles:              " + sLevel.getVisibleTileCount(),
+                                                "",
+                                                "Loaded Particle Systems:    " + sParticleManager.getLoadedSystemCount(),
+                                                "Pooled Particle Systems:    " + sParticleManager.getPoolCount(),
+                                                "Instanced Particle Systems: " + sParticleManager.getInstancedSystemCount(),
+                                                "Visible Particle Systems:   " + sParticleManager.getVisibleSystemCount(),
+                                                "",
+                                                "Instanced Lights:           " + sLightsManager.getInstancedLightCount(),
+                                                "Visible Lights:             " + sLightsManager.getVisibleLightCount()
+                                                );
+            
+            mGameContainer.getGraphics().setColor(new Color(0, 0, 0, 0.5f));
+            mGameContainer.getGraphics().fillRect(0, 0, 300, pos+((lines.size()+1)*step));
+            
+            mGameContainer.getGraphics().setColor(Color.white);
+            mGameContainer.setShowFPS(true);
+            
+            for(String str : lines)
+            {
+                mGameContainer.getGraphics().drawString(str, 0, pos);
+                pos+=step;
+            }
+        }
+        else
+        {
+            mGameContainer.setShowFPS(false);
+        }
+    }
+    
     /*
      * Draw string in current view port
      * _x: X position in screen space 0.0f-1.0f
@@ -202,4 +252,6 @@ public class sGraphicsManager {
         catch(SlickException ex){Logger.getLogger(sGraphicsManager.class.getName()).log(Level.SEVERE, null, ex);}
         onResize();
     }
+    
+    
 }

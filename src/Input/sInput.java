@@ -22,13 +22,17 @@ import org.newdawn.slick.Input;
  *
  * @author Aaron
  */
-public class sInput {
+public class sInput 
+{
     private sInput() {}
     static private GameContainer mGameContainer = null; 
     static private int mPlayerCount;
     static private ArrayList<XBoxController> xBoxControllers = new ArrayList<XBoxController>();
     static MouseStateMachine mMouseStateMachine;
     static boolean mJumpToggle = false;;
+    static int mInputTimer = 0;
+    static int mInputDelay = 10; //milliseconds
+    
     public static void init(GameContainer _gc)
     {
         mGameContainer = _gc;
@@ -36,9 +40,9 @@ public class sInput {
     }
     public static void update(int _delta)
     {
-        
+        mInputTimer++;
         Input input = mGameContainer.getInput();
-
+        
         //handle keyboard&mouse input (defaults to player 0)
         mMouseStateMachine.tick(input);
         if(input.isKeyDown(Input.KEY_W))
@@ -65,6 +69,11 @@ public class sInput {
             sEvents.triggerEvent(new KeyDownEvent('r', 0));
         if(input.isKeyDown(Input.KEY_F11))
             sGraphicsManager.toggleFullscreen();
+        if(input.isKeyDown(Input.KEY_F12) && mInputTimer > mInputDelay)
+        {
+            mInputTimer = 0;
+            sGraphicsManager.toggleRenderDebugInfo();
+        }
         
         if(xBoxControllers.size() != input.getControllerCount())
             initContollers(input);

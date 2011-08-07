@@ -4,7 +4,10 @@
  */
 package States.Game;
 
+import Entities.PlayerEntity;
 import Entities.sEntityFactory;
+import Events.GenericEvent;
+import Events.GenericStringEvent;
 import Events.KeyDownEvent;
 import Events.PlayerCreatedEvent;
 import Events.iEvent;
@@ -72,9 +75,7 @@ public class StateGame extends BasicGameState implements iEventListener {
             KeyDownEvent event = (KeyDownEvent) _event;
             if(event.getKey() == 'Q')
             {
-                //FIXME: quit
-                //die = true;
-                //goto menu
+                sEvents.triggerEvent(new GenericEvent("GamePaused"));
                 StateMenu.setPlayerInControl(event.getPlayer());
                 mChangeToMenu.setTransitions(null, new BlobbyTransition(Color.black));
                 mChangeToMenu.run();
@@ -91,6 +92,7 @@ public class StateGame extends BasicGameState implements iEventListener {
 
     public void update(GameContainer _gc, StateBasedGame _sbg, int _delta) throws SlickException 
     {        
+        
         if(die) _gc.exit();
         
         //update sounds
@@ -122,7 +124,7 @@ public class StateGame extends BasicGameState implements iEventListener {
         //screen.flushPixelData();
         GUIManager.get().render(false);
         
-        sGraphicsManager.drawString("Bodies: " + sWorld.getBodyCount(), 0.2f, 0.2f);
+        sGraphicsManager.renderDebugInfo();
 
     }
     @Override
@@ -141,7 +143,7 @@ public class StateGame extends BasicGameState implements iEventListener {
     //callback for when the game leaves this state
     public void leave(GameContainer container, StateBasedGame game) throws SlickException 
     {
-        mInited = false;
+        
         sEvents.blockListener(this);
         container.setMouseGrabbed(false);
         sSound.stop("level1");

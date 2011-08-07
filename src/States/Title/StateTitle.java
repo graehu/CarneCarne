@@ -4,6 +4,7 @@
  */
 package States.Title;
 
+import Events.sEvents;
 import GUI.Components.Button;
 import GUI.Components.Effects.AnimatedEffect;
 import GUI.Components.GraphicalComponent;
@@ -144,6 +145,8 @@ public class StateTitle extends BasicGameState
             mOptionsButton.addText(_gc, mUIFont, "OptiOnS", true); 
             mHighScoresButton = new Button(_gc, new Vector2f(), buttonDim);
             mHighScoresButton.addText(_gc, mUIFont, "HighScorES", true);
+            mQuitButton = new Button(_gc, new Vector2f(), buttonDim);
+            mQuitButton.addText(_gc, mUIFont, "Quit", true);     
             
             mParticlesToggle = new ToggleButton(_gc, new Vector2f(200,-200), buttonDim, true);
             mParticlesToggle.addText(_gc, mUIFont, "ParticlES On", true);
@@ -153,12 +156,12 @@ public class StateTitle extends BasicGameState
             mLightingToggle.addText(_gc, mUIFont, "Lighting On", true);
             mLightingToggle.setToggleText("Lighting On", "Lighting Off");
             
-            mDone = new Button(_gc, new Vector2f(200,-50), buttonDim);
-            mDone.addText(_gc, mUIFont, "dOnE", true); //uppercase 'D' is crap
+            mBack = new Button(_gc, new Vector2f(200,-50), buttonDim);
+            mBack.addText(_gc, mUIFont, "BAck", true); //lowercase 'a' is crap
             
             mParalax0.addChild(mParticlesToggle);
             mParalax0.addChild(mLightingToggle);
-            mParalax0.addChild(mDone);
+            mParalax0.addChild(mBack);
             
             //add to GUIManager in render order
             GUIManager.use(mGUIManagerGlobal).addRootComponent(mBackground);
@@ -173,16 +176,17 @@ public class StateTitle extends BasicGameState
             GUIManager.use(mGUIManagerCenterMain).addRootComponent(mFootballButton);
             GUIManager.use(mGUIManagerCenterMain).addRootComponent(mOptionsButton);
             GUIManager.use(mGUIManagerCenterMain).addRootComponent(mHighScoresButton);
+            GUIManager.use(mGUIManagerCenterMain).addRootComponent(mQuitButton);
             
             GUIManager.use(mGUIManagerGlobal).addRootComponent(mForeground);
             
             GUIManager.use(mGUIManagerLeftOptions).addSelectable(mParticlesToggle);
             GUIManager.use(mGUIManagerLeftOptions).addSelectable(mLightingToggle);
-            GUIManager.use(mGUIManagerLeftOptions).addSelectable(mDone);
+            GUIManager.use(mGUIManagerLeftOptions).addSelectable(mBack);
             
-            GUIManager.use(mGUIManagerLeftAdventure).addSelectable(mDone);
-            GUIManager.use(mGUIManagerLeftRace).addSelectable(mDone);
-            GUIManager.use(mGUIManagerLeftFootball).addSelectable(mDone);
+            GUIManager.use(mGUIManagerLeftAdventure).addSelectable(mBack);
+            GUIManager.use(mGUIManagerLeftRace).addSelectable(mBack);
+            GUIManager.use(mGUIManagerLeftFootball).addSelectable(mBack);
             
             calcUI();
 
@@ -255,6 +259,11 @@ public class StateTitle extends BasicGameState
                     //mState = MenuState.eRight; //FIXME
                 }
             });
+            mQuitButton.setCallback(new Runnable() {
+                public void run() {
+                    _gc.exit();
+                }
+            });
             
             mParticlesToggle.setOnCallback(new Runnable() { public void run() {
                     sGraphicsManager.setAllowParticles(true);}});
@@ -266,7 +275,7 @@ public class StateTitle extends BasicGameState
             mLightingToggle.setOffCallback(new Runnable() { public void run() {
                     sGraphicsManager.setAllowShaders(false);}});
             
-            mDone.setCallback(new Runnable() {
+            mBack.setCallback(new Runnable() {
                 public void run() {
                     mState = MenuState.eCenter;
                 }
@@ -286,6 +295,7 @@ public class StateTitle extends BasicGameState
         container.setDefaultMouseCursor();
         sSound.stop("menu1");
         GUIManager.use(mCurrentGUIState).setAcceptingInput(false);
+        sInput.update(16);
     }
     
     
@@ -302,10 +312,11 @@ public class StateTitle extends BasicGameState
     Button mFootballButton = null;
     Button mOptionsButton = null;
     Button mHighScoresButton = null;
+    Button mQuitButton = null;
     ToggleButton mParticlesToggle = null;
     ToggleButton mLightingToggle = null;
     ToggleButton mFullScreenButton = null;
-    Button mDone = null;
+    Button mBack = null;
     float mScale = 1.0f;
     float mOffset = 0.0f;
     MenuState mState = MenuState.eCenter;
@@ -402,7 +413,7 @@ public class StateTitle extends BasicGameState
         mBackground.setLocalTranslation(vOffset);
         mForeground.setLocalTranslation(vOffset);
         
-        Vector2f buttonPos = new Vector2f(mBackground.getWidth() * 0.6f, mOffset + (mBackground.getHeight() * 0.3f));
+        Vector2f buttonPos = new Vector2f(mBackground.getWidth() * 0.6f, mOffset + (mBackground.getHeight() * 0.25f));
         int buttonOffset = (int)75;
         
         mNameField.setLocalTranslation(new Vector2f(buttonPos.x, buttonPos.y));
@@ -421,6 +432,9 @@ public class StateTitle extends BasicGameState
         
         mHighScoresButton.setLocalTranslation(new Vector2f(buttonPos.x, buttonPos.y + 5*buttonOffset - 30)); //FIXME: booooooooooodge
         mHighScoresButton.setDimensionsToText();
+        
+        mQuitButton.setLocalTranslation(new Vector2f(buttonPos.x, buttonPos.y + 6*buttonOffset - 40)); //FIXME: booooooooooodge
+        mQuitButton.setDimensionsToText();
         
         float paralaxOffset = -34.0f; //tweak
         mParalax0.setLocalTranslation(new Vector2f(0,mOffset + (mBackground.getHeight()-mParalax0.getImageHeight()) + paralaxOffset));

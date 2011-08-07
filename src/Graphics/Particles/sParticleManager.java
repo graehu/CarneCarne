@@ -27,11 +27,17 @@ public class sParticleManager {
     static HashMap<String, ParticleSystem> mLoadedSystems = new HashMap<String, ParticleSystem>();
     static ArrayList<ParticleSysBase> mInstancedSystems = new ArrayList<ParticleSysBase>();
     static HashMap<String, ArrayList<ParticleSystem>> mSystemPool = new HashMap<String, ArrayList<ParticleSystem>>();
+    static int mVisibleSystemCount = 0;
     
     private sParticleManager()
     {
         
     }
+    
+    public static int getLoadedSystemCount() {return mLoadedSystems.size();}
+    public static int getInstancedSystemCount() {return mInstancedSystems.size();}
+    public static int getPoolCount() {return mSystemPool.size();}
+    public static int getVisibleSystemCount() {return mVisibleSystemCount;}
     
     public static void warmUp()
     {
@@ -217,11 +223,13 @@ public class sParticleManager {
      */
     public static void render(int _x, int _y, int _width, int _height, int _border)
     {
+        mVisibleSystemCount = 0;
         //assumes equal length arrays: mInstancedSystems & mInstancedSysPos
         for(ParticleSysBase particle : mInstancedSystems)
         {
             if(cull(particle))
             {
+                mVisibleSystemCount++;
                 //calc positions in screenspace
                 Vec2 position = particle.getPosition();
                 particle.render(position.x + _x, position.y + _y);

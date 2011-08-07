@@ -10,6 +10,7 @@ import Entities.Entity.CauseOfDeath;
 import Entities.PlayerEntity;
 import Entities.sEntityFactory;
 import Events.AnalogueStickEvent;
+import Events.GenericEvent;
 import Events.KeyDownEvent;
 import Events.KeyUpEvent;
 import Events.MapClickEvent;
@@ -75,12 +76,15 @@ public class PlayerInputController extends iAIController implements iEventListen
     float mRightStickValueThisFrame = 0.0f;
     private int mGrabImmunityTimer;
     Random rand = new Random();
+    boolean mIsAcceptingInput = true; //used to stop input being cause when paused
     
     public PlayerInputController(AIEntity _entity, int _player)
     {
         super(_entity);
         mPlayer = _player;
         mFaceDirAnim = "e";
+        sEvents.subscribeToEvent("GamePaused", this);
+        sEvents.subscribeToEvent("GameUnpaused", this);
         sEvents.subscribeToEvent("KeyDownEvent"+'w'+_player, this);
         sEvents.subscribeToEvent("KeyUpEvent"+'w'+_player, this);
         sEvents.subscribeToEvent("KeyDownEvent"+'a'+_player, this);
@@ -109,6 +113,8 @@ public class PlayerInputController extends iAIController implements iEventListen
     public void destroy() /// FIXME more memory leaks to clean up in here
     {
         sEvents.blockListener(this);
+        sEvents.unsubscribeToEvent("GamePaused", this);
+        sEvents.unsubscribeToEvent("GameUnpaused", this);
         sEvents.unsubscribeToEvent("KeyDownEvent"+'w'+mPlayer, this);
         sEvents.unsubscribeToEvent("KeyUpEvent"+'w'+mPlayer, this);
         sEvents.unsubscribeToEvent("KeyDownEvent"+'a'+mPlayer, this);
@@ -302,9 +308,21 @@ public class PlayerInputController extends iAIController implements iEventListen
         sParticleManager.createSystem("DragonBreath", mEntity.getBody().getPosition().add(new Vec2(0.5f,0.5f)).add(mPlayerDir.mul(0.5f)).mul(64.0f), 1f)
                 .setAngularOffset(((float)Math.atan2(mPlayerDir.y, mPlayerDir.x) * 180.0f/(float)Math.PI)-270.0f);
     }
-
+    
     public boolean trigger(final iEvent _event)
     {
+        if(_event.getType().equals("GamePaused"))
+        {
+            mIsAcceptingInput = false;
+            return true;
+        }
+        else if(_event.getType().equals("GameUnpaused"))
+        {
+            mIsAcceptingInput = true;
+            return true;
+        }
+        if(mIsAcceptingInput == false)
+            return true;
         if(mEntity.isIdle())
             ((PlayerEntity)mEntity).stopIdle();
         if (mStunTimer == 0)
