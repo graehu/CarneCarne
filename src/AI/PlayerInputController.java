@@ -10,6 +10,7 @@ import Entities.Entity.CauseOfDeath;
 import Entities.PlayerEntity;
 import Entities.sEntityFactory;
 import Events.AnalogueStickEvent;
+import Events.GenericEvent;
 import Events.KeyDownEvent;
 import Events.KeyUpEvent;
 import Events.MapClickEvent;
@@ -81,6 +82,8 @@ public class PlayerInputController extends iAIController implements iEventListen
         super(_entity);
         mPlayer = _player;
         mFaceDirAnim = "e";
+        sEvents.subscribeToEvent("GamePaused", this);
+        sEvents.subscribeToEvent("GameUnpaused", this);
         sEvents.subscribeToEvent("KeyDownEvent"+'w'+_player, this);
         sEvents.subscribeToEvent("KeyUpEvent"+'w'+_player, this);
         sEvents.subscribeToEvent("KeyDownEvent"+'a'+_player, this);
@@ -109,6 +112,8 @@ public class PlayerInputController extends iAIController implements iEventListen
     public void destroy() /// FIXME more memory leaks to clean up in here
     {
         sEvents.blockListener(this);
+        sEvents.unsubscribeToEvent("GamePaused", this);
+        sEvents.unsubscribeToEvent("GameUnpaused", this);
         sEvents.unsubscribeToEvent("KeyDownEvent"+'w'+mPlayer, this);
         sEvents.unsubscribeToEvent("KeyUpEvent"+'w'+mPlayer, this);
         sEvents.unsubscribeToEvent("KeyDownEvent"+'a'+mPlayer, this);
@@ -305,6 +310,16 @@ public class PlayerInputController extends iAIController implements iEventListen
 
     public boolean trigger(final iEvent _event)
     {
+        if(_event.getType().equals("GamePaused"))
+        {
+            sEvents.blockListener(this);
+            return true;
+        }
+        else if(_event.getType().equals("GameUnpaused"))
+        {
+            sEvents.unblockListener(this);
+            return true;
+        }
         if(mEntity.isIdle())
             ((PlayerEntity)mEntity).stopIdle();
         if (mStunTimer == 0)

@@ -68,7 +68,7 @@ public class sLevel
     private static LevelEditor mLevelEditor;
     private static int flagsLayer; /// Ignore this one
     private static int midLayer; 
-    private static int xTiles, yTiles;
+    private static int xTiles = 0, yTiles = 0;
     public enum PathInfo
     {
         eNotPassable,
@@ -78,6 +78,7 @@ public class sLevel
         ePathable
     };
     
+    public static int getVisibleTileCount() {return xTiles*yTiles;}
     public static int getTileSizeInMetres()
     {
         return 1; //just incase we want to make tiles smaller than a meter.

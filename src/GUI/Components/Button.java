@@ -128,66 +128,82 @@ public class Button extends GraphicalComponent{
         //changeState(ButtonState.eHoverOver);
     }
     @Override
-    public void mouseMoved(int oldx, int oldy, int newx, int newy) {
-        if(mState != ButtonState.eSelected)
+    public void mouseMoved(int oldx, int oldy, int newx, int newy) 
+    {
+        if(isAcceptingInput())
+        {
+            if(mState != ButtonState.eSelected)
+            {
+                Shape myshape = getShape();
+                if(myshape.contains(newx, newy))
+                {
+                    if(mState != ButtonState.eSelected)
+                        changeState(ButtonState.eHoverOver);  
+                }
+                else 
+                    changeState(ButtonState.eDefault);
+            }
+        }
+    }
+
+    @Override
+    public void mouseDragged(int oldx, int oldy, int newx, int newy) 
+    {
+        if(isAcceptingInput())
         {
             Shape myshape = getShape();
             if(myshape.contains(newx, newy))
             {
-                if(mState != ButtonState.eSelected)
-                    changeState(ButtonState.eHoverOver);  
+                //do nothing
             }
             else 
                 changeState(ButtonState.eDefault);
         }
     }
-
-    @Override
-    public void mouseDragged(int oldx, int oldy, int newx, int newy) {
-        Shape myshape = getShape();
-        if(myshape.contains(newx, newy))
-        {
-            //do nothing
-        }
-        else 
-            changeState(ButtonState.eDefault);
-    }
     
 
     @Override
-    public void mousePressed(int button, int x, int y) {
-        switch(button)
+    public void mousePressed(int button, int x, int y) 
+    {
+        if(isAcceptingInput())
         {
-            case Input.MOUSE_LEFT_BUTTON: 
+            switch(button)
             {
-                Shape myshape = getShape();
-                if(myshape.contains(x, y))
+                case Input.MOUSE_LEFT_BUTTON: 
                 {
-                    changeState(ButtonState.eSelected);
-                    //consumeEvent();
+                    Shape myshape = getShape();
+                    if(myshape.contains(x, y))
+                    {
+                        changeState(ButtonState.eSelected);
+                        //consumeEvent();
+                    }
+                    else
+                        changeState(ButtonState.eDefault);
                 }
-                else
-                    changeState(ButtonState.eDefault);
             }
         }
     }
     
     @Override
-    public void mouseReleased(int button, int x, int y) {
-        switch(button)
+    public void mouseReleased(int button, int x, int y) 
+    {
+        if(isAcceptingInput())
         {
-            case Input.MOUSE_LEFT_BUTTON: 
+            switch(button)
             {
-                Shape myshape = getShape();
-                if(myshape.contains(x, y))
+                case Input.MOUSE_LEFT_BUTTON: 
                 {
-                    if(mCallback != null && mState.equals(ButtonState.eSelected))
-                        mCallback.run();
-                    changeState(ButtonState.eHoverOver);
-                    //consumeEvent();
+                    Shape myshape = getShape();
+                    if(myshape.contains(x, y))
+                    {
+                        if(mCallback != null && mState.equals(ButtonState.eSelected))
+                            mCallback.run();
+                        changeState(ButtonState.eHoverOver);
+                        //consumeEvent();
+                    }
+                    else
+                        changeState(ButtonState.eDefault);
                 }
-                else
-                    changeState(ButtonState.eDefault);
             }
         }
     }

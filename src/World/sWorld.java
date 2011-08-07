@@ -524,12 +524,17 @@ public class sWorld
         {
             Entity entity = (Entity)_fixture.getBody().getUserData();
             if (entity != null)
+            {
+                mVisibleEntityCount++;
                 entity.render();
+            }
             return true;
         }
     }
+    static int mVisibleEntityCount = 0;
     public static void render()
     {
+        mVisibleEntityCount = 0;
         AABB aabb = new AABB(sWorld.translateToPhysics(new Vec2(0,0)), sWorld.translateToPhysics(sGraphicsManager.getScreenDimensions()));
         mWorld.queryAABB(new RenderCallback(), aabb);
         mWorld.drawDebugData();
@@ -538,6 +543,10 @@ public class sWorld
     public static int getBodyCount()
     {
         return mBodyCount;
+    }
+    public static int getVisibleEntityCount()
+    {
+        return mVisibleEntityCount;
     }
 }
 

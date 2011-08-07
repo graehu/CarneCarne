@@ -25,12 +25,14 @@ public abstract class iComponent extends AbstractComponent
     protected iComponent(GUIContext _context) 
     {
         super(_context);
+        super.setAcceptingInput(false);
     }
     protected iComponent(GUIContext _context, Vector2f _position, Vector2f _dimensions) 
     {
         super(_context);
         setDimensions(_dimensions);
         setLocalTranslation(_position);
+        super.setAcceptingInput(false);
     }
     
     private String      mName = null; //could be used for searching a hieracrchy by name

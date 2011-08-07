@@ -4,6 +4,7 @@
  */
 package States;
 
+import Events.sEvents;
 import Graphics.sGraphicsManager;
 import States.Menu.StateMenu;
 import java.util.logging.Level;

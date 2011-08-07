@@ -234,6 +234,7 @@ public class GUIManager implements iEventListener
         {
             //assume only key caught is A
             clickSelected();
+            
         }
         else if(mInputTimer < scrollDelay) //timer to slow iterating over selectables
             return true;
