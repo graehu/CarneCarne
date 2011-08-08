@@ -187,7 +187,7 @@ public class FlagProcessor
                         {
                             String string = _tiledMap.getTileProperty(id, "String", "None");
                             String tooltipType = _tiledMap.getTileProperty(id, "TooltipType", "None");
-                            ToolTipZone zone = new ToolTipZone(lowestX, lowestY, highestX, highestY, string, tooltipType);
+                            ToolTipZone zone = new ToolTipZone(lowestX, lowestY, highestX + 1, highestY + 1, string, tooltipType);
                             break;
                         }
                     }

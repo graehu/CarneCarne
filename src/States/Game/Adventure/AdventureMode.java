@@ -76,12 +76,15 @@ public class AdventureMode implements iGameMode, iEventListener
         return true;
     }
 
-    public void cleanup() {
+    public void cleanup()
+    {
         for(PlayerEntity player : players)
         {
             player.destroy();
             sWorld.destroyBody(player.getBody());
         }
         players.clear();
+        sEvents.unsubscribeToEvent("PlayerCreatedEvent", this);
+        sEvents.unsubscribeToEvent("RaceWonEvent", this);
     }
 }

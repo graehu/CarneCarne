@@ -109,12 +109,14 @@ public class IntroMode implements iGameMode, iEventListener
         return true;
     }
     
-    public void cleanup() 
+    public void cleanup()
     {
         for(PlayerEntity player : mPlayers)
         {
             player.destroy();
             sWorld.destroyBody(player.getBody());
         }
+        sEvents.unsubscribeToEvent("TutorialSpawnEvent", this);
+        sEvents.unsubscribeToEvent("PlayerEndedTutorialEvent", this);
     }
 }

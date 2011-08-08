@@ -150,5 +150,8 @@ public class FootballMode implements iGameMode, iEventListener
             player.destroy();
             sWorld.destroyBody(player.getBody());
         }
+        sEvents.unsubscribeToEvent("PlayerCreatedEvent", this);
+        sEvents.unsubscribeToEvent("FootballSpawnEvent", this);
+        sEvents.unsubscribeToEvent("GoalSpawnEvent", this);
     }
 }

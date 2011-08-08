@@ -119,5 +119,9 @@ public class RaceMode implements iGameMode, iEventListener
             player.destroy();
             sWorld.destroyBody(player.getBody());
         }
+        sEvents.unsubscribeToEvent("PlayerCreatedEvent", this);
+        sEvents.unsubscribeToEvent("RaceResetEvent", this);
+        sEvents.unsubscribeToEvent("BarrierOpenEvent" + "StartGate", this);
+        sEvents.unsubscribeToEvent("NewHighScoreEvent", this);
     }
 }
