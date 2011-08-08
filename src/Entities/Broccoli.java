@@ -185,8 +185,7 @@ public class Broccoli extends AIEntity
     public void attack()
     {
         switch(mState)
-        {
-            
+        { 
             case eLand:
             {
                 if(!isAirBorn())
@@ -228,7 +227,7 @@ public class Broccoli extends AIEntity
             }
             case eIdle:
             {
-                if(mSkin.isAnimating("broc_2_land"))
+                if(!mSkin.isAnimating("broc_2_land"))
                 {
                     mSkin.deactivateSubSkin(mCurrentAnimation);
                     mSkin.deactivateSubSkin("broc_1_idlein");

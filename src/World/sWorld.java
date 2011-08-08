@@ -362,6 +362,9 @@ public class sWorld
                     case eEmpty:
                     case eIndestructible:
                     {
+                        Vec2 direction = end.sub(start);
+                        direction.normalize();
+                        tile.getTileGrid().getBody().applyLinearImpulse(direction.mul(5.0f), tile.getWorldPosition());
                         break;
                     }
                 }
