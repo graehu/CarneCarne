@@ -118,7 +118,7 @@ public abstract class iComponent extends AbstractComponent
         if(mMaintainRatio)
         {
             //FIXME: THIS IS THE MOST HORRIBLE CODE I'VE EVER WRITTEN
-            float scalar = sGraphicsManager.getTrueScreenDimensions().x / 1680;
+            float scalar = sGraphicsManager.getTrueScreenDimensions().x / sGraphicsManager.getNativeScreenDimensions().x;
             float Sx = sGraphicsManager.getScreenDimensions().x / sGraphicsManager.getTrueScreenDimensions().x;
             if(scale.x != scale.y)
             {

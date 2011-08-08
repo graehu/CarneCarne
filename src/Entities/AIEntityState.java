@@ -343,9 +343,9 @@ class AIEntityState
             }
             case eIdle:
             {
+                mTimer = 0;
                 if(mEntity.mBody.getLinearVelocity().lengthSquared() > 0.000001f)
                 {
-                    mTimer = 0;
                     changeState(State.eStanding);
                     update();
                 }

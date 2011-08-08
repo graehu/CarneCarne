@@ -104,6 +104,7 @@ public class sEvents {
             LinkedList<iEventListener> list = mTable.get(_event.getName());
             if (list != null)
             {
+                list = new LinkedList<iEventListener>(list); //create copy to avoid comodification
                 Iterator<iEventListener> i = list.iterator();
                 while(i.hasNext())
                 {

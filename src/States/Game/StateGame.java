@@ -4,10 +4,8 @@
  */
 package States.Game;
 
-import Entities.PlayerEntity;
 import Entities.sEntityFactory;
 import Events.GenericEvent;
-import Events.GenericStringEvent;
 import Events.KeyDownEvent;
 import Events.PlayerCreatedEvent;
 import Events.iEvent;
@@ -35,6 +33,8 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.BlobbyTransition;
+import org.newdawn.slick.state.transition.FadeInTransition;
+import org.newdawn.slick.state.transition.FadeOutTransition;
 
 /**
  *
@@ -57,7 +57,10 @@ public class StateGame extends BasicGameState implements iEventListener {
     static private int mPlayers;
     static public Vec2 mMousePos = new Vec2(0,0);
     static boolean mInited = false;
+    static long mEffectiveFPSTimer = 0;
+    static int mEffectiveFPS = 0;
     
+    public static int getEffectiveFPS() {return mEffectiveFPS;}
     
     public StateGame()
     {
@@ -77,7 +80,7 @@ public class StateGame extends BasicGameState implements iEventListener {
             {
                 sEvents.triggerEvent(new GenericEvent("GamePaused"));
                 StateMenu.setPlayerInControl(event.getPlayer());
-                mChangeToMenu.setTransitions(null, new BlobbyTransition(Color.black));
+                mChangeToMenu.setTransitions(new FadeOutTransition(Color.black,100), new FadeInTransition(Color.black,100));
                 mChangeToMenu.run();
                 sEvents.blockListener(this);
             }
@@ -92,9 +95,7 @@ public class StateGame extends BasicGameState implements iEventListener {
 
     public void update(GameContainer _gc, StateBasedGame _sbg, int _delta) throws SlickException 
     {        
-//        _gc.getInput().clearKeyPressedRecord();
-//        _gc.getInput().clearControlPressedRecord();
-//        _gc.getInput().clearMousePressedRecord();
+        
         if(die) _gc.exit();
         
         //update sounds
@@ -112,6 +113,7 @@ public class StateGame extends BasicGameState implements iEventListener {
         
         //update GUI
         GUIManager.get().update(_delta);
+        
     }
     public void render(GameContainer _gc, StateBasedGame _sbg, Graphics _grphcs) throws SlickException
     {
@@ -133,6 +135,7 @@ public class StateGame extends BasicGameState implements iEventListener {
     //callback for when the game enters this state
     public void enter(GameContainer container, StateBasedGame game) throws SlickException 
     {        
+        
         //set GUI to this
         GUIManager.set(mGUIRef);
         container.setMouseGrabbed(true);
@@ -210,5 +213,9 @@ public class StateGame extends BasicGameState implements iEventListener {
         mInited = false;
         gameType = _type;
         levelRef = _level;
+    }
+    public static void resetCurrentMode()
+    {
+        mInited = false;
     }
 }

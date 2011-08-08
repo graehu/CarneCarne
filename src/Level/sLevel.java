@@ -5,6 +5,8 @@
 package Level;
 
 import Events.AreaEvents.sAreaEvents;
+import Events.GenericEvent;
+import Events.sEvents;
 import Graphics.Particles.sParticleManager;
 import Graphics.sGraphicsManager;
 import Level.Lighting.sLightsManager;
@@ -130,6 +132,7 @@ public class sLevel
     //returns next level
     public static String newLevel(String _map)
     {
+        sEvents.triggerEvent(new GenericEvent("newLevel"));
         //clean up old level
         sAreaEvents.clearEvents();
         sWorld.destroy();

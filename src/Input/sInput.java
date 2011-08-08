@@ -29,9 +29,8 @@ public class sInput
     static private int mPlayerCount;
     static private ArrayList<XBoxController> xBoxControllers = new ArrayList<XBoxController>();
     static MouseStateMachine mMouseStateMachine;
-    static boolean mJumpToggle = false;;
-    static int mInputTimer = 0;
-    static int mInputDelay = 10; //milliseconds
+    static boolean mJumpToggle = false;
+    static boolean mPauseToggle = false;
     
     public static void init(GameContainer _gc)
     {
@@ -40,7 +39,6 @@ public class sInput
     }
     public static void update(int _delta)
     {
-        mInputTimer++;
         Input input = mGameContainer.getInput();
         
         //handle keyboard&mouse input (defaults to player 0)
@@ -63,17 +61,14 @@ public class sInput
             sEvents.triggerEvent(new KeyDownEvent('d', 0));
         if(input.isKeyDown(Input.KEY_SPACE))
             sEvents.triggerEvent(new KeyDownEvent(' ', 0));
-        if(input.isKeyDown(Input.KEY_ESCAPE))
+        if(input.isKeyPressed(Input.KEY_ESCAPE))
             sEvents.triggerEvent(new KeyDownEvent('Q', 0));
         if(input.isKeyDown(Input.KEY_R))
             sEvents.triggerEvent(new KeyDownEvent('r', 0));
         if(input.isKeyDown(Input.KEY_F11))
             sGraphicsManager.toggleFullscreen();
-        if(input.isKeyDown(Input.KEY_F12) && mInputTimer > mInputDelay)
-        {
-            mInputTimer = 0;
+        if(input.isKeyPressed(Input.KEY_F12))
             sGraphicsManager.toggleRenderDebugInfo();
-        }
         
         if(xBoxControllers.size() != input.getControllerCount())
             initContollers(input);

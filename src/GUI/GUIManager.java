@@ -29,8 +29,8 @@ import org.newdawn.slick.geom.Vector2f;
 //this class provides multiplue instances o9f itself to allow for persistance GUIs between states
 public class GUIManager implements iEventListener
 {    
-    static private int scrollDelay = 200; //miliseconds
-    static private int clickDelay = 50; //miliseconds
+    static private int scrollDelay = 150; //miliseconds
+    static private int clickDelay = 200; //miliseconds
     static private int keyCount = 0;
     static private HashMap<Integer, GUIManager> instances = new HashMap<Integer, GUIManager>();
     static GUIManager currentInstance = null;
@@ -93,8 +93,8 @@ public class GUIManager implements iEventListener
     
     private GUIManager(GameContainer _context)
     {
-        scale.x = sGraphicsManager.getTrueScreenDimensions().x / 1680; //FIXME: assumes native resolution at 1680x1050
-        scale.y = sGraphicsManager.getTrueScreenDimensions().y / 1050;
+        scale.x = sGraphicsManager.getTrueScreenDimensions().x / sGraphicsManager.getNativeScreenDimensions().x;
+        scale.y = sGraphicsManager.getTrueScreenDimensions().y / sGraphicsManager.getNativeScreenDimensions().y;
         if(_context != null)
             mContainer = _context;
         else
@@ -176,7 +176,7 @@ public class GUIManager implements iEventListener
     
     public void update(int _delta)
     {
-        mInputTimer += _delta;
+        mInputTimer += 16;
         Iterator<iComponent> itr = mManagedRoots.values().iterator();
         while(itr.hasNext())
         {
@@ -189,8 +189,8 @@ public class GUIManager implements iEventListener
     public void setDimensions(Vector2f _dimensions)
     {
         mDimensions = _dimensions;
-        scale.x = mDimensions.x / 1680; //FIXME: assumes native resolution at 1680x1050
-        scale.y = mDimensions.y / 1050;
+        scale.x = mDimensions.x / sGraphicsManager.getNativeScreenDimensions().x;
+        scale.y = mDimensions.y / sGraphicsManager.getNativeScreenDimensions().y;
     }
     public void render(boolean _debug)
     {
@@ -222,16 +222,14 @@ public class GUIManager implements iEventListener
                 scale.y = mDimensions.y / 1050;
             }
         }
-        else if(mInputTimer < scrollDelay) //timer to slow iterating over selectables
-            return true;
         else if (_event.getType().equals("KeyUpEvent"))
         {
-            mInputTimer = 0;
             //assume only key caught is A
             unclickSelected();
         }
-        else if (_event.getType().equals("KeyDownEvent"))
+        else if (_event.getType().equals("KeyDownEvent") && mInputTimer > clickDelay)
         {
+            mInputTimer = 0;
             //assume only key caught is A
             clickSelected();
             

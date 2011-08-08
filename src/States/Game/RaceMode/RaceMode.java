@@ -28,14 +28,14 @@ import org.newdawn.slick.Graphics;
  */
 public class RaceMode implements iGameMode, iEventListener
 {
-    RaceState mRaceState;
+    RaceStateMachine mRaceState;
     Collection<PlayerEntity> players = new LinkedList<PlayerEntity>();
     int mTimer;
     iSkin mRaceRender = null;
     public RaceMode(String _level)
     {
         mTimer = 0;
-        mRaceState = new RaceState();
+        mRaceState = new RaceStateMachine();
         sEvents.subscribeToEvent("PlayerCreatedEvent", this);
         sEvents.subscribeToEvent("RaceResetEvent", this);
         sEvents.subscribeToEvent("BarrierOpenEvent" + "StartGate", this);

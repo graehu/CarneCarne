@@ -5,20 +5,20 @@
   <properties>
    <property name="Event" value="Tooltip"/>
    <property name="String" value="Use Carne's tongue to swing on bone"/>
-   <property name="ToolType" value="Swing"/>
+   <property name="TooltipType" value="Swing"/>
   </properties>
  </tile>
  <tile id="1">
   <properties>
    <property name="Event" value="Tooltip"/>
    <property name="String" value="Formula #1 Meat + Bone = SMASH"/>
-   <property name="TooltipType" value="Eat"/>
+   <property name="TooltipType" value="Smash"/>
   </properties>
  </tile>
  <tile id="2">
   <properties>
    <property name="Event" value="Tooltip"/>
-   <property name="String" value="Didn't you mother ever tell you not to swing on a full stomach?!"/>
+   <property name="String" value="Didn't your mother ever tell you not to swing on a full stomach?!"/>
    <property name="TooltipType" value="Spit"/>
   </properties>
  </tile>
@@ -39,6 +39,13 @@
   <properties>
    <property name="Event" value="Tooltip"/>
    <property name="String" value="Can you smell taco?"/>
+  </properties>
+ </tile>
+ <tile id="6">
+  <properties>
+   <property name="Event" value="Tooltip"/>
+   <property name="String" value="I see you're causing ripples already... best get a move on!"/>
+   <property name="TooltipType" value="Jump"/>
   </properties>
  </tile>
 </tileset>

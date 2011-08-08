@@ -11,6 +11,7 @@ import Graphics.Particles.sParticleManager;
 import Graphics.Sprites.iSprite;
 import Level.Lighting.sLightsManager;
 import Level.sLevel;
+import States.Game.StateGame;
 import Utils.sFontLoader;
 import World.sWorld;
 import java.util.ArrayList;
@@ -35,7 +36,7 @@ import org.newdawn.slick.gui.GUIContext;
  */
 public class sGraphicsManager {
 
-    private static Vec2 mNativeScreenDimentions = new Vec2(0,0);
+    private static Vec2 mNativeScreenDimensions = new Vec2(0,0);
     private static Vec2 mScreenDimensions = new Vec2(0,0);
     private static Rectangle mClip, mWorldClip;
     private static boolean mAllowTransform = false;
@@ -56,6 +57,10 @@ public class sGraphicsManager {
     public static Vec2 AbsoluteToRelativeScreen(Vec2 _abs)
     {
         return new Vec2(_abs.x / Display.getDisplayMode().getWidth(), _abs.y / Display.getDisplayMode().getHeight());
+    }
+    public static Vec2 getNativeScreenDimensions()
+    {
+        return mNativeScreenDimensions.clone();
     }
     public static Vec2 getScreenDimensions()
     {
@@ -84,8 +89,8 @@ public class sGraphicsManager {
         mGameContainer = _gc;
         mLastDisplayMode = Display.getDisplayMode();
         setScreenDimensions(new Vec2(mLastDisplayMode.getWidth(), mLastDisplayMode.getHeight()));
-        mNativeScreenDimentions.x = Display.getDesktopDisplayMode().getWidth();
-        mNativeScreenDimentions.y = Display.getDesktopDisplayMode().getHeight();
+        mNativeScreenDimensions.x = Display.getDesktopDisplayMode().getWidth();
+        mNativeScreenDimensions.y = Display.getDesktopDisplayMode().getHeight();
         sFontLoader.setDefaultFont("default");
         mWorldClip = new Rectangle(0,0,mScreenDimensions.x,mScreenDimensions.y);
     }
@@ -183,7 +188,9 @@ public class sGraphicsManager {
             float pos = 30f;
             float step = 20f;
             
-            List<String> lines = Arrays.asList( "Physics Bodies:             " + sWorld.getBodyCount(),
+            List<String> lines = Arrays.asList( "Effective FPS:              " + StateGame.getEffectiveFPS(),
+                                                "",
+                                                "Physics Bodies:             " + sWorld.getBodyCount(),
                                                 "",
                                                 "Visible Graphical Entities  " + sWorld.getVisibleEntityCount(),
                                                 "Visible Tiles:              " + sLevel.getVisibleTileCount(),
@@ -242,7 +249,7 @@ public class sGraphicsManager {
             if(mIsFullScreen)
             {
                 mLastDisplayMode = Display.getDisplayMode();
-                mGameContainer.setDisplayMode((int)mNativeScreenDimentions.x, (int)mNativeScreenDimentions.y, true);
+                mGameContainer.setDisplayMode((int)mNativeScreenDimensions.x, (int)mNativeScreenDimensions.y, true);
             }
             else
             {

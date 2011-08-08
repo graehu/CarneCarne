@@ -108,7 +108,7 @@ public class PlayerEntity extends AIEntity
         mTooltipText = new Text(sGraphicsManager.getGUIContext(), sFontLoader.createFont("Trading Post Bold", 42), "No Text Defined", new Vector2f(50,45), false);
         mTooltipText.setDimensions(new Vector2f(315,130));
         mTooltipWindow.addChild(mTooltipText);
-        mTooltipText.setColor(Color.yellow);
+        mTooltipText.setColor(new Color(210,200,21));
         mTooltipText.setIsVisible(false);
         mTooltipText.setIsTextSizedToFit(true);
         mTooltipText.setIsWrapped(true);
@@ -550,21 +550,27 @@ public class PlayerEntity extends AIEntity
     public void displayTooltip(String _text, String _type)
     {
         mTooltipTimer = 0;
+        Vector2f textPos = new Vector2f(50,145);
         //change tooltipwindow based on type
         if(_type.equals("Spit"))
         {
             mTooltipWindow.setImage("ui/TooltipWindowSpit.png");
-            mTooltipText.setLocalTranslation(new Vector2f(50,145));
+            mTooltipText.setLocalTranslation(textPos);
         }
         else if(_type.equals("Swing"))
         {
             mTooltipWindow.setImage("ui/TooltipWindowSwing.png");
-            mTooltipText.setLocalTranslation(new Vector2f(50,145));
+            mTooltipText.setLocalTranslation(textPos);
         }
         else if(_type.equals("Smash"))
         {
             mTooltipWindow.setImage("ui/TooltipWindowSmash.png");
-            mTooltipText.setLocalTranslation(new Vector2f(50,145));
+            mTooltipText.setLocalTranslation(textPos);
+        }
+        else if(_type.equals("Jump"))
+        {
+            mTooltipWindow.setImage("ui/TooltipWindowJump.png");
+            mTooltipText.setLocalTranslation(textPos);
         }
         else
         {
