@@ -31,9 +31,9 @@ public class TongueStateMachine {
     void kill()
     {
         ///  This works, I think
+        tongueRelease(mTonguePosition);
         spitRelease(mTonguePosition);
         hammerRelease(mTonguePosition);
-        tongueRelease(mTonguePosition);
         /// Old code, which crashed when you did stuff before you died
         /*tongueAttachment = null;
         changeState(State.eStart);*/

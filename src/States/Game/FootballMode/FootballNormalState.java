@@ -152,6 +152,8 @@ public class FootballNormalState extends FootballState
                 HashMap params = new HashMap();
                 params.put("position", ballSpawnPosition);
                 sEntityFactory.create("Broccoli", params);
+                sEntityFactory.create("Carrot", params);
+                sEntityFactory.create("Carrot", params);
                 break;
             }
         }

@@ -67,13 +67,13 @@ abstract public class ScoreTracker
         loadGoalImage();
     }
     
-    private void loadWinnerImage()
+    private void loadWinnerImage(int _position)
     {
         if (mRaceWinnerImage == null)
         {
             mDisplayComponent = mRaceWinnerImage = (GraphicalComponent)GUIManager.use(mGUIManager)
                     .createRootComponent(GUIManager.ComponentType.eGraphical, new Vector2f(), new Vector2f());
-            mRaceWinnerImage.setImage("ui/HUD/winner.png");
+            mRaceWinnerImage.setImage("ui/HUD/finishedRaceAtPosition" + _position + ".png");
             mRaceWinnerImage.setDimentionsToImage();
             mRaceWinnerImage.setIsVisible(false);
             if (mGoalImage != null)
@@ -108,9 +108,9 @@ abstract public class ScoreTracker
         scoreimpl(_event);
     }
     abstract public void scoreimpl(ScoreEvent _event);
-    public void winRace(int _time, PlayerEntity _player)
+    public void finish(int _time, PlayerEntity _player, int _position)
     {
-        loadWinnerImage();
+        loadWinnerImage(_position);
         scoreimpl(ScoreEvent.eWonRace);
         if (_time < mBestTime)
         {

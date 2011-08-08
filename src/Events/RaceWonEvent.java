@@ -18,7 +18,6 @@ public class RaceWonEvent extends iEvent
     {
         mEntity = _entity;
         mTime = mEntity.getRaceTimer();
-        mEntity.mScoreTracker.winRace(mEntity.getRaceTimer(), mEntity);
     }
     @Override
     public String getName()

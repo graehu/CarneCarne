@@ -18,6 +18,8 @@ import GUI.HUD.Reticle;
 import GUI.HUD.Revolver;
 import Graphics.Particles.sParticleManager;
 import Graphics.Skins.sSkinFactory;
+import Graphics.Sprites.iSprite;
+import Graphics.Sprites.sSpriteFactory;
 import Level.sLevel.TileType;
 import Score.RaceScoreTracker;
 import Score.ScoreTracker;
@@ -67,6 +69,7 @@ public class PlayerEntity extends AIEntity
     private     Integer             mGUIManager;
     private int mStickShakeDisplayTimer;
     private iSkin mStickShakeDisplay;
+    //private iSprite mTeamRender;
     
     public PlayerEntity(iSkin _skin, CheckPointZone _spawnPoint)
     {
@@ -127,6 +130,10 @@ public class PlayerEntity extends AIEntity
     public void setTeam(int _team)
     {
         mTeam = _team;
+        HashMap params = new HashMap();
+        params.put("pos", mBody.getPosition().sub(new Vec2(0, 1)).mul(64.0f));
+        params.put("ref", "characters/Player" + (((PlayerInputController)mController).mPlayer+1));
+        //mTeamRender = sSpriteFactory.create("simple", params, true);
     }
     @Override
     public void setController(iAIController _controller)
@@ -315,6 +322,12 @@ public class PlayerEntity extends AIEntity
     @Override
     protected void subUpdate()
     {
+        /*if (mTeamRender != null)
+        {
+            //mTeamRender.setPosition(mBody.getPosition().sub(new Vec2(0, 64)).mul(64.0f));
+            mTeamRender.setPosition(new Vec2(50, 50));
+            mTeamRender.setVisible(true);
+        }*/
         if(++mTooltipTimer > mTooltipLife)
         {
             mTooltipWindow.setIsVisible(false);

@@ -48,6 +48,7 @@ public class RaceEndZone extends CheckPointZone implements iEventListener
         {
             _entity.placeCheckPoint(new RaceLostFakeZone(mCheckPointNumber, mFinishedPlayers));
         }
+        mWinner.mScoreTracker.finish(mWinner.getRaceTimer(), mWinner, mFinishedPlayers);
     }
     @Override
     public boolean incrementRaceTimer()
@@ -58,7 +59,10 @@ public class RaceEndZone extends CheckPointZone implements iEventListener
     public boolean trigger(iEvent _event)
     {
         if(_event.getName().equals("BarrierOpenEvent" + "StartGate"))
+        {
             mWinner = null;
+            mFinishedPlayers = 0;
+        }
         else if(_event.getType().equals("newLevel"))
         {
             sEvents.unsubscribeToEvent("newLevel", this);

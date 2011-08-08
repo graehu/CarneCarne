@@ -20,6 +20,7 @@ import org.jbox2d.common.Vec2;
 public class FootballWonState extends FootballState
 {
     private iSkin mDisplay;
+    private Vec2 mOffset;
     public FootballWonState(FootballMode _mode, int _score1, int _score2)
     {
         super(_mode, false);
@@ -43,6 +44,8 @@ public class FootballWonState extends FootballState
     void render(int _score1, int _score2)
     {
         Vec2 s = sGraphicsManager.getTrueScreenDimensions().mul(0.5f);
+        s.x -= 750/2;
+        s.y += 150/2;
         mDisplay.render(s.x, s.x);
     }
 
