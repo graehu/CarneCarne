@@ -24,9 +24,9 @@ import java.util.List;
  */
 public class PlayerFactory implements iEntityFactory {
     
-    static List<String> charSkinList = Arrays.asList("mexican", "english", "russian", "american");
-    static List<Vec2> charDimensionsList = Arrays.asList(new Vec2(130,115), new Vec2(113,107), new Vec2(80,90), new Vec2(84,79));
-    static List<Vec2> charOffsetList = Arrays.asList(new Vec2(-33,-36), new Vec2(-26,-28), new Vec2(-5,-10), new Vec2(-9,1));
+    private static List<String> charSkinList = Arrays.asList("mexican", "english", "russian", "american");
+    private static List<Vec2> charDimensionsList = Arrays.asList(new Vec2(130,115), new Vec2(113,107), new Vec2(80,90), new Vec2(81,87));
+    private static List<Vec2> charOffsetList = Arrays.asList(new Vec2(-33,-36), new Vec2(-26,-28), new Vec2(-8,-14), new Vec2(-7,-16));
     
     boolean used;
     public PlayerFactory()

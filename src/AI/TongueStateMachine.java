@@ -775,7 +775,8 @@ public class TongueStateMachine {
             case eSwinging:
             {
                 sWorld.destroyJoint(mJoint);
-                tongueAttachment.release();
+                if (tongueAttachment != null)
+                    tongueAttachment.release();
                 tongueAttachment = null;
                 break;
             }

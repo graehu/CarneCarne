@@ -504,7 +504,11 @@ public class PlayerEntity extends AIEntity
                         mStickShakeDisplay.setIsLooping(true);
                         mStickShakeDisplay.setSpeed(0.5f);
                     }
-                    mStickShakeDisplay.render(0, 0);
+                    Vec2 s = sGraphicsManager.getScreenDimensions();
+                    Vec2 dimensions = new Vec2(150, 200);
+                    Vec2 position = s.sub(dimensions);
+                    position = position.mul(0.5f);
+                    mStickShakeDisplay.render(position.x, position.y);
                 }
             }
             else

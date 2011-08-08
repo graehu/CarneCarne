@@ -176,7 +176,7 @@ public class CarrotController extends iAIController
                 mEntity.getBody().getWorld().destroyBody(mEntity.getBody());
                 mEntity.setBody(sWorld.useFactory("BoxCharFactory", params));
             }
-            if (mEntity.hasTongueContacts())
+            if (mEntity.hasTongueContacts() || sLevel.getPathInfo((int)pos.x, (int)(pos.y+1.1f)) == sLevel.PathInfo.eAir)
             {
                 Vec2 position = mEntity.getBody().getPosition();
                 sWorld.destroyBody(mEntity.getBody());
