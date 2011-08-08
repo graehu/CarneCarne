@@ -4,6 +4,7 @@
  */
 package Level;
 
+import AI.sPathFinding;
 import Events.AreaEvents.sAreaEvents;
 import Events.GenericEvent;
 import Events.sEvents;
@@ -136,6 +137,7 @@ public class sLevel
         //clean up old level
         sAreaEvents.clearEvents();
         sWorld.destroy();
+        sPathFinding.cleanup();
         sParticleManager.cleanupInstancedSystems();
         sLightsManager.destroyAllLightSources();
         try

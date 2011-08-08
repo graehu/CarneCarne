@@ -28,5 +28,10 @@ public class sPathFinding
             return mPlayers.peek();
         return null;
     }
+
+    public static void cleanup()
+    {
+        mPlayers = new LinkedList();
+    }
     
 }

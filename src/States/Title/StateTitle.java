@@ -455,7 +455,7 @@ public class StateTitle extends BasicGameState
     
     private void initLevelLists(final StateBasedGame _sbg)
     {
-        List<String> adventureLevelRefs = Arrays.asList("Level1","Level2");
+        List<String> adventureLevelRefs = Arrays.asList("Level1","Level2","single");
         List<String> raceLevelRefs = Arrays.asList("RaceReloaded","Ice_Race", "BigBox");
         List<String> footballLevelRefs = Arrays.asList("The_Match");
         
