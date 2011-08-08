@@ -16,6 +16,7 @@ import World.PhysicsFactories.TileFactory;
 import World.PhysicsFactories.iPhysicsFactory;
 import World.PhysicsFactories.BoxCharFactory;
 import Entities.Entity;
+import Entities.PlayerEntity;
 import Entities.SpatBlock;
 import Events.PlayerSwingEvent;
 import Events.TileDestroyedEvent;
@@ -158,12 +159,17 @@ public class sWorld
         resizeViewport(new Rectangle(0,0,s.x, s.y));    
         mResizeListener = new ResizeListener();
     }
+    public static void queryForKicks()
+    {
+        AABBCallback callback = new AABBCallback();
+        mWorld.queryAABB(callback, new AABB(new Vec2(25, 42), new Vec2(33, 48)));
+    }
     
     public static Body useFactory(String _factory, HashMap _parameters)
     {
         if (mWorld.isLocked())
         {
-            //throw new UnsupportedOperationException("World is locked");
+            throw new UnsupportedOperationException("World is locked");
         }
         return factories.get(_factory).useFactory(_parameters, mWorld);
     }
@@ -178,6 +184,16 @@ public class sWorld
         {
             //if ((_fixture.m_filter.categoryBits & mCollisionMask) != 0 ||
             //        _fixture.getBody().getType().equals(BodyType.KINEMATIC))
+            try
+            {
+                PlayerEntity entity = (PlayerEntity)_fixture.getBody().getUserData();
+                entity.getCheckPoint();
+                entity = null;
+            }
+            catch (Throwable e)
+            {
+                int a = 5 * 6;
+            }
             if (!_fixture.getBody().getType().equals(BodyType.STATIC))
             {
                 mBody = _fixture.getBody();

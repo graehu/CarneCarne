@@ -4,10 +4,8 @@
  */
 package States.Game;
 
-import Entities.PlayerEntity;
 import Entities.sEntityFactory;
 import Events.GenericEvent;
-import Events.GenericStringEvent;
 import Events.KeyDownEvent;
 import Events.PlayerCreatedEvent;
 import Events.iEvent;
@@ -24,6 +22,7 @@ import Sound.sSound;
 import States.Game.Adventure.AdventureMode;
 import States.Game.FootballMode.FootballMode;
 import States.Game.RaceMode.RaceMode;
+import States.Game.Tutorial.IntroMode;
 import States.Menu.StateMenu;
 import States.StateChanger;
 import World.sWorld;
@@ -200,6 +199,7 @@ public class StateGame extends BasicGameState implements iEventListener {
             }
             case eRace:
             {
+                //mGameMode = new IntroMode(levelRef);
                 mGameMode = new RaceMode(levelRef);
                 break;
             }    

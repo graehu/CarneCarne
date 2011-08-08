@@ -35,13 +35,15 @@ public class IntroMode implements iGameMode, iEventListener
     ArrayList<IntroSection> mSections;
     Body mGroundBody;
     int mEndedPlayers = 0;
-    public IntroMode()
+    String mNextLevel;
+    public IntroMode(String _nextLevel)
     {
         mPlayers = new ArrayList<PlayerEntity>();
         mSections = new ArrayList<IntroSection>();
         sEvents.subscribeToEvent("TutorialSpawnEvent", this);
         sEvents.subscribeToEvent("PlayerEndedTutorialEvent", this);
         sLevel.newLevel("tutorial");
+        mNextLevel = _nextLevel;
     }
     public iGameMode update(Graphics _graphics, float _time)
     {
@@ -61,7 +63,7 @@ public class IntroMode implements iGameMode, iEventListener
             Vec2 s = sGraphicsManager.getTrueScreenDimensions();
             sWorld.switchCamera(new FreeCamera(new Rectangle(0,0,s.x, 0 + s.y)));
             cleanup();
-            iGameMode raceMode = new RaceMode("RaceReloaded"); //FIXME: this should be abstracted and be based on a menu selection
+            iGameMode raceMode = new RaceMode(mNextLevel);
             sEvents.unsubscribeToEvent("TutorialSpawnEvent", this);
             return raceMode;
         }

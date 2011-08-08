@@ -77,7 +77,7 @@ class RaceState implements iEventListener
         {
             case eRaceWon:
             {
-                if (mTimer == 30)
+                if (mTimer == 20 * 60)
                 {
                     changeState(State.eRaceNotStarted);
                 }

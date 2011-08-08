@@ -225,16 +225,39 @@ public class PlayerEntity extends AIEntity
                     mDeaths++;
                     mScoreTracker.score(ScoreTracker.ScoreEvent.eDied);
                     HashMap params = new HashMap();
+                    boolean dropped = false;
                     switch (_causeOfDeath)
                     {
                         case eSpikes:
                         //{
                             Fixture killer = (Fixture)_killer;
                             params.put("attachment", killer);
+                            dropped = true;
                             /// Purposefully not breaking
                             case eFire:
+                            {
+                                try
+                                {
+                                    int throwExceptionPlzThx = ((FireParticle)((Fixture)_killer).getBody().getUserData()).mTimer;
+                                    sParticleManager.createSystem("KaBoom", mBody.getPosition().mul(64), 1);
+                                }
+                                catch (Throwable e)
+                                {
+                                    
+                                }
+                                if (!dropped)
+                                {
+                                    dropped = true;
+                                }
+                                /// continue;
+                            }
                             case eAcid:
                             {
+                                if (!dropped)
+                                {
+                                    sParticleManager.createSystem("AcidBurn", mBody.getPosition().mul(64).add(new Vec2(32,32)), 1) ;
+                                    ///dropped = true;
+                                }
                                 params.put("characterType", "Carne");
                                 try
                                 {
@@ -461,15 +484,19 @@ public class PlayerEntity extends AIEntity
                     {
                         HashMap params = new HashMap();
                         params.put("ref", "ShakeYourStick");
-                        params.put("width", 112);
-                        params.put("height", 151);
+                        params.put("width", 150);
+                        params.put("height", 100);
                         //params.put("duration", 2);
                         mStickShakeDisplay = sSkinFactory.create("animated", params);
                         mStickShakeDisplay.setIsLooping(true);
-                        mStickShakeDisplay.setSpeed(0.05f);
+                        mStickShakeDisplay.setSpeed(0.5f);
                     }
                     mStickShakeDisplay.render(0, 0);
                 }
+            }
+            else
+            {
+                mStickShakeDisplayTimer = 0;
             }
             
             mReticle.render(); //always render ontop
