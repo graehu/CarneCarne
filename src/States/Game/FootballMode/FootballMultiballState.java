@@ -31,7 +31,7 @@ public class FootballMultiballState extends FootballState
         mBalls = new ArrayList<Football>();
         HashMap parameters = new HashMap();
         
-        parameters.put("position",new Vec2(26,20));
+        parameters.put("position",mBallSpawnPosition);
         for (int i = 0; i < 3; i++)
         {
             Football football = (Football)sEntityFactory.create("Football",parameters);

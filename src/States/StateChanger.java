@@ -4,16 +4,8 @@
  */
 package States;
 
-import Events.sEvents;
-import Graphics.sGraphicsManager;
 import States.Menu.StateMenu;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
-import org.newdawn.slick.SlickException;
-import org.newdawn.slick.state.GameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.Transition;
 

@@ -37,13 +37,6 @@ public class PlayerFactory implements iEntityFactory {
         {
             used = true;
             
-            //declare face animation names
-            ArrayList<String> face = 
-                    new ArrayList(Arrays.asList("n","nbe","nne","nebn","ne","nebe","ene","ebn", "nnbe",
-                                                "e","ebs","ese","sebe","se","sebs","sse","sbe", "ssbe",
-                                                "s","sbw","ssw","swbs","sw","swbw","wsw","wbs", "ssbw",
-                                                "w","wbn","wnw","nwbw","nw","nwbn","nnw","nbw", "nnbw"));
-            
             //create a CharacterSubSkin for each layer of the character skin
             ArrayList<CharacterSubSkin> subSkins = new ArrayList<CharacterSubSkin>();
             //they must be in render order
@@ -72,7 +65,6 @@ public class PlayerFactory implements iEntityFactory {
             iSkin skin = sSkinFactory.create("character", params);
             
             skin.activateSubSkin("bdy", false, 0);
-            skin.activateSubSkin("Player" + (player+1), false, 0);
 
             PlayerEntity entity = new PlayerEntity(skin, checkPoint);
             HashMap parameters = new HashMap();

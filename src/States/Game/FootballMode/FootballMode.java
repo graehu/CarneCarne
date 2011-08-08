@@ -46,6 +46,10 @@ public class FootballMode implements iGameMode, iEventListener
         sEvents.subscribeToEvent("FootballSpawnEvent", this);
         sEvents.subscribeToEvent("GoalSpawnEvent", this);
         sLevel.newLevel(_level);
+        for(int i = 0; i < players.size(); i++)
+        {
+            players.get(i).mSkin.activateSubSkin("Player" + (i+1), false, 0);
+        }
     }
     
     public iGameMode update(Graphics _graphics, float _time)

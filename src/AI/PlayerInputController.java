@@ -212,6 +212,7 @@ public class PlayerInputController extends iAIController implements iEventListen
             }
             else
             {
+                mEntity.mSkin.deactivateSubSkin("face"+"Open"+"_"+mFaceDirAnim);
                 mEntity.mSkin.activateSubSkin("face_"+mFaceDirAnim, false, 0.0f);
             }
         }

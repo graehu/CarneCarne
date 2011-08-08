@@ -4,7 +4,6 @@
  */
 package States.Title;
 
-import Events.sEvents;
 import GUI.Components.Button;
 import GUI.Components.Effects.AnimatedEffect;
 import GUI.Components.GraphicalComponent;
@@ -32,6 +31,8 @@ import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.BlobbyTransition;
+import org.newdawn.slick.state.transition.FadeInTransition;
+import org.newdawn.slick.state.transition.FadeOutTransition;
 
 /**
  *
@@ -371,7 +372,7 @@ public class StateTitle extends BasicGameState
     }
     protected void updateMenuState()
     {
-        float scrollTime = 0.5f;
+        float scrollTime = 0.75f;
         switch(mState)
         {
             case eLeft:
@@ -465,7 +466,7 @@ public class StateTitle extends BasicGameState
             //setup call back to load level
             button.setCallback(new StartLevel(ref) {public void run() {
                     StateGame.setGameType(StateGame.GameType.eAdventure, mRef);
-                    _sbg.enterState(3, null, new BlobbyTransition(Color.black));
+                    _sbg.enterState(3, new FadeOutTransition(Color.black,100), new FadeInTransition(Color.black,100));
                 }});
             step++;
         }
@@ -485,7 +486,7 @@ public class StateTitle extends BasicGameState
             //setup call back to load level
             button.setCallback(new StartLevel(ref) {public void run() {
                     StateGame.setGameType(StateGame.GameType.eRace, mRef);
-                    _sbg.enterState(3, null, new BlobbyTransition(Color.black));
+                    _sbg.enterState(3, new FadeOutTransition(Color.black,100), new FadeInTransition(Color.black,100));
                 }});
             step++;
         }
@@ -505,7 +506,7 @@ public class StateTitle extends BasicGameState
             //setup call back to load level
             button.setCallback(new StartLevel(ref) {public void run() {
                     StateGame.setGameType(StateGame.GameType.eFootball, mRef);
-                    _sbg.enterState(3, null, new BlobbyTransition(Color.black));
+                    _sbg.enterState(3, new FadeOutTransition(Color.black,100), new FadeInTransition(Color.black,100));
                 }});
             step++;
         }
