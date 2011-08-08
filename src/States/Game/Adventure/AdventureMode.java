@@ -4,17 +4,18 @@
  */
 package States.Game.Adventure;
 
-import Entities.Entity.CauseOfDeath;
 import Entities.PlayerEntity;
 import Events.PlayerCreatedEvent;
 import Events.iEvent;
 import Events.iEventListener;
 import Events.sEvents;
 import Graphics.Skins.iSkin;
+import Graphics.Skins.sSkinFactory;
 import Level.sLevel;
 import States.Game.iGameMode;
 import World.sWorld;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.LinkedList;
 import org.newdawn.slick.Graphics;
 
@@ -27,9 +28,13 @@ public class AdventureMode implements iGameMode, iEventListener
     Collection<PlayerEntity> players = new LinkedList<PlayerEntity>();
     boolean mIsCompleted = false;
     int mTimer;
+    iSkin mTaco = null;
     String nextMap = null;
     public AdventureMode(String _level)
     {
+        HashMap params = new HashMap();
+        params.put("ref", "tacoEnd");
+        mTaco = sSkinFactory.create("animated", params);
         mTimer = 0;
         sEvents.subscribeToEvent("PlayerCreatedEvent", this);
         sEvents.subscribeToEvent("RaceWonEvent", this);
@@ -76,12 +81,15 @@ public class AdventureMode implements iGameMode, iEventListener
         return true;
     }
 
-    public void cleanup() {
+    public void cleanup()
+    {
         for(PlayerEntity player : players)
         {
             player.destroy();
             sWorld.destroyBody(player.getBody());
         }
         players.clear();
+        sEvents.unsubscribeToEvent("PlayerCreatedEvent", this);
+        sEvents.unsubscribeToEvent("RaceWonEvent", this);
     }
 }

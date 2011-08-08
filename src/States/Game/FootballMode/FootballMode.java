@@ -46,6 +46,10 @@ public class FootballMode implements iGameMode, iEventListener
         sEvents.subscribeToEvent("FootballSpawnEvent", this);
         sEvents.subscribeToEvent("GoalSpawnEvent", this);
         sLevel.newLevel(_level);
+        for(int i = 0; i < players.size(); i++)
+        {
+            players.get(i).mSkin.activateSubSkin("Player" + (i+1), false, 0);
+        }
     }
     
     public iGameMode update(Graphics _graphics, float _time)
@@ -58,6 +62,7 @@ public class FootballMode implements iGameMode, iEventListener
         sLevel.update();
         sWorld.update(_graphics, _time);
         sEvents.processEvents();
+        sWorld.queryForKicks();
         return this;
     }
 
@@ -115,6 +120,7 @@ public class FootballMode implements iGameMode, iEventListener
     public void score(int _team, Football _football)
     {
         mState = mState.score(_team, _football, players);
+        sWorld.queryForKicks();
     }
     private void multiBall()
     {
@@ -144,5 +150,8 @@ public class FootballMode implements iGameMode, iEventListener
             player.destroy();
             sWorld.destroyBody(player.getBody());
         }
+        sEvents.unsubscribeToEvent("PlayerCreatedEvent", this);
+        sEvents.unsubscribeToEvent("FootballSpawnEvent", this);
+        sEvents.unsubscribeToEvent("GoalSpawnEvent", this);
     }
 }

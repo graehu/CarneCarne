@@ -22,7 +22,7 @@ import org.jbox2d.common.Vec2;
  *
  * @author alasdair
  */
-class RaceState implements iEventListener
+class RaceStateMachine implements iEventListener
 {
     private enum State
     {
@@ -35,7 +35,7 @@ class RaceState implements iEventListener
     iSkin mCountDownRender;
     State mState;
     int mTimer;
-    public RaceState()
+    public RaceStateMachine()
     {
         mState = State.eRaceNotStarted;
         mTimer = 0;
@@ -77,7 +77,7 @@ class RaceState implements iEventListener
         {
             case eRaceWon:
             {
-                if (mTimer == 30)
+                if (mTimer == 20 * 60)
                 {
                     changeState(State.eRaceNotStarted);
                 }

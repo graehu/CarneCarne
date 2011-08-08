@@ -3,6 +3,7 @@
  */
 package Graphics.Skins;
 
+import Utils.Throw;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -74,10 +75,7 @@ public class CharacterSkin implements iSkin
                     int reqWidth = 18;
                     int reqHeight = 2;
                     if(ss.getHorizontalCount() != reqWidth || ss.getVerticalCount() != reqHeight)
-                    {
-                        System.err.println(absoluteRef + " MUST BE " + reqWidth + "x" + reqHeight + " TILES");
-                        System.exit(1);
-                    }
+                        Throw.err(absoluteRef + " MUST BE " + reqWidth + "x" + reqHeight + " TILES");
                     for(int y = 0; y < reqHeight; y++)
                     {
                         for(int x = 0; x < reqWidth; x++)
@@ -247,8 +245,11 @@ public class CharacterSkin implements iSkin
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public void setSpeed(float _speed) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public void setSpeed(float _speed)
+    {
+        int ref = mSkinNames.get("car_fly"); // Hiiiiiiya
+        iSkin skin = mSubSkins.get(ref); 
+        skin.setSpeed(_speed);
     }
 
     public float getDuration() {

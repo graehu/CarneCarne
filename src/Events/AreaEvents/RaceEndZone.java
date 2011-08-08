@@ -24,6 +24,8 @@ public class RaceEndZone extends CheckPointZone implements iEventListener
     public RaceEndZone(int _x, int _y, int _x2, int _y2, int _numCheckPoints)
     {
         super(_x, _y, _x2, _y2, _numCheckPoints, null);
+        sEvents.subscribeToEvent("newLevel", this);
+        sEvents.subscribeToEvent("BarrierOpenEvent" + "StartGate", this);
         mWinner = null;
     }
     @Override
@@ -55,7 +57,13 @@ public class RaceEndZone extends CheckPointZone implements iEventListener
 
     public boolean trigger(iEvent _event)
     {
-        mWinner = null;
+        if(_event.getName().equals("BarrierOpenEvent" + "StartGate"))
+            mWinner = null;
+        else if(_event.getType().equals("newLevel"))
+        {
+            sEvents.unsubscribeToEvent("newLevel", this);
+            sEvents.unsubscribeToEvent("BarrierOpenEvent" + "StartGate", this);
+        }
         return true;
     }
 }

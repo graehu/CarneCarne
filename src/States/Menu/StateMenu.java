@@ -13,6 +13,7 @@ import GUI.Components.Text;
 import GUI.GUIManager;
 import Graphics.sGraphicsManager;
 import Input.sInput;
+import States.Game.StateGame;
 import States.StateChanger;
 import Utils.sFontLoader;
 import java.util.logging.Level;
@@ -28,6 +29,8 @@ import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.BlobbyTransition;
+import org.newdawn.slick.state.transition.FadeInTransition;
+import org.newdawn.slick.state.transition.FadeOutTransition;
 
 /**
  *
@@ -40,11 +43,11 @@ public class StateMenu extends BasicGameState implements iEventListener
     Image mScreenShot;
     StateChanger mChangeToGame = null;
     StateChanger mChangeToTitle = null;
-    int mQuitDelay = 0;
     
     Integer mGUIManager = null;
     Text mPausedByPlayerText = null;
     Button mResumeButton = null;
+    Button mRestartLevel = null;
     Button mExitToTitleButton = null;
     
     //@Override
@@ -68,7 +71,16 @@ public class StateMenu extends BasicGameState implements iEventListener
             returnToGame();
         }});
         
-        mExitToTitleButton = new Button(_gc, new Vector2f(650,500), new Vector2f());
+        mRestartLevel = new Button(_gc, new Vector2f(650,500), new Vector2f());
+        mRestartLevel.addText(_gc, menuFont, "Restart Level", true);
+        mRestartLevel.setButtonStateColors(Color.gray, null, null);
+        mRestartLevel.setCallback(new Runnable() { public void run() 
+        {
+            StateGame.resetCurrentMode();
+            returnToGame();
+        }});
+        
+        mExitToTitleButton = new Button(_gc, new Vector2f(650,600), new Vector2f());
         mExitToTitleButton.addText(_gc, menuFont, "Exit To Title", true);
         mExitToTitleButton.setButtonStateColors(Color.gray, null, null);
         mExitToTitleButton.setCallback(new Runnable() { public void run() 
@@ -78,6 +90,7 @@ public class StateMenu extends BasicGameState implements iEventListener
         
         GUIManager.use(mGUIManager).addRootComponent(mPausedByPlayerText); 
         GUIManager.use(mGUIManager).addRootComponent(mResumeButton); 
+        GUIManager.use(mGUIManager).addRootComponent(mRestartLevel); 
         GUIManager.use(mGUIManager).addRootComponent(mExitToTitleButton); 
         
         //init screenshot thingy
@@ -100,8 +113,8 @@ public class StateMenu extends BasicGameState implements iEventListener
         sEvents.subscribeToEvent("KeyUpEvent"+'Q'+mPlayer, this);
         GUIManager.use(mGUIManager).listenToPlayer(mPlayer);
         GUIManager.use(mGUIManager).setAcceptingInput(true);
+        GUIManager.use(mGUIManager).gotoFirstSelectable();
         super.enter(container, game);
-        mQuitDelay = 0;
     }
 
     @Override
@@ -134,7 +147,6 @@ public class StateMenu extends BasicGameState implements iEventListener
         GUIManager.use(mGUIManager).update(_delta);
         sEvents.processEvents();
         sInput.update(_delta);
-        mQuitDelay += _delta;
         //update crap
     }
     public Image getScreenShot()
@@ -148,7 +160,7 @@ public class StateMenu extends BasicGameState implements iEventListener
 
     public boolean trigger(iEvent _event) 
     {
-        if(mQuitDelay > 1000 && _event.getName().equals("KeyDownEvent"+'Q'+mPlayer))
+        if(_event.getName().equals("KeyDownEvent"+'Q'+mPlayer))
         {
             returnToGame();
         }
@@ -171,12 +183,12 @@ public class StateMenu extends BasicGameState implements iEventListener
     private void returnToGame()
     {
         sEvents.triggerEvent(new GenericEvent("GameUnpaused"));
-        mChangeToGame.setTransitions(null, new BlobbyTransition(Color.black));
+        mChangeToGame.setTransitions(new FadeOutTransition(Color.black,100), new FadeInTransition(Color.black,100));
         mChangeToGame.run();
     }
     private void exitToTitle()
     {
-        mChangeToTitle.setTransitions(null, new BlobbyTransition(Color.black));
+        mChangeToTitle.setTransitions(new FadeOutTransition(Color.black,100), new FadeInTransition(Color.black,100));
         mChangeToTitle.run();
     }
     

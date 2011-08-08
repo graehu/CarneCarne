@@ -15,6 +15,7 @@ import World.ContactListeners.TileBreakListener;
 import Entities.Entity.CauseOfDeath;
 import World.ContactListeners.SelfSensorListener;
 import World.ContactListeners.SpikeListener;
+import World.ContactListeners.StaticCarrotListener;
 import World.ContactListeners.ZoomzoomListener;
 import World.sWorld.BodyCategories;
 import org.jbox2d.callbacks.ContactImpulse;
@@ -68,6 +69,7 @@ public class WorldContactListener implements ContactListener{
         //set(BodyCategories.eCarcass.ordinal(),BodyCategories.eSpikes.ordinal(),spikeListener);
         set(BodyCategories.eEnemy.ordinal(),BodyCategories.eFire.ordinal(),fireListener);
         set(BodyCategories.eAcid.ordinal(),BodyCategories.eEnemy.ordinal(),acidListener);
+        set(BodyCategories.ePlayer.ordinal(),BodyCategories.eEnemy.ordinal(),new StaticCarrotListener());
         set(BodyCategories.eAcid.ordinal(),BodyCategories.eCarcass.ordinal(),waterListener);
         set(BodyCategories.eCarcass.ordinal(),BodyCategories.eFire.ordinal(),fireListener);
         //set(BodyCategories.eCheckPoint.ordinal(), BodyCategories.ePlayer.ordinal(), new CheckPointListener());

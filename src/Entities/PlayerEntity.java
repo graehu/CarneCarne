@@ -108,7 +108,7 @@ public class PlayerEntity extends AIEntity
         mTooltipText = new Text(sGraphicsManager.getGUIContext(), sFontLoader.createFont("Trading Post Bold", 42), "No Text Defined", new Vector2f(50,45), false);
         mTooltipText.setDimensions(new Vector2f(315,130));
         mTooltipWindow.addChild(mTooltipText);
-        mTooltipText.setColor(Color.yellow);
+        mTooltipText.setColor(new Color(210,200,21));
         mTooltipText.setIsVisible(false);
         mTooltipText.setIsTextSizedToFit(true);
         mTooltipText.setIsWrapped(true);
@@ -215,6 +215,17 @@ public class PlayerEntity extends AIEntity
     @Override
     public void kill(CauseOfDeath _causeOfDeath, Object _killer)
     {
+        try
+        {
+            Fixture killer = (Fixture)_killer;
+            if (((Explosion)killer.getBody().getUserData()).mKiller == this)
+            {
+                _killer = this;
+            }
+        }
+        catch (Throwable e)
+        {
+        }
         if (_killer != this)
         {
             if (mDeathJoint == null)
@@ -225,16 +236,39 @@ public class PlayerEntity extends AIEntity
                     mDeaths++;
                     mScoreTracker.score(ScoreTracker.ScoreEvent.eDied);
                     HashMap params = new HashMap();
+                    boolean dropped = false;
                     switch (_causeOfDeath)
                     {
                         case eSpikes:
                         //{
                             Fixture killer = (Fixture)_killer;
                             params.put("attachment", killer);
+                            dropped = true;
                             /// Purposefully not breaking
                             case eFire:
+                            {
+                                try
+                                {
+                                    int throwExceptionPlzThx = ((FireParticle)((Fixture)_killer).getBody().getUserData()).mTimer;
+                                    sParticleManager.createSystem("KaBoom", mBody.getPosition().mul(64), 1);
+                                }
+                                catch (Throwable e)
+                                {
+                                    
+                                }
+                                if (!dropped)
+                                {
+                                    dropped = true;
+                                }
+                                /// continue;
+                            }
                             case eAcid:
                             {
+                                if (!dropped)
+                                {
+                                    sParticleManager.createSystem("AcidBurn", mBody.getPosition().mul(64).add(new Vec2(32,32)), 1) ;
+                                    ///dropped = true;
+                                }
                                 params.put("characterType", "Carne");
                                 try
                                 {
@@ -392,11 +426,13 @@ public class PlayerEntity extends AIEntity
             {
                 mCheckPoint.renderRaceState(mRaceTimer);
                 float rotation = 0;
+                boolean renderArrow = false;
                 if(mCheckPoint.getNext() != null)
                 {
                     Vec2 direction = mCheckPoint.getNext().getPosition().sub(getBody().getPosition());
                     direction.normalize();
                     rotation = (float)Math.atan2(direction.y, direction.x);
+                    renderArrow = true;
                 }
                 else if (mFootball != null)
                 {
@@ -444,10 +480,10 @@ public class PlayerEntity extends AIEntity
                     }
                     mHUDFootball.setLocalTranslation(new Vector2f(location.x, location.y).add(mHUDFootball.getDimensions()));
                     rotation = (float)Math.atan2(direction.y, direction.x);
+                    renderArrow = true;
                 }
                 mHUDArrow.setLocalRotation(rotation*180.0f/(float)Math.PI);
-                    
-               // sGraphicsManager.drawString("You have died " + mDeaths + " times", 0f, 0.1f);
+                mHUDArrow.setIsVisible(renderArrow);
             }
             if (mIntroSection != null)
                 mIntroSection.render();
@@ -461,15 +497,23 @@ public class PlayerEntity extends AIEntity
                     {
                         HashMap params = new HashMap();
                         params.put("ref", "ShakeYourStick");
-                        params.put("width", 112);
-                        params.put("height", 151);
+                        params.put("width", 150);
+                        params.put("height", 100);
                         //params.put("duration", 2);
                         mStickShakeDisplay = sSkinFactory.create("animated", params);
                         mStickShakeDisplay.setIsLooping(true);
-                        mStickShakeDisplay.setSpeed(0.05f);
+                        mStickShakeDisplay.setSpeed(0.5f);
                     }
-                    mStickShakeDisplay.render(0, 0);
+                    Vec2 s = sGraphicsManager.getScreenDimensions();
+                    Vec2 dimensions = new Vec2(150, 200);
+                    Vec2 position = s.sub(dimensions);
+                    position = position.mul(0.5f);
+                    mStickShakeDisplay.render(position.x, position.y);
                 }
+            }
+            else
+            {
+                mStickShakeDisplayTimer = 0;
             }
             
             mReticle.render(); //always render ontop
@@ -550,21 +594,27 @@ public class PlayerEntity extends AIEntity
     public void displayTooltip(String _text, String _type)
     {
         mTooltipTimer = 0;
+        Vector2f textPos = new Vector2f(50,145);
         //change tooltipwindow based on type
         if(_type.equals("Spit"))
         {
             mTooltipWindow.setImage("ui/TooltipWindowSpit.png");
-            mTooltipText.setLocalTranslation(new Vector2f(50,145));
+            mTooltipText.setLocalTranslation(textPos);
         }
         else if(_type.equals("Swing"))
         {
             mTooltipWindow.setImage("ui/TooltipWindowSwing.png");
-            mTooltipText.setLocalTranslation(new Vector2f(50,145));
+            mTooltipText.setLocalTranslation(textPos);
         }
         else if(_type.equals("Smash"))
         {
             mTooltipWindow.setImage("ui/TooltipWindowSmash.png");
-            mTooltipText.setLocalTranslation(new Vector2f(50,145));
+            mTooltipText.setLocalTranslation(textPos);
+        }
+        else if(_type.equals("Jump"))
+        {
+            mTooltipWindow.setImage("ui/TooltipWindowJump.png");
+            mTooltipText.setLocalTranslation(textPos);
         }
         else
         {

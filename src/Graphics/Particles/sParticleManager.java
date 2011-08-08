@@ -79,6 +79,7 @@ public class sParticleManager {
     {     
         if(false == sGraphicsManager.getAllowParticles())
             return new NullParticleSys();
+            //return null; /// FIXME put this back in for protoplay
         
         //if pooled object of same type exists use that
         ParticleSystem system = grabPooledSystem(_ref);
@@ -120,7 +121,8 @@ public class sParticleManager {
                 else
                 {
                     System.err.println(ex.getMessage());
-                    return new NullParticleSys();
+                    //return new NullParticleSys();
+                    return null; /// FIXME put this back in for protoplay
                 }
             }
             putLoadedSystem(_ref, system);

@@ -200,8 +200,15 @@ public class AIEntity extends Entity
                             mTouchingTile = ((Tile)other.getUserData());
                         mContactParticleDelay = 5;
                         createContactParticle(collisionNorm);
-                        if (!((Tile)other.getUserData()).getTileType().equals(TileType.eZoomzoom))
-                            mJumpContacts++; //allow jump on slopes
+                        try
+                        {
+                            if (!((Tile)other.getUserData()).getTileType().equals(TileType.eZoomzoom))
+                                mJumpContacts++; //allow jump on slopes
+                        }
+                        catch (NullPointerException e) // Some other shitty contact
+                        {
+                            
+                        }
                         mAllowRoll = true;
                     }
                     mFloorNormal = collisionNorm.clone();
@@ -487,7 +494,5 @@ public class AIEntity extends Entity
         Vec2 pixelPosition = sWorld.translateToWorld(getBody().getPosition());
         mSkin.render(pixelPosition.x,pixelPosition.y);
     }
-
-
 
 }

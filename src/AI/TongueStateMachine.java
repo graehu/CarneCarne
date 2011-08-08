@@ -70,7 +70,6 @@ public class TongueStateMachine {
     protected State mState;
     private int mCurrentStateTimer;
     private PlayerInputController mAIController;
-    private DistanceJoint mJoint = null;
     private iSprite mCurrentTongueEndSprite;
     private iSprite mTongueEndSprites[];
     protected Vec2 mTongueDir = new Vec2(1,0);
@@ -83,6 +82,7 @@ public class TongueStateMachine {
     private String mBlockMaterial;
     private Tile mTile;
     private TongueAnchor tongueAttachment;
+    private DistanceJoint mJoint;
 
     void layBlock()
     {
@@ -412,8 +412,7 @@ public class TongueStateMachine {
                 }
                 else
                 {
-                    tongueAttachment.release();
-                    tongueAttachment = null;
+
                     changeState(State.eRetractingTongue);
                     tick(_entity);
                 }
@@ -654,8 +653,6 @@ public class TongueStateMachine {
             }
             case eSwinging:
             {
-                tongueAttachment.release();
-                tongueAttachment = null;
                 changeState(State.eRetractingTongue);
             }
         }
@@ -778,7 +775,9 @@ public class TongueStateMachine {
             case eSwinging:
             {
                 sWorld.destroyJoint(mJoint);
-                mJoint = null;
+                if (tongueAttachment != null)
+                    tongueAttachment.release();
+                tongueAttachment = null;
                 break;
             }
             case eFoodInMouth:
@@ -924,7 +923,6 @@ public class TongueStateMachine {
         }
         mState = _state;
     }
-    //private DistanceJoint mJoint;
     private void spitBlock()
     {
         mAmmoLeft--;

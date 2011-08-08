@@ -235,6 +235,13 @@ public class Button extends GraphicalComponent{
         setDimensions(mText.getDimensions());
         mText.setLocalTranslation(new Vector2f(0,0));
     }
+
+    @Override
+    public void setAcceptingInput(boolean acceptingInput) 
+    {
+        changeState(ButtonState.eDefault);
+        super.setAcceptingInput(acceptingInput);
+    }
     
     
     

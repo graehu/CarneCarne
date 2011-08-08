@@ -34,6 +34,15 @@ public class BreakableTongueAnchor extends TongueAnchor
     @Override
     public boolean hasContact()
     {
+        try
+        {
+            if (mAnchor.getBody().getFixtureList() == null)
+                return false;
+        }
+        catch (NullPointerException e)
+        {
+            return false;
+        }
         return mAnchor != null;
     }
     

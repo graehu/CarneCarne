@@ -25,7 +25,7 @@ public class CarcassFactory implements iEntityFactory
         mOffsets = new Vec2[Entity.CauseOfDeath.eCauseOfDeathMax.ordinal()];
         mTextures[Entity.CauseOfDeath.eSpikes.ordinal()] = "characters/spikes";
         mTextures[Entity.CauseOfDeath.eFire.ordinal()] = "characters/fire";
-        mTextures[Entity.CauseOfDeath.eAcid.ordinal()] = "characters/spikes";
+        mTextures[Entity.CauseOfDeath.eAcid.ordinal()] = "characters/acid";
 
         Vec2 noOffset = new Vec2(0,0);
         mOffsets[Entity.CauseOfDeath.eSpikes.ordinal()] = noOffset;
