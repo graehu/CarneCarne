@@ -5,6 +5,7 @@
 package States.Game.RaceMode;
 
 import Entities.PlayerEntity;
+import Events.NewHighScoreEvent;
 import Events.PlayerCreatedEvent;
 import Events.RaceResetEvent;
 import Events.iEvent;
@@ -31,14 +32,16 @@ public class RaceMode implements iGameMode, iEventListener
     RaceStateMachine mRaceState;
     Collection<PlayerEntity> players = new LinkedList<PlayerEntity>();
     int mTimer;
+    int mBestTime;
     iSkin mRaceRender = null;
     public RaceMode(String _level)
     {
-        mTimer = 0;
+        mTimer = mBestTime = 0;
         mRaceState = new RaceStateMachine();
         sEvents.subscribeToEvent("PlayerCreatedEvent", this);
         sEvents.subscribeToEvent("RaceResetEvent", this);
         sEvents.subscribeToEvent("BarrierOpenEvent" + "StartGate", this);
+        sEvents.subscribeToEvent("NewHighScoreEvent", this);
         sLevel.newLevel(_level);
     }
     public iGameMode update(Graphics _graphics, float _time)
@@ -65,6 +68,10 @@ public class RaceMode implements iGameMode, iEventListener
                 mRaceRender = null;
             }
         }
+        if (mBestTime != 0)
+        {
+            sGraphicsManager.drawString("Best time: " + mBestTime, 0, 0);
+        }
     }
 
     public boolean trigger(iEvent _event)
@@ -89,6 +96,19 @@ public class RaceMode implements iGameMode, iEventListener
             mRaceRender = sSkinFactory.create("static", map);
             mTimer = 0;
         }
+        else if (_event.getType().equals("NewHighScoreEvent"))
+        {
+            NewHighScoreEvent event = (NewHighScoreEvent)_event;
+            int time = event.getTime();
+            if (mBestTime == 0)
+            {
+                mBestTime = time;
+            }
+            else if (time < mBestTime)
+            {
+                mBestTime = time;
+            }
+        }
         return true;
     }
     
@@ -99,5 +119,9 @@ public class RaceMode implements iGameMode, iEventListener
             player.destroy();
             sWorld.destroyBody(player.getBody());
         }
+        sEvents.unsubscribeToEvent("PlayerCreatedEvent", this);
+        sEvents.unsubscribeToEvent("RaceResetEvent", this);
+        sEvents.unsubscribeToEvent("BarrierOpenEvent" + "StartGate", this);
+        sEvents.unsubscribeToEvent("NewHighScoreEvent", this);
     }
 }

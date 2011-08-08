@@ -10,7 +10,6 @@ import Entities.Entity.CauseOfDeath;
 import Entities.PlayerEntity;
 import Entities.sEntityFactory;
 import Events.AnalogueStickEvent;
-import Events.GenericEvent;
 import Events.KeyDownEvent;
 import Events.KeyUpEvent;
 import Events.MapClickEvent;

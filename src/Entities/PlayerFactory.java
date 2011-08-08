@@ -64,7 +64,7 @@ public class PlayerFactory implements iEntityFactory {
             //draw tongue last
             subSkins.add(new CharacterSkin.CharacterSubSkin("tng", CharacterSubSkin.SubType.eStatic, 5, 5, new Vec2(32,32)));
             
-            subSkins.add(new CharacterSkin.CharacterSubSkin("Player" + (playerNum+1), CharacterSubSkin.SubType.eStatic, 32, 32, new Vec2(16,-64)));
+            subSkins.add(new CharacterSkin.CharacterSubSkin("Player" + (playerNum+1), CharacterSubSkin.SubType.eStatic, 32, 32, new Vec2(0,-64)));
             
             HashMap params = new HashMap();
             
