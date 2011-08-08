@@ -48,7 +48,7 @@ public class FootballMode implements iGameMode, iEventListener
         sLevel.newLevel(_level);
         for(int i = 0; i < players.size(); i++)
         {
-            players.get(i).mSkin.activateSubSkin("Player" + (i+1), false, 0);
+            players.get(i).mSkin.activateSubSkin("Player" + players.get(i).getPlayerNumber(), false, 0);
         }
     }
     

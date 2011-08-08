@@ -20,6 +20,7 @@ import World.BreakableTongueAnchor;
 import World.sWorld;
 import java.util.Stack;
 import org.jbox2d.common.Vec2;
+import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.Fixture;
 import org.jbox2d.dynamics.contacts.ContactEdge;
 import org.jbox2d.dynamics.joints.RevoluteJoint;
@@ -36,6 +37,7 @@ public class AIEntity extends Entity
     protected boolean mAllowRoll = false;
     protected int mJumpTimer;
     protected Tile mTouchingTile;
+    protected Body mTouchingBody;
     protected Tile mLastTouchingTile;
     protected String mCurrentAnimation;
     protected float mAnimSpeed;
@@ -182,6 +184,12 @@ public class AIEntity extends Entity
                 {
                     if(edge.contact.isTouching())
                     {
+                        //if colliding with 
+                        if (other.m_filter.categoryBits == (1 << sWorld.BodyCategories.eEnemy.ordinal()) ||
+                                other.m_filter.categoryBits == (1 << sWorld.BodyCategories.ePlayer.ordinal()))
+                        {
+                            
+                        }
                         if(((Tile)other.getUserData()) != null && !other.isSensor() )
                         {
                             mTouchingTile = ((Tile)other.getUserData());
@@ -192,7 +200,7 @@ public class AIEntity extends Entity
                     }
                     mFloorNormal = collisionNorm.clone();
                 }
-                else if(collisionNorm.y < -0.3)// slopes -- (collisionNorm.y > 0.3) gives roof slopes
+                else if(collisionNorm.y < -0.15)// slopes -- (collisionNorm.y > 0.3) gives roof slopes
                 {
                     if(edge.contact.isTouching() && !other.isSensor())
                     {
