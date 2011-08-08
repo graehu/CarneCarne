@@ -113,6 +113,7 @@ public class StateMenu extends BasicGameState implements iEventListener
         sEvents.subscribeToEvent("KeyUpEvent"+'Q'+mPlayer, this);
         GUIManager.use(mGUIManager).listenToPlayer(mPlayer);
         GUIManager.use(mGUIManager).setAcceptingInput(true);
+        GUIManager.use(mGUIManager).gotoFirstSelectable();
         super.enter(container, game);
     }
 

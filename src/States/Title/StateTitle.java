@@ -128,6 +128,8 @@ public class StateTitle extends BasicGameState
             mParalax1.addChild(mCarrotAnimation);
             mParalax1.addChild(mBrocAnimation);
             mParalax0.addChild(mLogo);
+            
+            
 
             //initialise buttons
             Vector2f buttonDim = new Vector2f(200/mScale,50/mScale);
@@ -164,6 +166,13 @@ public class StateTitle extends BasicGameState
             mParalax0.addChild(mLightingToggle);
             mParalax0.addChild(mBack);
             
+            mLogo.addChild(mAdventureButton);
+            mLogo.addChild(mRaceButton);
+            mLogo.addChild(mFootballButton);
+            mLogo.addChild(mOptionsButton);
+            mLogo.addChild(mHighScoresButton);
+            mLogo.addChild(mQuitButton);
+            
             //add to GUIManager in render order
             GUIManager.use(mGUIManagerGlobal).addRootComponent(mBackground);
             
@@ -172,12 +181,12 @@ public class StateTitle extends BasicGameState
             GUIManager.use(mGUIManagerGlobal).addRootComponent(mParalax0);
             
             GUIManager.use(mGUIManagerCenterMain).addRootComponent(mNameField);
-            GUIManager.use(mGUIManagerCenterMain).addRootComponent(mAdventureButton);
-            GUIManager.use(mGUIManagerCenterMain).addRootComponent(mRaceButton);
-            GUIManager.use(mGUIManagerCenterMain).addRootComponent(mFootballButton);
-            GUIManager.use(mGUIManagerCenterMain).addRootComponent(mOptionsButton);
-            GUIManager.use(mGUIManagerCenterMain).addRootComponent(mHighScoresButton);
-            GUIManager.use(mGUIManagerCenterMain).addRootComponent(mQuitButton);
+            GUIManager.use(mGUIManagerCenterMain).addSelectable(mAdventureButton);
+            GUIManager.use(mGUIManagerCenterMain).addSelectable(mRaceButton);
+            GUIManager.use(mGUIManagerCenterMain).addSelectable(mFootballButton);
+            GUIManager.use(mGUIManagerCenterMain).addSelectable(mOptionsButton);
+            GUIManager.use(mGUIManagerCenterMain).addSelectable(mHighScoresButton);
+            GUIManager.use(mGUIManagerCenterMain).addSelectable(mQuitButton);
             
             GUIManager.use(mGUIManagerGlobal).addRootComponent(mForeground);
             
@@ -414,7 +423,8 @@ public class StateTitle extends BasicGameState
         mBackground.setLocalTranslation(vOffset);
         mForeground.setLocalTranslation(vOffset);
         
-        Vector2f buttonPos = new Vector2f(mBackground.getWidth() * 0.6f, mOffset + (mBackground.getHeight() * 0.25f));
+        //Vector2f buttonPos = new Vector2f(mBackground.getWidth() * 0.6f, mOffset + (mBackground.getHeight() * 0.25f));
+        Vector2f buttonPos = new Vector2f(840,120);
         int buttonOffset = (int)75;
         
         mNameField.setLocalTranslation(new Vector2f(buttonPos.x, buttonPos.y));

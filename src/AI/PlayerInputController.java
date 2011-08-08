@@ -68,6 +68,7 @@ public class PlayerInputController extends iAIController implements iEventListen
     protected String mFaceDirAnim;
     public Vec2 mPlayerDir = new Vec2(1,0);
     public int mPlayer;
+    String mSkinRef = null;
     private StickShake mLeftStickShake, mRightStickShake;
     int actionTimer = 0, actionDelay = 10;
     int idleTimer = 0, idleDelay = 0;
@@ -77,10 +78,11 @@ public class PlayerInputController extends iAIController implements iEventListen
     Random rand = new Random();
     boolean mIsAcceptingInput = true; //used to stop input being cause when paused
     
-    public PlayerInputController(AIEntity _entity, int _player)
+    public PlayerInputController(AIEntity _entity, int _player, String _charSkinRef)
     {
         super(_entity);
         mPlayer = _player;
+        mSkinRef = _charSkinRef;
         mFaceDirAnim = "e";
         sEvents.subscribeToEvent("GamePaused", this);
         sEvents.subscribeToEvent("GameUnpaused", this);
@@ -168,8 +170,7 @@ public class PlayerInputController extends iAIController implements iEventListen
                     if(!mEntity.mSkin.isAnimating("idle_burp2"))
                     {
                         //ensure other animations are deactivated
-                        mEntity.mSkin.deactivateSubSkin("face_"+mFaceDirAnim);
-                        mEntity.mSkin.deactivateSubSkin("hat_"+mFaceDirAnim);
+                        mEntity.mSkin.deactivateSubSkin(mSkinRef+"_"+mFaceDirAnim);
                         mEntity.mSkin.deactivateSubSkin("idle_burp2");
                         mEntity.mSkin.activateSubSkin("idle_burp2", false, 1.0f);
                     }
@@ -179,8 +180,7 @@ public class PlayerInputController extends iAIController implements iEventListen
                     if(!mEntity.mSkin.isAnimating("idle_burp2_right"))
                     {
                         //ensure other animations are deactivated
-                        mEntity.mSkin.deactivateSubSkin("face_"+mFaceDirAnim);
-                        mEntity.mSkin.deactivateSubSkin("hat_"+mFaceDirAnim);
+                        mEntity.mSkin.deactivateSubSkin(mSkinRef+"_"+mFaceDirAnim);
                         mEntity.mSkin.deactivateSubSkin("idle_burp2_right");
                         mEntity.mSkin.activateSubSkin("idle_burp2_right", false, 1.0f);
                     }
@@ -196,24 +196,21 @@ public class PlayerInputController extends iAIController implements iEventListen
             mEntity.mSkin.deactivateSubSkin("idle_burp2_right");
             if(mEntity.isDead())
             {
-                mEntity.mSkin.deactivateSubSkin("hat_"+mFaceDirAnim); //only allow hat when not dead
                 mEntity.mSkin.activateSubSkin("carne_fly", true, 1.0f);
             }
             else
             {
-                mEntity.mSkin.activateSubSkin("hat_"+mFaceDirAnim, false, 0.0f); 
                 mEntity.mSkin.deactivateSubSkin("carne_fly");
             }
             if(mTongueState.mIsTongueActive)
             {
                 look(mTongueState.getTongueDir()); //updates look direction while swinging
-                mEntity.mSkin.activateSubSkin("hat_"+mFaceDirAnim, false, 0.0f); //activate hat because look deactivates it
-                mEntity.mSkin.activateSubSkin("faceOpen_"+mFaceDirAnim, false, 0.0f);
+                mEntity.mSkin.activateSubSkin(mSkinRef+"Open_"+mFaceDirAnim, false, 0.0f);
             }
             else
             {
-                mEntity.mSkin.deactivateSubSkin("face"+"Open"+"_"+mFaceDirAnim);
-                mEntity.mSkin.activateSubSkin("face_"+mFaceDirAnim, false, 0.0f);
+                mEntity.mSkin.deactivateSubSkin(mSkinRef+"Open_"+mFaceDirAnim);
+                mEntity.mSkin.activateSubSkin(mSkinRef+"_"+mFaceDirAnim, false, 0.0f);
             }
         }
     }
@@ -486,9 +483,8 @@ public class PlayerInputController extends iAIController implements iEventListen
         //if statement splits left from right for efficiency
         //could further split into quadrents
         //each segment is the sum of half segments either side of each compass direction
-        mEntity.mSkin.deactivateSubSkin("face_"+mFaceDirAnim);
-        mEntity.mSkin.deactivateSubSkin("hat_"+mFaceDirAnim); //hat animation
-        mEntity.mSkin.deactivateSubSkin("faceOpen_"+mFaceDirAnim); //mouth animation
+        mEntity.mSkin.deactivateSubSkin(mSkinRef+"_"+mFaceDirAnim);
+        mEntity.mSkin.deactivateSubSkin(mSkinRef+"Open_"+mFaceDirAnim); //mouth animation
         if(angle < Math.PI)
         {
             if(angle < halfSeg)

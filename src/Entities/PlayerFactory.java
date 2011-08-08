@@ -17,11 +17,16 @@ import org.jbox2d.common.Vec2;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 /**
  *
  * @author alasdair
  */
 public class PlayerFactory implements iEntityFactory {
+    
+    static List<String> charSkinList = Arrays.asList("mexican", "english", "russian", "american");
+    static List<Vec2> charDimensionsList = Arrays.asList(new Vec2(130,115), new Vec2(113,107), new Vec2(80,90), new Vec2(84,79));
+    static List<Vec2> charOffsetList = Arrays.asList(new Vec2(-33,-36), new Vec2(-26,-28), new Vec2(-5,-10), new Vec2(-9,1));
     
     boolean used;
     public PlayerFactory()
@@ -36,6 +41,7 @@ public class PlayerFactory implements iEntityFactory {
         //if (!used)
         {
             used = true;
+            int playerNum = (Integer)_parameters.get("playerNumber");
             
             //create a CharacterSubSkin for each layer of the character skin
             ArrayList<CharacterSubSkin> subSkins = new ArrayList<CharacterSubSkin>();
@@ -48,15 +54,17 @@ public class PlayerFactory implements iEntityFactory {
             subSkins.add(new CharacterSkin.CharacterSubSkin("carne_fly", CharacterSubSkin.SubType.eAnimated, 198, 139, new Vec2(-70,-60)));
             subSkins.add(new CharacterSkin.CharacterSubSkin("idle_burp2", CharacterSubSkin.SubType.eAnimated, 130, 115, new Vec2(-33,-36)));
             subSkins.add(new CharacterSkin.CharacterSubSkin("idle_burp2_right", CharacterSubSkin.SubType.eAnimated, 130, 115, new Vec2(-33,-36)));
-            subSkins.add(new CharacterSkin.CharacterSubSkin("face", CharacterSubSkin.SubType.e32Dir, 84, 79, new Vec2(-9,-1)));
-            subSkins.add(new CharacterSkin.CharacterSubSkin("faceOpen", CharacterSubSkin.SubType.e32Dir, 84, 79, new Vec2(-9,-1)));
-            subSkins.add(new CharacterSkin.CharacterSubSkin("hat", CharacterSubSkin.SubType.e32Dir, 130, 115, new Vec2(-33,-36)));
+            
+            Vec2 dim = charDimensionsList.get(playerNum);
+            Vec2 offset = charOffsetList.get(playerNum);
+            subSkins.add(new CharacterSkin.CharacterSubSkin(charSkinList.get(playerNum), CharacterSubSkin.SubType.e32Dir, (int)dim.x, (int)dim.y, offset));
+            subSkins.add(new CharacterSkin.CharacterSubSkin(charSkinList.get(playerNum)+"Open", CharacterSubSkin.SubType.e32Dir, (int)dim.x, (int)dim.y, offset));
+            
             subSkins.add(new CharacterSkin.CharacterSubSkin("pea_stun_large", CharacterSubSkin.SubType.eAnimated, 107, 39, new Vec2(-21.5f,0)));
             //draw tongue last
             subSkins.add(new CharacterSkin.CharacterSubSkin("tng", CharacterSubSkin.SubType.eStatic, 5, 5, new Vec2(32,32)));
-            int player = (Integer)_parameters.get("playerNumber");
-            subSkins.add(new CharacterSkin.CharacterSubSkin("Player" + (player+1), CharacterSubSkin.SubType.eStatic, 64, 64, new Vec2(0,-64)));
             
+            subSkins.add(new CharacterSkin.CharacterSubSkin("Player" + (playerNum+1), CharacterSubSkin.SubType.eStatic, 32, 32, new Vec2(0,-64)));
             
             HashMap params = new HashMap();
             
@@ -72,10 +80,10 @@ public class PlayerFactory implements iEntityFactory {
             parameters.put("aIEntity", entity);
             parameters.put("category", sWorld.BodyCategories.ePlayer);
             entity.setBody(sWorld.useFactory("PlayerFactory",parameters));
-            PlayerInputController controller = new PlayerInputController(entity, player);
+            PlayerInputController controller = new PlayerInputController(entity, playerNum, charSkinList.get(playerNum));
             entity.setController(controller);
             sWorld.addPlayer(entity.getBody());
-            sEvents.triggerEvent(new PlayerCreatedEvent(entity, player));
+            sEvents.triggerEvent(new PlayerCreatedEvent(entity, playerNum));
             return entity;
         }
     }
