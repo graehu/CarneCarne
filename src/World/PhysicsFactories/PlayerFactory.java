@@ -48,7 +48,7 @@ public class PlayerFactory implements iPhysicsFactory {
         
         Body body = _world.createBody(def);
         body.createFixture(circleFixture);
-        
+        body.setBullet(true);
         def.fixedRotation = true;
         def.userData = null;
         

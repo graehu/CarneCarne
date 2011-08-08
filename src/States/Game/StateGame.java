@@ -92,7 +92,9 @@ public class StateGame extends BasicGameState implements iEventListener {
 
     public void update(GameContainer _gc, StateBasedGame _sbg, int _delta) throws SlickException 
     {        
-        
+//        _gc.getInput().clearKeyPressedRecord();
+//        _gc.getInput().clearControlPressedRecord();
+//        _gc.getInput().clearMousePressedRecord();
         if(die) _gc.exit();
         
         //update sounds

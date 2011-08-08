@@ -551,6 +551,26 @@ public class PlayerEntity extends AIEntity
     {
         mTooltipTimer = 0;
         //change tooltipwindow based on type
+        if(_type.equals("Spit"))
+        {
+            mTooltipWindow.setImage("ui/TooltipWindowSpit.png");
+            mTooltipText.setLocalTranslation(new Vector2f(50,145));
+        }
+        else if(_type.equals("Swing"))
+        {
+            mTooltipWindow.setImage("ui/TooltipWindowSwing.png");
+            mTooltipText.setLocalTranslation(new Vector2f(50,145));
+        }
+        else if(_type.equals("Smash"))
+        {
+            mTooltipWindow.setImage("ui/TooltipWindowSmash.png");
+            mTooltipText.setLocalTranslation(new Vector2f(50,145));
+        }
+        else
+        {
+            mTooltipWindow.setImage("ui/TooltipWindow.png");
+            mTooltipText.setLocalTranslation(new Vector2f(50,45));
+        }
         mTooltipText.setTextString(_text);
         mTooltipWindow.setIsVisible(true);
         mTooltipText.setIsVisible(true);
