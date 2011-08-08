@@ -426,11 +426,13 @@ public class PlayerEntity extends AIEntity
             {
                 mCheckPoint.renderRaceState(mRaceTimer);
                 float rotation = 0;
+                boolean renderArrow = false;
                 if(mCheckPoint.getNext() != null)
                 {
                     Vec2 direction = mCheckPoint.getNext().getPosition().sub(getBody().getPosition());
                     direction.normalize();
                     rotation = (float)Math.atan2(direction.y, direction.x);
+                    renderArrow = true;
                 }
                 else if (mFootball != null)
                 {
@@ -478,10 +480,10 @@ public class PlayerEntity extends AIEntity
                     }
                     mHUDFootball.setLocalTranslation(new Vector2f(location.x, location.y).add(mHUDFootball.getDimensions()));
                     rotation = (float)Math.atan2(direction.y, direction.x);
+                    renderArrow = true;
                 }
                 mHUDArrow.setLocalRotation(rotation*180.0f/(float)Math.PI);
-                    
-               // sGraphicsManager.drawString("You have died " + mDeaths + " times", 0f, 0.1f);
+                mHUDArrow.setIsVisible(renderArrow);
             }
             if (mIntroSection != null)
                 mIntroSection.render();
