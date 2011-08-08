@@ -495,6 +495,4 @@ public class AIEntity extends Entity
         mSkin.render(pixelPosition.x,pixelPosition.y);
     }
 
-
-
 }

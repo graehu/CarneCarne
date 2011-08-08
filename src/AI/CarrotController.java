@@ -11,8 +11,10 @@ import Entities.Entity;
 import Level.sLevel;
 import World.sWorld;
 import java.util.HashMap;
+import javax.management.MBeanAttributeInfo;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.BodyType;
+import org.jbox2d.dynamics.contacts.ContactEdge;
 
 /**
  *
@@ -26,6 +28,7 @@ public class CarrotController extends iAIController
      private float mTimer;
      private Command mCommand;
      private CarrotState mState;
+     private int mPunchCountdown;
      
      enum CarrotState
      {
@@ -34,6 +37,8 @@ public class CarrotController extends iAIController
          eWaiting,
          eDrillAttack,
          eStuck,
+         eDying,
+         eTongued,
          eBladeAttack
      }
     public CarrotController(AIEntity _entity)
@@ -42,12 +47,20 @@ public class CarrotController extends iAIController
         mPathFinding = new AStar(mEntity, new ShortestDistance());
         mState = CarrotState.ePathing;
         mTimer = 0;
+        mPunchCountdown = 0;
     }
     protected void updateTarget()
     {
         mTarget = sPathFinding.getPlayer();
         mTargetX = (int)(mTarget.getBody().getPosition().x);
         mTargetY = (int)(mTarget.getBody().getPosition().y);
+    }
+    public void stun()
+    {
+        mState = CarrotState.eDying;
+        mTimer = 0;
+        mEntity.getBody().setFixedRotation(false);
+        mEntity.mSkin.stop("car_fly");
     }
     public void update()
     {
@@ -90,16 +103,52 @@ public class CarrotController extends iAIController
                 mTimer = 0;
             }
 
-            if(mTimer > 1.75f)
+            if(mTimer > 0.25f)
             {
                 mTimer = 0;
                 mState = CarrotState.eDrillAttack;
+                mEntity.mSkin.deactivateSubSkin("car_fly");
             }
             
             ((Carrot)mEntity).fly(target, 0.25f);
+            if (mEntity.hasTongueContacts())
+            {
+                mState = CarrotState.eTongued;
+                mTimer = 0;
+                mEntity.mSkin.setSpeed(2);
+            }
+        }
+        else if(mState == CarrotState.eTongued)
+        {
+            if (!mEntity.hasTongueContacts())
+            {
+                mTimer = 0;
+                mEntity.mSkin.setSpeed(1);
+                mState = CarrotState.ePathing;
+            }
+            else
+            {
+                //((Carrot)mEntity).fly(mEntity.getBody().getPosition().add(new Vec2(0, -10)), 0.25f);
+                mEntity.getBody().applyLinearImpulse(new Vec2(0, -1), mEntity.getBody().getWorldCenter());
+                mTimer += (1.0f/60.0f);
+                if (mTimer > 3.0f)
+                {
+                    mEntity.breakTongueContacts();
+                    mState = CarrotState.ePathing;
+                }
+            }
         }
         else if(mState == CarrotState.eDrillAttack)
         {
+            ContactEdge edge = mEntity.getBody().getContactList();
+            while (edge != null)
+            {
+                if (edge.other.getFixtureList().getFilterData().categoryBits == (1 << sWorld.BodyCategories.ePlayer.ordinal()))
+                {
+                    ((Entity)edge.other.getUserData()).kill(Entity.CauseOfDeath.eEnemy, mEntity);
+                }
+                edge = edge.next;
+            }
             mEntity.setAnimation("car_att");
             //mEntity.mSkin.stopAnim();
             mEntity.getBody().applyLinearImpulse(new Vec2(0,1), mEntity.getBody().getWorldCenter());
@@ -114,6 +163,7 @@ public class CarrotController extends iAIController
         else if(mState == CarrotState.eStuck)
         {
             mEntity.setAnimation("car_stu");
+            mEntity.mSkin.deactivateSubSkin("car_fly");
             mEntity.getBody().m_fixtureList.setSensor(false);
             if (mEntity.getBody().getType().equals(BodyType.DYNAMIC))
             {
@@ -126,54 +176,31 @@ public class CarrotController extends iAIController
                 mEntity.getBody().getWorld().destroyBody(mEntity.getBody());
                 mEntity.setBody(sWorld.useFactory("BoxCharFactory", params));
             }
-        }
-        
-        
-
-        
-        /*switch (mPathFinding.follow())
-        {
-            case eMoveLeft:
-                ((Carrot)mEntity).fly(Command.eMoveLeft);
-                mState = CarrotState.ePathing;
-                break;
-            case eMoveRight:
-                ((Carrot)mEntity).fly(Command.eMoveRight);
-                mState = CarrotState.ePathing;
-                break;
-            case eMoveUp:
-                ((Carrot)mEntity).fly(Command.eMoveUp);
-                mState = CarrotState.ePathing;
-                break;
-            case eMoveDown:
-                ((Carrot)mEntity).fly(Command.eMoveDown);
-                mState = CarrotState.ePathing;
-                break;
-            case eMoveTopLeft:
-                ((Carrot)mEntity).fly(Command.eMoveTopLeft);
-                mState = CarrotState.ePathing;
-                break;
-            case eMoveBottomLeft:
-                ((Carrot)mEntity).fly(Command.eMoveBottomLeft);
-                mState = CarrotState.ePathing;
-                break;
-            case eMoveBottomRight:
-                ((Carrot)mEntity).fly(Command.eMoveBottomRight);
-                mState = CarrotState.ePathing;
-                break;
-            case eMoveTopRight:
-                ((Carrot)mEntity).fly(Command.eMoveTopRight);
-                mState = CarrotState.ePathing;
-                break;
-            case eStandStill:
+            if (mEntity.hasTongueContacts())
             {
-                ((Carrot)mEntity).Hover();
-                if(mState == CarrotState.ePathing);
-                break;
+                Vec2 position = mEntity.getBody().getPosition();
+                sWorld.destroyBody(mEntity.getBody());
+                HashMap params = new HashMap();
+                params.put("position", position);
+                params.put("aIEntity", mEntity);
+                params.put("category", sWorld.BodyCategories.eEnemy);
+                mEntity.setBody(sWorld.useFactory("BoxCharFactory",params));
+                mState = CarrotState.ePathing;
+                //mEntity.setAnimation("car_fly");
+                //mEntity.mSkin.setSpeed(1);
+                mEntity.mSkin.activateSubSkin("car_fly", true, 1);
+                mEntity.mSkin.deactivateSubSkin("car_stu");
+                mEntity.breakTongueContacts();
+                //mEntity.replaceAnchors();
             }
-        }  //*/
+        }
+        else if(mState == CarrotState.eDying)
+        {
+            mTimer++;
+            if (mTimer == 180)
+            {
+                sWorld.destroyBody(mEntity.getBody());
+            }
+        }
     }
-    
-    
-    
 }

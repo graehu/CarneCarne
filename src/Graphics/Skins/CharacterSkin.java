@@ -247,8 +247,11 @@ public class CharacterSkin implements iSkin
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public void setSpeed(float _speed) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public void setSpeed(float _speed)
+    {
+        int ref = mSkinNames.get("car_fly"); // Hiiiiiiya
+        iSkin skin = mSubSkins.get(ref); 
+        skin.setSpeed(_speed);
     }
 
     public float getDuration() {

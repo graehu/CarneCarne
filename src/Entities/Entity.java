@@ -136,6 +136,7 @@ abstract public class Entity {
         eAcid,
         eImpact,
         eMundane,
+        eEnemy,
         eCauseOfDeathMax
     }
     public void kill(CauseOfDeath _causeOfDeath, Object _killer)
