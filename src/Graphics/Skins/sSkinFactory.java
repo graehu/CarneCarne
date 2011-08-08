@@ -5,7 +5,7 @@
  * static:      "ref" (data path e.g "char") - prefixes with "assets", appends with .png
  *              "img" (an image for the sprite to use) //ignores "ref" if present
  *              --
- * animated:    "ref" (data path e.g "char") - prefixes with "data", appends with .png 
+ * animated:    "ref" (data path e.g "char") - prefixes with "assets", appends with .png 
  *              "x1" - starting xPos (Integer)
  *              "y1" - starting yPos (Integer)
  *              "x2" - starting xPos (Integer)

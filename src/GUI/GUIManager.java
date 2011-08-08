@@ -289,7 +289,11 @@ public class GUIManager implements iEventListener
         sEvents.subscribeToEvent("KeyDownEvent"+'w'+mPlayerInControl, this);
         sEvents.subscribeToEvent("KeyUpEvent"+'w'+mPlayerInControl, this);
     }
-    
+    public void gotoFirstSelectable()
+    {
+        if(!mSelectables.isEmpty())
+            mCurrentSelection = 0;
+    }
     public void gotoNextSelectable()
     {
         if(mIsAcceptingInput && !mSelectables.isEmpty())

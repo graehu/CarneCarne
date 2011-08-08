@@ -3,6 +3,7 @@
  */
 package Graphics.Skins;
 
+import Utils.Throw;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -74,10 +75,7 @@ public class CharacterSkin implements iSkin
                     int reqWidth = 18;
                     int reqHeight = 2;
                     if(ss.getHorizontalCount() != reqWidth || ss.getVerticalCount() != reqHeight)
-                    {
-                        System.err.println(absoluteRef + " MUST BE " + reqWidth + "x" + reqHeight + " TILES");
-                        System.exit(1);
-                    }
+                        Throw.err(absoluteRef + " MUST BE " + reqWidth + "x" + reqHeight + " TILES");
                     for(int y = 0; y < reqHeight; y++)
                     {
                         for(int x = 0; x < reqWidth; x++)

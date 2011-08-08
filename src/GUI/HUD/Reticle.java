@@ -16,7 +16,8 @@ import org.jbox2d.common.Vec2;
  * @author 
  */
 public class Reticle {
-    private iSprite mReticleSprite = null;
+    private iSprite mCurrentReticle = null;
+    private iSprite mReticleSpriteController = null, mReticleSpriteMouse = null;
     private AIEntity mPlayer = null;
     private Vec2 mCurrentDir = new Vec2(1,0);
     private Vec2 mLastPosition = new Vec2(0,0);
@@ -27,26 +28,39 @@ public class Reticle {
     {
         mPlayer = _player;
         HashMap params = new HashMap();
-        params.put("ref", "CrossHair2");
-        mReticleSprite = sSpriteFactory.create("simple", params, false);
+        params.put("ref", "Reticle");
+        mReticleSpriteController = sSpriteFactory.create("simple", params, false);
+        params.clear();
+        params.put("ref", "ReticleMouse");
+        mReticleSpriteMouse = sSpriteFactory.create("simple", params, false);
+        mCurrentReticle = mReticleSpriteMouse;
         //mLastPosition = 
     }
     public void update()
     {
-            if(mByPosition)
-            {
-                //translate player to screen space and offset to centre
-                Vec2 playerPos = mPlayer.getBody().getPosition().mul(64).add(sWorld.getPixelTranslation());
-                mCurrentDir = mLastPosition.sub(playerPos);
-                mDistance = mCurrentDir.normalize();
-                mReticleSprite.setPosition(mLastPosition);
-            }
+        if(mByPosition)
+        {
+            mCurrentReticle = mReticleSpriteMouse;
+            //translate player to screen space and offset to centre
+            Vec2 playerPos = mPlayer.getBody().getPosition().mul(64).add(sWorld.getPixelTranslation());
+            mCurrentDir = mLastPosition.sub(playerPos);
+            mDistance = mCurrentDir.normalize();
+            mCurrentReticle.setPosition(mLastPosition.sub(new Vec2(8,8)));
+        }
+        else
+        {
+            mCurrentReticle = mReticleSpriteController;
+            Vec2 playerPixelPosition = mPlayer.getBody().getPosition().mul(64);
+            Vec2 reticlePos = playerPixelPosition.add(mCurrentDir.mul(mDistance));
+            mCurrentReticle.setPosition(reticlePos.sub(new Vec2(16,16))); //20,20 offset to center sprite
+            
+            float angle = (float) Math.acos(Vec2.dot(mCurrentDir, new Vec2(0,-1)));
+            if(mCurrentDir.x >= 0)
+                mCurrentReticle.setRotation(angle * (180.0f/(float)Math.PI));
             else
-            {
-                Vec2 playerPixelPosition = mPlayer.getBody().getPosition().mul(64);
-                Vec2 reticlePos = playerPixelPosition.add(mCurrentDir.mul(mDistance));
-                mReticleSprite.setPosition(reticlePos); //20,20 offset to center sprite
-            }
+                mCurrentReticle.setRotation(-angle * (180.0f/(float)Math.PI));
+        }
+        
     }
     public void updateDirection(Vec2 dir)
     {
@@ -76,12 +90,12 @@ public class Reticle {
     {
         if(mByPosition)
         {
-            mReticleSprite.render(0, 0);
+            mCurrentReticle.render(0, 0);
         }
         else
         {
             Vec2 pixelPosition = sWorld.getPixelTranslation();
-            mReticleSprite.render(pixelPosition.x,pixelPosition.y);
+            mCurrentReticle.render(pixelPosition.x,pixelPosition.y);
         }
     }
     

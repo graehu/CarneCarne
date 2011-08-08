@@ -37,6 +37,7 @@ public class XBoxController
     static private float shoulderButtonEpsilon = 0.3f;
     private boolean leftStickHit = false, rightStickHit = false;
     private boolean mJumpButton = false, mRightShoulderButton = false;
+    private boolean mPauseToggle = false;
     //private boolean yAxisHit = false;
     private enum TriggerState
     {
@@ -90,8 +91,14 @@ public class XBoxController
         //handle start and back buttons
         if(_input.isButtonPressed(7, mPlayer)) //start
         {
-            sEvents.triggerEvent(new KeyDownEvent('Q', mPlayer)); //menu
+            if(!mPauseToggle)
+            {
+                mPauseToggle = true;
+                sEvents.triggerEvent(new KeyDownEvent('Q', mPlayer)); //menu
+            }
         }
+        else
+            mPauseToggle = false;
         if(_input.isButtonPressed(6, mPlayer)) //back
         {
             sEvents.triggerEvent(new KeyDownEvent('r', mPlayer)); //menu
