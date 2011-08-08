@@ -496,7 +496,7 @@ public class sWorld
         {
             mWorld.step(secondsPerFrame/1000.0f, 6, 4);
         }
-        //catch (ArrayIndexOutOfBoundsException e)
+        //catch (ArrayIndexOutOfBoundsExbeception e)
         {
             
         }
