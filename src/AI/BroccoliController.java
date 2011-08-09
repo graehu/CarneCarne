@@ -21,6 +21,7 @@ public class BroccoliController extends iAIController
      private float mFollowRadius;
      private float mAttackRadius;
      private boolean mAttacking;
+     
     public BroccoliController(AIEntity _entity)
     {
         super(_entity);
@@ -32,6 +33,8 @@ public class BroccoliController extends iAIController
     public void update()
     {
         mTarget = sPathFinding.getPlayer();
+        ((Broccoli)mEntity).updateTargetPos(mTarget.getBody().getPosition());
+        
         
         if(mTarget != null)
         {
@@ -45,7 +48,6 @@ public class BroccoliController extends iAIController
                     if((targetPos.y < myPos.y+mAttackRadius) && targetPos.y > myPos.y-mAttackRadius)
                     {
                         mAttacking = true;
-                        //((Broccoli)mEntity).attack();
                     }
                 }
                 else if((targetPos.x < myPos.x+mFollowRadius) && targetPos.x > myPos.x-mFollowRadius)
@@ -61,10 +63,6 @@ public class BroccoliController extends iAIController
                             ((Broccoli)mEntity).move(-1.5f);
                         }
                     }
-                }
-                else if(mEntity.getBody().getContactList().contact.getFixtureA().getFilterData().categoryBits == (1 << BodyCategories.ePlayer.ordinal()))
-                {
-                    mAttacking = true;            
                 }
             }
             else

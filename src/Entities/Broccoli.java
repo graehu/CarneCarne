@@ -25,7 +25,7 @@ public class Broccoli extends AIEntity
     private float mTimer;
     private float mIdleTick;
     private boolean mActive;
-    
+    private Vec2 mTargetPos;
     private enum brocState
     {
         eIdle,
@@ -66,20 +66,17 @@ public class Broccoli extends AIEntity
     {
         super.update();
         
-        /*if((mState != brocState.eIdle) && (mState != brocState.eAir) && (mState != brocState.eJump) && (mState != brocState.eLand))
-        {
-             mSkin.deactivateSubSkin(mCurrentAnimation);
-             mSkin.activateSubSkin("broc_1_idlein", false, mAnimSpeed);
-             mState = brocState.eIdle;
-        }
-        if(!mSkin.isAnimating("broc_1_idlein"))
-        {*/
         if(!mActive)
         {
             if(!(mState == brocState.eIdle))
             {
                 mSkin.deactivateSubSkin(mCurrentAnimation);
-                mCurrentAnimation = "broc_1_idlein";
+                
+                if (mBody.getPosition().x > mTargetPos.x)
+                    mCurrentAnimation = "broc_1_idlein";
+                else
+                    mCurrentAnimation = "broc_1_idlein_right";
+                
                 mSkin.activateSubSkin(mCurrentAnimation, false, mAnimSpeed);         
                 mState = brocState.eIdle;
                 mIdleTick = -1;
@@ -87,16 +84,24 @@ public class Broccoli extends AIEntity
             else if(mState == brocState.eIdle)
             {
                 // mSkin.stopAt("broc_1_idlein",3);
-                 if(!mSkin.isAnimating("broc_1_idlein"))
+                 if(!mSkin.isAnimating("broc_1_idlein") && !mSkin.isAnimating("broc_1_idlein_right"))
                  {
                     mSkin.deactivateSubSkin("broc_1_idlein");
+                    mSkin.deactivateSubSkin("broc_1_idlein_right");
                     // mSkin.stopAt("broc_1_idle", 6);
                     if(mIdleTick < 0)
                     {
-                        if(!mSkin.isAnimating("broc_1_idle"))
+                        if(!mSkin.isAnimating("broc_1_idle") && !mSkin.isAnimating("broc_1_idle_right"))
                         {
                             mSkin.deactivateSubSkin("broc_1_idle");
-                            mCurrentAnimation = "broc_1_idle";
+                            mSkin.deactivateSubSkin("broc_1_idle_right");
+                            mSkin.deactivateSubSkin(mCurrentAnimation);
+                            
+                            if (mBody.getPosition().x > mTargetPos.x)
+                                mCurrentAnimation = "broc_1_idle";
+                            else
+                                mCurrentAnimation = "broc_1_idle_right";
+                            
                             mSkin.activateSubSkin(mCurrentAnimation, false, mAnimSpeed);
                             Random rand = new Random();
                             mIdleTick = 1+(rand.nextInt()%6);
@@ -119,7 +124,15 @@ public class Broccoli extends AIEntity
             {
                 mSkin.deactivateSubSkin("broc_1_idlein");
                 mSkin.deactivateSubSkin("broc_1_idle");
-                mCurrentAnimation = "broc_1_idleout";
+                mSkin.deactivateSubSkin("broc_1_idlein_right");
+                mSkin.deactivateSubSkin("broc_1_idle_right");
+                mSkin.deactivateSubSkin(mCurrentAnimation);
+                
+                if (mBody.getPosition().x > mTargetPos.x)
+                    mCurrentAnimation = "broc_1_idleout";
+                else
+                    mCurrentAnimation = "broc_1_idleout_right";
+                //mCurrentAnimation = "broc_1_idleout";
                 mSkin.activateSubSkin(mCurrentAnimation, false, mAnimSpeed);
                 mState = brocState.eIdleOut;
                 break;
@@ -127,11 +140,20 @@ public class Broccoli extends AIEntity
             case eIdleOut:
             {
                 mSkin.stopAt("broc_1_idleout",3);
-                if(!mSkin.isAnimating("broc_1_idleout"))
+                mSkin.stopAt("broc_1_idleout_right",3);
+                if(!mSkin.isAnimating("broc_1_idleout") && !mSkin.isAnimating("broc_1_idleout_right"))
                 {
                     mSkin.deactivateSubSkin("broc_1_idlein");
                     mSkin.deactivateSubSkin("broc_1_idleout");
-                    mCurrentAnimation = "broc_2_jump";
+                     mSkin.deactivateSubSkin("broc_1_idlein_right");
+                    mSkin.deactivateSubSkin("broc_1_idleout_right");
+                    mSkin.deactivateSubSkin(mCurrentAnimation);
+                    
+                    if (mBody.getPosition().x > mTargetPos.x)
+                        mCurrentAnimation = "broc_1_jump";
+                    else
+                        mCurrentAnimation = "broc_1_jump_right";
+                    
                     mSkin.activateSubSkin(mCurrentAnimation, false, mAnimSpeed);
                     mState = brocState.eJump;
                 }
@@ -139,11 +161,22 @@ public class Broccoli extends AIEntity
             }
             case eJump:
             {
-                mSkin.stopAt("broc_2_land",4);
-                if(!mSkin.isAnimating("broc_2_land"))
+                mSkin.stopAt("broc_2_land", 4);
+                mSkin.stopAt("broc_2_land_right", 4);
+
+                if(!mSkin.isAnimating("broc_2_land") && !mSkin.isAnimating("broc_2_land_right"))
                 {
                     mSkin.deactivateSubSkin("broc_2_land");
-                    mCurrentAnimation = "broc_2_jump";
+                    mSkin.deactivateSubSkin("broc_1_idlein");
+                    mSkin.deactivateSubSkin("broc_1_idleout");
+                    mSkin.deactivateSubSkin(mCurrentAnimation);
+                    
+                    if (mBody.getPosition().x > mTargetPos.x)
+                        mCurrentAnimation = "broc_2_jump";
+                    else
+                        mCurrentAnimation = "broc_2_jump_right";
+                    
+                    //mCurrentAnimation = "broc_2_jump";
                     mSkin.activateSubSkin(mCurrentAnimation, false, mAnimSpeed);
                     mState = brocState.eAir;
                 }
@@ -152,13 +185,21 @@ public class Broccoli extends AIEntity
             case eAir:
             {
                 mSkin.stopAt("broc_2_jump",3);
-                if(!mSkin.isAnimating("broc_2_jump"))
+                mSkin.stopAt("broc_2_jump_right",3);
+                if(!mSkin.isAnimating("broc_2_jump") && !mSkin.isAnimating("broc_2_jump_right"))
                 {
                     jump();
                     stopJumping();
                     mBody.applyLinearImpulse(new Vec2(_speed,0), mBody.getWorldCenter());
                     mSkin.deactivateSubSkin("broc_2_jump");
-                    mCurrentAnimation = "broc_2_air";
+                    mSkin.deactivateSubSkin("broc_2_jump_right");
+                    mSkin.deactivateSubSkin(mCurrentAnimation);
+                    
+                    if (mBody.getPosition().x > mTargetPos.x)
+                        mCurrentAnimation = "broc_2_air";
+                    else
+                        mCurrentAnimation = "broc_2_air_right";
+               
                     mSkin.activateSubSkin(mCurrentAnimation, false, mAnimSpeed);
                     mState = brocState.eLand;
                 }
@@ -169,10 +210,18 @@ public class Broccoli extends AIEntity
                 if(!isAirBorn())
                 {
                     mSkin.stopAt("broc_2_air",4);
-                    if(!mSkin.isAnimating("broc_2_air"))
+                    mSkin.stopAt("broc_2_air_right",4);
+                    if(!mSkin.isAnimating("broc_2_air") && !mSkin.isAnimating("broc_2_air_right"))
                     {
                         mSkin.deactivateSubSkin("broc_2_air");
-                        mCurrentAnimation = "broc_2_land";
+                        mSkin.deactivateSubSkin("broc_2_air_right");
+                        mSkin.deactivateSubSkin(mCurrentAnimation);
+                        
+                        if (mBody.getPosition().x > mTargetPos.x)
+                            mCurrentAnimation = "broc_2_land";
+                        else
+                            mCurrentAnimation = "broc_2_land_right";
+                        
                         mSkin.activateSubSkin(mCurrentAnimation, false, mAnimSpeed);
                         mState = brocState.eJump;
                     }
@@ -322,6 +371,11 @@ public class Broccoli extends AIEntity
             }
         }
         mActive = true;        
+    }
+    
+    public void updateTargetPos(Vec2 _pos)
+    {
+        mTargetPos = _pos;
     }
 
     public void moveUp()

@@ -101,6 +101,7 @@ public class PlayerEntity extends AIEntity
         GUIManager.use(mGUIManager).addRootComponent(mHUDFootball);
         mHUDFootball.setImage("assets/characters/football.png");
         mHUDFootball.setDimentionsToImage();
+        mHUDFootball.setIsVisible(false);
         
         mTooltipWindow = new GraphicalComponent(sGraphicsManager.getGUIContext(), new Vector2f(50,50), new Vector2f(0,0));
         GUIManager.use(mGUIManager).addRootComponent(mTooltipWindow);

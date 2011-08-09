@@ -36,82 +36,9 @@ public class FlyingAI extends AIEntity
             speed.y = _maxSpeed;
         else if(speed.y < -_maxSpeed)
             speed.y = -_maxSpeed;
-        
-        
-        
-        
+
         getBody().applyLinearImpulse(speed, getBody().getWorldCenter());
-        
-        
-       /* if(!(mBody.getLinearVelocity().y < 0))
-        {
-            mBody.applyLinearImpulse(new Vec2(0,-0.98f/(mBody.getMass())), mBody.getWorldCenter());
-        }*/
-        /*switch(_command)
-        {
-            case eMoveLeft:
-                //mBody.setLinearVelocity(new Vec2(-mMoveSpeed,0));
-                //if(!(mBody.getLinearVelocity().x > -mMoveSpeed))
-                if(mToggle)
-                mBody.applyLinearImpulse(new Vec2(-mMoveSpeed,0), mBody.getWorldCenter());
-                break;
-            case eMoveRight:
-                //mBody.setLinearVelocity(new Vec2(mMoveSpeed,0));
-                //if(!(mBody.getLinearVelocity().x < mMoveSpeed))
-                if(mToggle)
-                mBody.applyLinearImpulse(new Vec2(mMoveSpeed,0), mBody.getWorldCenter());
-                break;
-            case eMoveUp:
-                //mBody.setLinearVelocity(new Vec2(0,-mMoveSpeed));
-                //if(!(mBody.getLinearVelocity().y > -mMoveSpeed))
-                if(mToggle)
-                mBody.applyLinearImpulse(new Vec2(0,-mMoveSpeed), mBody.getWorldCenter());
-                break;
-            case eMoveDown:
-                //mBody.setLinearVelocity(new Vec2(0,mMoveSpeed));
-                //if(!(mBody.getLinearVelocity().y < mMoveSpeed))
-                if(mToggle)
-                mBody.applyLinearImpulse(new Vec2(0,mMoveSpeed),mBody.getWorldCenter());
-                break;
-            case eMoveTopLeft:
-                //mBody.setLinearVelocity(new Vec2(-mMoveSpeed,-mMoveSpeed));
-                //if(!(mBody.getLinearVelocity().x > -mMoveSpeed) && !(mBody.getLinearVelocity().y > -mMoveSpeed))
-                if(mToggle)
-                mBody.applyLinearImpulse(new Vec2(-mMoveSpeed,-mMoveSpeed),mBody.getWorldCenter());
-                break;
-            case eMoveBottomLeft:
-                //mBody.setLinearVelocity(new Vec2(-mMoveSpeed, mMoveSpeed));
-                //if(!(mBody.getLinearVelocity().x > -mMoveSpeed) && !(mBody.getLinearVelocity().y < mMoveSpeed))
-                if(mToggle)
-                mBody.applyLinearImpulse(new Vec2(-mMoveSpeed, mMoveSpeed),mBody.getWorldCenter());
-                break;
-            case eMoveBottomRight:
-                //mBody.setLinearVelocity(new Vec2(mMoveSpeed, mMoveSpeed));
-                //if(!(mBody.getLinearVelocity().x < mMoveSpeed) && !(mBody.getLinearVelocity().y < mMoveSpeed))
-                if(mToggle)
-                mBody.applyLinearImpulse(new Vec2(mMoveSpeed, mMoveSpeed),mBody.getWorldCenter());
-                break;
-            case eMoveTopRight:
-                //mBody.setLinearVelocity(new Vec2(mMoveSpeed, -mMoveSpeed));
-                //if(!(mBody.getLinearVelocity().x < mMoveSpeed) && !(mBody.getLinearVelocity().y > -mMoveSpeed))
-                if(mToggle)
-                mBody.applyLinearImpulse(new Vec2(mMoveSpeed,-mMoveSpeed),mBody.getWorldCenter());
-                break;
-        }*/
     }
-    
-    public void Hover()
-    {
-        /*if(!(mBody.getLinearVelocity().y < (9.8f/60)))
-        {
-            mBody.applyLinearImpulse(new Vec2(0,-0.98f/(mBody.getMass())), mBody.getWorldCenter());
-        }*/
-       //mBody.applyLinearImpulse(new Vec2(0, -9.8f/mBody.getMass()),mBody.getWorldCenter());
-        /*if(mBody.getLinearVelocity().y > 0.5)
-        {
-            mBody.applyLinearImpulse(new Vec2(0,-1.0f), mBody.getWorldCenter());
-        }*/
-        //mBody.setLinearVelocity(new Vec2(0,0));
-    }
+
     
 }

@@ -29,6 +29,7 @@ public class CarrotController extends iAIController
      private Command mCommand;
      private CarrotState mState;
      private int mPunchCountdown;
+     private String mCurrentAnimation;
      
      enum CarrotState
      {
@@ -48,6 +49,7 @@ public class CarrotController extends iAIController
         mState = CarrotState.ePathing;
         mTimer = 0;
         mPunchCountdown = 0;
+        mCurrentAnimation = "car_fly";
     }
     protected void updateTarget()
     {
@@ -60,7 +62,7 @@ public class CarrotController extends iAIController
         mState = CarrotState.eDying;
         mTimer = 0;
         mEntity.getBody().setFixedRotation(false);
-        mEntity.mSkin.stop("car_fly");
+        mEntity.mSkin.stop(mCurrentAnimation);
     }
     public void update()
     {
@@ -77,20 +79,12 @@ public class CarrotController extends iAIController
             mPathFinding.updatePath(x, y, mTargetX, mTargetY-4);
         }
         
-        //((Carrot)mEntity).Hover();
-        
+
         Vec2 target = mPathFinding.follow();
         Vec2 pos = mEntity.getBody().getPosition();
         
-        /*if((target.x > pos.x) && (target.y+0.2 > pos.y && target.y-0.2 < pos.y)){mCommand = Command.eMoveRight;}
-        else if((target.x < pos.x) && (target.y+0.2 > pos.y && target.y-0.2 < pos.y)){mCommand = Command.eMoveLeft;}
-        else if((target.y > pos.y) && (target.x+0.2 > pos.x && target.x-0.2 < pos.x)){mCommand = Command.eMoveDown;}
-        else if((target.y < pos.y) && (target.x+0.2 > pos.x && target.x-0.2 < pos.x)){mCommand = Command.eMoveUp;}
-        else if((target.x > pos.x) && (target.y > pos.y)){mCommand = Command.eMoveBottomRight;}
-        else if((target.x < pos.x) && (target.y < pos.y)){mCommand = Command.eMoveTopLeft;}
-        else if((target.x > pos.x) && (target.y < pos.y)){mCommand = Command.eMoveTopRight;}
-        else if((target.x < pos.x) && (target.y > pos.y)){mCommand = Command.eMoveBottomLeft;}
-        else{mCommand = Command.eStandStill;}*/
+        
+
         
         if(mState == CarrotState.ePathing)
         {
@@ -107,10 +101,19 @@ public class CarrotController extends iAIController
             {
                 mTimer = 0;
                 mState = CarrotState.eDrillAttack;
-                mEntity.mSkin.deactivateSubSkin("car_fly");
+                mEntity.mSkin.deactivateSubSkin(mCurrentAnimation);
             }
             
             ((Carrot)mEntity).fly(target, 0.25f);
+            
+            if(pos.x > target.x)
+                mCurrentAnimation = "car_fly";
+            else
+                mCurrentAnimation = "car_fly_right";
+            mEntity.setAnimation(mCurrentAnimation);
+            
+            
+            
             if (mEntity.hasTongueContacts())
             {
                 mState = CarrotState.eTongued;
@@ -128,7 +131,6 @@ public class CarrotController extends iAIController
             }
             else
             {
-                //((Carrot)mEntity).fly(mEntity.getBody().getPosition().add(new Vec2(0, -10)), 0.25f);
                 mEntity.getBody().applyLinearImpulse(new Vec2(0, -1), mEntity.getBody().getWorldCenter());
                 mTimer += (1.0f/60.0f);
                 if (mTimer > 3.0f)
@@ -149,21 +151,30 @@ public class CarrotController extends iAIController
                 }
                 edge = edge.next;
             }
-            mEntity.setAnimation("car_att");
-            //mEntity.mSkin.stopAnim();
+            
+            if(pos.x > target.x)
+                mCurrentAnimation = "car_att";
+            else
+                mCurrentAnimation = "car_att_right";
+            
+            mEntity.setAnimation(mCurrentAnimation);
             mEntity.getBody().applyLinearImpulse(new Vec2(0,1), mEntity.getBody().getWorldCenter());
             mEntity.getBody().m_fixtureList.setSensor(true);
-            //((Carrot)mEntity).fly(target, 0.5f);
             if(sLevel.getPathInfo((int)pos.x, (int)(pos.y+1.1f)) == sLevel.PathInfo.eNotPassable)
             {
-                //mTimer = 0;
                 mState = CarrotState.eStuck;
             }
         }
         else if(mState == CarrotState.eStuck)
         {
-            mEntity.setAnimation("car_stu");
+            if(pos.x > target.x)
+                mCurrentAnimation = "car_stu";
+            else
+                mCurrentAnimation = "car_stu_right";
+            
+            mEntity.setAnimation(mCurrentAnimation);
             mEntity.mSkin.deactivateSubSkin("car_fly");
+            mEntity.mSkin.deactivateSubSkin("car_fly_right");
             mEntity.getBody().m_fixtureList.setSensor(false);
             if (mEntity.getBody().getType().equals(BodyType.DYNAMIC))
             {

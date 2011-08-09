@@ -15,6 +15,7 @@ import Utils.Throw;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import org.jbox2d.common.Vec2;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
@@ -93,8 +94,9 @@ public class GUIManager implements iEventListener
     
     private GUIManager(GameContainer _context)
     {
-        scale.x = sGraphicsManager.getTrueScreenDimensions().x / sGraphicsManager.getNativeScreenDimensions().x;
-        scale.y = sGraphicsManager.getTrueScreenDimensions().y / sGraphicsManager.getNativeScreenDimensions().y;
+        Vec2 magic = sGraphicsManager.getNativeScreenDimensions();
+        scale.x = sGraphicsManager.getTrueScreenDimensions().x / 1680;
+        scale.y = sGraphicsManager.getTrueScreenDimensions().y / 1050;
         if(_context != null)
             mContainer = _context;
         else
@@ -189,8 +191,8 @@ public class GUIManager implements iEventListener
     public void setDimensions(Vector2f _dimensions)
     {
         mDimensions = _dimensions;
-        scale.x = mDimensions.x / sGraphicsManager.getNativeScreenDimensions().x;
-        scale.y = mDimensions.y / sGraphicsManager.getNativeScreenDimensions().y;
+        scale.x = mDimensions.x / 1680;
+        scale.y = mDimensions.y / 1050;
     }
     public void render(boolean _debug)
     {
