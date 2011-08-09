@@ -5,6 +5,7 @@
 package World;
 
 import Entities.AIEntity;
+import Entities.Carrot;
 import World.PhysicsFactories.SeeSawBodyFactory;
 import World.PhysicsFactories.SpatBlockBodyFactory;
 import World.PhysicsFactories.FireParticleBody;
@@ -199,7 +200,20 @@ public class sWorld
                 mBody = _fixture.getBody();
                 return false;
             }
-            return true;
+            else
+            {
+                try
+                {
+                    Carrot carrot = (Carrot)_fixture.getBody().getUserData();
+                    carrot.mJoint.getJointAngle();
+                    mBody = _fixture.getBody();
+                    return false;
+                }
+                catch (Throwable e)
+                {
+                    return true;
+                }
+            }
         }
     }
     private static class TongueCallback implements RayCastCallback

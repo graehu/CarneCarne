@@ -22,10 +22,11 @@ import Sound.sSound;
 import States.Game.Adventure.AdventureMode;
 import States.Game.FootballMode.FootballMode;
 import States.Game.RaceMode.RaceMode;
-import States.Game.Tutorial.IntroMode;
 import States.Menu.StateMenu;
 import States.StateChanger;
 import World.sWorld;
+import java.util.LinkedList;
+import java.util.Queue;
 import org.jbox2d.common.Vec2;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
@@ -51,7 +52,7 @@ public class StateGame extends BasicGameState implements iEventListener {
         eGameTypesMax
     }
     private static GameType gameType = GameType.eGameTypesMax;
-    private static String levelRef = "NoLevel";
+    private static Queue<String> levelProgression;
     private int mGUIRef;
     private static iGameMode mGameMode; 
     StateChanger mChangeToMenu;
@@ -65,6 +66,8 @@ public class StateGame extends BasicGameState implements iEventListener {
     
     public StateGame()
     {
+        levelProgression = new LinkedList<String>();
+        levelProgression.add("NoLevel");
     }
     boolean die = false;//FIXME: DELETE
     public boolean trigger(iEvent _event) {
@@ -194,27 +197,34 @@ public class StateGame extends BasicGameState implements iEventListener {
         {
             case eAdventure:
             {
-                mGameMode = new AdventureMode(levelRef);
+                mGameMode = new AdventureMode(levelProgression);
                 break;
             }
             case eFootball:
             {
-                mGameMode = new FootballMode(levelRef);
+                mGameMode = new FootballMode(levelProgression.peek());
                 break;
             }
             case eRace:
             {
                 //mGameMode = new IntroMode(levelRef);
-                mGameMode = new RaceMode(levelRef);
+                mGameMode = new RaceMode(levelProgression.peek());
                 break;
             }    
         }
     }
-    public static void setGameType(GameType _type, String _level)
+    public static void setGameType(GameType _type, Queue<String> _levelProgression)
     {
         mInited = false;
         gameType = _type;
-        levelRef = _level;
+        levelProgression = _levelProgression;
+    }
+    public static void setGameType(GameType _type, String _singleLevel)
+    {
+        mInited = false;
+        gameType = _type;
+        levelProgression = new LinkedList<String>();
+        levelProgression.add(_singleLevel);
     }
     public static void resetCurrentMode()
     {

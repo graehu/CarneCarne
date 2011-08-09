@@ -18,7 +18,9 @@ import States.Game.StateGame;
 import Utils.sFontLoader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 import org.jbox2d.common.Vec2;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Font;
@@ -30,7 +32,6 @@ import org.newdawn.slick.UnicodeFont;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
-import org.newdawn.slick.state.transition.BlobbyTransition;
 import org.newdawn.slick.state.transition.FadeInTransition;
 import org.newdawn.slick.state.transition.FadeOutTransition;
 
@@ -58,6 +59,7 @@ public class StateTitle extends BasicGameState
     Integer mCurrentGUIState = null;
     Integer mCurrentLeftGUIState = null;
     Integer mGUIManagerCenterMain = null;
+    Integer mGUIManagerLeftTour = null;
     Integer mGUIManagerLeftAdventure = null;
     Integer mGUIManagerLeftRace = null;
     Integer mGUIManagerLeftFootball = null;
@@ -74,6 +76,7 @@ public class StateTitle extends BasicGameState
             inited = true;
             mGUIManagerGlobal = GUIManager.create(_gc);
             mGUIManagerCenterMain = GUIManager.create(_gc);
+            mGUIManagerLeftTour = GUIManager.create(_gc);
             mGUIManagerLeftAdventure = GUIManager.create(_gc);
             mGUIManagerLeftRace = GUIManager.create(_gc);
             mGUIManagerLeftFootball = GUIManager.create(_gc);
@@ -138,6 +141,9 @@ public class StateTitle extends BasicGameState
             mNameField.setDefaultText("Name");
             mNameField.setTextColor(new Color(0,0,0));
             mNameField.setSelectedTextColor(new Color(187,139,44));
+            
+            mTourButton = new Button(_gc, new Vector2f(), buttonDim);
+            mTourButton.addText(_gc, mUIFont, "TOur MOdE", true);
             mAdventureButton = new Button(_gc, new Vector2f(), buttonDim);
             mAdventureButton.addText(_gc, mUIFont, "AdvEnturE MOdE", true); //uppercase 'e' 's' because lowercase is crap
             mRaceButton = new Button(_gc, new Vector2f(), buttonDim);
@@ -166,6 +172,7 @@ public class StateTitle extends BasicGameState
             mParalax0.addChild(mLightingToggle);
             mParalax0.addChild(mBack);
             
+            mLogo.addChild(mTourButton);
             mLogo.addChild(mAdventureButton);
             mLogo.addChild(mRaceButton);
             mLogo.addChild(mFootballButton);
@@ -181,6 +188,7 @@ public class StateTitle extends BasicGameState
             GUIManager.use(mGUIManagerGlobal).addRootComponent(mParalax0);
             
             GUIManager.use(mGUIManagerCenterMain).addRootComponent(mNameField);
+            GUIManager.use(mGUIManagerCenterMain).addSelectable(mTourButton);
             GUIManager.use(mGUIManagerCenterMain).addSelectable(mAdventureButton);
             GUIManager.use(mGUIManagerCenterMain).addSelectable(mRaceButton);
             GUIManager.use(mGUIManagerCenterMain).addSelectable(mFootballButton);
@@ -194,12 +202,29 @@ public class StateTitle extends BasicGameState
             GUIManager.use(mGUIManagerLeftOptions).addSelectable(mLightingToggle);
             GUIManager.use(mGUIManagerLeftOptions).addSelectable(mBack);
             
+            GUIManager.use(mGUIManagerLeftTour).addSelectable(mBack);
             GUIManager.use(mGUIManagerLeftAdventure).addSelectable(mBack);
             GUIManager.use(mGUIManagerLeftRace).addSelectable(mBack);
             GUIManager.use(mGUIManagerLeftFootball).addSelectable(mBack);
             
             calcUI();
 
+            mTourButton.setCallback(new Runnable() {
+                public void run() {
+                    mState = MenuState.eLeft;
+                    for(Button b : GUIManager.use(mCurrentLeftGUIState).getSelectableList())
+                    {
+                        b.setIsVisible(false);
+                        b.setAcceptingInput(false);
+                    }
+                    for(Button b : GUIManager.use(mGUIManagerLeftTour).getSelectableList())
+                    {
+                        b.setIsVisible(true);
+                        b.setAcceptingInput(true);
+                    }
+                    mCurrentLeftGUIState = mGUIManagerLeftTour;
+                }
+            });
             mAdventureButton.setCallback(new Runnable() {
                 public void run() {
                     mState = MenuState.eLeft;
@@ -317,6 +342,7 @@ public class StateTitle extends BasicGameState
     GraphicalComponent mCarrotAnimation = null;
     GraphicalComponent mBrocAnimation = null;
     TextField mNameField = null;
+    Button mTourButton = null;
     Button mAdventureButton = null;
     Button mRaceButton = null;
     Button mFootballButton = null;
@@ -429,6 +455,9 @@ public class StateTitle extends BasicGameState
         
         mNameField.setLocalTranslation(new Vector2f(buttonPos.x, buttonPos.y));
         
+        mTourButton.setLocalTranslation(new Vector2f(buttonPos.x, buttonPos.y + 0*buttonOffset + 10)); //constant to provide extra offset for namefield
+        mTourButton.setDimensionsToText();
+        
         mAdventureButton.setLocalTranslation(new Vector2f(buttonPos.x, buttonPos.y + buttonOffset + 10)); //constant to provide extra offset for namefield
         mAdventureButton.setDimensionsToText();
         
@@ -455,12 +484,46 @@ public class StateTitle extends BasicGameState
     
     private void initLevelLists(final StateBasedGame _sbg)
     {
+        List<String> tourModeRef = Arrays.asList("Adventure tour", "Race tour");
+        final List<String> singlePlayerLevelProgression = Arrays.asList("Level1","Level2","single");
+        final List<String> raceLevelProgression = Arrays.asList("RaceReloaded","Ice_Race", "BigBox");
+        final StateGame.GameType tourModeGameTypes[] = new StateGame.GameType[2];
+        tourModeGameTypes[0] = StateGame.GameType.eAdventure;
+        tourModeGameTypes[1] = StateGame.GameType.eRace;
+        final String tourModeLevelProgressions[][] = new String[2][];
+        tourModeLevelProgressions[0] = (String[])singlePlayerLevelProgression.toArray();
+        tourModeLevelProgressions[1] = (String[])raceLevelProgression.toArray();
+        
         List<String> adventureLevelRefs = Arrays.asList("Level1","Level2","single");
         List<String> raceLevelRefs = Arrays.asList("RaceReloaded","Ice_Race", "BigBox");
         List<String> footballLevelRefs = Arrays.asList("The_Match");
         
         UnicodeFont levelListFont = sFontLoader.createFont("levelList", 52);
         int step = 0;
+        for(String ref : tourModeRef)
+        {
+            //create button
+            Button button = new Button(cont, new Vector2f(200,-300 + (60*step)), new Vector2f());
+            button.addText(cont, levelListFont, ref, true);
+            button.setDimensionsToText();
+            button.setIsVisible(false);
+            //add to paralax
+            mParalax0.addChild(button);
+            //add to GUIManager and internal list
+            GUIManager.use(mGUIManagerLeftTour).addSelectable(button);
+            mAdventureLevels.add(button);
+            //setup call back to load level
+            final Queue<String> levelProgression = new LinkedList<String>();
+            levelProgression.addAll(Arrays.asList(tourModeLevelProgressions[step]));
+            final StateGame.GameType gameType = tourModeGameTypes[step];
+            button.setCallback(new StartLevel("Level1") {public void run()
+            {
+                    StateGame.setGameType(gameType, levelProgression);
+                    _sbg.enterState(3, new FadeOutTransition(Color.black,100), new FadeInTransition(Color.black,100));
+                }});
+            step++;
+        }
+        step = 0;
         for(String ref : adventureLevelRefs)
         {
             //create button

@@ -14,9 +14,11 @@ import Graphics.Skins.sSkinFactory;
 import Level.sLevel;
 import States.Game.iGameMode;
 import World.sWorld;
+import java.util.ArrayDeque;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Queue;
 import org.newdawn.slick.Graphics;
 
 /**
@@ -29,8 +31,8 @@ public class AdventureMode implements iGameMode, iEventListener
     boolean mIsCompleted = false;
     int mTimer;
     iSkin mTaco = null;
-    String nextMap = null;
-    public AdventureMode(String _level)
+    Queue<String> mNextLevelProgression;
+    public AdventureMode(Queue<String> _nextLevelProgression)
     {
         HashMap params = new HashMap();
         params.put("ref", "tacoEnd");
@@ -38,7 +40,8 @@ public class AdventureMode implements iGameMode, iEventListener
         mTimer = 0;
         sEvents.subscribeToEvent("PlayerCreatedEvent", this);
         sEvents.subscribeToEvent("RaceWonEvent", this);
-        nextMap = sLevel.newLevel(_level);
+        mNextLevelProgression = new ArrayDeque<String>(_nextLevelProgression);
+        /*nextMap = */sLevel.newLevel(mNextLevelProgression.remove());
     }
     public iGameMode update(Graphics _graphics, float _time)
     {
@@ -47,12 +50,21 @@ public class AdventureMode implements iGameMode, iEventListener
             mTimer = 0;
             mIsCompleted = false;
             cleanup();
-            if(nextMap == null)
+            /*if(nextMap == null)
             {
                 //FIXME: EXIT TO TITLE
             }
             else
-                nextMap = sLevel.newLevel(nextMap);
+                nextMap = sLevel.newLevel(nextMap);*/
+            if (mNextLevelProgression.isEmpty())
+            {
+                //FIXME: EXIT TO TITLE
+                sLevel.newLevel("Level1"); /// This is le coon
+            }
+            else
+            {
+                sLevel.newLevel(mNextLevelProgression.remove());
+            }
         }
         mTimer++;
         sLevel.update();
