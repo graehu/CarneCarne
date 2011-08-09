@@ -235,11 +235,6 @@ class AIEntityState
             }
             case eStanding:
             {
-                if(mTimer > 180) //3 seconds
-                {
-                    changeState(State.eIdle);
-                    update();
-                }
                 if (mContactCount == 0)
                 {
                     changeState(State.eFalling);
@@ -257,6 +252,11 @@ class AIEntityState
                 {
                     changeState(State.eIce);
                 }
+                else if(mTimer > 180) //3 seconds
+                {
+                    changeState(State.eIdle);
+                    update();
+                }
                 break;
             }
             case eSwimming:
@@ -270,11 +270,6 @@ class AIEntityState
             }
             case eStandingOnTar:
             {
-                if(mTimer > 180) //3 seconds
-                {
-                    changeState(State.eIdle);
-                    update();
-                }
                 if (mTarCount == 0)
                 {
                     changeState(State.eStillCoveredInTar);
@@ -284,26 +279,31 @@ class AIEntityState
                 {
                     changeState(State.eSwimming);
                 }
-                break;
-            }
-            case eStillCoveredInTar:
-            {
-                if(mTimer > 180) //3 seconds
+                else if(mTimer > 180) //3 seconds
                 {
                     changeState(State.eIdle);
                     update();
                 }
+                break;
+            }
+            case eStillCoveredInTar:
+            {
                 if (mTarCount != 0)
                 {
                     changeState(State.eStandingOnTar);
                 }
-                else
+                else if(mTimer <= 180) //3 seconds
                 {
                     if (mTimer == tarStickingTimer)
                     {
                         changeState(State.eFalling);
                         update();
                     }
+                }
+                else 
+                {
+                    changeState(State.eIdle);
+                    update();
                 }
                 break;
             }
