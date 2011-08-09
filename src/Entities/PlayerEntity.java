@@ -18,8 +18,6 @@ import GUI.HUD.Reticle;
 import GUI.HUD.Revolver;
 import Graphics.Particles.sParticleManager;
 import Graphics.Skins.sSkinFactory;
-import Graphics.Sprites.iSprite;
-import Graphics.Sprites.sSpriteFactory;
 import Level.sLevel.TileType;
 import Score.RaceScoreTracker;
 import Score.ScoreTracker;
@@ -34,6 +32,7 @@ import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Fixture;
 import org.jbox2d.dynamics.joints.Joint;
 import org.newdawn.slick.Color;
+import org.newdawn.slick.UnicodeFont;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Vector2f;
 
@@ -43,6 +42,8 @@ import org.newdawn.slick.geom.Vector2f;
  */
 public class PlayerEntity extends AIEntity
 {
+    protected   boolean             mDisplayPlayerNumber = true;
+    protected   int                 mPlayerNumberTimer = 100;
     protected   int                 mPlayerNumber = 0;
     protected   String              mSkinType = "mexican";
     protected   String              mBodyType = "bdy";
@@ -136,6 +137,14 @@ public class PlayerEntity extends AIEntity
         params.put("pos", mBody.getPosition().sub(new Vec2(0, 1)).mul(64.0f));
         params.put("ref", "characters/Player" + (((PlayerInputController)mController).mPlayer+1));
         //mTeamRender = sSpriteFactory.create("simple", params, true);
+    }
+    public void setDisplayPlayerNumber(boolean _display)
+    {
+        if(_display)
+            mPlayerNumberTimer = 100;
+        else
+            mPlayerNumberTimer = 0;
+        mDisplayPlayerNumber = _display;
     }
     public void setPlayerNumber(int _num){mPlayerNumber = _num;}
     public int getPlayerNumber(){return mPlayerNumber;}
@@ -326,6 +335,8 @@ public class PlayerEntity extends AIEntity
     @Override
     protected void subUpdate()
     {
+        if(mDisplayPlayerNumber)
+            mPlayerNumberTimer--;
         /*if (mTeamRender != null)
         {
             //mTeamRender.setPosition(mBody.getPosition().sub(new Vec2(0, 64)).mul(64.0f));
@@ -432,7 +443,6 @@ public class PlayerEntity extends AIEntity
     {
         mSkin.setRotation(mBodyType, getBody().getAngle()*(180/(float)Math.PI));
         super.render();
-        //mPlayerNumberDisplay.render(root2, root2);
     }
     
     public void renderHUD()
@@ -534,6 +544,12 @@ public class PlayerEntity extends AIEntity
             }
             
             mReticle.render(); //always render ontop
+            
+            if(mPlayerNumberTimer > 0)
+            {
+                UnicodeFont number = sFontLoader.createFont("default", 32);
+                sGraphicsManager.drawString("Player: "+mPlayerNumber, 0.5f, 0.5f, Color.white, number, true);
+            }
             
             GUIManager.use(mGUIManager).render(false);
         }

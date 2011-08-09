@@ -66,7 +66,7 @@ public class StateMenu extends BasicGameState implements iEventListener
         mResumeButton = new Button(_gc, new Vector2f(720,400), new Vector2f());
         mResumeButton.addText(_gc, menuFont, "Resume", true);
         mResumeButton.setButtonStateColors(Color.gray, null, null);
-        mResumeButton.setCallback(new Runnable() { public void run() 
+        mResumeButton.setSelectedCallback(new Runnable() { public void run() 
         {
             returnToGame();
         }});
@@ -74,7 +74,7 @@ public class StateMenu extends BasicGameState implements iEventListener
         mRestartLevel = new Button(_gc, new Vector2f(650,500), new Vector2f());
         mRestartLevel.addText(_gc, menuFont, "Restart Level", true);
         mRestartLevel.setButtonStateColors(Color.gray, null, null);
-        mRestartLevel.setCallback(new Runnable() { public void run() 
+        mRestartLevel.setSelectedCallback(new Runnable() { public void run() 
         {
             StateGame.resetCurrentMode();
             returnToGame();
@@ -83,7 +83,7 @@ public class StateMenu extends BasicGameState implements iEventListener
         mExitToTitleButton = new Button(_gc, new Vector2f(650,600), new Vector2f());
         mExitToTitleButton.addText(_gc, menuFont, "Exit To Title", true);
         mExitToTitleButton.setButtonStateColors(Color.gray, null, null);
-        mExitToTitleButton.setCallback(new Runnable() { public void run() 
+        mExitToTitleButton.setSelectedCallback(new Runnable() { public void run() 
         {
             exitToTitle();
         }});

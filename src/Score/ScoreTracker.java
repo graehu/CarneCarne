@@ -123,10 +123,10 @@ abstract public class ScoreTracker
         }
         mRaceWinnerImage.setIsVisible(true);
         mWinnerTimer = 180;
-        sParticleManager.createFirework("Green", new Vec2(500,500), new Vec2(-5,0));
-        sParticleManager.createFirework("Green", new Vec2(500,500), new Vec2(5,0));
-        sParticleManager.createFirework("Green", new Vec2(500,500), new Vec2(0,-5));
-        sParticleManager.createFirework("Green", new Vec2(500,500), new Vec2(0,5));
+        sParticleManager.createFirework("Green", _player.getBody().getPosition().mul(64).add(new Vec2(32, 80)), new Vec2(0.5f,-3));
+        sParticleManager.createFirework("Green", _player.getBody().getPosition().mul(64).add(new Vec2(32, 80)), new Vec2(1.5f,-2));
+        sParticleManager.createFirework("Green", _player.getBody().getPosition().mul(64).add(new Vec2(32, 80)), new Vec2(-0.5f,-3));
+        sParticleManager.createFirework("Green", _player.getBody().getPosition().mul(64).add(new Vec2(32, 80)), new Vec2(-1.5f,-2));
     }
     public void scoreGoal()
     {

@@ -24,6 +24,7 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.Color;
+import org.newdawn.slick.Font;
 import org.newdawn.slick.ShapeFill;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
@@ -233,12 +234,20 @@ public class sGraphicsManager {
     }
     public static void drawString(String _str, float _x, float _y, Color _color)
     {
+        drawString(_str, _x, _y, _color, null, false);        
+    }
+    public static void drawString(String _str, float _x, float _y, Color _color, Font _font, boolean _center)
+    {
+        if(_font == null)
+            _font = mGameContainer.getGraphics().getFont();
         float xPos = (mScreenDimensions.x * _x);
         float yPos = (mScreenDimensions.y * _y);
-        Color temp = mGameContainer.getGraphics().getColor();
-        mGameContainer.getGraphics().setColor(_color);
-        mGameContainer.getGraphics().drawString(_str, xPos, yPos);
-        mGameContainer.getGraphics().setColor(temp);
+        if(_center)
+        {
+            xPos -= _font.getWidth(_str) * 0.5f;
+            yPos -= _font.getHeight(_str) * 0.5f;
+        }
+        _font.drawString(xPos, yPos,_str,_color);
     }
 
     public static void toggleFullscreen()
