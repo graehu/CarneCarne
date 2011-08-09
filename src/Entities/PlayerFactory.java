@@ -73,9 +73,10 @@ public class PlayerFactory implements iEntityFactory {
             iSkin skin = sSkinFactory.create("character", params);
             
             skin.activateSubSkin("bdy", false, 0);
-            skin.activateSubSkin("Player" + (playerNum+1), false, 0);
+            //skin.activateSubSkin("Player" + (playerNum+1), false, 0); //this is only activated for football (see FootballMode)
 
             PlayerEntity entity = new PlayerEntity(skin, checkPoint);
+            entity.setPlayerNumber(playerNum+1); //we need to set the player number to activate it based on gamemode
             HashMap parameters = new HashMap();
             parameters.put("position", position);
             parameters.put("aIEntity", entity);

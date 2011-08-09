@@ -153,7 +153,7 @@ public class PlayerInputController extends iAIController implements iEventListen
         if (mGrabImmunityTimer != 0)
             mGrabImmunityTimer--;
         mLeftStickValueThisFrame = mRightStickValueThisFrame = 0.0f;
-        if(idleTimer == -1)
+        if(idleTimer <= -1)
             mEntity.stopIdle();
         if (mStunTimer != 0)
             mStunTimer--;
@@ -161,7 +161,7 @@ public class PlayerInputController extends iAIController implements iEventListen
         mTongueState.tick(mEntity);
         ((PlayerEntity)mEntity).setDirection(mPlayerDir);
         idleTimer++;
-        if(mEntity.isIdle())
+        if(mEntity.isIdle() && mSkinRef.equals("mexican"))
         {
             if(idleTimer >= idleDelay)
             {
@@ -171,8 +171,8 @@ public class PlayerInputController extends iAIController implements iEventListen
                     {
                         //ensure other animations are deactivated
                         mEntity.mSkin.deactivateSubSkin(mSkinRef+"_"+mFaceDirAnim);
-                        mEntity.mSkin.deactivateSubSkin("idle_burp2");
                         mEntity.mSkin.activateSubSkin("idle_burp2", false, 1.0f);
+                        mEntity.mSkin.restart();
                     }
                 }
                 else
@@ -181,8 +181,8 @@ public class PlayerInputController extends iAIController implements iEventListen
                     {
                         //ensure other animations are deactivated
                         mEntity.mSkin.deactivateSubSkin(mSkinRef+"_"+mFaceDirAnim);
-                        mEntity.mSkin.deactivateSubSkin("idle_burp2_right");
                         mEntity.mSkin.activateSubSkin("idle_burp2_right", false, 1.0f);
+                        mEntity.mSkin.restart();
                     }
                 }
                 idleDelay = rand.nextInt(360) + 180; //min 5 second
@@ -322,7 +322,7 @@ public class PlayerInputController extends iAIController implements iEventListen
             return true;
         if(mEntity.isIdle())
             ((PlayerEntity)mEntity).stopIdle();
-        if (mStunTimer == 0)
+        if (mStunTimer <= 0)
         {
             mEntity.mSkin.deactivateSubSkin("pea_stun_large");
             if (_event.getType().equals("RightStickEvent"))

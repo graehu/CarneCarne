@@ -43,6 +43,7 @@ import org.newdawn.slick.geom.Vector2f;
  */
 public class PlayerEntity extends AIEntity
 {
+    protected   int                 mPlayerNumber = 0;
     protected   String              mSkinType = "mexican";
     protected   String              mBodyType = "bdy";
     private     CheckPointZone      mOriginalSpawnPoint;
@@ -135,6 +136,8 @@ public class PlayerEntity extends AIEntity
         params.put("ref", "characters/Player" + (((PlayerInputController)mController).mPlayer+1));
         //mTeamRender = sSpriteFactory.create("simple", params, true);
     }
+    public void setPlayerNumber(int _num){mPlayerNumber = _num;}
+    public int getPlayerNumber(){return mPlayerNumber;}
     @Override
     public void setController(iAIController _controller)
     {
