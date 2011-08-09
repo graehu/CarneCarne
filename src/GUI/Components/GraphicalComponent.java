@@ -47,13 +47,18 @@ public class GraphicalComponent extends iComponent{
     
     public void setImage(String _ref)
     {
-        try 
+        if(_ref == null)
+            mImage = null;
+        else
         {
-            mImage = new Image(_ref);
-            mImage.setFilter(Image.FILTER_LINEAR); //for smooth scaling
-        } 
-        catch (SlickException ex) {
-            Logger.getLogger(GraphicalComponent.class.getName()).log(Level.SEVERE, null, ex);
+            try 
+            {
+                mImage = new Image(_ref);
+                mImage.setFilter(Image.FILTER_LINEAR); //for smooth scaling
+            } 
+            catch (SlickException ex) {
+                Logger.getLogger(GraphicalComponent.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
     

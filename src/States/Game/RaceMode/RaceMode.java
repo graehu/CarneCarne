@@ -34,6 +34,7 @@ public class RaceMode implements iGameMode, iEventListener
     int mTimer;
     int mBestTime;
     iSkin mRaceRender = null;
+    boolean mIsRaceActive = false;
     public RaceMode(String _level)
     {
         mTimer = mBestTime = 0;
@@ -70,7 +71,7 @@ public class RaceMode implements iGameMode, iEventListener
         }
         if (mBestTime != 0)
         {
-            sGraphicsManager.drawString("Best time: " + mBestTime, 0, 0);
+            sGraphicsManager.drawString("Best time: " + mBestTime, 0, 0.1f);
         }
     }
 
@@ -91,6 +92,7 @@ public class RaceMode implements iGameMode, iEventListener
         }
         else if (_event.getName().equals("BarrierOpenEvent" + "StartGate"))
         {
+            mIsRaceActive = true;
             HashMap map = new HashMap();
             map.put("ref", "CountdownGo");
             mRaceRender = sSkinFactory.create("static", map);

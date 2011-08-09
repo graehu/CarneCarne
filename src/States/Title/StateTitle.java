@@ -89,9 +89,9 @@ public class StateTitle extends BasicGameState
             sSound.loadFile("menu1", "assets/music/Menu1.ogg");
 
             //initialise fonts
-            mUIFont = sFontLoader.createFont("manastirka",72);    
+            mUIFont = sFontLoader.createFont("title",72);    
             mUIFont.setPaddingAdvanceX(-2);
-            mInputFont = sFontLoader.createFont("BIRTH OF A HERO", 72, false, true); 
+            mInputFont = sFontLoader.createFont("title", 72, false, true); 
 
             //initialise background & foreground
             mBackground = new GraphicalComponent(_gc);
@@ -132,7 +132,14 @@ public class StateTitle extends BasicGameState
             mParalax1.addChild(mBrocAnimation);
             mParalax0.addChild(mLogo);
             
+            //create screenshot stuff
+            Vector2f shPos = new Vector2f(750,-350);
+            mScreenShotWindow = new GraphicalComponent(cont, new Vector2f(shPos.x,shPos.y), new Vector2f());
+            mScreenShotWindow.setImage("ui/title/screenShotWindow.png");
+            mScreenShot = new GraphicalComponent(cont, new Vector2f(100,90), new Vector2f());
             
+            mParalax0.addChild(mScreenShotWindow);
+            mScreenShotWindow.addChild(mScreenShot);
 
             //initialise buttons
             Vector2f buttonDim = new Vector2f(200/mScale,50/mScale);
@@ -157,16 +164,19 @@ public class StateTitle extends BasicGameState
             mQuitButton = new Button(_gc, new Vector2f(), buttonDim);
             mQuitButton.addText(_gc, mUIFont, "Quit", true);     
             
-            mParticlesToggle = new ToggleButton(_gc, new Vector2f(200,-200), buttonDim, true);
+            mParticlesToggle = new ToggleButton(_gc, new Vector2f(), buttonDim, true);
             mParticlesToggle.addText(_gc, mUIFont, "ParticlES On", true);
             mParticlesToggle.setToggleText("ParticlES On", "ParticlES Off");
+            mParticlesToggle.setLocalTranslation(new Vector2f(400 - mParticlesToggle.getWidth()*0.5f,-300));
             
-            mLightingToggle = new ToggleButton(_gc, new Vector2f(200,-125), buttonDim, true);
+            mLightingToggle = new ToggleButton(_gc, new Vector2f(), buttonDim, true);
             mLightingToggle.addText(_gc, mUIFont, "Lighting On", true);
             mLightingToggle.setToggleText("Lighting On", "Lighting Off");
+            mLightingToggle.setLocalTranslation(new Vector2f(400 - mLightingToggle.getWidth()*0.5f,-225));
             
-            mBack = new Button(_gc, new Vector2f(200,-50), buttonDim);
+            mBack = new Button(_gc, new Vector2f(), buttonDim);
             mBack.addText(_gc, mUIFont, "BAck", true); //lowercase 'a' is crap
+            mBack.setLocalTranslation(new Vector2f(400 - mBack.getWidth()*0.5f,-50));
             
             mParalax0.addChild(mParticlesToggle);
             mParalax0.addChild(mLightingToggle);
@@ -209,7 +219,7 @@ public class StateTitle extends BasicGameState
             
             calcUI();
 
-            mTourButton.setCallback(new Runnable() {
+            mTourButton.setSelectedCallback(new Runnable() {
                 public void run() {
                     mState = MenuState.eLeft;
                     for(Button b : GUIManager.use(mCurrentLeftGUIState).getSelectableList())
@@ -222,10 +232,12 @@ public class StateTitle extends BasicGameState
                         b.setIsVisible(true);
                         b.setAcceptingInput(true);
                     }
+                    mScreenShotWindow.setIsVisible(false);
+                    mScreenShot.setIsVisible(false);
                     mCurrentLeftGUIState = mGUIManagerLeftTour;
                 }
             });
-            mAdventureButton.setCallback(new Runnable() {
+            mAdventureButton.setSelectedCallback(new Runnable() {
                 public void run() {
                     mState = MenuState.eLeft;
                     for(Button b : GUIManager.use(mCurrentLeftGUIState).getSelectableList())
@@ -238,10 +250,12 @@ public class StateTitle extends BasicGameState
                         b.setIsVisible(true);
                         b.setAcceptingInput(true);
                     }
+                    mScreenShotWindow.setIsVisible(true);
+                    mScreenShot.setIsVisible(true);
                     mCurrentLeftGUIState = mGUIManagerLeftAdventure;
                 }
             });
-            mRaceButton.setCallback(new Runnable() {
+            mRaceButton.setSelectedCallback(new Runnable() {
                 public void run() {
                     mState = MenuState.eLeft;
                     for(Button b : GUIManager.use(mCurrentLeftGUIState).getSelectableList())
@@ -254,10 +268,12 @@ public class StateTitle extends BasicGameState
                         b.setIsVisible(true);
                         b.setAcceptingInput(true);
                     }
+                    mScreenShotWindow.setIsVisible(true);
+                    mScreenShot.setIsVisible(true);
                     mCurrentLeftGUIState = mGUIManagerLeftRace;
                 }
             });
-            mFootballButton.setCallback(new Runnable() {
+            mFootballButton.setSelectedCallback(new Runnable() {
                 public void run() {
                     mState = MenuState.eLeft;
                     for(Button b : GUIManager.use(mCurrentLeftGUIState).getSelectableList())
@@ -270,10 +286,12 @@ public class StateTitle extends BasicGameState
                         b.setIsVisible(true);
                         b.setAcceptingInput(true);
                     }
+                    mScreenShotWindow.setIsVisible(true);
+                    mScreenShot.setIsVisible(true);
                     mCurrentLeftGUIState = mGUIManagerLeftFootball;
                 }
             });
-            mOptionsButton.setCallback(new Runnable() {
+            mOptionsButton.setSelectedCallback(new Runnable() {
                 public void run() {
                     mState = MenuState.eLeft;
                     for(Button b : GUIManager.use(mCurrentLeftGUIState).getSelectableList())
@@ -286,15 +304,17 @@ public class StateTitle extends BasicGameState
                         b.setIsVisible(true);
                         b.setAcceptingInput(true);
                     }
+                    mScreenShotWindow.setIsVisible(false);
+                    mScreenShot.setIsVisible(false);
                     mCurrentLeftGUIState = mGUIManagerLeftOptions;
                 }
             });
-            mHighScoresButton.setCallback(new Runnable() {
+            mHighScoresButton.setSelectedCallback(new Runnable() {
                 public void run() {
                     //mState = MenuState.eRight; //FIXME
                 }
             });
-            mQuitButton.setCallback(new Runnable() {
+            mQuitButton.setSelectedCallback(new Runnable() {
                 public void run() {
                     _gc.exit();
                 }
@@ -310,11 +330,14 @@ public class StateTitle extends BasicGameState
             mLightingToggle.setOffCallback(new Runnable() { public void run() {
                     sGraphicsManager.setAllowShaders(false);}});
             
-            mBack.setCallback(new Runnable() {
+            mBack.setSelectedCallback(new Runnable() {
                 public void run() {
                     mState = MenuState.eCenter;
                 }
             });
+            mBack.setOnHoverCallback(new Runnable() {public void run() {
+                    mScreenShot.setImage(null);
+                }});
             
             initLevelLists(_sbg);
         }
@@ -342,6 +365,8 @@ public class StateTitle extends BasicGameState
     GraphicalComponent mCarrotAnimation = null;
     GraphicalComponent mBrocAnimation = null;
     TextField mNameField = null;
+    GraphicalComponent mScreenShotWindow = null;
+    GraphicalComponent mScreenShot = null;
     Button mTourButton = null;
     Button mAdventureButton = null;
     Button mRaceButton = null;
@@ -450,30 +475,30 @@ public class StateTitle extends BasicGameState
         mForeground.setLocalTranslation(vOffset);
         
         //Vector2f buttonPos = new Vector2f(mBackground.getWidth() * 0.6f, mOffset + (mBackground.getHeight() * 0.25f));
-        Vector2f buttonPos = new Vector2f(840,120);
+        Vector2f buttonPos = new Vector2f(1000,120);
         int buttonOffset = (int)75;
         
-        mNameField.setLocalTranslation(new Vector2f(buttonPos.x, buttonPos.y));
+        mNameField.setLocalTranslation(new Vector2f(buttonPos.x - mNameField.getWidth()*0.5f, buttonPos.y));
         
-        mTourButton.setLocalTranslation(new Vector2f(buttonPos.x, buttonPos.y + 0*buttonOffset + 10)); //constant to provide extra offset for namefield
+        mTourButton.setLocalTranslation(new Vector2f(buttonPos.x - mTourButton.getWidth()*0.5f, buttonPos.y + 0*buttonOffset + 10)); //constant to provide extra offset for namefield
         mTourButton.setDimensionsToText();
         
-        mAdventureButton.setLocalTranslation(new Vector2f(buttonPos.x, buttonPos.y + buttonOffset + 10)); //constant to provide extra offset for namefield
+        mAdventureButton.setLocalTranslation(new Vector2f(buttonPos.x - mAdventureButton.getWidth()*0.5f, buttonPos.y + buttonOffset + 10)); //constant to provide extra offset for namefield
         mAdventureButton.setDimensionsToText();
         
-        mRaceButton.setLocalTranslation(new Vector2f(buttonPos.x, buttonPos.y + 2*buttonOffset));
+        mRaceButton.setLocalTranslation(new Vector2f(buttonPos.x - mRaceButton.getWidth()*0.5f, buttonPos.y + 2*buttonOffset));
         mRaceButton.setDimensionsToText();
         
-        mFootballButton.setLocalTranslation(new Vector2f(buttonPos.x, buttonPos.y + 3*buttonOffset - 10));
+        mFootballButton.setLocalTranslation(new Vector2f(buttonPos.x - mFootballButton.getWidth()*0.5f, buttonPos.y + 3*buttonOffset - 10));
         mFootballButton.setDimensionsToText();
         
-        mOptionsButton.setLocalTranslation(new Vector2f(buttonPos.x, buttonPos.y + 4*buttonOffset - 20));
+        mOptionsButton.setLocalTranslation(new Vector2f(buttonPos.x - mOptionsButton.getWidth()*0.5f, buttonPos.y + 4*buttonOffset - 20));
         mOptionsButton.setDimensionsToText();
         
-        mHighScoresButton.setLocalTranslation(new Vector2f(buttonPos.x, buttonPos.y + 5*buttonOffset - 30)); //FIXME: booooooooooodge
+        mHighScoresButton.setLocalTranslation(new Vector2f(buttonPos.x - mHighScoresButton.getWidth()*0.5f, buttonPos.y + 5*buttonOffset - 30)); //FIXME: booooooooooodge
         mHighScoresButton.setDimensionsToText();
         
-        mQuitButton.setLocalTranslation(new Vector2f(buttonPos.x, buttonPos.y + 6*buttonOffset - 40)); //FIXME: booooooooooodge
+        mQuitButton.setLocalTranslation(new Vector2f(buttonPos.x - mQuitButton.getWidth()*0.5f, buttonPos.y + 6*buttonOffset - 40)); //FIXME: booooooooooodge
         mQuitButton.setDimensionsToText();
         
         float paralaxOffset = -34.0f; //tweak
@@ -498,25 +523,26 @@ public class StateTitle extends BasicGameState
         List<String> raceLevelRefs = Arrays.asList("RaceReloaded","Ice_Race", "BigBox");
         List<String> footballLevelRefs = Arrays.asList("The_Match");
         
-        UnicodeFont levelListFont = sFontLoader.createFont("levelList", 52);
+        UnicodeFont levelListFont = sFontLoader.createFont("title", 52);
         int step = 0;
         for(String ref : tourModeRef)
         {
             //create button
-            Button button = new Button(cont, new Vector2f(200,-300 + (60*step)), new Vector2f());
+            Button button = new Button(cont, new Vector2f(), new Vector2f());
             button.addText(cont, levelListFont, ref, true);
             button.setDimensionsToText();
             button.setIsVisible(false);
+            button.setLocalTranslation(new Vector2f(400 - button.getWidth()*0.5f, -300 + (60*step)));
             //add to paralax
             mParalax0.addChild(button);
             //add to GUIManager and internal list
             GUIManager.use(mGUIManagerLeftTour).addSelectable(button);
             mAdventureLevels.add(button);
-            //setup call back to load level
+            //set up call back to load level
             final Queue<String> levelProgression = new LinkedList<String>();
             levelProgression.addAll(Arrays.asList(tourModeLevelProgressions[step]));
             final StateGame.GameType gameType = tourModeGameTypes[step];
-            button.setCallback(new StartLevel("Level1") {public void run()
+            button.setSelectedCallback(new StartLevel("Level1") {public void run()
             {
                     StateGame.setGameType(gameType, levelProgression);
                     _sbg.enterState(3, new FadeOutTransition(Color.black,100), new FadeInTransition(Color.black,100));
@@ -527,19 +553,23 @@ public class StateTitle extends BasicGameState
         for(String ref : adventureLevelRefs)
         {
             //create button
-            Button button = new Button(cont, new Vector2f(200,-300 + (60*step)), new Vector2f());
+            Button button = new Button(cont, new Vector2f(), new Vector2f());
             button.addText(cont, levelListFont, ref, true);
             button.setDimensionsToText();
             button.setIsVisible(false);
+            button.setLocalTranslation(new Vector2f(400 - button.getWidth()*0.5f, -300 + (60*step)));
             //add to paralax
             mParalax0.addChild(button);
             //add to GUIManager and internal list
             GUIManager.use(mGUIManagerLeftAdventure).addSelectable(button);
             mAdventureLevels.add(button);
-            //setup call back to load level
-            button.setCallback(new StartLevel(ref) {public void run() {
+            //set up call back to load level
+            button.setSelectedCallback(new StartLevel(ref) {public void run() {
                     StateGame.setGameType(StateGame.GameType.eAdventure, mRef);
                     _sbg.enterState(3, new FadeOutTransition(Color.black,100), new FadeInTransition(Color.black,100));
+                }});
+            button.setOnHoverCallback(new StartLevel(ref) {public void run() {
+                    mScreenShot.setImage("ui/title/screenShots/"+mRef+".png");
                 }});
             step++;
         }
@@ -547,19 +577,23 @@ public class StateTitle extends BasicGameState
         for(String ref : raceLevelRefs)
         {
             //create button
-            Button button = new Button(cont, new Vector2f(200,-300 + (60*step)), new Vector2f());
+            Button button = new Button(cont, new Vector2f(), new Vector2f());
             button.addText(cont, levelListFont, ref, true);
             button.setDimensionsToText();
             button.setIsVisible(false);
+            button.setLocalTranslation(new Vector2f(400 - button.getWidth()*0.5f, -300 + (60*step)));
             //add to paralax
             mParalax0.addChild(button);
             //add to GUIManager and internal list
             GUIManager.use(mGUIManagerLeftRace).addSelectable(button);
             mRaceLevels.add(button);
-            //setup call back to load level
-            button.setCallback(new StartLevel(ref) {public void run() {
+            //set up call back to load level
+            button.setSelectedCallback(new StartLevel(ref) {public void run() {
                     StateGame.setGameType(StateGame.GameType.eRace, mRef);
                     _sbg.enterState(3, new FadeOutTransition(Color.black,100), new FadeInTransition(Color.black,100));
+                }});
+            button.setOnHoverCallback(new StartLevel(ref) {public void run() {
+                    mScreenShot.setImage("ui/title/screenShots/"+mRef+".png");
                 }});
             step++;
         }
@@ -567,19 +601,23 @@ public class StateTitle extends BasicGameState
         for(String ref : footballLevelRefs)
         {
             //create button
-            Button button = new Button(cont, new Vector2f(200,-300 + (60*step)), new Vector2f());
+            Button button = new Button(cont, new Vector2f(), new Vector2f());
             button.addText(cont, levelListFont, ref, true);
             button.setDimensionsToText();
             button.setIsVisible(false);
+            button.setLocalTranslation(new Vector2f(400 - button.getWidth()*0.5f, -300 + (60*step)));
             //add to paralax
             mParalax0.addChild(button);
             //add to GUIManager and internal list
             GUIManager.use(mGUIManagerLeftFootball).addSelectable(button);
             mFootballLevels.add(button);
-            //setup call back to load level
-            button.setCallback(new StartLevel(ref) {public void run() {
+            //set up call back to load level
+            button.setSelectedCallback(new StartLevel(ref) {public void run() {
                     StateGame.setGameType(StateGame.GameType.eFootball, mRef);
                     _sbg.enterState(3, new FadeOutTransition(Color.black,100), new FadeInTransition(Color.black,100));
+                }});
+            button.setOnHoverCallback(new StartLevel(ref) {public void run() {
+                    mScreenShot.setImage("ui/title/screenShots/"+mRef+".png");
                 }});
             step++;
         }

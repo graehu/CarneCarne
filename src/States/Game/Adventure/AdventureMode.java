@@ -43,38 +43,46 @@ public class AdventureMode implements iGameMode, iEventListener
         mNextLevelProgression = new ArrayDeque<String>(_nextLevelProgression);
         /*nextMap = */sLevel.newLevel(mNextLevelProgression.remove());
     }
-    public iGameMode update(Graphics _graphics, float _time)
+    public iGameMode update(Graphics _graphics, float _dt)
     {
         if(mIsCompleted)
         {
-            mTimer = 0;
-            mIsCompleted = false;
-            cleanup();
-            /*if(nextMap == null)
+            mTimer+= _dt;
+            if(mTimer >= 5000) //5 seconds
             {
-                //FIXME: EXIT TO TITLE
-            }
-            else
-                nextMap = sLevel.newLevel(nextMap);*/
-            if (mNextLevelProgression.isEmpty())
-            {
-                //FIXME: EXIT TO TITLE
-                sLevel.newLevel("Level1"); /// This is le coon
-            }
-            else
-            {
-                sLevel.newLevel(mNextLevelProgression.remove());
+                mTimer = 0;
+                mIsCompleted = false;
+                cleanup();
+                /*if(nextMap == null)
+                {
+                    //FIXME: EXIT TO TITLE
+                }
+                else
+                    nextMap = sLevel.newLevel(nextMap);*/
+                if (mNextLevelProgression.isEmpty())
+                {
+                    //FIXME: EXIT TO TITLE
+                    return null;
+                }
+                else
+                {
+                    sLevel.newLevel(mNextLevelProgression.remove());
+                }
             }
         }
-        mTimer++;
+        
         sLevel.update();
-        sWorld.update(_graphics, _time);
+        sWorld.update(_graphics, _dt);
         sEvents.processEvents();
         return this;
     }
     public void render(Graphics _graphics)
     {
         sWorld.getCamera().render(_graphics);
+        if(mIsCompleted)
+        {
+            //render happy finish stuff here
+        }
     }
 
     public boolean trigger(iEvent _event)

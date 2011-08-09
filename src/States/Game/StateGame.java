@@ -112,6 +112,9 @@ public class StateGame extends BasicGameState implements iEventListener {
         if(mGameMode != null)
             mGameMode = mGameMode.update(_gc.getGraphics(), _delta);
         
+        if(mGameMode == null) //this is to catch requests for exiting to title by the game mode
+            _sbg.enterState(2,new FadeOutTransition(Color.black,100), new FadeInTransition(Color.black,100));
+        
         //update particles
         sParticleManager.update(_delta);
         
@@ -127,7 +130,8 @@ public class StateGame extends BasicGameState implements iEventListener {
             subInit();
         }
         Vec2 s = sGraphicsManager.getScreenDimensions();
-        mGameMode.render(_grphcs);
+        if(mGameMode!=null)
+            mGameMode.render(_grphcs);
         //cleanup texture data
         //screen.flushPixelData();
         GUIManager.get().render(false);

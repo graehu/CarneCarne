@@ -41,7 +41,8 @@ public class Button extends GraphicalComponent{
     Image mSelectedImage = null;
     Color mSelectedColor = new Color(210,187,21);
     ButtonState mState = ButtonState.eDefault;
-    Runnable mCallback = null;    
+    Runnable mSelectedCallback = null;    
+    Runnable mOnHoverCallback = null; 
     
     public void setButtonStateColors(Color _default, Color _hover, Color _selected)
     {
@@ -63,9 +64,13 @@ public class Button extends GraphicalComponent{
             mSelectedImage = _selected;
         updateButtonPropeties();
     }
-    public void setCallback(Runnable _callback)
+    public void setSelectedCallback(Runnable _callback)
     {
-        mCallback = _callback;
+        mSelectedCallback = _callback;
+    }
+    public void setOnHoverCallback(Runnable _callback)
+    {
+        mOnHoverCallback = _callback;
     }
 
     protected void changeState(ButtonState _newState)
@@ -73,6 +78,25 @@ public class Button extends GraphicalComponent{
         //do not process if already in _newState
         if(mState == _newState)
             return;
+        switch(_newState)
+        {
+            case eDefault:
+            {
+                break;
+            }
+            case eHoverOver:
+            {
+                if(mState.equals(ButtonState.eSelected) && mSelectedCallback != null) //when comming from slected (on mouse release)
+                    mSelectedCallback.run();
+                else if(mOnHoverCallback != null)
+                    mOnHoverCallback.run();
+                break;
+            }
+            case eSelected:
+            {
+                break;
+            }
+        }
         mState = _newState;
         updateButtonPropeties();
     }
@@ -123,8 +147,8 @@ public class Button extends GraphicalComponent{
     public void select()
     {
         changeState(ButtonState.eSelected);
-        if(mCallback != null)
-            mCallback.run();
+        if(mSelectedCallback != null)
+            mSelectedCallback.run();
         //changeState(ButtonState.eHoverOver);
     }
     @Override
@@ -173,10 +197,7 @@ public class Button extends GraphicalComponent{
                 {
                     Shape myshape = getShape();
                     if(myshape.contains(x, y))
-                    {
                         changeState(ButtonState.eSelected);
-                        //consumeEvent();
-                    }
                     else
                         changeState(ButtonState.eDefault);
                 }
@@ -195,12 +216,7 @@ public class Button extends GraphicalComponent{
                 {
                     Shape myshape = getShape();
                     if(myshape.contains(x, y))
-                    {
-                        if(mCallback != null && mState.equals(ButtonState.eSelected))
-                            mCallback.run();
                         changeState(ButtonState.eHoverOver);
-                        //consumeEvent();
-                    }
                     else
                         changeState(ButtonState.eDefault);
                 }

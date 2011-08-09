@@ -54,12 +54,12 @@ public class ToggleButton extends Button
         mToggleState = !mToggleState;
         if(mToggleState)
         {
-            mCallback = mOnCallback;
+            mSelectedCallback = mOnCallback;
             mText.setTextString(mOnText);
         }
         else
         {
-            mCallback = mOffCallback;
+            mSelectedCallback = mOffCallback;
             mText.setTextString(mOffText);
         }
     }
