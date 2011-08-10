@@ -11,7 +11,6 @@ import Entities.Entity;
 import Level.sLevel;
 import World.sWorld;
 import java.util.HashMap;
-import javax.management.MBeanAttributeInfo;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.contacts.ContactEdge;
@@ -62,7 +61,9 @@ public class CarrotController extends iAIController
         mState = CarrotState.eDying;
         mTimer = 0;
         mEntity.getBody().setFixedRotation(false);
-        mEntity.mSkin.stop(mCurrentAnimation);
+        //mEntity.mSkin.stop(mCurrentAnimation);
+        mEntity.mSkin.activateSubSkin("car_corpse", false, 0);
+        mEntity.mSkin.deactivateSubSkin(mCurrentAnimation);
     }
     public void update()
     {
@@ -199,6 +200,7 @@ public class CarrotController extends iAIController
                 mState = CarrotState.ePathing;
                 //mEntity.setAnimation("car_fly");
                 //mEntity.mSkin.setSpeed(1);
+                mCurrentAnimation = "car_fly";
                 mEntity.mSkin.activateSubSkin("car_fly", true, 1);
                 mEntity.mSkin.deactivateSubSkin("car_stu");
                 mEntity.breakTongueContacts();

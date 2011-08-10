@@ -201,6 +201,8 @@ public class PlayerEntity extends AIEntity
         mWasIReallyKilled = true;
         mAIEntityState.restartingRace();
         mScoreTracker.raceEnded();
+        for (int i = 1; i <= 4; i++)
+            mSkin.deactivateSubSkin("finishedRaceAtPosition" + i);
     }
     public void getToStartingZone()
     {

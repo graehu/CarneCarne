@@ -58,6 +58,7 @@ public class BroccoliFactory implements iEntityFactory {
         subSkins.add(new CharacterSkin.CharacterSubSkin("broc_3_start_right", CharacterSubSkin.SubType.eAnimated, 110, 110, new Vec2(0,0)));
         subSkins.add(new CharacterSkin.CharacterSubSkin("broc_3_mid_right", CharacterSubSkin.SubType.eAnimated, 110, 110, new Vec2(0,0)));
         subSkins.add(new CharacterSkin.CharacterSubSkin("broc_3_end_right", CharacterSubSkin.SubType.eAnimated, 110, 110, new Vec2(0,0)));
+        
 
         
         animDef.put("subSkins", subSkins);

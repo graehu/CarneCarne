@@ -35,15 +35,28 @@ abstract public class ScoreTracker
     private int mFireworkTimer;
     private int mGUIManager;
     private GraphicalComponent mTacoImage;
-    private GraphicalComponent mRaceWinnerImage;
-    private GraphicalComponent mDisplayComponent;
     private Text mScoreText;
     Font mScoreDisplay;
     PlayerEntity mEntity;
+    private boolean mWon;
 
+    private String getTimeString(int _timer)
+    {
+        int seconds = _timer / 60;
+        int minutes = seconds / 60;
+        seconds -= minutes * 60;
+        return minutes + ":" + seconds;
+    }
     public void render()
     {
-        
+        //sGraphicsManager.drawString("Time penis: " + mBestTime, 0, 0.3f);
+        {
+            if (mWon)
+            {
+                mScoreDisplay.drawString(100, 0, "Time: " + getTimeString(mBestTime));
+            }
+            
+        }
     }
 
 
@@ -75,18 +88,14 @@ abstract public class ScoreTracker
         mBestTime = mBestEverTime = Integer.MAX_VALUE;
         //loadWinnerImage(1);
         mEntity = _entity;
+        mWon = false;
     }
 
     private void loadWinnerImage(int _position)
     {
-        if (mRaceWinnerImage == null)
+        if (mScoreDisplay == null)
         {
-            mDisplayComponent = mRaceWinnerImage = (GraphicalComponent)GUIManager.use(mGUIManager)
-                    .createRootComponent(GUIManager.ComponentType.eGraphical, new Vector2f(200, 200), new Vector2f(200, 200));
-            mRaceWinnerImage.setImage("ui/HUD/finishedRaceAtPosition" + _position + ".png");
-            mRaceWinnerImage.setDimentionsToImage();
-            mRaceWinnerImage.setIsVisible(false);
-            mScoreDisplay = sFontLoader.createFont("score");
+            mScoreDisplay = sFontLoader.scaleFont(sFontLoader.createFont("score"), 2.0f);
             mBestTime = mEntity.getRaceTimer();
         }
     }
@@ -112,7 +121,7 @@ abstract public class ScoreTracker
                 sEvents.triggerEvent(new NewHighScoreEvent(_time, _player));
             }
         }
-        mRaceWinnerImage.setIsVisible(true);
+        mEntity.mSkin.activateSubSkin("finishedRaceAtPosition" + _position, false, 0);
         mWinnerTimer = 180;
         if(_position == 1)
             mWinningPlayer = _player;
@@ -181,19 +190,5 @@ abstract public class ScoreTracker
         mScoreText.setColor(stringColour);
         mScoreText.setTextString(String.valueOf(renderedScore));
         
-        try
-        {
-            if (mDisplayComponent.isVisible())
-            {
-                mScoreDisplay.drawString(0, 0.5f, "Time: " + mBestTime);
-                mWinnerTimer--;
-                if (mWinnerTimer == 0)
-                    mDisplayComponent.setIsVisible(false);
-            }
-            
-        }
-        catch (NullPointerException e)
-        {
-        }
     }
 }

@@ -36,6 +36,7 @@ class CarrotFactory implements iEntityFactory {
         subSkins.add(new CharacterSkin.CharacterSubSkin("car_stu_right", CharacterSubSkin.SubType.eAnimated, 133, 79, new Vec2(0,0)));
         subSkins.add(new CharacterSkin.CharacterSubSkin("car_att", CharacterSubSkin.SubType.eAnimated, 132, 129, new Vec2(0,0)));
         subSkins.add(new CharacterSkin.CharacterSubSkin("car_att_right", CharacterSubSkin.SubType.eAnimated, 132, 129, new Vec2(0,0)));
+        subSkins.add(new CharacterSkin.CharacterSubSkin("car_corpse", CharacterSubSkin.SubType.eStatic, 132, 129, new Vec2(-30f*2,-16.55f)));
         
         animDef.put("subSkins", subSkins);
         iSkin skin = sSkinFactory.create("character", animDef);

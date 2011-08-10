@@ -69,4 +69,7 @@ public class GraphicalComponent extends iComponent{
     
     public int getImageWidth(){return mImage.getWidth();}
     public int getImageHeight(){return mImage.getHeight();}
+    
+    public float getAlpha() {return mImage.getAlpha();}
+    public void setAlpha(float _value){mImage.setAlpha(_value);}
 }

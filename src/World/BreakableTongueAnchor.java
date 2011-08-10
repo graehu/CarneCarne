@@ -29,6 +29,7 @@ public class BreakableTongueAnchor extends TongueAnchor
     @Override
     public TongueAnchor stun()
     {
+        mAnchor.removeAnchor(this);
         return null;
     }
     @Override

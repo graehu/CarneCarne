@@ -58,10 +58,12 @@ public class Broccoli extends AIEntity
         mActive = false;
     }
     
+    @Override
     public void setMoveSpeed(float _moveSpeed)
     {
         mMoveSpeed = _moveSpeed;
     }
+    @Override
     public void update()
     {
         super.update();
