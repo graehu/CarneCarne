@@ -56,7 +56,7 @@
    <property name="Direction" value="Right"/>
    <property name="Material" value="NonEdible"/>
    <property name="MaxHealth" value="2"/>
-   <property name="Type" value="Line"/>
+   <property name="Size" value="3"/>
   </properties>
  </tile>
 </tileset>

@@ -373,9 +373,11 @@ class AIEntityState
         }
         switch(_newState)
         {
+            case eRestartingRace:
             case eDead:
             {
                 mEntity.mSkin.setAlpha(0.5f);
+                mEntity.mSkin.setAlpha("carne_fly", 1.0f);
                 break;
             }       
             case eJumping:

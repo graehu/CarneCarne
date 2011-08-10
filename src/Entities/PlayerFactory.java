@@ -46,12 +46,13 @@ public class PlayerFactory implements iEntityFactory {
             //create a CharacterSubSkin for each layer of the character skin
             ArrayList<CharacterSubSkin> subSkins = new ArrayList<CharacterSubSkin>();
             //they must be in render order
+            subSkins.add(new CharacterSkin.CharacterSubSkin("carne_fly", CharacterSubSkin.SubType.eAnimated, 198, 139, new Vec2(-70,-53)));
             ArrayList<String> bodies = new ArrayList(Arrays.asList("bdy","gum","edi","spi","wtr"));
             for(String body : bodies) 
             {
                 subSkins.add(new CharacterSkin.CharacterSubSkin(body, CharacterSubSkin.SubType.eStatic, 64, 64, new Vec2(0,0)));
             }
-            subSkins.add(new CharacterSkin.CharacterSubSkin("carne_fly", CharacterSubSkin.SubType.eAnimated, 198, 139, new Vec2(-70,-60)));
+            
             subSkins.add(new CharacterSkin.CharacterSubSkin("idle_burp2", CharacterSubSkin.SubType.eAnimated, 130, 115, new Vec2(-33,-36)));
             subSkins.add(new CharacterSkin.CharacterSubSkin("idle_burp2_right", CharacterSubSkin.SubType.eAnimated, 130, 115, new Vec2(-33,-36)));
             
@@ -59,6 +60,8 @@ public class PlayerFactory implements iEntityFactory {
             Vec2 offset = charOffsetList.get(playerNum);
             subSkins.add(new CharacterSkin.CharacterSubSkin(charSkinList.get(playerNum), CharacterSubSkin.SubType.e32Dir, (int)dim.x, (int)dim.y, offset));
             subSkins.add(new CharacterSkin.CharacterSubSkin(charSkinList.get(playerNum)+"Open", CharacterSubSkin.SubType.e32Dir, (int)dim.x, (int)dim.y, offset));
+            
+            
             
             subSkins.add(new CharacterSkin.CharacterSubSkin("pea_stun_large", CharacterSubSkin.SubType.eAnimated, 107, 39, new Vec2(-21.5f,0)));
             //draw tongue last
