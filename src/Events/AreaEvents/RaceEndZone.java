@@ -6,6 +6,7 @@ package Events.AreaEvents;
 
 import Entities.AIEntity;
 import Entities.PlayerEntity;
+import Events.RaceResetEvent;
 import Events.RaceWonEvent;
 import Events.iEvent;
 import Events.iEventListener;
@@ -45,6 +46,10 @@ public class RaceEndZone extends CheckPointZone implements iEventListener
                 _entity.placeCheckPoint(this);
                 sSound.play(SoundScape.Sound.eRaceWin, 0);
                 sEvents.triggerDelayedEvent(new RaceWonEvent(entity));
+            }
+            else if (mWonPlayers.size() == 4)
+            {
+                sEvents.triggerDelayedEvent(new RaceResetEvent());
             }
             else
             {

@@ -44,6 +44,7 @@ class RaceStateMachine implements iEventListener
         sEvents.subscribeToEvent("RaceWonEvent", this);
         sEvents.subscribeToEvent("RaceCountdownStartEvent", this);
         sEvents.subscribeToEvent("RaceCountdownInterruptEvent", this);
+        sEvents.subscribeToEvent("RaceResetEvent", this);
         mFont = sFontLoader.scaleFont(sFontLoader.createFont("score"), 2.0f);
         mFont2 = sFontLoader.scaleFont(sFontLoader.createFont("score"), 4.0f);
     }
@@ -67,6 +68,15 @@ class RaceStateMachine implements iEventListener
         {
             mCountDownRender = null;
             mState = State.eRaceNotStarted;
+        }
+        else if (_event.getType().equals("RaceResetEvent"))
+        {
+            if (!mState.equals(State.eRaceNotStarted))
+            {
+                sEvents.blockEvent("RaceResetEvent");
+                changeState(State.eRaceNotStarted);
+                sEvents.unblockEvent("RaceResetEvent");
+            }
         }
         return true;
     }
