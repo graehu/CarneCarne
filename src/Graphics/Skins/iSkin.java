@@ -37,4 +37,5 @@ public interface iSkin {
     abstract void setDimentions(String _animation, float _w, float _h);
     abstract void setOffset(String _animation, Vec2 _offset);
     abstract Vec2 getOffset(String _animation);
+    abstract void setAlpha(String _animation, float _alpha);
 }

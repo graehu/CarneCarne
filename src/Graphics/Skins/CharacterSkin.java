@@ -21,6 +21,10 @@ import org.newdawn.slick.SpriteSheet;
  */
 public class CharacterSkin implements iSkin
 {
+
+    public void setAlpha(String _animation, float _alpha) {
+        mSubSkins.get(mSkinNames.get(_animation)).setAlpha(_alpha);
+    }
     
 
     static public class CharacterSubSkin
@@ -123,7 +127,7 @@ public class CharacterSkin implements iSkin
     List<iSkin> mSubSkins = new ArrayList<iSkin>();
     List<Vec2> mOffsets = new ArrayList<Vec2>();
     HashMap<String, Integer> mSkinNames = new HashMap<String, Integer>();
-    Queue<Integer> mCurrentSkins = new PriorityQueue<Integer>();
+    PriorityQueue<Integer> mCurrentSkins = new PriorityQueue<Integer>();
     
     float mRotation = 0;
     

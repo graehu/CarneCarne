@@ -225,6 +225,7 @@ public class BodyCamera extends iCamera implements iEventListener
             //render HUD and overlay
             ((PlayerEntity)mBody.getUserData()).renderHUD();
             mOverlay.draw(0,0, (int)mViewPort.getWidth(), (int)mViewPort.getHeight());
+            
         }
         sGraphicsManager.endTransform();  
         sGraphicsManager.clearClip();

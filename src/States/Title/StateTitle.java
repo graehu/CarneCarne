@@ -143,11 +143,11 @@ public class StateTitle extends BasicGameState
 
             //initialise buttons
             Vector2f buttonDim = new Vector2f(200/mScale,50/mScale);
-            mNameField = new TextField(_gc, mInputFont, 0, 0, (int)buttonDim.x, (int)buttonDim.y);
-            mNameField.setMaxLength(15);
-            mNameField.setDefaultText("Name");
-            mNameField.setTextColor(new Color(0,0,0));
-            mNameField.setSelectedTextColor(new Color(187,139,44));
+//            mNameField = new TextField(_gc, mInputFont, 0, 0, (int)buttonDim.x, (int)buttonDim.y);
+//            mNameField.setMaxLength(15);
+//            mNameField.setDefaultText("Name");
+//            mNameField.setTextColor(new Color(0,0,0));
+//            mNameField.setSelectedTextColor(new Color(187,139,44));
             
             mTourButton = new Button(_gc, new Vector2f(), buttonDim);
             mTourButton.addText(_gc, mUIFont, "TOur MOdE", true);
@@ -197,7 +197,7 @@ public class StateTitle extends BasicGameState
             GUIManager.use(mGUIManagerGlobal).addRootComponent(mParalax1);
             GUIManager.use(mGUIManagerGlobal).addRootComponent(mParalax0);
             
-            GUIManager.use(mGUIManagerCenterMain).addRootComponent(mNameField);
+//            GUIManager.use(mGUIManagerCenterMain).addRootComponent(mNameField);
             GUIManager.use(mGUIManagerCenterMain).addSelectable(mTourButton);
             GUIManager.use(mGUIManagerCenterMain).addSelectable(mAdventureButton);
             GUIManager.use(mGUIManagerCenterMain).addSelectable(mRaceButton);
@@ -341,7 +341,9 @@ public class StateTitle extends BasicGameState
             
             initLevelLists(_sbg);
         }
+        
         GUIManager.use(mCurrentGUIState).setAcceptingInput(true);
+        GUIManager.use(mGUIManagerCenterMain).gotoFirstSelectable();
         //container.setMouseCursor("ui/title/mouse.png", 0, 62); //FIXME: break in fullscreen
         sSound.playAsMusic("menu1", true);
         super.enter(_gc, _sbg);
@@ -364,7 +366,7 @@ public class StateTitle extends BasicGameState
     ScrollableComponent mParalax2 = null;
     GraphicalComponent mCarrotAnimation = null;
     GraphicalComponent mBrocAnimation = null;
-    TextField mNameField = null;
+    //TextField mNameField = null;
     GraphicalComponent mScreenShotWindow = null;
     GraphicalComponent mScreenShot = null;
     Button mTourButton = null;
@@ -478,7 +480,7 @@ public class StateTitle extends BasicGameState
         Vector2f buttonPos = new Vector2f(1000,120);
         int buttonOffset = (int)75;
         
-        mNameField.setLocalTranslation(new Vector2f(buttonPos.x - mNameField.getWidth()*0.5f, buttonPos.y));
+        //mNameField.setLocalTranslation(new Vector2f(buttonPos.x - mNameField.getWidth()*0.5f, buttonPos.y));
         
         mTourButton.setLocalTranslation(new Vector2f(buttonPos.x - mTourButton.getWidth()*0.5f, buttonPos.y + 0*buttonOffset + 10)); //constant to provide extra offset for namefield
         mTourButton.setDimensionsToText();

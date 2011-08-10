@@ -13,6 +13,7 @@ import GUI.GUIManager;
 import Graphics.Particles.sParticleManager;
 import Graphics.sGraphicsManager;
 import Utils.sFontLoader;
+import java.util.Random;
 import org.jbox2d.common.Vec2;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Font;
@@ -25,11 +26,13 @@ import org.newdawn.slick.geom.Vector2f;
 
 abstract public class ScoreTracker
 {
+    protected PlayerEntity mWinningPlayer = null;
     protected int mScore;
     private int mBestTime;
     private int mBestEverTime;
     private float mRenderedScore;
     private int mWinnerTimer;
+    private int mFireworkTimer;
     private int mGUIManager;
     private GraphicalComponent mTacoImage;
     private GraphicalComponent mRaceWinnerImage;
@@ -111,10 +114,8 @@ abstract public class ScoreTracker
         }
         mRaceWinnerImage.setIsVisible(true);
         mWinnerTimer = 180;
-        sParticleManager.createFirework("Green", _player.getBody().getPosition().mul(64).add(new Vec2(32, 80)), new Vec2(0.5f,-3));
-        sParticleManager.createFirework("Green", _player.getBody().getPosition().mul(64).add(new Vec2(32, 80)), new Vec2(1.5f,-2));
-        sParticleManager.createFirework("Green", _player.getBody().getPosition().mul(64).add(new Vec2(32, 80)), new Vec2(-0.5f,-3));
-        sParticleManager.createFirework("Green", _player.getBody().getPosition().mul(64).add(new Vec2(32, 80)), new Vec2(-1.5f,-2));
+        if(_position == 1)
+            mWinningPlayer = _player;
     }
     public void scoreGoal()
     {
@@ -122,11 +123,39 @@ abstract public class ScoreTracker
     }
     public void raceEnded()
     {
+        mWinningPlayer = null;
         //looser image here is req
     }
 
     public void update() 
     {
+        if(mWinningPlayer != null)
+        {
+            mFireworkTimer--;
+            if(mFireworkTimer <= 0)
+            {
+                Random rand = new Random();
+                mFireworkTimer = 15;
+                String color = "Green";
+                switch(rand.nextInt(3))
+                {
+                    case 0:
+                    {
+                        color = "Red";
+                        break;
+                    }
+                    case 1:
+                    {
+                        color = "Blue";
+                        break;
+                    }
+                }
+                if(rand.nextBoolean())
+                    sParticleManager.createFirework(color, mWinningPlayer.getBody().getPosition().mul(64).add(new Vec2(32, 80)), new Vec2(rand.nextFloat(),-3));
+                else
+                    sParticleManager.createFirework(color, mWinningPlayer.getBody().getPosition().mul(64).add(new Vec2(32, 80)), new Vec2(-rand.nextFloat(),-3));
+            }
+        }
         Color stringColour = Color.white;
         int renderedScore = (int)mRenderedScore;
         if (mRenderedScore < mScore)

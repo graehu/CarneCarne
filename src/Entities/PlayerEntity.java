@@ -553,7 +553,7 @@ public class PlayerEntity extends AIEntity
             if(mPlayerNumberTimer > 0)
             {
                 UnicodeFont number = sFontLoader.createFont("default", 32);
-                sGraphicsManager.drawString("Player: "+mPlayerNumber, 0.5f, 0.5f, Color.white, number, true);
+                sGraphicsManager.drawString("Player: "+mPlayerNumber, 0.5f, 0.85f, Color.white, number, true);
             }
             
             GUIManager.use(mGUIManager).render(false);
