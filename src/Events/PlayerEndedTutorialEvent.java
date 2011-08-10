@@ -26,5 +26,10 @@ public class PlayerEndedTutorialEvent extends iEvent
     {
         return "PlayerEndedTutorialEvent";
     }
+
+    public int getPlayer()
+    {
+        return mPlayerNumber;
+    }
     
 }

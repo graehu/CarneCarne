@@ -21,6 +21,7 @@ class IntroSwingSection extends IntroSection implements iEventListener
 {
     int mTimer = 0;
     IntroSection mSection;
+    boolean swingEventHit = false;
     public IntroSwingSection(Vec2 _position, int _playerNumber)
     {
         super(_position, _playerNumber, "XBoxTop", "XBoxTopTongue", 1.85f);
@@ -66,8 +67,14 @@ class IntroSwingSection extends IntroSection implements iEventListener
         }
         else
         {
-            if (mSection == this)
+            if (mSection == this && !swingEventHit)
+            {
+                sEvents.unsubscribeToEvent("MapClickReleaseEvent"+"TongueHammer"+mPlayerNumber, this);
+                sEvents.unsubscribeToEvent("MapClickEvent"+"TongueHammer"+mPlayerNumber, this);
+                sEvents.unsubscribeToEvent("PlayerSwingEvent" + mPlayerNumber, this);
+                swingEventHit = true;
                 mSection = new IntroEndSection(mPosition, mPlayerNumber);
+            }
             return false;
         }
     }

@@ -8,6 +8,7 @@ import Entities.PlayerEntity;
 import Entities.sEntityFactory;
 import Events.AreaEvents.PlayerSpawnZone;
 import Events.GenericEvent;
+import Events.PlayerEndedTutorialEvent;
 import Events.TutorialSpawnEvent;
 import Events.iEvent;
 import Events.iEventListener;
@@ -38,8 +39,10 @@ public class IntroMode implements iGameMode, iEventListener
     Body mGroundBody;
     int mEndedPlayers = 0;
     Queue<String> mNextLevelProgression;
+    ArrayList<Boolean> mPlayersReallyEnded;
     public IntroMode(Queue<String> _nextLevelProgression)
     {
+        mPlayersReallyEnded = new ArrayList<Boolean>();
         mPlayers = new ArrayList<PlayerEntity>();
         mSections = new ArrayList<IntroSection>();
         sEvents.subscribeToEvent("TutorialSpawnEvent", this);
@@ -98,14 +101,21 @@ public class IntroMode implements iGameMode, iEventListener
             PlayerEntity player = (PlayerEntity)sEntityFactory.create("Player",parameters);
             player.mIntroSection = introSection;
             mPlayers.add(player);
+            mPlayersReallyEnded.add(false);
         }
-        else if (_event.getName().equals("PlayerEndedTutorialEvent"))
+        else if (_event.getType().equals("PlayerEndedTutorialEvent"))
         {
-            mEndedPlayers++;
-            if (mEndedPlayers == mPlayers.size())
+            PlayerEndedTutorialEvent event = (PlayerEndedTutorialEvent)_event;
+            int player = event.getPlayer();
+            if (!mPlayersReallyEnded.get(player))
             {
-                sEvents.triggerEvent(new GenericEvent("AllPlayersTutorialEndedEvent"));
-                return false;
+                mPlayersReallyEnded.set(player, Boolean.TRUE);
+                mEndedPlayers++;
+                if (mEndedPlayers == mPlayers.size())
+                {
+                    sEvents.triggerEvent(new GenericEvent("AllPlayersTutorialEndedEvent"));
+                    return false;
+                }
             }
         }
         return true;

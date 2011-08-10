@@ -273,7 +273,7 @@ public class FlagProcessor
                     }
                     else if (spawn.equals("Tutorial"))
                     {
-                        sEvents.triggerEvent(new TutorialSpawnEvent(i,ii, tutorialPlayers++));
+                        sEvents.triggerEvent(new TutorialSpawnEvent(i,ii, 3 - tutorialPlayers++));
                     }
                     else if (spawn.equals("Platform"))
                     {                        

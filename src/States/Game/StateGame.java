@@ -22,6 +22,7 @@ import Sound.sSound;
 import States.Game.Adventure.AdventureMode;
 import States.Game.FootballMode.FootballMode;
 import States.Game.RaceMode.RaceMode;
+import States.Game.Tutorial.IntroMode;
 import States.Menu.StateMenu;
 import States.StateChanger;
 import World.sWorld;
@@ -49,6 +50,7 @@ public class StateGame extends BasicGameState implements iEventListener {
         eAdventure,
         eRace,
         eFootball,
+        eTutorial,
         eGameTypesMax
     }
     public static GameType getGameType()
@@ -221,6 +223,11 @@ public class StateGame extends BasicGameState implements iEventListener {
                 mGameMode = new RaceMode(levelProgression);
                 break;
             }    
+            case eTutorial:
+            {
+                mGameMode = new IntroMode(levelProgression);
+                break;
+            }
         }
     }
     public static void setGameType(GameType _type, Queue<String> _levelProgression)

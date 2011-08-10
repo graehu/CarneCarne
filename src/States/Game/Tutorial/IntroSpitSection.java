@@ -47,8 +47,12 @@ class IntroSpitSection extends IntroSection implements iEventListener
 
     public boolean trigger(iEvent _event)
     {
-        MapClickEvent event = (MapClickEvent)_event;
-        mReturn = new IntroSwingSection(mPosition, mPlayerNumber);
+        if (mReturn == this)
+        {
+            sEvents.unsubscribeToEvent("MapClickEvent"+"Spit"+mPlayerNumber, this);
+            MapClickEvent event = (MapClickEvent)_event;
+            mReturn = new IntroSwingSection(mPosition, mPlayerNumber);
+        }
         return false;
     }
     

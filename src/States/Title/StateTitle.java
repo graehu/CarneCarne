@@ -513,10 +513,10 @@ public class StateTitle extends BasicGameState
     {
         List<String> tourModeRef = Arrays.asList("Adventure tour", "Race tour");
         final List<String> singlePlayerLevelProgression = Arrays.asList("Level1","Level2","single");
-        final List<String> raceLevelProgression = Arrays.asList("RaceReloaded","Ice_Race", "BigBox");
+        final List<String> raceLevelProgression = Arrays.asList("tutorial","RaceReloaded","Ice_Race", "BigBox");
         final StateGame.GameType tourModeGameTypes[] = new StateGame.GameType[2];
         tourModeGameTypes[0] = StateGame.GameType.eAdventure;
-        tourModeGameTypes[1] = StateGame.GameType.eRace;
+        tourModeGameTypes[1] = StateGame.GameType.eTutorial;
         final String tourModeLevelProgressions[][] = new String[2][];
         tourModeLevelProgressions[0] = (String[])singlePlayerLevelProgression.toArray();
         tourModeLevelProgressions[1] = (String[])raceLevelProgression.toArray();

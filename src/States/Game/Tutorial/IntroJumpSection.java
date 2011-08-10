@@ -45,7 +45,10 @@ class IntroJumpSection extends IntroSection implements iEventListener
 
     public boolean trigger(iEvent _event)
     {
-        mReturn = new IntroGrabSection(mPosition, mPlayerNumber);
+        if (mReturn == this)
+        {
+            mReturn = new IntroGrabSection(mPosition, mPlayerNumber);
+        }
         return false;
     }
     

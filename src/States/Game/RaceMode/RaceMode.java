@@ -37,6 +37,7 @@ public class RaceMode implements iGameMode, iEventListener
     int mBestTime;
     iSkin mRaceRender = null;
     boolean mIsRaceActive = false;
+    private boolean mIsCompleted = false;
     Queue<String> mNextLevelProgression;
     public RaceMode(Queue<String> _nextLevelProgression)
     {
@@ -51,12 +52,20 @@ public class RaceMode implements iGameMode, iEventListener
     }
     public iGameMode update(Graphics _graphics, float _time)
     {
-        mTimer++;
-        mRaceState.update();
-        sLevel.update();
-        sWorld.update(_graphics, _time);
-        sEvents.processEvents();
-        return this;
+        if (mIsCompleted)
+        {
+            cleanup();
+            return new RaceMode(mNextLevelProgression);
+        }
+        else
+        {
+            mTimer++;
+            mRaceState.update();
+            sLevel.update();
+            sWorld.update(_graphics, _time);
+            sEvents.processEvents();
+            return this;
+        }
     }
     public void render(Graphics _graphics)
     {
@@ -88,10 +97,17 @@ public class RaceMode implements iGameMode, iEventListener
         }
         else if (_event.getName().equals("RaceResetEvent"))
         {
-            RaceResetEvent event = (RaceResetEvent)_event;
-            for (PlayerEntity entity: players)
+            if (mNextLevelProgression.isEmpty())
             {
-                entity.resetRace();
+                RaceResetEvent event = (RaceResetEvent)_event;
+                for (PlayerEntity entity: players)
+                {
+                    entity.resetRace();
+                }
+            }
+            else
+            {
+                mIsCompleted = true;
             }
         }
         else if (_event.getName().equals("BarrierOpenEvent" + "StartGate"))
@@ -125,6 +141,7 @@ public class RaceMode implements iGameMode, iEventListener
             player.destroy();
             sWorld.destroyBody(player.getBody());
         }
+        players = null;
         sEvents.unsubscribeToEvent("PlayerCreatedEvent", this);
         sEvents.unsubscribeToEvent("RaceResetEvent", this);
         sEvents.unsubscribeToEvent("BarrierOpenEvent" + "StartGate", this);
