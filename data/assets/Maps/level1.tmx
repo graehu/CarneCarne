@@ -88,7 +88,7 @@
  </layer>
  <layer name="Flags" width="100" height="50">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC+3bWwrCMBBG4fiuC/S2AO/PugZ1rYIbECViEC2m7WQm4/ngfytYeiyi1BCAMqZxtdp/mLRJ5vGnwe/H0iPfvccyLrWK60K7R857x4quPdYN0+5RI3rIOyrepx57aF7PPnnpAXiw+TLooAcAwBov30EAAPUa8Vlk0pkuZoyTQR89bKGHjEVcLnrIaNsD/Xr+fkIPW+hhS6ke1wKvYdmuYSiPHrbQAwCAlzbPAXh4duCQDProYQs9bEl71Pi/OWmzt/2DedxW+0TwIN1j6PS+v2ifQPB7bQEAAADLbr+YrwEgTgAA
+   H4sIAAAAAAAAC+3bWwrCMBBG4fquC/S2AO/PugZ1rYIbECViEC2mzWQm4/ngfytYeiyi1KaBZRftE8hoGlar/YdJmyQefxr8fiw90t17LMNiq7A+tHukvHes6Ntj3TLtHjWih7yj4n3qsYfm9czJSw/Ag82XQQc9AADWePkOAgCo14jPIpPOdDFjHA366GELPWQswlLRQ0bXHsjr+fsJPWyhhy2lelwLvIZlu5ahPHrYQg8AAF66PAfg4dmBQzToo4ct9LAl7lHj/+akzd72D+ZhW+0TwYN0jyH3vRiuLQAAAFDeDcVm2rQgTgAA
   </data>
  </layer>
 </map>

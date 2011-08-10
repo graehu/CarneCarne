@@ -118,9 +118,28 @@ public abstract class iComponent extends AbstractComponent
         if(mMaintainRatio)
         {
             //FIXME: THIS IS THE MOST HORRIBLE CODE I'VE EVER WRITTEN
-            float scalar = sGraphicsManager.getTrueScreenDimensions().x / sGraphicsManager.getNativeScreenDimensions().x;
+            float scalar = sGraphicsManager.getTrueScreenDimensions().x / 1680;
             float Sx = sGraphicsManager.getScreenDimensions().x / sGraphicsManager.getTrueScreenDimensions().x;
-            if(scale.x != scale.y)
+            if(scalar > 1)
+            {
+                float Sy = sGraphicsManager.getScreenDimensions().y / sGraphicsManager.getTrueScreenDimensions().y;
+                if(Sx < 1) // 1/4 SCREEN
+                {
+                    trans.x *= Sx * 1.18f;
+                    center.x *= Sx * 1.18f;
+                    trans.y *= Sy * 0.99f;
+                    center.y *= Sy * 0.99f;
+                    scale.y = scale.x = scalar * 0.8f;
+                }
+                else if(Sy < 1) //1/2 SCREEN
+                {
+                    trans.x *= (sGraphicsManager.getScreenDimensions().x / sGraphicsManager.getTrueScreenDimensions().x) + 0.27;
+                    trans.y *= (sGraphicsManager.getScreenDimensions().y / sGraphicsManager.getTrueScreenDimensions().y) - 0.01;
+                    scale.y = scale.x = scalar * 0.8f;   
+                }
+                
+            }
+            else if(scale.x != scale.y)
             {
                 trans.x *= Sx;
                 center.x *= Sx;
@@ -136,15 +155,15 @@ public abstract class iComponent extends AbstractComponent
                 scale.y = scale.x = scalar;                
             }
         }
-        else if(scale.x != scale.y)
+        else if(scale.x != scale.y && scale.x <= 1)
         {
             float scalar = sGraphicsManager.getScreenDimensions().y / 1050;
             float Sx = sGraphicsManager.getScreenDimensions().x / sGraphicsManager.getTrueScreenDimensions().x;
             trans.x *= Sx * 1.3f;
             center.x *= Sx * 1.3f;
             float Sy = sGraphicsManager.getScreenDimensions().y / sGraphicsManager.getTrueScreenDimensions().y;
-            trans.y *= Sy * 1.5f;;
-            center.y *= Sy * 1.5f;;
+            trans.y *= Sy * 1.5f;
+            center.y *= Sy * 1.5f;
             scale.y = scale.x = scalar * 1.5f;
         }
         
@@ -217,7 +236,28 @@ public abstract class iComponent extends AbstractComponent
             //FIXME: THIS IS THE MOST HORRIBLE CODE I'VE EVER WRITTEN
             float scalar = sGraphicsManager.getTrueScreenDimensions().x / 1680;
             float Sx = sGraphicsManager.getScreenDimensions().x / sGraphicsManager.getTrueScreenDimensions().x;
-            if(scale.x != scale.y)
+            if(scalar > 1)
+            {
+                float Sy = sGraphicsManager.getScreenDimensions().y / sGraphicsManager.getTrueScreenDimensions().y;
+                if(Sx < 1) // 1/4 SCREEN
+                {
+                    trans.x *= Sx * 1.18f;
+                    center.x *= Sx * 1.18f;
+                    trans.y *= Sy * 0.99f;
+                    center.y *= Sy * 0.99f;
+                    scale.y = scale.x = scalar * 0.8f;
+                    trans.x *= 2.0f;
+                center.x *= 2.0f;
+                }
+                else if(Sy < 1) //1/2 SCREEN
+                {
+                    trans.x *= (sGraphicsManager.getScreenDimensions().x / sGraphicsManager.getTrueScreenDimensions().x) + 0.27;
+                    trans.y *= (sGraphicsManager.getScreenDimensions().y / sGraphicsManager.getTrueScreenDimensions().y) - 0.01;
+                    scale.y = scale.x = scalar * 0.8f;   
+                }
+                
+            }
+            else if(scale.x != scale.y)
             {
                 trans.x *= Sx;
                 center.x *= Sx;
@@ -234,20 +274,19 @@ public abstract class iComponent extends AbstractComponent
                 trans.y *= (sGraphicsManager.getScreenDimensions().y / sGraphicsManager.getTrueScreenDimensions().y) - 0.07;
                 scale.y = scale.x = scalar;                
             }
-            
         }
-        else if(scale.x != scale.y)
+        else if(scale.x != scale.y && scale.x <= 1)
         {
             float scalar = sGraphicsManager.getScreenDimensions().y / 1050;
             float Sx = sGraphicsManager.getScreenDimensions().x / sGraphicsManager.getTrueScreenDimensions().x;
             trans.x *= Sx * 1.3f;
             center.x *= Sx * 1.3f;
             float Sy = sGraphicsManager.getScreenDimensions().y / sGraphicsManager.getTrueScreenDimensions().y;
-            trans.y *= Sy * 1.5f;;
-            center.y *= Sy * 1.5f;;
+            trans.y *= Sy * 1.5f;
+            center.y *= Sy * 1.5f;
             scale.y = scale.x = scalar * 1.5f;
             trans.x *= 2.0f;
-            center.x *= 2.0f;
+                center.x *= 2.0f;
         }
             
         Transform scaleT = Transform.createScaleTransform(scale.x, scale.y);
