@@ -152,22 +152,46 @@ class RaceStateMachine implements iEventListener
             
             if (mTimer < 240)
             {
-                if (mTimer % 60 < 30)
+                float x = sGraphicsManager.getTrueScreenDimensions().x;
+                x *= 0.5f;
+                x -= mFont2.getWidth("Race ends in 15 seconds!")*0.5f;
+                float y = mTimer;
+                if (mTimer % 60 >= 30)
                 {
-                    float x = sGraphicsManager.getTrueScreenDimensions().x;
-                    x *= 0.5f;
-                    x -= mFont2.getWidth("Race ends in 15 seconds!")*0.5f;
-                    mFont2.drawString(x, mTimer, "Race ends in 15 seconds!");
+                    y += sGraphicsManager.getTrueScreenDimensions().y*0.5f;
                 }
+                mFont2.drawString(x, y, "Race ends in 15 seconds!");
             }
         }
     }
     private String getTimeString(int _timer)
     {
         int seconds = _timer / 60;
-        int minutes = seconds / 60;
-        seconds -= minutes * 60;
-        return minutes + ":" + seconds;
+        //seconds -= minutes * 60;
+        int milliseconds = _timer - (seconds * 60);
+        float milliF = (float)milliseconds / 60.0f;
+        String milliString = String.valueOf(milliF*100);
+        if (milliString.length() > 2)
+        {
+            milliString = milliString.substring(0, 2);
+        }
+        while (milliString.length() < 2)
+        {
+            milliString = "0" +  milliString;
+        }
+        for (int i = 0; i < 2; i++)
+        {
+            if (milliString.getBytes()[i] == '.')
+            {
+                milliString = milliString.substring(0, i);
+                break;
+            }
+        }
+        while (milliString.length() < 2)
+        {
+            milliString = "0" +  milliString;
+        }
+        return seconds + ":" + milliString;
     }
     private void changeState(State _state)
     {
