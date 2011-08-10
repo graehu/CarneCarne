@@ -199,6 +199,8 @@ public class StateGame extends BasicGameState implements iEventListener {
 
     private void subInit()
     {
+        for(int i = 0; i < mPlayers; i++)
+            sEvents.unsubscribeToEvent("KeyDownEvent"+"Q"+mPlayers, this);
         if(mGameMode != null)
             mGameMode.cleanup();
         switch(gameType)

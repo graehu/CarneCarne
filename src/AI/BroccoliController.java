@@ -4,11 +4,10 @@
  */
 package AI;
 
-import AI.iPathFinding.Command;
 import Entities.AIEntity;
 import Entities.Broccoli;
 import Entities.Entity;
-import World.sWorld.BodyCategories;
+import java.util.LinkedList;
 import org.jbox2d.common.Vec2;
 
 /**
@@ -17,10 +16,12 @@ import org.jbox2d.common.Vec2;
  */
 public class BroccoliController extends iAIController
 {
+     private static int newTargetDelay = 60; //FIXME: assumes 60fps
      private Entity mTarget;
      private float mFollowRadius;
      private float mAttackRadius;
      private boolean mAttacking;
+     private int mNewTargetTimer = 0;
      
     public BroccoliController(AIEntity _entity)
     {
@@ -32,9 +33,9 @@ public class BroccoliController extends iAIController
     
     public void update()
     {
-        mTarget = sPathFinding.getPlayer();
-        ((Broccoli)mEntity).updateTargetPos(mTarget.getBody().getPosition());
-        
+        mTarget = pickTarget(sPathFinding.getPlayerList());
+        if(mTarget != null)
+            ((Broccoli)mEntity).updateTargetPos(mTarget.getBody().getPosition());
         
         if(mTarget != null)
         {
@@ -70,5 +71,35 @@ public class BroccoliController extends iAIController
                  ((Broccoli)mEntity).attack();
             }
         }
+    }
+    private Entity pickTarget(LinkedList<Entity> _players)
+    {
+        Entity newTarget = null;
+        float minDist = Float.MAX_VALUE;
+        //calc closest player
+        for(Entity player : _players)
+        {
+            float dist = player.getBody().getPosition().sub(mEntity.getBody().getPosition()).lengthSquared();
+            if(dist < minDist)
+            {
+                minDist = dist;
+                newTarget = player;
+            }
+        }
+        if(!newTarget.equals(mTarget)) //if new target 
+        {
+            if(mNewTargetTimer > newTargetDelay)//wait for timer before swtiching
+            {
+                mNewTargetTimer = 0;
+            }
+            else
+            {
+                mNewTargetTimer++;
+                newTarget = mTarget;
+            }
+        }
+        else //if same target: reset delay
+            mNewTargetTimer = 0;
+        return newTarget;
     }
 }

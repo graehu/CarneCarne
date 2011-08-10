@@ -22,6 +22,10 @@ public class sPathFinding
             mPlayers.add(_player);
         }
     }
+    public static LinkedList<Entity> getPlayerList()
+    {
+        return new LinkedList<Entity>(mPlayers);
+    }
     public static Entity getPlayer()
     {
         if(!mPlayers.isEmpty())
