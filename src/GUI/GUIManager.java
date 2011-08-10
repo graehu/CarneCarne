@@ -30,7 +30,7 @@ import org.newdawn.slick.geom.Vector2f;
 //this class provides multiplue instances o9f itself to allow for persistance GUIs between states
 public class GUIManager implements iEventListener
 {    
-    static private int scrollDelay = 150; //miliseconds
+    static private int scrollDelay = 300; //miliseconds
     static private int clickDelay = 200; //miliseconds
     static private int keyCount = 0;
     static private HashMap<Integer, GUIManager> instances = new HashMap<Integer, GUIManager>();
@@ -83,6 +83,7 @@ public class GUIManager implements iEventListener
     
     boolean mIsAcceptingInput = false;
     int mInputTimer = 0;
+    int mScrollTimer = 0;
     HashMap<Integer, iComponent> mManagedRoots = new HashMap<Integer, iComponent>();
     ArrayList<Button> mSelectables = new ArrayList<Button>();
     int mCurrentSelection = 0;
@@ -206,7 +207,6 @@ public class GUIManager implements iEventListener
             }
         } catch (SlickException ex) {Throw.err(ex.toString());}
     }
-    
     public boolean trigger(iEvent _event) 
     {
         if(_event.getType().equals("WindowResizeEvent"))
@@ -293,7 +293,11 @@ public class GUIManager implements iEventListener
     public void gotoFirstSelectable()
     {
         if(!mSelectables.isEmpty())
+        {
+            ((Button)mSelectables.get(mCurrentSelection)).reset();
             mCurrentSelection = 0;
+            ((Button)mSelectables.get(mCurrentSelection)).hoverOver();
+        }
     }
     public void gotoNextSelectable()
     {

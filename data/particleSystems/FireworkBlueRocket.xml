@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <system additive="true" points="false">
 <emitter imageName="" name="Default" renderType="inherit" useAdditive="false" useOriented="false">
-<spawnInterval enabled="true" max="100.0" min="100.0"/>
-<spawnCount enabled="true" max="5.0" min="2.0"/>
-<initialLife enabled="true" max="2000.0" min="1000.0"/>
+<spawnInterval enabled="true" max="10.0" min="10.0"/>
+<spawnCount enabled="true" max="1.0" min="1.0"/>
+<initialLife enabled="true" max="300.0" min="200.0"/>
 <initialSize enabled="true" max="20.0" min="10.0"/>
 <xOffset enabled="false" max="0.0" min="0.0"/>
 <yOffset enabled="false" max="0.0" min="0.0"/>

@@ -247,7 +247,7 @@ public abstract class iComponent extends AbstractComponent
                     center.y *= Sy * 0.99f;
                     scale.y = scale.x = scalar * 0.8f;
                     trans.x *= 2.0f;
-                center.x *= 2.0f;
+                    center.x *= 2.0f;
                 }
                 else if(Sy < 1) //1/2 SCREEN
                 {

@@ -138,5 +138,9 @@ public class TiledSkin implements iSkin
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    public void setAlpha(String _animation, float _alpha) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
     
 }
