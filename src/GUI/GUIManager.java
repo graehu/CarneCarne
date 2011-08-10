@@ -94,7 +94,6 @@ public class GUIManager implements iEventListener
     
     private GUIManager(GameContainer _context)
     {
-        Vec2 magic = sGraphicsManager.getNativeScreenDimensions();
         scale.x = sGraphicsManager.getTrueScreenDimensions().x / 1680;
         scale.y = sGraphicsManager.getTrueScreenDimensions().y / 1050;
         if(_context != null)
