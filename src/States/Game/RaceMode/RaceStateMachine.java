@@ -5,9 +5,7 @@
 package States.Game.RaceMode;
 
 import Events.GenericStringEvent;
-import Events.RaceCountdownEvent;
 import Events.RaceResetEvent;
-import Events.RaceStartEvent;
 import Events.RaceWonEvent;
 import Events.iEvent;
 import Events.iEventListener;
@@ -15,8 +13,10 @@ import Events.sEvents;
 import Graphics.Skins.iSkin;
 import Graphics.Skins.sSkinFactory;
 import Graphics.sGraphicsManager;
+import Utils.sFontLoader;
 import java.util.HashMap;
 import org.jbox2d.common.Vec2;
+import org.newdawn.slick.Font;
 
 /**
  *
@@ -35,6 +35,8 @@ class RaceStateMachine implements iEventListener
     iSkin mCountDownRender;
     State mState;
     int mTimer;
+    Font mFont;
+    Font mFont2;
     public RaceStateMachine()
     {
         mState = State.eRaceNotStarted;
@@ -42,6 +44,8 @@ class RaceStateMachine implements iEventListener
         sEvents.subscribeToEvent("RaceWonEvent", this);
         sEvents.subscribeToEvent("RaceCountdownStartEvent", this);
         sEvents.subscribeToEvent("RaceCountdownInterruptEvent", this);
+        mFont = sFontLoader.scaleFont(sFontLoader.createFont("score"), 2.0f);
+        mFont2 = sFontLoader.scaleFont(sFontLoader.createFont("score"), 4.0f);
     }
 
     public boolean trigger(iEvent _event)
@@ -77,7 +81,7 @@ class RaceStateMachine implements iEventListener
         {
             case eRaceWon:
             {
-                if (mTimer == 20 * 60)
+                if (mTimer == 15 * 60)
                 {
                     changeState(State.eRaceNotStarted);
                 }
@@ -129,8 +133,33 @@ class RaceStateMachine implements iEventListener
                 mCountDownRender.render(0.5f*(s.x-dimensions.x), 0.5f*(s.y-dimensions.y));
             }
         }
+        else if (mState.equals(State.eRaceWon))
+        {
+            Vec2 s = sGraphicsManager.getTrueScreenDimensions().mul(0.5f);
+            s.x -= mFont.getWidth("Timeleft: ");
+            s.y -= mFont.getHeight("Timeleft: ");
+            mFont.drawString(s.x, s.y, "Timeleft: " + getTimeString((15 * 60) - mTimer));
+            
+            if (mTimer < 240)
+            {
+                if (mTimer % 60 < 30)
+                {
+                    float x = sGraphicsManager.getTrueScreenDimensions().x;
+                    x *= 0.5f;
+                    x -= mFont2.getWidth("Race ends in 15 seconds!")*0.5f;
+                    mFont2.drawString(x, mTimer, "Race ends in 15 seconds!");
+                }
+            }
+        }
     }
-        private void changeState(State _state)
+    private String getTimeString(int _timer)
+    {
+        int seconds = _timer / 60;
+        int minutes = seconds / 60;
+        seconds -= minutes * 60;
+        return minutes + ":" + seconds;
+    }
+    private void changeState(State _state)
     {
         switch (_state)
         {

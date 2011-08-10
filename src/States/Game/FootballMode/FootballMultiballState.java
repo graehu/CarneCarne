@@ -13,6 +13,7 @@ import Graphics.sGraphicsManager;
 import java.util.ArrayList;
 import java.util.HashMap;
 import org.jbox2d.common.Vec2;
+import org.newdawn.slick.Font;
 
 /**
  *
@@ -26,8 +27,9 @@ public class FootballMultiballState extends FootballState
     private Vec2 mBallSpawnPosition;
     iSkin mGoalScoreRenders[];
     iSkin mGoalScoreRender;
+    Font mFont;
     int mGoalScoreRenderTimer;
-    public FootballMultiballState(FootballMode _mode, Vec2 _ballSpawnPosition)
+    public FootballMultiballState(FootballMode _mode, Vec2 _ballSpawnPosition, Font _font)
     {
         super(_mode, false);
         mBallSpawnPosition = _ballSpawnPosition;
@@ -56,11 +58,21 @@ public class FootballMultiballState extends FootballState
         params.put("ref", "Goal1");
         mGoalScoreRenders[1] = sSkinFactory.create("static", params);
         mGoalScoreRender = null;
+        
+        mFont = _font;
     }
     
     @Override
     void render(int _score1, int _score2)
     {
+        Vec2 s = sGraphicsManager.getTrueScreenDimensions().mul(0.5f);
+        s.y -= mFont.getHeight(_score1 + ":" + _score2)*0.65f ;
+        s.x -= mFont.getWidth(_score1 + " ") + (mFont.getWidth(":")*0.5f);
+        mFont.drawString(s.x, s.y, _score1 + " ");
+        s.x += mFont.getWidth(_score1 + " ");
+        mFont.drawString(s.x, s.y,":");
+        s.x += mFont.getWidth(":") + mFont.getWidth(" ");
+        mFont.drawString(s.x, s.y, String.valueOf(_score2));
         if (mSkin != null)
         {
             mSkin.render(mSkinPosition, 0);
@@ -72,7 +84,7 @@ public class FootballMultiballState extends FootballState
         }
         if (mGoalScoreRender != null)
         {
-            Vec2 s = sGraphicsManager.getTrueScreenDimensions().mul(0.5f);
+            s = sGraphicsManager.getTrueScreenDimensions().mul(0.5f);
             Vec2 dims = new Vec2(1148, 471);
             s = s.sub(dims.mul(0.5f));
             mGoalScoreRender.render(s.x, s.y);

@@ -12,10 +12,12 @@ import Events.sEvents;
 import Graphics.Skins.iSkin;
 import Graphics.Skins.sSkinFactory;
 import Graphics.sGraphicsManager;
+import Utils.sFontLoader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 import org.jbox2d.common.Vec2;
+import org.newdawn.slick.Font;
 
 /**
  *
@@ -30,8 +32,7 @@ public class FootballNormalState extends FootballState
     private static final int mColonWidth = 25;
     private static final int mLetterHeight = 50;
     private static final int mLetterWidth = 50;
-    iSkin mScoreColonRender;
-    iSkin mDigitSkins[];
+    private static Font mFont = null;
     iSkin mGoalScoreRenders[];
     iSkin mGoalScoreRender;
     iSkin mRandomEventRender;
@@ -42,17 +43,7 @@ public class FootballNormalState extends FootballState
         super(_mode, true);
         ballSpawnPosition = _ballSpawnPosition;
         HashMap params = new HashMap();
-        params.put("ref", "Numbers/Colon");
-        mScoreColonRender = sSkinFactory.create("static", params);
-        mScoreColonRender.setDimentions(mColonWidth*2, mLetterHeight*2);
         
-        mDigitSkins = new iSkin[2];
-        for (int i = 0; i < mDigitSkins.length; i++)
-        {
-            params.put("ref", "Numbers/Number" + i);
-            mDigitSkins[i] = sSkinFactory.create("static", params);
-            mDigitSkins[i].setDimentions(mLetterWidth, mLetterHeight*2);
-        }
         mRand = new Random(System.currentTimeMillis());
         
         mGoalScoreRenders = new iSkin[2];
@@ -64,6 +55,11 @@ public class FootballNormalState extends FootballState
         params.put("ref", "EnemiesHaveSpawned");
         mRandomEventRender = sSkinFactory.create("static", params);
         mRandomEventTimer = 2000;
+        
+        if (mFont == null)
+        {
+            mFont = sFontLoader.scaleFont(sFontLoader.getDefaultFont(), 2.0f);
+        }
     }
     
     @Override
@@ -74,51 +70,17 @@ public class FootballNormalState extends FootballState
             mRandomEventTimer++;
             mRandomEventRender.render(mRandomEventTimer, 0);
         }
-        try
-        {
-            Vec2 s = sGraphicsManager.getTrueScreenDimensions().mul(0.5f);
-            int sX = (int)s.x;
-            s.x -= mColonWidth;
-            s.y -= mLetterHeight;
-            mScoreColonRender.render(s.x, s.y);
-            if (_score1 == 0)
-            {
-                s.x -= mLetterWidth;
-                mDigitSkins[0].render(s.x, s.y);
-            }
-            else
-            while (_score1 > 0)
-            {
-                int digit = _score1 % 10;
-                _score1 /= 10;
-                s.x -= mLetterWidth;
-                mDigitSkins[digit].render(s.x, s.y);
-            }
-            s.x = sX;
-            s.x += mColonWidth;
-            int digits = 0;
-            int score = _score2;
-            while (_score2 > 0)
-            {
-                _score2 /= 10;
-                digits++;
-            }
-            s.x += mLetterWidth*digits;
-            while (score > 0)
-            {
-                int digit = score % 10;
-                score /= 10;
-                s.x -= mLetterWidth;
-                mDigitSkins[digit].render(s.x, s.y);
-            }
-        }
-        catch (ArrayIndexOutOfBoundsException e) /// FIXME remove this
-        {
-            
-        }
+        Vec2 s = sGraphicsManager.getTrueScreenDimensions().mul(0.5f);
+        s.y -= mFont.getHeight(_score1 + ":" + _score2)*0.65f ;
+        s.x -= mFont.getWidth(_score1 + " ") + (mFont.getWidth(":")*0.5f);
+        mFont.drawString(s.x, s.y, _score1 + " ");
+        s.x += mFont.getWidth(_score1 + " ");
+        mFont.drawString(s.x, s.y,":");
+        s.x += mFont.getWidth(":") + mFont.getWidth(" ");
+        mFont.drawString(s.x, s.y, String.valueOf(_score2));
         if (mGoalScoreRender != null)
         {
-            Vec2 s = sGraphicsManager.getTrueScreenDimensions().mul(0.5f);
+            s = sGraphicsManager.getTrueScreenDimensions().mul(0.5f);
             Vec2 dims = new Vec2(1148, 471);
             s = s.sub(dims.mul(0.5f));
             mGoalScoreRender.render(s.x, s.y);
@@ -179,7 +141,7 @@ public class FootballNormalState extends FootballState
         {
             case 0:
             {
-                return new FootballMultiballState(mMode, ballSpawnPosition);
+                return new FootballMultiballState(mMode, ballSpawnPosition, mFont);
             }
             case 1:
             {

@@ -66,6 +66,10 @@ public class PlayerFactory implements iEntityFactory {
             
             subSkins.add(new CharacterSkin.CharacterSubSkin("Player" + (playerNum+1), CharacterSubSkin.SubType.eStatic, 32, 32, new Vec2(0,-96)));
             
+            for (int i = 1; i <= 4; i++)
+                subSkins.add(new CharacterSkin.CharacterSubSkin("finishedRaceAtPosition" + i, CharacterSubSkin.SubType.eStatic, 64, 64, new Vec2(-59,-124)));
+            
+            
             HashMap params = new HashMap();
             
             params.put("subSkins", subSkins);
