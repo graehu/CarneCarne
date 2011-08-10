@@ -23,6 +23,7 @@ import Score.RaceScoreTracker;
 import Score.ScoreTracker;
 import Sound.SoundScape;
 import Sound.sSound;
+import States.Game.StateGame;
 import States.Game.Tutorial.IntroSection;
 import Utils.sFontLoader;
 import World.sWorld;
@@ -78,7 +79,7 @@ public class PlayerEntity extends AIEntity
         super(_skin);
         //create mGUIManager
         mGUIManager = GUIManager.create();
-        mScoreTracker = new RaceScoreTracker(mGUIManager);
+        mScoreTracker = new RaceScoreTracker(mGUIManager, this);
         mOriginalSpawnPoint = mCheckPoint = _spawnPoint;
         if (mCheckPoint != null)
             mCheckPointPosition = mCheckPoint.getPosition();
@@ -97,7 +98,7 @@ public class PlayerEntity extends AIEntity
         mHUDArrow.setImage("ui/HUD/Arrow.png");
         mHUDArrow.setDimentionsToImage();
         //mHUDArrow.setMaintainRatio(true); 
-        
+
         mHUDFootball = new GraphicalComponent(sGraphicsManager.getGUIContext(), new Vector2f(0,0), new Vector2f(0,0));
         GUIManager.use(mGUIManager).addRootComponent(mHUDFootball);
         mHUDFootball.setImage("assets/characters/football.png");
@@ -507,7 +508,10 @@ public class PlayerEntity extends AIEntity
                     }
                     mHUDFootball.setLocalTranslation(new Vector2f(location.x, location.y).add(mHUDFootball.getDimensions()));
                     rotation = (float)Math.atan2(direction.y, direction.x);
-                    renderArrow = true;
+                    //renderArrow = true;
+                }
+                if (StateGame.getGameType().equals(StateGame.GameType.eRace))
+                {
                 }
                 mHUDArrow.setLocalRotation(rotation*180.0f/(float)Math.PI);
                 mHUDArrow.setIsVisible(renderArrow);
@@ -543,6 +547,7 @@ public class PlayerEntity extends AIEntity
                 mStickShakeDisplayTimer = 0;
             }
             
+            mScoreTracker.render();
             mReticle.render(); //always render ontop
             
             if(mPlayerNumberTimer > 0)

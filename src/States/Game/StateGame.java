@@ -51,6 +51,10 @@ public class StateGame extends BasicGameState implements iEventListener {
         eFootball,
         eGameTypesMax
     }
+    public static GameType getGameType()
+    {
+        return gameType;
+    }
     private static GameType gameType = GameType.eGameTypesMax;
     private static Queue<String> levelProgression;
     private int mGUIRef;
@@ -212,7 +216,7 @@ public class StateGame extends BasicGameState implements iEventListener {
             case eRace:
             {
                 //mGameMode = new IntroMode(levelRef);
-                mGameMode = new RaceMode(levelProgression.peek());
+                mGameMode = new RaceMode(levelProgression);
                 break;
             }    
         }

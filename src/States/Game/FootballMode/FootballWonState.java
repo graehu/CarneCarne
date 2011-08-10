@@ -27,7 +27,7 @@ public class FootballWonState extends FootballState
         HashMap params = new HashMap();
         if (_score1 > _score2)
         {
-            params.put("ref", "RedWon");
+            params.put("ref", "BlueWon");
         }
         else if (_score1 == _score2)
         {
@@ -35,7 +35,7 @@ public class FootballWonState extends FootballState
         }
         else
         {
-            params.put("ref", "BlueWon");
+            params.put("ref", "RedWon");
         }
         mDisplay = sSkinFactory.create("static", params);
     }

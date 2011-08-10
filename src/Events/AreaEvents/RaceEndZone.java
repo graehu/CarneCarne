@@ -12,6 +12,7 @@ import Events.iEventListener;
 import Events.sEvents;
 import Sound.SoundScape;
 import Sound.sSound;
+import java.util.HashSet;
 
 /**
  *
@@ -19,14 +20,13 @@ import Sound.sSound;
  */
 public class RaceEndZone extends CheckPointZone implements iEventListener
 {
-    private PlayerEntity mWinner;
-    private int mFinishedPlayers = 0;
+    private HashSet<PlayerEntity> mWonPlayers;
     public RaceEndZone(int _x, int _y, int _x2, int _y2, int _numCheckPoints)
     {
         super(_x, _y, _x2, _y2, _numCheckPoints, null);
         sEvents.subscribeToEvent("newLevel", this);
         sEvents.subscribeToEvent("BarrierOpenEvent" + "StartGate", this);
-        mWinner = null;
+        mWonPlayers = new HashSet<PlayerEntity>();
     }
     @Override
     public void renderRaceState(int _raceTimer)
@@ -36,19 +36,22 @@ public class RaceEndZone extends CheckPointZone implements iEventListener
     @Override
     public void enter(AIEntity _entity)
     {
-        mFinishedPlayers++;
-        if (mWinner == null)
+        PlayerEntity entity = (PlayerEntity)_entity;
+        if (!mWonPlayers.contains(entity))
         {
-            _entity.placeCheckPoint(this);
-            mWinner = (PlayerEntity)_entity;
-            sSound.play(SoundScape.Sound.eRaceWin, 0);
-            sEvents.triggerDelayedEvent(new RaceWonEvent(mWinner));
+            mWonPlayers.add(entity);
+            if (mWonPlayers.size() == 1)
+            {
+                _entity.placeCheckPoint(this);
+                sSound.play(SoundScape.Sound.eRaceWin, 0);
+                sEvents.triggerDelayedEvent(new RaceWonEvent(entity));
+            }
+            else
+            {
+                _entity.placeCheckPoint(new RaceLostFakeZone(mCheckPointNumber, mWonPlayers.size()));
+            }
+            entity.mScoreTracker.finish(entity.getRaceTimer(), entity, mWonPlayers.size());
         }
-        else
-        {
-            _entity.placeCheckPoint(new RaceLostFakeZone(mCheckPointNumber, mFinishedPlayers));
-        }
-        mWinner.mScoreTracker.finish(mWinner.getRaceTimer(), mWinner, mFinishedPlayers);
     }
     @Override
     public boolean incrementRaceTimer()
@@ -60,8 +63,7 @@ public class RaceEndZone extends CheckPointZone implements iEventListener
     {
         if(_event.getName().equals("BarrierOpenEvent" + "StartGate"))
         {
-            mWinner = null;
-            mFinishedPlayers = 0;
+            mWonPlayers.clear();
         }
         else if(_event.getType().equals("newLevel"))
         {

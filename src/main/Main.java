@@ -13,7 +13,6 @@ import States.Menu.StateMenu;
 import States.Splash.StateSplash;
 import States.Title.StateTitle;
 import org.newdawn.slick.state.BasicGameState;
-import org.newdawn.slick.state.GameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 public class Main extends StateBasedGame

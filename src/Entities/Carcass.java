@@ -74,7 +74,7 @@ public class Carcass extends Entity
     @Override
     public void kill(CauseOfDeath _causeOfDeath, Object _killer)
     {
-        if (mKilledMe != _killer && mSpawnTimer == 0)
+        if (mBody != null && mKilledMe != _killer && mSpawnTimer == 0)
         {
             if (_causeOfDeath.equals(CauseOfDeath.eImpact))
                 sParticleManager.createSystem("CarcassImpactCarne", mBody.getPosition(), 1);

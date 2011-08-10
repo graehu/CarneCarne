@@ -17,9 +17,11 @@ import Graphics.sGraphicsManager;
 import Level.sLevel;
 import States.Game.iGameMode;
 import World.sWorld;
+import java.util.ArrayDeque;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Queue;
 import org.jbox2d.common.Vec2;
 import org.newdawn.slick.Graphics;
 
@@ -35,7 +37,8 @@ public class RaceMode implements iGameMode, iEventListener
     int mBestTime;
     iSkin mRaceRender = null;
     boolean mIsRaceActive = false;
-    public RaceMode(String _level)
+    Queue<String> mNextLevelProgression;
+    public RaceMode(Queue<String> _nextLevelProgression)
     {
         mTimer = mBestTime = 0;
         mRaceState = new RaceStateMachine();
@@ -43,7 +46,8 @@ public class RaceMode implements iGameMode, iEventListener
         sEvents.subscribeToEvent("RaceResetEvent", this);
         sEvents.subscribeToEvent("BarrierOpenEvent" + "StartGate", this);
         sEvents.subscribeToEvent("NewHighScoreEvent", this);
-        sLevel.newLevel(_level);
+        mNextLevelProgression = new ArrayDeque<String>(_nextLevelProgression);
+        sLevel.newLevel(mNextLevelProgression.remove());
     }
     public iGameMode update(Graphics _graphics, float _time)
     {
