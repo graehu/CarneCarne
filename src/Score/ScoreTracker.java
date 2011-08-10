@@ -15,6 +15,7 @@ import Graphics.sGraphicsManager;
 import Utils.sFontLoader;
 import org.jbox2d.common.Vec2;
 import org.newdawn.slick.Color;
+import org.newdawn.slick.Font;
 import org.newdawn.slick.geom.Vector2f;
 
 /**
@@ -32,9 +33,15 @@ abstract public class ScoreTracker
     private int mGUIManager;
     private GraphicalComponent mTacoImage;
     private GraphicalComponent mRaceWinnerImage;
-    private GraphicalComponent mGoalImage;
     private GraphicalComponent mDisplayComponent;
     private Text mScoreText;
+    Font mScoreDisplay;
+    PlayerEntity mEntity;
+
+    public void render()
+    {
+        
+    }
 
 
     public enum ScoreEvent
@@ -48,7 +55,7 @@ abstract public class ScoreTracker
         eScoreEventsMax,
     }
     
-    protected ScoreTracker(int _GUIManager) 
+    protected ScoreTracker(int _GUIManager, PlayerEntity _entity) 
     {
         mGUIManager = _GUIManager;
         mTacoImage = (GraphicalComponent)GUIManager.use(_GUIManager)
@@ -63,47 +70,28 @@ abstract public class ScoreTracker
         
         mRenderedScore = mScore = 0;
         mBestTime = mBestEverTime = Integer.MAX_VALUE;
-        
-        loadGoalImage();
+        //loadWinnerImage(1);
+        mEntity = _entity;
     }
-    
+
     private void loadWinnerImage(int _position)
     {
         if (mRaceWinnerImage == null)
         {
             mDisplayComponent = mRaceWinnerImage = (GraphicalComponent)GUIManager.use(mGUIManager)
-                    .createRootComponent(GUIManager.ComponentType.eGraphical, new Vector2f(), new Vector2f());
+                    .createRootComponent(GUIManager.ComponentType.eGraphical, new Vector2f(200, 200), new Vector2f(200, 200));
             mRaceWinnerImage.setImage("ui/HUD/finishedRaceAtPosition" + _position + ".png");
             mRaceWinnerImage.setDimentionsToImage();
             mRaceWinnerImage.setIsVisible(false);
-            if (mGoalImage != null)
-            {
-                mGoalImage.destroy();
-                mGoalImage = null;
-            }
-        }
-    }
-    private void loadGoalImage()
-    {
-        if (mGoalImage == null)
-        {
-            mDisplayComponent = mGoalImage = (GraphicalComponent)GUIManager.use(mGUIManager)
-                    .createRootComponent(GUIManager.ComponentType.eGraphical, new Vector2f(), new Vector2f());
-            mGoalImage.setImage("ui/HUD/goal.png");
-            mGoalImage.setDimentionsToImage();
-            mGoalImage.setIsVisible(false);
-            if (mRaceWinnerImage != null)
-            {
-                mRaceWinnerImage.destroy();
-                mRaceWinnerImage = null;
-            }
+            mScoreDisplay = sFontLoader.createFont("score");
+            mBestTime = mEntity.getRaceTimer();
         }
     }
     public void score(ScoreEvent _event)
     {
         if (_event.equals(ScoreEvent.eWonRace) || _event.equals(ScoreEvent.eScoredGoal))
         {
-            throw new UnsupportedOperationException("Call winRace instead, not this directly");
+            throw new UnsupportedOperationException("Call winRace or scoregoal instead, not this directly");
         }
         scoreimpl(_event);
     }
@@ -130,10 +118,7 @@ abstract public class ScoreTracker
     }
     public void scoreGoal()
     {
-        loadGoalImage();
         scoreimpl(ScoreEvent.eScoredGoal);
-        mGoalImage.setIsVisible(true);
-        mWinnerTimer = 180;
     }
     public void raceEnded()
     {
@@ -167,11 +152,19 @@ abstract public class ScoreTracker
         mScoreText.setColor(stringColour);
         mScoreText.setTextString(String.valueOf(renderedScore));
         
-        if (mDisplayComponent.isVisible())
+        try
         {
-            mWinnerTimer--;
-            if (mWinnerTimer == 0)
-                mDisplayComponent.setIsVisible(false);
+            if (mDisplayComponent.isVisible())
+            {
+                mScoreDisplay.drawString(0, 0.5f, "Time: " + mBestTime);
+                mWinnerTimer--;
+                if (mWinnerTimer == 0)
+                    mDisplayComponent.setIsVisible(false);
+            }
+            
+        }
+        catch (NullPointerException e)
+        {
         }
     }
 }

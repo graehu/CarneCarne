@@ -14,12 +14,17 @@ import Events.PlayerCreatedEvent;
 import Events.iEvent;
 import Events.iEventListener;
 import Events.sEvents;
+import Graphics.Skins.iSkin;
+import Graphics.Skins.sSkinFactory;
 import Graphics.sGraphicsManager;
 import Level.sLevel;
 import States.Game.iGameMode;
+import Utils.sFontLoader;
 import World.sWorld;
 import java.util.ArrayList;
+import java.util.HashMap;
 import org.jbox2d.common.Vec2;
+import org.newdawn.slick.Font;
 import org.newdawn.slick.Graphics;
 
 /**
@@ -35,11 +40,13 @@ public class FootballMode implements iGameMode, iEventListener
     ArrayList<Integer> scores = new ArrayList<Integer>();
     Football mFootball;
     FootballState mState;
+    Font mFont;
+    iSkin mBackdrop;
     public FootballMode(String _level)
     {
         mTimer = 5 * 60 * 60;
         ballSpawnPosition = null;
-        mState = new FootballNormalState(this, null);
+        mState = new FootballStartingState(this);
         scores.add(0);
         scores.add(0);
         sEvents.subscribeToEvent("PlayerCreatedEvent", this);
@@ -50,6 +57,10 @@ public class FootballMode implements iGameMode, iEventListener
         {
             players.get(i).mSkin.activateSubSkin("Player" + players.get(i).getPlayerNumber(), false, 0);
         }
+        mFont = sFontLoader.createFont("score");
+        HashMap params = new HashMap();
+        params.put("ref", "timerBackground");
+        mBackdrop = sSkinFactory.create("static", params);
     }
     
     public iGameMode update(Graphics _graphics, float _time)
@@ -58,6 +69,10 @@ public class FootballMode implements iGameMode, iEventListener
         if (mTimer == 0)
         {
             mState = new FootballWonState(this, scores.get(0), scores.get(1));
+        }
+        else
+        {
+            mState = mState.update();
         }
         sLevel.update();
         sWorld.update(_graphics, _time);
@@ -70,7 +85,9 @@ public class FootballMode implements iGameMode, iEventListener
     {
         sWorld.getCamera().render(_graphics);
         mState.render(scores.get(0), scores.get(1));
-        sGraphicsManager.drawString("Timeleft: " + getTimeString(mTimer), 0f, 0);
+        Vec2 s = sGraphicsManager.getTrueScreenDimensions().mul(0.5f);
+        mBackdrop.render(s.x- 50, s.y+50);
+        mFont.drawString(s.x-25, s.y+50, getTimeString(mTimer));
     }
     private String getTimeString(int _timer)
     {
@@ -78,16 +95,6 @@ public class FootballMode implements iGameMode, iEventListener
         int minutes = seconds / 60;
         seconds -= minutes * 60;
         return minutes + ":" + seconds;
-        /*String timer = String.valueOf(_timer/60.0f);
-        if (timer.length() > 5)
-        {
-            timer = timer.substring(0, 5);
-        }
-        else while (timer.length() < 5)
-        {
-            timer = timer + "0";
-        }
-        return timer;*/
     }
 
     public boolean trigger(iEvent _event)
@@ -97,10 +104,10 @@ public class FootballMode implements iGameMode, iEventListener
             PlayerCreatedEvent event = (PlayerCreatedEvent)_event;
             event.getPlayer().setTeam(players.size() % 2);
             players.add(event.getPlayer());
-            if (((FootballNormalState)mState).mFootball != null)
+            /*if (((FootballStartingState)mState).mFootball != null)
             {
-                event.getPlayer().setFootball(((FootballNormalState)mState).mFootball);
-            }
+                event.getPlayer().setFootball(((FootballStartingState)mState).mFootball);
+            }*/
         }
         else if (_event.getName().equals("FootballSpawnEvent"))
         {

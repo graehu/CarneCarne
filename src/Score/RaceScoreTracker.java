@@ -4,6 +4,8 @@
  */
 package Score;
 
+import Entities.PlayerEntity;
+
 /**
  *
  * @author alasdair
@@ -12,9 +14,9 @@ package Score;
 /// I say race score tracker, I'm just using this for everything now since its persistant
 public class RaceScoreTracker extends ScoreTracker
 {
-    public RaceScoreTracker(int _GUIManager)
+    public RaceScoreTracker(int _GUIManager, PlayerEntity _entity)
     {
-        super(_GUIManager);
+        super(_GUIManager, _entity);
     }
     
     private static Integer[] getScoreValues()

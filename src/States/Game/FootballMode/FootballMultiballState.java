@@ -24,6 +24,9 @@ public class FootballMultiballState extends FootballState
     private iSkin mSkin;
     private float mSkinPosition;
     private Vec2 mBallSpawnPosition;
+    iSkin mGoalScoreRenders[];
+    iSkin mGoalScoreRender;
+    int mGoalScoreRenderTimer;
     public FootballMultiballState(FootballMode _mode, Vec2 _ballSpawnPosition)
     {
         super(_mode, false);
@@ -46,6 +49,13 @@ public class FootballMultiballState extends FootballState
         params.put("ref", "MultiBall");
         mSkin = sSkinFactory.create("static", params);
         mSkinPosition = 0;
+        
+        mGoalScoreRenders = new iSkin[2];
+        params.put("ref", "Goal0");
+        mGoalScoreRenders[0] = sSkinFactory.create("static", params);
+        params.put("ref", "Goal1");
+        mGoalScoreRenders[1] = sSkinFactory.create("static", params);
+        mGoalScoreRender = null;
     }
     
     @Override
@@ -58,6 +68,18 @@ public class FootballMultiballState extends FootballState
             if (mSkinPosition > sGraphicsManager.getTrueScreenDimensions().x)
             {
                 mSkin = null;
+            }
+        }
+        if (mGoalScoreRender != null)
+        {
+            Vec2 s = sGraphicsManager.getTrueScreenDimensions().mul(0.5f);
+            Vec2 dims = new Vec2(1148, 471);
+            s = s.sub(dims.mul(0.5f));
+            mGoalScoreRender.render(s.x, s.y);
+            mGoalScoreRenderTimer--;
+            if (mGoalScoreRenderTimer == 0)
+            {
+                mGoalScoreRender = null;
             }
         }
     }
@@ -73,6 +95,8 @@ public class FootballMultiballState extends FootballState
     {
         if (mBalls.contains(_football))
         {
+            mGoalScoreRender = mGoalScoreRenders[_team];
+            mGoalScoreRenderTimer = 120;
             mBalls.remove(_football);
             mMode.scores.set(_team, mMode.scores.get(_team)+1);
             for (int i = 0; i < mMode.players.size(); i++)
@@ -82,6 +106,7 @@ public class FootballMultiballState extends FootballState
                     mMode.players.get(i).mScoreTracker.scoreGoal();
                 }
             }
+            _football.doom();
         }
         if (mBalls.isEmpty())
         {

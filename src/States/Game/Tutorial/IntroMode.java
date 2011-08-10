@@ -18,8 +18,10 @@ import Level.sLevel;
 import States.Game.RaceMode.RaceMode;
 import States.Game.iGameMode;
 import World.sWorld;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Queue;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 import org.newdawn.slick.Graphics;
@@ -35,15 +37,15 @@ public class IntroMode implements iGameMode, iEventListener
     ArrayList<IntroSection> mSections;
     Body mGroundBody;
     int mEndedPlayers = 0;
-    String mNextLevel;
-    public IntroMode(String _nextLevel)
+    Queue<String> mNextLevelProgression;
+    public IntroMode(Queue<String> _nextLevelProgression)
     {
         mPlayers = new ArrayList<PlayerEntity>();
         mSections = new ArrayList<IntroSection>();
         sEvents.subscribeToEvent("TutorialSpawnEvent", this);
         sEvents.subscribeToEvent("PlayerEndedTutorialEvent", this);
-        sLevel.newLevel("tutorial");
-        mNextLevel = _nextLevel;
+        mNextLevelProgression = new ArrayDeque<String>(_nextLevelProgression);
+        sLevel.newLevel(mNextLevelProgression.remove());
     }
     public iGameMode update(Graphics _graphics, float _time)
     {
@@ -63,7 +65,7 @@ public class IntroMode implements iGameMode, iEventListener
             Vec2 s = sGraphicsManager.getTrueScreenDimensions();
             sWorld.switchCamera(new FreeCamera(new Rectangle(0,0,s.x, 0 + s.y)));
             cleanup();
-            iGameMode raceMode = new RaceMode(mNextLevel);
+            iGameMode raceMode = new RaceMode(mNextLevelProgression);
             sEvents.unsubscribeToEvent("TutorialSpawnEvent", this);
             return raceMode;
         }
