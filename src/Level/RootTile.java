@@ -46,6 +46,10 @@ public abstract class RootTile
     {
         return mSpikeNormals[mSlopeType];
     }
+
+    void createdAt(int _xTile, int _yTile, TileGrid _tileGrid)
+    {
+    }
     public enum AnimationType
     {
         eFireHit,

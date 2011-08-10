@@ -4,6 +4,7 @@
  */
 package Level;
 
+import Graphics.Particles.sParticleManager;
 import Level.MelonSkinTile.SkinDirection;
 import Level.sLevel.TileType;
 import org.jbox2d.common.Vec2;
@@ -15,8 +16,9 @@ import org.jbox2d.common.Vec2;
 public class ZoomzoomTile extends NonEdibleTile
 {
     private static Vec2 mBoostDirections[];
+    private static String mParticleSystems[];
     SkinDirection mDirection;
-    public ZoomzoomTile(int _id, SkinDirection _direction)
+    public ZoomzoomTile(int _id, SkinDirection _direction, String _name)
     {
         super(_id, TileType.eZoomzoom, true);
         mDirection = _direction;
@@ -37,11 +39,28 @@ public class ZoomzoomTile extends NonEdibleTile
             {
                 mBoostDirections[i] = mBoostDirections[i].mul(0.5f); /// This is the scalar
             }
+            
+            mParticleSystems = new String[SkinDirection.eSkinDirectionsSize.ordinal()];
+            String type = _name;
+            mParticleSystems[SkinDirection.eRight.ordinal()] = "ZoomyRight" + type;
+            mParticleSystems[SkinDirection.eLeft.ordinal()] = "ZoomyLeft" + type;
+            mParticleSystems[SkinDirection.eUp.ordinal()] = "ZoomTop" + type;
+            mParticleSystems[SkinDirection.eDown.ordinal()] = "ZoomyBottom" + type;
+            
+            mParticleSystems[SkinDirection.eDownLeft.ordinal()] = "ZoomyBottomLeft" + type;
+            mParticleSystems[SkinDirection.eDownRight.ordinal()] = "ZoomyBottomRight" + type;
+            mParticleSystems[SkinDirection.eUpLeft.ordinal()] = "ZoomyTopLeft" + type;
+            mParticleSystems[SkinDirection.eUpRight.ordinal()] = "ZoomyTopRight" + type;
         }
     }
     
     public Vec2 getBoostDirection()
     {
         return mBoostDirections[mDirection.ordinal()];
+    }
+    @Override
+    void createdAt(int _xTile, int _yTile, TileGrid _tileGrid)
+    {
+        _tileGrid.addParticles(sParticleManager.createSystem(mParticleSystems[mDirection.ordinal()], new Vec2(_xTile, _yTile).mul(64).add(new Vec2(32,32)), -1));
     }
 }

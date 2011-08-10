@@ -4,6 +4,7 @@
  */
 package Level;
 
+import Graphics.Particles.ParticleSysBase;
 import Level.Tile.Direction;
 import Level.sLevel.TileType;
 import World.sWorld;
@@ -241,11 +242,21 @@ abstract public class TileGrid {
             //mCavedInBodies.pop().destroy();
             break;
         }
+        while (!mParticles.empty())
+        {
+            mParticles.pop().kill();
+        }
         sWorld.destroyBody(mBody);
     }
 
     void addCaveIn(TileGrid _newTileGrid)
     {
         mCavedInBodies.add(_newTileGrid);
+    }
+    
+    Stack<ParticleSysBase> mParticles = new Stack<ParticleSysBase>();
+    void addParticles(ParticleSysBase _particle)
+    {
+        mParticles.add(_particle);
     }
 }

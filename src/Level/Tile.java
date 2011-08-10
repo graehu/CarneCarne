@@ -34,7 +34,10 @@ public class Tile
         mId = _id;
         mRootId = _rootId;
         if (mRootId != null)
+        {
             mHealth = mRootId.mMaxHealth;
+            mRootId.createdAt(_xTile, _yTile, _tileGrid);
+        }
         else
             mHealth = -1;
         mTileGrid = _tileGrid;

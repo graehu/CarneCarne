@@ -54,6 +54,7 @@ public class RootTileList {
         {
             idsSize += _tiledMap.getTileSet(i).lastGID - _tiledMap.getTileSet(i).firstGID;
         }
+        String zoomZoomName = _tiledMap.getMapProperty("ZoomZoomName", "Meat");
         mRootTiles = new ArrayList<RootTile>();
         mRootTiles.add(new EmptyTile());
         for (int i = 1; i < idsSize;)
@@ -200,7 +201,7 @@ public class RootTileList {
                 {
                     String directionString = _tiledMap.getTileProperty(i, "Direction", "Right");
                     SkinDirection direction = directionMap.get(directionString);
-                    mRootTiles.add(new ZoomzoomTile(i, direction));
+                    mRootTiles.add(new ZoomzoomTile(i, direction, zoomZoomName));
                     i++;
                 }
                 else if (shape.equals("MelonSkin"))

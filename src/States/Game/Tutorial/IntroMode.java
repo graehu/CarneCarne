@@ -14,6 +14,7 @@ import Events.iEvent;
 import Events.iEventListener;
 import Events.sEvents;
 import Graphics.Camera.FreeCamera;
+import Graphics.Particles.sParticleManager;
 import Graphics.sGraphicsManager;
 import Level.sLevel;
 import States.Game.RaceMode.RaceMode;
@@ -49,6 +50,9 @@ public class IntroMode implements iGameMode, iEventListener
         sEvents.subscribeToEvent("PlayerEndedTutorialEvent", this);
         mNextLevelProgression = new ArrayDeque<String>(_nextLevelProgression);
         sLevel.newLevel(mNextLevelProgression.remove());
+        sParticleManager.createSystem("ZoomyLeftMeat", new Vec2(15,16).mul(64f), -1);
+        sParticleManager.createSystem("ZoomyLeftMeat", new Vec2(16,16).mul(64f), -1);
+        sParticleManager.createSystem("ZoomyLeftMeat", new Vec2(17,16).mul(64f), -1);
     }
     public iGameMode update(Graphics _graphics, float _time)
     {
