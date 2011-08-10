@@ -4,7 +4,30 @@
  <tile id="0">
   <properties>
    <property name="BarrierName" value="StartGate"/>
-   <property name="Size" value="5"/>
+   <property name="Spawn" value="StartBarrier"/>
+  </properties>
+ </tile>
+ <tile id="1">
+  <properties>
+   <property name="BarrierName" value="StartGate"/>
+   <property name="Spawn" value="StartBarrier"/>
+  </properties>
+ </tile>
+ <tile id="2">
+  <properties>
+   <property name="BarrierName" value="StartGate"/>
+   <property name="Spawn" value="StartBarrier"/>
+  </properties>
+ </tile>
+ <tile id="3">
+  <properties>
+   <property name="BarrierName" value="StartGate"/>
+   <property name="Spawn" value="StartBarrier"/>
+  </properties>
+ </tile>
+ <tile id="4">
+  <properties>
+   <property name="BarrierName" value="StartGate"/>
    <property name="Spawn" value="StartBarrier"/>
   </properties>
  </tile>
