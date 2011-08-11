@@ -79,7 +79,13 @@ public class sSound
     }
     public static void play(SoundScape.Sound _sound, int _player, Object _parameter)
     {
-        mSoundScapes.get(_player).play(_sound,_parameter);
+        try
+        {
+            mSoundScapes.get(_player).play(_sound,_parameter);
+        }
+        catch (IndexOutOfBoundsException e)
+        {
+        }
     }
     public static void stop(SoundScape.Sound _sound, int _player, Object _parameter)
     {

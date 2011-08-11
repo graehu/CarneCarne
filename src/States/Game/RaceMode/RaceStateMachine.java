@@ -104,7 +104,7 @@ class RaceStateMachine implements iEventListener
             }
             case eRaceCompleted:
             {
-                if (mTimer == 50 * 60)
+                if (mTimer == 5 * 60)
                 {
                     changeState(State.eRaceNotStarted);
                 }

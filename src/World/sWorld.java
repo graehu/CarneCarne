@@ -261,7 +261,11 @@ public class sWorld
     private static Fixture mLastHit;
     private static TongueAnchor mLastTongueAnchor;
     
-
+    private static Vec2 mLastGumEat;
+    public static Vec2 getLastGumEaten()
+    {
+        return mLastGumEat;
+    }
     
     public static Tile eatTiles(Vec2 start, Vec2 end)
     {
@@ -310,6 +314,10 @@ public class sWorld
             {
                 case eEdible:
                 case eGum:
+                {
+                    mLastGumEat = tile.getWorldPosition();
+                    /// continue;
+                }
                 case eMelonFlesh:
                 case eChilli:
                 {
