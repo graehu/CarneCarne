@@ -41,6 +41,12 @@ class IntroSwingSection extends IntroSection implements iEventListener
     }
 
     @Override
+    void cleanup()
+    {
+        sEvents.unsubscribeToEvent("MapClickReleaseEvent"+"TongueHammer"+mPlayerNumber, this);
+        sEvents.unsubscribeToEvent("MapClickEvent"+"TongueHammer"+mPlayerNumber, this);
+    }
+    @Override
     public IntroSection updateImpl()
     {
         return mSection;

@@ -71,4 +71,6 @@ abstract public class IntroSection
         }                                                                                                   
     }
     abstract protected void renderInternal(float scale);
+
+    abstract void cleanup();
 }

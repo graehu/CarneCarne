@@ -132,6 +132,11 @@ public class IntroMode implements iGameMode, iEventListener
             player.destroy();
             sWorld.destroyBody(player.getBody());
         }
+        for (IntroSection section: mSections)
+        {
+            section.cleanup();
+        }
+        sEvents.unblockAllEvents();
         sEvents.unsubscribeToEvent("TutorialSpawnEvent", this);
         sEvents.unsubscribeToEvent("PlayerEndedTutorialEvent", this);
     }

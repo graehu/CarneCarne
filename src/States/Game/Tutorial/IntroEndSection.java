@@ -33,7 +33,11 @@ class IntroEndSection extends IntroSection implements iEventListener
         sEvents.subscribeToEvent("AllPlayersTutorialEndedEvent", this);
         sEvents.triggerEvent(new PlayerEndedTutorialEvent(mPlayerNumber));
     }
-
+    @Override
+    void cleanup()
+    {
+        sEvents.unsubscribeToEvent("AllPlayersTutorialEndedEvent", this);
+    }
     @Override
     public IntroSection updateImpl()
     {

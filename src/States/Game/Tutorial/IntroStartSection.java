@@ -28,6 +28,10 @@ class IntroStartSection extends IntroSection
     }
 
     @Override
+    void cleanup()
+    {
+    }
+    @Override
     public IntroSection updateImpl()
     {
         if (mTimer > 60)

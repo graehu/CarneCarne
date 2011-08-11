@@ -32,6 +32,11 @@ class IntroSmashSection extends IntroSection implements iEventListener
     }
     
     @Override
+    void cleanup()
+    {
+        sEvents.unsubscribeToEvent("MapClickEvent"+"TongueHammer"+mPlayerNumber, this);
+    }
+    @Override
     public IntroSection updateImpl()
     {
         Vec2 tile = mPosition.add(new Vec2(2,-3));

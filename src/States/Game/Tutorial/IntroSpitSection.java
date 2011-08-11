@@ -33,6 +33,11 @@ class IntroSpitSection extends IntroSection implements iEventListener
     }
 
     @Override
+    void cleanup()
+    {
+        sEvents.unsubscribeToEvent("MapClickEvent"+"Spit"+mPlayerNumber, this);
+    }
+    @Override
     public IntroSection updateImpl()
     {
         return mReturn;

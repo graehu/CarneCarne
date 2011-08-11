@@ -32,6 +32,11 @@ class IntroJumpSection extends IntroSection implements iEventListener
     }
 
     @Override
+    void cleanup()
+    {
+        sEvents.unsubscribeToEvent("KeyDownEvent"+'w'+mPlayerNumber, this);
+    }
+    @Override
     public IntroSection updateImpl()
     {
         return mReturn;
