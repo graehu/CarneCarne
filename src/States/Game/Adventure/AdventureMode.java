@@ -53,15 +53,8 @@ public class AdventureMode implements iGameMode, iEventListener
                 mTimer = 0;
                 mIsCompleted = false;
                 cleanup();
-                /*if(nextMap == null)
-                {
-                    //FIXME: EXIT TO TITLE
-                }
-                else
-                    nextMap = sLevel.newLevel(nextMap);*/
                 if (mNextLevelProgression.isEmpty())
                 {
-                    //FIXME: EXIT TO TITLE
                     return null;
                 }
                 else
