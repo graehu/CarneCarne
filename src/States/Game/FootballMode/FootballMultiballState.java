@@ -122,7 +122,7 @@ public class FootballMultiballState extends FootballState
         }
         if (mBalls.isEmpty())
         {
-            return new FootballNormalState(mMode, mBallSpawnPosition);
+            return new FootballNormalState(mMode, mBallSpawnPosition, _team);
         }
         return this;
     }
@@ -133,7 +133,7 @@ public class FootballMultiballState extends FootballState
         mBalls.remove(_football);
         if (mBalls.isEmpty())
         {
-            return new FootballNormalState(mMode, mBallSpawnPosition);
+            return new FootballNormalState(mMode, mBallSpawnPosition, -1);
         }
         return this;
     }

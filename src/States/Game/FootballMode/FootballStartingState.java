@@ -55,7 +55,7 @@ public class FootballStartingState extends FootballState
             parameters.put("position",mSpawnPosition);
             Football football = (Football)sEntityFactory.create("Football",parameters);
             football.setGameMode(mMode);
-            FootballState state = new FootballNormalState(mMode, mSpawnPosition);
+            FootballState state = new FootballNormalState(mMode, mSpawnPosition, -1);
             state.spawnFootball(football);
             return state;
         }

@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 import org.jbox2d.common.Vec2;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.Font;
 
 /**
@@ -38,7 +39,7 @@ public class FootballNormalState extends FootballState
     iSkin mRandomEventRender;
     private int mRandomEventTimer;
     private int mGoalScoreRenderTimer;
-    public FootballNormalState(FootballMode _mode, Vec2 _ballSpawnPosition)
+    public FootballNormalState(FootballMode _mode, Vec2 _ballSpawnPosition, int _justScored)
     {
         super(_mode, true);
         ballSpawnPosition = _ballSpawnPosition;
@@ -60,6 +61,12 @@ public class FootballNormalState extends FootballState
         {
             mFont = sFontLoader.scaleFont(sFontLoader.getDefaultFont(), 2.0f);
         }
+        
+        if (_justScored != -1)
+        {
+            mGoalScoreRender = mGoalScoreRenders[_justScored];
+            mGoalScoreRenderTimer = 120;
+        }
     }
     
     @Override
@@ -71,13 +78,14 @@ public class FootballNormalState extends FootballState
             mRandomEventRender.render(mRandomEventTimer, 0);
         }
         Vec2 s = sGraphicsManager.getTrueScreenDimensions().mul(0.5f);
-        s.y -= mFont.getHeight(_score1 + ":" + _score2)*0.65f ;
-        s.x -= mFont.getWidth(_score1 + " ") + (mFont.getWidth(":")*0.5f);
-        mFont.drawString(s.x, s.y, _score1 + " ");
-        s.x += mFont.getWidth(_score1 + " ");
+        s.y -= mFont.getHeight(_score2 + ":" + _score1)*0.65f ;
+        s.x -= mFont.getWidth(_score2 + " ") + (mFont.getWidth(":")*0.5f);
+        mFont.drawString(s.x, s.y, _score2 + " ", new Color(255,0,0));
+        s.x += mFont.getWidth(_score2 + " ");
         mFont.drawString(s.x, s.y,":");
         s.x += mFont.getWidth(":") + mFont.getWidth(" ");
-        mFont.drawString(s.x, s.y, String.valueOf(_score2));
+        mFont.drawString(s.x, s.y, _score1 + " ", new Color(0,0,255));
+        //mFont.drawString(s.x, s.y, String.valueOf(_score1));
         if (mGoalScoreRender != null)
         {
             s = sGraphicsManager.getTrueScreenDimensions().mul(0.5f);

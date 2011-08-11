@@ -538,7 +538,7 @@ public class PlayerEntity extends AIEntity
                         mStickShakeDisplay.setSpeed(0.5f);
                     }
                     Vec2 s = sGraphicsManager.getScreenDimensions();
-                    Vec2 dimensions = new Vec2(150, 200);
+                    Vec2 dimensions = new Vec2(150, -100);
                     Vec2 position = s.sub(dimensions);
                     position = position.mul(0.5f);
                     mStickShakeDisplay.render(position.x, position.y);
