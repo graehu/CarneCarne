@@ -30,7 +30,6 @@ class RaceStateMachine implements iEventListener
         eRaceCountDown,
         eRaceInProgress,
         eRaceWon,
-        eRaceCompleted,
         eStatesMax,
     }
     iSkin mCountDownRender;
@@ -45,7 +44,7 @@ class RaceStateMachine implements iEventListener
         sEvents.subscribeToEvent("RaceWonEvent", this);
         sEvents.subscribeToEvent("RaceCountdownStartEvent", this);
         sEvents.subscribeToEvent("RaceCountdownInterruptEvent", this);
-        sEvents.subscribeToEvent("RaceCompletedEvent", this);
+        sEvents.subscribeToEvent("RaceResetEvent", this);
         sEvents.blockEvent("RaceResetEvent");
         mFont = sFontLoader.scaleFont(sFontLoader.createFont("score"), 2.0f);
         mFont2 = sFontLoader.scaleFont(sFontLoader.createFont("score"), 4.0f);
@@ -71,12 +70,12 @@ class RaceStateMachine implements iEventListener
             mCountDownRender = null;
             mState = State.eRaceNotStarted;
         }
-        else if (_event.getType().equals("RaceCompletedEvent"))
+        else if (_event.getType().equals("RaceResetEvent"))
         {
             if (!mState.equals(State.eRaceNotStarted))
             {
                 //sEvents.blockEvent("RaceResetEvent");
-                changeState(State.eRaceCompleted);
+                changeState(State.eRaceNotStarted);
                 //sEvents.unblockEvent("RaceResetEvent");
             }
         }
@@ -102,14 +101,14 @@ class RaceStateMachine implements iEventListener
                 }
                 break;
             }
-            case eRaceCompleted:
+            /*case eRaceCompleted:
             {
                 if (mTimer == 5 * 60)
                 {
                     changeState(State.eRaceNotStarted);
                 }
                 break;
-            }
+            }*/
             case eRaceCountDown:
             {
                 if (mTimer == 180)
@@ -215,11 +214,6 @@ class RaceStateMachine implements iEventListener
                 sEvents.unblockEvent("RaceResetEvent");
                 sEvents.triggerEvent(new RaceResetEvent());
                 sEvents.blockEvent("RaceResetEvent");
-                mTimer = 0;
-                break;
-            }
-            case eRaceCompleted:
-            {
                 mTimer = 0;
                 break;
             }
