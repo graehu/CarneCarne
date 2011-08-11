@@ -41,7 +41,7 @@
 <step b="0.12941177" g="0.22352941" offset="1.0" r="0.7490196"/>
 </color>
 </emitter>
-<emitter imageName="ZoomyUp.png" name="Default_clone" renderType="inherit" useAdditive="false" useOriented="false">
+<emitter imageName="particleSystems/ZoomyUp.png" name="Default_clone" renderType="inherit" useAdditive="false" useOriented="false">
 <spawnInterval enabled="true" max="50.0" min="20.0"/>
 <spawnCount enabled="true" max="2.0" min="1.0"/>
 <initialLife enabled="true" max="1000.0" min="800.0"/>
@@ -82,7 +82,7 @@
 <step b="0.12941177" g="0.22352941" offset="1.0" r="0.7490196"/>
 </color>
 </emitter>
-<emitter imageName="ZoomyUp.png" name="Default_clone_clone" renderType="inherit" useAdditive="false" useOriented="false">
+<emitter imageName="particleSystems/ZoomyUp.png" name="Default_clone_clone" renderType="inherit" useAdditive="false" useOriented="false">
 <spawnInterval enabled="true" max="50.0" min="20.0"/>
 <spawnCount enabled="true" max="2.0" min="1.0"/>
 <initialLife enabled="true" max="1000.0" min="800.0"/>
@@ -123,7 +123,7 @@
 <step b="0.12941177" g="0.22352941" offset="1.0" r="0.7490196"/>
 </color>
 </emitter>
-<emitter imageName="ZoomyUp.png" name="Default_clone_clone_clone" renderType="inherit" useAdditive="false" useOriented="false">
+<emitter imageName="particleSystems/ZoomyUp.png" name="Default_clone_clone_clone" renderType="inherit" useAdditive="false" useOriented="false">
 <spawnInterval enabled="true" max="50.0" min="20.0"/>
 <spawnCount enabled="true" max="2.0" min="1.0"/>
 <initialLife enabled="true" max="1000.0" min="800.0"/>
@@ -164,7 +164,7 @@
 <step b="0.12941177" g="0.22352941" offset="1.0" r="0.7490196"/>
 </color>
 </emitter>
-<emitter imageName="ZoomyUp.png" name="Default_clone_clone_clone_clone" renderType="inherit" useAdditive="false" useOriented="false">
+<emitter imageName="particleSystems/ZoomyUp.png" name="Default_clone_clone_clone_clone" renderType="inherit" useAdditive="false" useOriented="false">
 <spawnInterval enabled="true" max="50.0" min="20.0"/>
 <spawnCount enabled="true" max="2.0" min="1.0"/>
 <initialLife enabled="true" max="1000.0" min="800.0"/>
