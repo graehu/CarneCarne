@@ -66,14 +66,6 @@ public class FootballMultiballState extends FootballState
     @Override
     void render(int _score1, int _score2)
     {
-        /*Vec2 s = sGraphicsManager.getTrueScreenDimensions().mul(0.5f);
-        s.y -= mFont.getHeight(_score1 + ":" + _score2)*0.65f ;
-        s.x -= mFont.getWidth(_score1 + " ") + (mFont.getWidth(":")*0.5f);
-        mFont.drawString(s.x, s.y, _score1 + " ");
-        s.x += mFont.getWidth(_score1 + " ");
-        mFont.drawString(s.x, s.y,":");
-        s.x += mFont.getWidth(":") + mFont.getWidth(" ");
-        mFont.drawString(s.x, s.y, String.valueOf(_score2));*/
         Vec2 s = sGraphicsManager.getTrueScreenDimensions().mul(0.5f);
         s.y -= mFont.getHeight(_score2 + ":" + _score1)*0.65f ;
         s.x -= mFont.getWidth(_score2 + " ") + (mFont.getWidth(":")*0.5f);
