@@ -22,6 +22,9 @@ import org.newdawn.slick.SpriteSheet;
 public class CharacterSkin implements iSkin
 {
 
+    public void setAlwaysOnTop(boolean _isAlwaysOnTop) {
+        mAlwaysOnTop = _isAlwaysOnTop;
+    }
     public void setAlpha(String _animation, float _alpha) {
         mSubSkins.get(mSkinNames.get(_animation)).setAlpha(_alpha);
     }
@@ -32,6 +35,11 @@ public class CharacterSkin implements iSkin
         public CharacterSubSkin(String _ref, SubType _type, int _tileWidth, int _tileHeight, Vec2 _offset)
         {
             this(_ref, _type, _tileWidth, _tileHeight, _offset, false, false,  41);
+        }
+        public CharacterSubSkin(String _ref, SubType _type, int _tileWidth, int _tileHeight, Vec2 _offset, boolean _isAlwaysOnTop)
+        {
+            this(_ref, _type, _tileWidth, _tileHeight, _offset, false, false,  41);
+            mIsAlwaysOnTop = _isAlwaysOnTop;
         }
         //flipping the skin will postfix "_h" and "_v" to the name respectively
         public CharacterSubSkin(String _ref, SubType _type, int _tileWidth, int _tileHeight, Vec2 _offset, boolean _hFlipped,  boolean _vFlipped)
@@ -63,6 +71,7 @@ public class CharacterSkin implements iSkin
         Vec2 mOffset = null;
         boolean mHFlipped = false;
         boolean mVFlipped = false;
+        boolean mIsAlwaysOnTop = false;
     }
     
     CharacterSkin(List<CharacterSubSkin> _subSkins) throws SlickException
@@ -86,6 +95,7 @@ public class CharacterSkin implements iSkin
                         {
                             String name = subSkin.mRef + "_" + mDirections.get(x + (y*reqWidth));
                             iSkin skin = new StaticSkin(ss.getSprite(x, y));
+                            skin.setAlwaysOnTop(subSkin.mIsAlwaysOnTop);
                             addSubSkin(skin, name, subSkin.mOffset);
                         }
                     }
@@ -104,6 +114,7 @@ public class CharacterSkin implements iSkin
                             postFix += "_v";
                     }
                     iSkin skin = new AnimatedSkin(ss, subSkin.mDuration);
+                    skin.setAlwaysOnTop(subSkin.mIsAlwaysOnTop);
                     addSubSkin(skin, subSkin.mRef+postFix, subSkin.mOffset);
                     break;
                 }
@@ -111,6 +122,7 @@ public class CharacterSkin implements iSkin
                 {
                     Image image = new Image(absoluteRef);
                     iSkin skin = new StaticSkin(image);
+                    skin.setAlwaysOnTop(subSkin.mIsAlwaysOnTop);
                     addSubSkin(skin, subSkin.mRef, subSkin.mOffset);
                     break;
                 }
@@ -130,6 +142,7 @@ public class CharacterSkin implements iSkin
     PriorityQueue<Integer> mCurrentSkins = new PriorityQueue<Integer>();
     
     float mRotation = 0;
+    boolean mAlwaysOnTop = false;
     
     //will ignore subskins being added with same name as existing ones
     protected final void addSubSkin(iSkin _skin, String _name, Vec2 _offset)

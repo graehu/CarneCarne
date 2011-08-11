@@ -222,6 +222,8 @@ public class BodyCamera extends iCamera implements iEventListener
             //render lighting
             renderLighting(_graphics);
             
+            sGraphicsManager.renderAlwaysOnTopSkins();
+            
             //render HUD and overlay
             ((PlayerEntity)mBody.getUserData()).renderHUD();
             mOverlay.draw(0,0, (int)mViewPort.getWidth(), (int)mViewPort.getHeight());
@@ -229,6 +231,7 @@ public class BodyCamera extends iCamera implements iEventListener
         }
         sGraphicsManager.endTransform();  
         sGraphicsManager.clearClip();
+        
     }
     
     protected void renderLighting(Graphics _graphics)

@@ -500,7 +500,9 @@ public class PlayerEntity extends AIEntity
                         location.x = location.x * ((direction.x * dimScale) + 0.5f);
                     }
                     float locationLength = sWorld.translateToPhysics(location).sub(mBody.getPosition()).normalize();
-                    if (locationLength > length)
+                    Vec2 trans = sWorld.getPixelTranslation();
+                    Vec2 pos = mFootball.getBody().getPosition().mul(64);
+                    if (new Rectangle(-trans.x,-trans.y,mViewPort.getWidth(),mViewPort.getHeight()).contains(pos.x, pos.y))
                     {
                         mHUDFootball.setIsVisible(false);
                     }

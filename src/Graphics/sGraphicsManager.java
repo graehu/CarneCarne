@@ -8,6 +8,7 @@ package Graphics;
 import Events.WindowResizeEvent;
 import Events.sEvents;
 import Graphics.Particles.sParticleManager;
+import Graphics.Skins.iSkin;
 import Graphics.Sprites.iSprite;
 import Level.Lighting.sLightsManager;
 import Level.sLevel;
@@ -48,6 +49,8 @@ public class sGraphicsManager {
     private static boolean mRenderDebugInfo = false;
     
     private static ArrayList<iSprite> mManagedSprites = new ArrayList<iSprite>();
+    private static ArrayList<iSkin> mAlwaysOnTopSkins = new ArrayList<iSkin>();
+    private static ArrayList<Vec2> mAlwaysOnTopPos = new ArrayList<Vec2>();
     private static AppGameContainer mGameContainer;
     
     public static GUIContext getGUIContext(){return mGameContainer;}
@@ -269,5 +272,24 @@ public class sGraphicsManager {
         onResize();
     }
     
+    public static void addAlwaysOnTopSkin(iSkin _skin, Vec2 _renderTrans)
+    {
+        mAlwaysOnTopSkins.add(_skin);
+        mAlwaysOnTopPos.add(_renderTrans);
+    }
+    public static void renderAlwaysOnTopSkins()
+    {
+        int i = 0;
+        for(iSkin skin : mAlwaysOnTopSkins)
+        {
+            skin.setAlwaysOnTop(false);
+                Vec2 pos = mAlwaysOnTopPos.get(i);
+                skin.render(pos.x, pos.y);
+            skin.setAlwaysOnTop(true);
+            i++;
+        }
+        mAlwaysOnTopSkins.clear();
+        mAlwaysOnTopPos.clear();
+    }
     
 }

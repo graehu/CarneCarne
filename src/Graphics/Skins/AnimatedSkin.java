@@ -16,6 +16,7 @@ import org.newdawn.slick.SpriteSheet;
 public class AnimatedSkin implements iSkin{
     float mWidth, mHeight;
     Animation mAnim;
+    boolean mAlwaysOnTop = false;
     
     //constructor public to graphics package only
     AnimatedSkin(String _spriteSheet, int _duration, int _tileWidth, int _tileHeight) throws SlickException
@@ -139,6 +140,10 @@ public class AnimatedSkin implements iSkin{
 
     public void setAlpha(String _animation, float _alpha) {
         throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void setAlwaysOnTop(boolean _isAlwaysOnTop) {
+        mAlwaysOnTop = _isAlwaysOnTop;
     }
 
 }

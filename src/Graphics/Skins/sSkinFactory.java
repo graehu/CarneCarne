@@ -43,16 +43,13 @@ public class sSkinFactory {
     {
         return create(_factoryName, _params, false);
     }
-    public static iSkin create(String _factoryName, HashMap _params, boolean _isAutoRendered)
+    public static iSkin create(String _factoryName, HashMap _params, boolean _alwaysOnTop)
     {         
         try
         {
             iSkinFactory factory = mFactories.get(_factoryName);
             iSkin skin = factory.useFactory(_params);
-            if(_isAutoRendered)
-            {
-                //do crap
-            }
+            skin.setAlwaysOnTop(_alwaysOnTop);
                 
             return skin;
         }

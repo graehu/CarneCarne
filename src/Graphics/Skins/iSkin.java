@@ -14,6 +14,7 @@ import org.jbox2d.common.Vec2;
 public interface iSkin {
     
     abstract void render(float _x, float _y);
+    abstract void setAlwaysOnTop(boolean _isAlwaysOnTop);
     abstract void setDimentions(float _w, float _h);
     abstract void setAlpha(float _alpha);
     
