@@ -63,8 +63,8 @@ public class TongueStateMachine {
     static Vec2 mUp = new Vec2(0,-1);
     static int tongueFiringTimeout = 5;
     static int actionDelay = 10;
-    static float tongueLength = 6.0f;
-    static float hammerLength = 3.0f;
+    static float tongueLength = 5.0f;
+    static float hammerLength = 4.0f;
     static int idleAnimationTrigger = 1000;
     
     //members (protected to allow access by PlayerInputController
