@@ -144,7 +144,7 @@ public class sLevel
         {
             mTiledMap = null; //this should encourage the gc to hupto.
             mTiledMap = new AnimatedTiledMap("assets/Maps/" + _map + ".tmx");
-            mTiledMap.initAnimationlayer("assets/TileAnimation.def");
+            mTiledMap.initAnimationlayer("assets/Maps/Tilesets/Images/Special/TileAnimation.def");
         }
         catch (SlickException e)
         {
