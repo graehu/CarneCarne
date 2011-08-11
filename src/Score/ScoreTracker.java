@@ -52,6 +52,8 @@ abstract public class ScoreTracker
                 Vec2 topLeft = new Vec2(mEntity.getViewport().getX(),mEntity.getViewport().getY());
                 float width = mEntity.getViewport().getWidth();
                 topLeft.x += width *0.5f;
+                topLeft.x /= sGraphicsManager.getTrueScreenDimensions().x;
+                topLeft.y /= sGraphicsManager.getTrueScreenDimensions().y;
                 mScoreDisplay.drawString(topLeft.x, topLeft.y, "Time: " + getTimeString(mBestTime));
             }
         }
