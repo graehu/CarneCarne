@@ -54,7 +54,6 @@ abstract public class ScoreTracker
                 topLeft.x += width *0.5f;
                 mScoreDisplay.drawString(topLeft.x, topLeft.y, "Time: " + getTimeString(mBestTime));
             }
-            
         }
     }
 
