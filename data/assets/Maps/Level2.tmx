@@ -36,6 +36,9 @@
  <tileset firstgid="1333" source="Tilesets/Backgroundmiddle.tsx"/>
  <tileset firstgid="2229" source="Tilesets/BackgroundfirstR.tsx"/>
  <tileset firstgid="2849" source="Tilesets/BackgroundfirstL.tsx"/>
+ <tileset firstgid="3500" name="MeatCavein" tilewidth="64" tileheight="64">
+  <image source="Tilesets/Images/Meat/MeatCavein.png" width="256" height="256"/>
+ </tileset>
  <layer name="Background3" width="100" height="100">
   <properties>
    <property name="ScaleX" value=".05"/>
@@ -85,7 +88,7 @@
  </layer>
  <layer name="Flags" width="100" height="100">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC+3XTQqCUBiGUZ3XAvtbgEto1qBBy3UJEjgwsbILcT8/zoEXvKAgPCDYNJDPYRwx6BGLHrFk7vFoX8/3dvm+repqv8DoPNsn+2QNpiL1WLr+5paszbPHdbYaSntk848efcEzv3yvMuverFTflPUAAGC9XbJ/NgAA1jlORn16sDWnccSgRyx6xKIHAAAAAAAAAADEdZmM+vSIRY9Y9AAAAAAAAAAAAAAAAAAAAAAAILsBQiSzSkCcAAA=
+   H4sIAAAAAAAAC+3XTQqCUBiGUZ3XwlpCfwtwCc0aNGi5LSEiBzexECHv58c58A4UBxceBG0ayGffj+XtRu7pUc/UHo8FzsK4zO/Hvf28vrXjz61VV/sAvdNgv2yTNSitsUfpmqzNq8dlsBrm9sjmHz3mfDvo8dZ9GQAAcW2S/bMBADDNoRj16cHaHPsRgx6x6BGLHgAAAAAAAAAAENe5GPXpEYsesegBAAAAAAAAAAAAAAAAAAAAAEB2T05QdmlAnAAA
   </data>
  </layer>
 </map>
