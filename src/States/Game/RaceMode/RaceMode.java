@@ -55,6 +55,11 @@ public class RaceMode implements iGameMode, iEventListener
         if (mIsCompleted)
         {
             cleanup();
+            if (mNextLevelProgression.isEmpty())
+            {
+                cleanup();
+                return null;
+            }
             return new RaceMode(mNextLevelProgression);
         }
         else
