@@ -93,6 +93,7 @@ class RaceStateMachine implements iEventListener
         {
             case eRaceNotStarted:
             {
+                break;
             }
             case eRaceWon:
             {
