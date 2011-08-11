@@ -3,7 +3,7 @@
  <image source="Images/Bones/BoneVerticalSpine.png" width="256" height="192"/>
  <tile id="0">
   <properties>
-   <property name="Anchor" value="False"/>
+   <property name="Anchor" value="True"/>
    <property name="Animationsname" value="Bone"/>
    <property name="Direction" value="Up"/>
    <property name="Material" value="Swingable"/>

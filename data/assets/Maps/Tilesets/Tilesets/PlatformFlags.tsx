@@ -8,7 +8,6 @@
    <property name="PlatformType" value="Simple"/>
    <property name="Spawn" value="Platform"/>
    <property name="Speed" value="2"/>
-   <property name="Type" value="Zoomzoom"/>
   </properties>
  </tile>
  <tile id="1">
@@ -33,6 +32,15 @@
    <property name="PlatformType" value="Simple"/>
    <property name="Spawn" value="Platform"/>
    <property name="Speed" value="2"/>
+  </properties>
+ </tile>
+ <tile id="4">
+  <properties>
+   <property name="Direction" value="Right"/>
+   <property name="Movement" value="Horizontal"/>
+   <property name="PlatformType" value="Simple"/>
+   <property name="Spawn" value="Platform"/>
+   <property name="Speed" value="3"/>
   </properties>
  </tile>
 </tileset>
