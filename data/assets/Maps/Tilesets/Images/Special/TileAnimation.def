@@ -1,0 +1,56 @@
+TileAnimation.png
+{
+	acidbubble
+	0
+	0
+	1600
+	128
+	25
+	2
+	0
+	0
+}
+{
+	spritewaterwave
+	0
+	128
+	1728
+	64
+	26
+	1
+	0
+	0
+}
+{
+	MeatGrowBack
+	0
+	192
+	1536
+	64
+	24
+	1
+	0
+	0
+}
+{
+	iceanimation
+	0
+	256
+	1280
+	64
+	20
+	1
+	0
+	0
+}
+{
+	BoneGrowBack
+	1280
+	256
+	640
+	64
+	10
+	1
+	0
+	0
+}
