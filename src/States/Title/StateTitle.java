@@ -512,8 +512,8 @@ public class StateTitle extends BasicGameState
     private void initLevelLists(final StateBasedGame _sbg)
     {
         List<String> tourModeRef = Arrays.asList("Adventure tour", "Race tour");
-        final List<String> singlePlayerLevelProgression = Arrays.asList("Level1","Level2","single");
-        final List<String> raceLevelProgression = Arrays.asList("tutorial","RaceReloaded","Ice_Race", "BigBox");
+        final List<String> singlePlayerLevelProgression = Arrays.asList("Ripples","Nom");
+        final List<String> raceLevelProgression = Arrays.asList("tutorial","Race Reloaded","Ice Race", "Big Loop");
         final StateGame.GameType tourModeGameTypes[] = new StateGame.GameType[2];
         tourModeGameTypes[0] = StateGame.GameType.eAdventure;
         tourModeGameTypes[1] = StateGame.GameType.eTutorial;
@@ -521,9 +521,9 @@ public class StateTitle extends BasicGameState
         tourModeLevelProgressions[0] = (String[])singlePlayerLevelProgression.toArray();
         tourModeLevelProgressions[1] = (String[])raceLevelProgression.toArray();
         
-        List<String> adventureLevelRefs = Arrays.asList("Level1","Level2","single");
-        List<String> raceLevelRefs = Arrays.asList("RaceReloaded","Ice_Race", "BigBox");
-        List<String> footballLevelRefs = Arrays.asList("The_Match");
+        List<String> adventureLevelRefs = Arrays.asList("Ripples","Nom");
+        List<String> raceLevelRefs = Arrays.asList("Race Reloaded","Ice Race", "Big Loop");
+        List<String> footballLevelRefs = Arrays.asList("The Match");
         
         UnicodeFont levelListFont = sFontLoader.createFont("title", 52);
         int step = 0;
