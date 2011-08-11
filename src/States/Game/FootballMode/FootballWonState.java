@@ -25,6 +25,7 @@ public class FootballWonState extends FootballState
     {
         super(_mode, false);
         HashMap params = new HashMap();
+        mOffset = new Vec2(792, 702);
         if (_score1 > _score2)
         {
             params.put("ref", "BlueWon");
@@ -32,11 +33,13 @@ public class FootballWonState extends FootballState
         else if (_score1 == _score2)
         {
             params.put("ref", "Draw");
+            mOffset = new Vec2(1148, 471);
         }
         else
         {
             params.put("ref", "RedWon");
         }
+        mOffset = mOffset.mul(0.5f);
         mDisplay = sSkinFactory.create("static", params);
     }
     
@@ -44,8 +47,7 @@ public class FootballWonState extends FootballState
     void render(int _score1, int _score2)
     {
         Vec2 s = sGraphicsManager.getTrueScreenDimensions().mul(0.5f);
-        s.x -= 750/2;
-        s.y += 150/2;
+        s = s.sub(mOffset);
         mDisplay.render(s.x, s.x);
     }
 
