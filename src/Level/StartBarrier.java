@@ -38,6 +38,12 @@ public class StartBarrier implements iEventListener
         }
         return true;
     }
+
+    void cleanup()
+    {
+        sEvents.unsubscribeToEvent("BarrierOpenEvent" + mBarrierName, this);
+        sEvents.unsubscribeToEvent("BarrierCloseEvent" + mBarrierName, this);
+    }
     private class BarrierTile
     {
         int x, y;

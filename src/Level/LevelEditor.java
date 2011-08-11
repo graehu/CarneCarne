@@ -52,6 +52,8 @@ public class LevelEditor {
         rootTiles = new RootTileList(mTiledMap);
         
         tileGrid = new LevelTileGrid(mTiledMap, rootTiles, layerIndex);
+        if (mFlagProcessor != null)
+            mFlagProcessor.cleanup();
         mFlagProcessor = new FlagProcessor(mTiledMap, layerIndex, tileGrid.mBody, tileGrid);
         mFlagProcessor.run();
         mFlagProcessor = null;

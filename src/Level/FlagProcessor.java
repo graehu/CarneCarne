@@ -44,6 +44,7 @@ public class FlagProcessor
     private HashMap<String,AreaEvents> eventMap;
     private int mLayerIndex;
     AreaEvents areaEvents[][];
+
     enum AreaEvents
     {
         eNoEvent,
@@ -104,6 +105,14 @@ public class FlagProcessor
     RaceStartZoneParameters raceStartZone;
     RaceEndZoneParameters raceEndZone;
     HashMap<String,StartBarrier> mBarriers;
+    void cleanup()
+    {
+        
+        for (StartBarrier barrier: mBarriers.values())
+        {
+            barrier.cleanup();
+        }
+    }
     FlagProcessor(TiledMap _tiledMap, int _levelLayerIndex, Body _levelBody, TileGrid _tileGrid)
     {
         mBarriers = new HashMap<String,StartBarrier>();
