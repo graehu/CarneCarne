@@ -46,7 +46,9 @@ public class FootballMultiballState extends FootballState
         }
         for (PlayerEntity player: mMode.players)
         {
-            player.setFootball(null);
+            player.setFootball(mBalls.get(0));
+            player.addFootball(mBalls.get(1));
+            player.addFootball(mBalls.get(2));
         }
         HashMap params = new HashMap();
         params.put("ref", "MultiBall");

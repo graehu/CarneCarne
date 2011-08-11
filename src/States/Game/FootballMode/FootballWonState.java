@@ -48,7 +48,7 @@ public class FootballWonState extends FootballState
     {
         Vec2 s = sGraphicsManager.getTrueScreenDimensions().mul(0.5f);
         s = s.sub(mOffset);
-        mDisplay.render(s.x, s.x);
+        mDisplay.render(s.x, s.y);
     }
 
     @Override
@@ -60,6 +60,10 @@ public class FootballWonState extends FootballState
     @Override
     FootballState score(int _team, Football _football, ArrayList<PlayerEntity> _players)
     {
+        for (PlayerEntity player: mMode.players)
+        {
+            player.setFootball(null);
+        }
         return this;
     }
 
