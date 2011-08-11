@@ -59,7 +59,6 @@ public class StartBarrier implements iEventListener
     }
     ArrayList<BarrierTile> tiles = new ArrayList<BarrierTile>();
 
-    
     void addTile(int _x, int _y, int _rootId)
     {
         tiles.add(new BarrierTile(_x, _y, _rootId));
