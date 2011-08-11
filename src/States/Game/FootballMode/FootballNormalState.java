@@ -85,7 +85,6 @@ public class FootballNormalState extends FootballState
         mFont.drawString(s.x, s.y,":");
         s.x += mFont.getWidth(":") + mFont.getWidth(" ");
         mFont.drawString(s.x, s.y, _score1 + " ", new Color(0,0,255));
-        //mFont.drawString(s.x, s.y, String.valueOf(_score1));
         if (mGoalScoreRender != null)
         {
             s = sGraphicsManager.getTrueScreenDimensions().mul(0.5f);

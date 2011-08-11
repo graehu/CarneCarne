@@ -36,6 +36,8 @@ public class FootballStartingState extends FootballState
     void render(int _score1, int _score2)
     {
         Vec2 s = sGraphicsManager.getTrueScreenDimensions().mul(0.5f);
+        Vec2 dims = new Vec2(1148, 471).mul(0.5f);
+        s = s.sub(dims);
         mStateRender.render(s.x, s.y);
     }
 
