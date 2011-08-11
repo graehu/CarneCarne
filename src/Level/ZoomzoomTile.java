@@ -61,6 +61,7 @@ public class ZoomzoomTile extends NonEdibleTile
     @Override
     void createdAt(int _xTile, int _yTile, TileGrid _tileGrid)
     {
+        //if (((LevelTileGrid)_tileGrid).tiledMap.getLayerIndex(null))
         _tileGrid.addParticles(sParticleManager.createSystem(mParticleSystems[mDirection.ordinal()], new Vec2(_xTile, _yTile).mul(64).add(new Vec2(32,32)), -1));
     }
 }

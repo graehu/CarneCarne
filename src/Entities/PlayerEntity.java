@@ -143,6 +143,10 @@ public class PlayerEntity extends AIEntity
         params.put("ref", "characters/Player" + (((PlayerInputController)mController).mPlayer+1));
         //mTeamRender = sSpriteFactory.create("simple", params, true);
     }
+    public Rectangle getViewport()
+    {
+        return mViewPort;
+    }
     public void setDisplayPlayerNumber(boolean _display)
     {
         if(_display)

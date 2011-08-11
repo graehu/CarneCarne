@@ -39,6 +39,7 @@ public class RaceMode implements iGameMode, iEventListener
     boolean mIsRaceActive = false;
     private boolean mIsCompleted = false;
     Queue<String> mNextLevelProgression;
+    String mThisLevel;
     public RaceMode(Queue<String> _nextLevelProgression)
     {
         mTimer = mBestTime = 0;
@@ -48,16 +49,16 @@ public class RaceMode implements iGameMode, iEventListener
         sEvents.subscribeToEvent("BarrierOpenEvent" + "StartGate", this);
         sEvents.subscribeToEvent("NewHighScoreEvent", this);
         mNextLevelProgression = new ArrayDeque<String>(_nextLevelProgression);
-        sLevel.newLevel(mNextLevelProgression.remove());
+        mThisLevel = mNextLevelProgression.remove();
+        sLevel.newLevel(mThisLevel);
     }
     public iGameMode update(Graphics _graphics, float _time)
     {
         if (mIsCompleted)
         {
             cleanup();
-            if (mNextLevelProgression.isEmpty())
+            if (mNextLevelProgression.isEmpty() || mNextLevelProgression.peek().equals(mThisLevel))
             {
-                cleanup();
                 return null;
             }
             return new RaceMode(mNextLevelProgression);
