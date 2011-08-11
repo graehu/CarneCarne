@@ -259,4 +259,9 @@ abstract public class TileGrid {
     {
         mParticles.add(_particle);
     }
+
+    public void addRegrowingTile(int x, int y, int _rootId)
+    {
+        regrowingTiles.add(x, y, rootTiles.get(_rootId));
+    }
 }

@@ -84,7 +84,8 @@ public class GumLandEvent extends iEvent
             if (!wasDestroyed)
             {
                 Vec2 position = sWorld.getLastGumEaten();
-                sLevel.placeTile((int)position.x, (int)position.y, mRootId);
+                //sLevel.placeTile((int)position.x, (int)position.y, mRootId);
+                sLevel.getTileGrid().addRegrowingTile((int)position.x, (int)position.y, mRootId);
             }
             sWorld.destroyBody(mBody);
             mTile = null;
