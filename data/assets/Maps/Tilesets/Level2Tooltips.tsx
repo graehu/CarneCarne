@@ -4,7 +4,7 @@
  <tile id="0">
   <properties>
    <property name="Event" value="Tooltip"/>
-   <property name="String" value="Eep! Hope that doesn't fall on me!"/>
+   <property name="String" value="Nom Nom Nom, bubble gum has so many uses!"/>
   </properties>
  </tile>
 </tileset>
