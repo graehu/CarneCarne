@@ -66,7 +66,6 @@ public class Broccoli extends AIEntity
     @Override
     public void update()
     {
-        super.update();
         
         if(!mActive)
         {
@@ -117,6 +116,7 @@ public class Broccoli extends AIEntity
             }
         }
         mActive = false;
+        super.update();
     }
     public void move(float _speed)
     {

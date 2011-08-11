@@ -454,6 +454,8 @@ public class PlayerEntity extends AIEntity
     
     public void renderHUD()
     {
+        try
+        {
         if (sGraphicsManager.getClip() == mViewPort) //only render HUD when rendering this body's cam
         {
             if (mCheckPoint != null)
@@ -568,6 +570,11 @@ public class PlayerEntity extends AIEntity
             
             GUIManager.use(mGUIManager).render(false);
         }
+        } 
+        catch (NullPointerException e)
+        {
+            
+        }
     }
     
     public void changeBodyType(TileType _type)
@@ -646,7 +653,8 @@ public class PlayerEntity extends AIEntity
     }
     public void addFootball(Football _football)
     {
-        mFootballs.add(_football);
+        if (_football != null)
+            mFootballs.add(_football);
     }
 
     public void displayTooltip(String _text, String _type)
