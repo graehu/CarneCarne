@@ -60,14 +60,14 @@ abstract public class IntroSection
             if (xBoxAnim != null)
             {
                 xBoxAnim.setDimentions(0.20f*scaleY*mXboxScale, 0.20f*scaleY);
-                xBoxAnim.render(0,0.36f*scaleY);
+                xBoxAnim.render(0.2f,0.36f*scaleY);
             }
         }
         //renderInternal(scale);
         if (mSkin != null)
         {
-            mSkin.setDimentions(0.28f*scale, 0.28f*scale*0.67f);
-            mSkin.render(0.75f*scale,0);
+            mSkin.setDimentions(0.4f*scale, 0.4f*scale*0.67f);
+            mSkin.render(0.6f*scale,0);
         }                                                                                                   
     }
     abstract protected void renderInternal(float scale);

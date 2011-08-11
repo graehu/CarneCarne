@@ -56,7 +56,6 @@ public class LevelEditor {
             mFlagProcessor.cleanup();
         mFlagProcessor = new FlagProcessor(mTiledMap, layerIndex, tileGrid.mBody, tileGrid);
         mFlagProcessor.run();
-        mFlagProcessor = null;
     }
     private LevelEditor(TiledMap _tiledMap, RootTileList _rootTiles, int _layerIndex)
     {
