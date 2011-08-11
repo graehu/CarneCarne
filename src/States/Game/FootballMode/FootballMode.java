@@ -18,14 +18,19 @@ import Graphics.Skins.iSkin;
 import Graphics.Skins.sSkinFactory;
 import Graphics.sGraphicsManager;
 import Level.sLevel;
+import States.Game.StateGame;
 import States.Game.iGameMode;
 import Utils.sFontLoader;
 import World.sWorld;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.jbox2d.common.Vec2;
 import org.newdawn.slick.Font;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
+import org.newdawn.slick.SlickException;
 
 /**
  *
@@ -33,6 +38,13 @@ import org.newdawn.slick.Graphics;
  */
 public class FootballMode implements iGameMode, iEventListener
 {
+    boolean mShowTips = true;
+    static final int tipsDelay = 2000;
+    static final int tipsCount = 6;
+    Image mTipImage = null;
+    int mCurrentTip = 2;
+    int mTipsTimer = 0;
+    
     int mTimer;
     Vec2 ballSpawnPosition;
     ArrayList<PlayerEntity> players = new ArrayList<PlayerEntity>();
@@ -61,40 +73,81 @@ public class FootballMode implements iGameMode, iEventListener
         HashMap params = new HashMap();
         params.put("ref", "timerBackground");
         mBackdrop = sSkinFactory.create("static", params);
+        
+        try {mTipImage = new Image("ui/footballTips/"+mCurrentTip+".png");
+        } catch (SlickException ex) {Logger.getLogger(FootballMode.class.getName()).log(Level.SEVERE, null, ex);}
     }
     
     public iGameMode update(Graphics _graphics, float _time)
     {
-        mTimer--;
-        if (mTimer == 0)
+        if(mShowTips)
         {
-            mState = new FootballWonState(this, scores.get(0), scores.get(1));
+            mTipsTimer += _time;
+            if(mTipsTimer > tipsDelay)
+            {
+                if(++mCurrentTip <= tipsCount) 
+                {
+                    mTipsTimer = 0;
+                    try {mTipImage = new Image("ui/footballTips/"+mCurrentTip+".png");
+                    } catch (SlickException ex) {Logger.getLogger(FootballMode.class.getName()).log(Level.SEVERE, null, ex);}
+                    StateGame.reEnterSelf();
+                }
+                else if(mTipsTimer > 3000)
+                {
+                    mTipsTimer = 0;
+                    mShowTips = false;
+                }
+            }
         }
         else
         {
-            mState = mState.update();
+            mTimer--;
+            if (mTimer == 0)
+            {
+                mState = new FootballWonState(this, scores.get(0), scores.get(1));
+            }
+            else
+            {
+                mState = mState.update();
+            }
+            sLevel.update();
+            sWorld.update(_graphics, _time);
+            sEvents.processEvents();
+            sWorld.queryForKicks();
         }
-        sLevel.update();
-        sWorld.update(_graphics, _time);
-        sEvents.processEvents();
-        sWorld.queryForKicks();
         return this;
     }
 
     public void render(Graphics _graphics)
     {
-        sWorld.getCamera().render(_graphics);
-        mState.render(scores.get(0), scores.get(1));
-        Vec2 s = sGraphicsManager.getTrueScreenDimensions().mul(0.5f);
-        mBackdrop.render(s.x- 50, s.y+50);
-        mFont.drawString(s.x-25, s.y+50, getTimeString(mTimer));
+        if(mShowTips)
+        {
+            float sx = sGraphicsManager.getTrueScreenDimensions().x / 1680;
+            float sy = sGraphicsManager.getTrueScreenDimensions().y / 1050;
+            _graphics.scale(sx,sy);
+                mTipImage.draw(0, 0);
+            _graphics.scale(1/sx,1/sy);
+        }
+        else
+        {
+            sWorld.getCamera().render(_graphics);
+            mState.render(scores.get(0), scores.get(1));
+            Vec2 s = sGraphicsManager.getTrueScreenDimensions().mul(0.5f);
+            mBackdrop.render(s.x- 50, s.y+50);
+            mFont.drawString(s.x-25, s.y+50, getTimeString(mTimer));
+        }
     }
     private String getTimeString(int _timer)
     {
         int seconds = _timer / 60;
         int minutes = seconds / 60;
         seconds -= minutes * 60;
-        return minutes + ":" + seconds;
+        String secondsString = String.valueOf(seconds);
+        if (secondsString.length() < 2)
+        {
+            secondsString = "0" + secondsString;
+        }
+        return minutes + ":" + secondsString;
     }
 
     public boolean trigger(iEvent _event)

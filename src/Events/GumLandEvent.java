@@ -45,40 +45,47 @@ public class GumLandEvent extends iEvent
         {
             int xPos = (int)mTile.getLocalPosition().x;//Math.round(mBody.getPosition().x);
             int yPos = (int)mTile.getLocalPosition().y;//Math.round(mBody.getPosition().y);
-
+            boolean wasDestroyed = false;
             if(mNormal.x == 1)
             {
-                place(xPos+1, yPos);
+                wasDestroyed = place(xPos+1, yPos);
             }
             else if(mNormal.x == -1)
             {
-                place(xPos-1, yPos);
+                wasDestroyed = place(xPos-1, yPos);
             }
             else if(mNormal.y == 1)
             {
-                place(xPos, yPos+1);
+                wasDestroyed = place(xPos, yPos+1);
             }
             else if(mNormal.y == -1)
             {
-                place(xPos, yPos-1);
+                wasDestroyed = place(xPos, yPos-1);
             }     
             else if(mNormal.x > 0) //test for corner collisions that give non-axis-aligned normals
             {
                 if(Math.abs(mNormal.x) > Math.abs(mNormal.y)) //if x out weighs y, do in direction of x
-                    place(xPos+1, yPos);
+                    wasDestroyed = place(xPos+1, yPos);
                 else if(mNormal.y > 0) //else determine top or bottom
-                    place(xPos, yPos+1);
+                    wasDestroyed = place(xPos, yPos+1);
                 else if(mNormal.y > 0)
-                    place(xPos, yPos-1);
+                    wasDestroyed = place(xPos, yPos-1);
             }
             else if(mNormal.x < 0)
             {
                 if(Math.abs(mNormal.x) > Math.abs(mNormal.y)) //if x out weighs y, do in direction of x
-                    place(xPos-1, yPos);
+                    wasDestroyed = place(xPos-1, yPos);
                 else if(mNormal.y > 0) //else determine top or bottom
-                    place(xPos, yPos+1);
+                    wasDestroyed = place(xPos, yPos+1);
                 else if(mNormal.y > 0)
-                    place(xPos, yPos-1);
+                    wasDestroyed = place(xPos, yPos-1);
+            }
+            else wasDestroyed = false;
+            if (!wasDestroyed)
+            {
+                Vec2 position = sWorld.getLastGumEaten();
+                //sLevel.placeTile((int)position.x, (int)position.y, mRootId);
+                sLevel.getTileGrid().addRegrowingTile((int)position.x, (int)position.y, mRootId);
             }
             sWorld.destroyBody(mBody);
             mTile = null;

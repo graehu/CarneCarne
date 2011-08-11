@@ -4,6 +4,7 @@
  */
 package Graphics.Skins;
 
+import Graphics.sGraphicsManager;
 import org.jbox2d.common.Vec2;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
@@ -16,6 +17,7 @@ public class StaticSkin implements iSkin
 {
     float mWidth, mHeight;
     Image mImage;
+    boolean mAlwaysOnTop = false;
     //constructor public to graphics package only
     public StaticSkin(String _image) throws SlickException
     {
@@ -27,6 +29,11 @@ public class StaticSkin implements iSkin
     }
     public void render(float _x, float _y)
     {
+        if(mAlwaysOnTop)
+        {
+            sGraphicsManager.addAlwaysOnTopSkin(this, new Vec2(_x,_y));
+            return;
+        }
         if(mWidth == 0 && mHeight == 0)
             mImage.draw(_x, _y);
         else
@@ -121,6 +128,10 @@ public class StaticSkin implements iSkin
 
     public void setAlpha(String _animation, float _alpha) {
         throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void setAlwaysOnTop(boolean _isAlwaysOnTop) {
+        mAlwaysOnTop = _isAlwaysOnTop;
     }
 
 }

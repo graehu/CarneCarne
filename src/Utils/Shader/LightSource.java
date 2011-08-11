@@ -39,9 +39,9 @@ public class LightSource
     public void update(int _delta)
     {
         if(rand.nextBoolean())
-            mTick += rand.nextFloat() * 0.01f;
+            mTick += (rand.nextFloat() * 0.01f) / (mRadius / 100);
         else
-            mTick -= rand.nextFloat() * 0.01f;
+            mTick -= (rand.nextFloat() * 0.01f) / (mRadius / 100);
         mTick = Math.max(1.0f, mTick);
         mTick = Math.min(1.2f, mTick);
     }

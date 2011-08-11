@@ -348,7 +348,7 @@ public class Broccoli extends AIEntity
                     mSkin.deactivateSubSkin(mCurrentAnimation);
                     mSkin.activateSubSkin(mCurrentAnimation, false, mAnimSpeed);
                     HashMap params = new HashMap();
-                    params.put("position", mBody.getPosition().add(new Vec2(0,0.5f)));
+                    params.put("position", mBody.getPosition().add(new Vec2(0.5f,0.5f)));
                     params.put("radius", 5.0f);
                     params.put("duration", 30);
                     sEntityFactory.create("BroccoliExplosion", params);

@@ -33,8 +33,6 @@ abstract public class ScoreTracker
     private float mRenderedScore;
     private int mWinnerTimer;
     private int mFireworkTimer;
-    private int mGUIManager;
-    private GraphicalComponent mTacoImage;
     private Text mScoreText;
     Font mScoreDisplay;
     PlayerEntity mEntity;
@@ -73,17 +71,7 @@ abstract public class ScoreTracker
     
     protected ScoreTracker(int _GUIManager, PlayerEntity _entity) 
     {
-        mGUIManager = _GUIManager;
-        mTacoImage = (GraphicalComponent)GUIManager.use(_GUIManager)
-                .createRootComponent(GUIManager.ComponentType.eGraphical, new Vector2f(143+30,30), new Vector2f()); //FIXME: assumes 1680x1050
-        mTacoImage.setImage("ui/HUD/taco.png");
-        mTacoImage.setDimentionsToImage();
-        mTacoImage.setAlignment(true, false);
-        mTacoImage.setMaintainRatio(true);
-        
         mScoreText = new Text(sGraphicsManager.getGUIContext(), sFontLoader.createFont("score", 30), "SCORE", new Vector2f(30,40), false);
-        mTacoImage.addChild(mScoreText);
-        
         mRenderedScore = mScore = 0;
         mBestTime = mBestEverTime = Integer.MAX_VALUE;
         //loadWinnerImage(1);

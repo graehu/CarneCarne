@@ -26,7 +26,7 @@ class IntroSpitSection extends IntroSection implements iEventListener
         sEvents.blockEvent("MapClickEvent"+"Hammer"+mPlayerNumber);
         sEvents.blockEvent("MapClickEvent"+"TongueHammer"+mPlayerNumber);
         HashMap params = new HashMap();
-        params.put("ref", "SignTutorialSpit");
+        params.put("ref", "TutorialSpit");
         mSkin = sSkinFactory.create("static", params);
         sEvents.subscribeToEvent("MapClickEvent"+"Spit"+mPlayerNumber, this);
         mReturn = this;

@@ -19,6 +19,7 @@ import java.util.Random;
 import org.jbox2d.common.Vec2;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Font;
+import org.newdawn.slick.UnicodeFont;
 
 /**
  *
@@ -39,6 +40,8 @@ public class FootballNormalState extends FootballState
     iSkin mRandomEventRender;
     private int mRandomEventTimer;
     private int mGoalScoreRenderTimer;
+    private int mShowTeamTimer;
+    private iSkin mRedTeam, mBlueTeam;
     public FootballNormalState(FootballMode _mode, Vec2 _ballSpawnPosition, int _justScored)
     {
         super(_mode, true);
@@ -61,17 +64,35 @@ public class FootballNormalState extends FootballState
         {
             mFont = sFontLoader.scaleFont(sFontLoader.getDefaultFont(), 2.0f);
         }
-        
-        if (_justScored != -1)
+        if (_justScored == -1)
+        {
+            mShowTeamTimer = 0;
+            params.put("ref", "BlueTeam");
+            mBlueTeam = sSkinFactory.create("static", params);
+            params.put("ref", "RedTeam");
+            mRedTeam = sSkinFactory.create("static", params);
+        }
+        else
         {
             mGoalScoreRender = mGoalScoreRenders[_justScored];
             mGoalScoreRenderTimer = 120;
+            mShowTeamTimer = 300;
         }
     }
     
     @Override
     void render(int _score1, int _score2)
     {
+        if (mShowTeamTimer != 300)
+        {
+            mShowTeamTimer++;
+            Vec2 s = sGraphicsManager.getTrueScreenDimensions().mul(0.5f);
+            mRedTeam.render(0, 0);
+            mRedTeam.render(0, s.y);
+            
+            mBlueTeam.render(s.x, 0);
+            mBlueTeam.render(s.x, s.y);
+        }
         if (mRandomEventTimer != 2000)
         {
             mRandomEventTimer++;
@@ -157,7 +178,7 @@ public class FootballNormalState extends FootballState
                 sEntityFactory.create("Broccoli", params);
                 sEntityFactory.create("Carrot", params);
                 sEntityFactory.create("Carrot", params);
-                mRandomEventTimer = 2000;
+                mRandomEventTimer = 0;
                 break;
             }
         }

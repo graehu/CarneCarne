@@ -38,6 +38,8 @@ import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.BlobbyTransition;
 import org.newdawn.slick.state.transition.FadeInTransition;
 import org.newdawn.slick.state.transition.FadeOutTransition;
+import org.newdawn.slick.state.transition.HorizontalSplitTransition;
+import org.newdawn.slick.state.transition.VerticalSplitTransition;
 
 /**
  *
@@ -67,6 +69,7 @@ public class StateGame extends BasicGameState implements iEventListener {
     static boolean mInited = false;
     static long mEffectiveFPSTimer = 0;
     static int mEffectiveFPS = 0;
+    static boolean mReEnterSelf = false;
     
     public static int getEffectiveFPS() {return mEffectiveFPS;}
     
@@ -105,7 +108,11 @@ public class StateGame extends BasicGameState implements iEventListener {
 
     public void update(GameContainer _gc, StateBasedGame _sbg, int _delta) throws SlickException 
     {        
-        
+        if(mReEnterSelf)
+        {
+            mReEnterSelf = false;
+            _sbg.enterState(getID(),null, new VerticalSplitTransition());
+        }
         if(die) _gc.exit();
         
         //update sounds
@@ -138,6 +145,7 @@ public class StateGame extends BasicGameState implements iEventListener {
         Vec2 s = sGraphicsManager.getScreenDimensions();
         if(mGameMode!=null)
             mGameMode.render(_grphcs);
+        
         //cleanup texture data
         //screen.flushPixelData();
         GUIManager.get().render(false);
@@ -246,5 +254,9 @@ public class StateGame extends BasicGameState implements iEventListener {
     public static void resetCurrentMode()
     {
         mInited = false;
+    }
+    public static void reEnterSelf()
+    {
+        mReEnterSelf = true;
     }
 }

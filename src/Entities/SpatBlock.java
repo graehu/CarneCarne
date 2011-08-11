@@ -5,6 +5,7 @@
 package Entities;
 
 import Graphics.Skins.iSkin;
+import Level.sLevel;
 import World.sWorld;
 import World.sWorld.BodyCategories;
 import org.jbox2d.common.Vec2;
@@ -19,11 +20,15 @@ public class SpatBlock extends Entity {
     
     float mRadius; /// This is only needed if I need to render it, thats all
     int mRootId;
+    int mTimer;
+    Vec2 mOrigin;
     SpatBlock(iSkin _skin, int _rootId, float _radius) /// Note, in SpatBlockFactory this currently hard coded to 0.125f
     {
         super(_skin);
         mRadius = _radius;
         mRootId = _rootId;
+        mOrigin = sWorld.getLastGumEaten();
+        mTimer = 0;
     }
     public void update()
     {
@@ -60,8 +65,20 @@ public class SpatBlock extends Entity {
                     
                 }
                 if (mBody.getFixtureList().getFilterData().categoryBits != (1 << BodyCategories.eGum.ordinal()))
+                {
                     kill(CauseOfDeath.eMundane, null);
+                    return;
+                }
                 break;
+            }
+        }
+        if ((mBody.getFixtureList().getFilterData().categoryBits == (1 << BodyCategories.eGum.ordinal())))
+        {
+            mTimer++;
+            if (mTimer == 180)
+            {
+                sLevel.getTileGrid().addRegrowingTile((int)mOrigin.x, (int)mOrigin.y, mRootId);
+                kill(CauseOfDeath.eMundane, null);
             }
         }
     }

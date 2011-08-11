@@ -19,12 +19,12 @@ public class SimpleSprite extends iSprite
     {
         HashMap params = new HashMap();
         params.put("img", _image);
-        mSkin = sSkinFactory.create("static", params, true);
+        mSkin = sSkinFactory.create("static", params, false);
     }
     SimpleSprite(String _ref, Vec2 _pos)
     {
         HashMap params = new HashMap();
         params.put("ref", _ref);
-        mSkin = sSkinFactory.create("static", params, true);
+        mSkin = sSkinFactory.create("static", params, false);
     }
 }

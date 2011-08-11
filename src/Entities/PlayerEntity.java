@@ -29,6 +29,7 @@ import Utils.sFontLoader;
 import World.sWorld;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Fixture;
 import org.jbox2d.dynamics.joints.Joint;
@@ -62,10 +63,10 @@ public class PlayerEntity extends AIEntity
     private     Text                mTooltipText = null;
     private     int                 mTooltipTimer = 0;
     private     int                 mTooltipLife = 180; //FIXME: Assumes 60fps
-    private     GraphicalComponent  mHUDFootball;
+    private     GraphicalComponent  mHUDFootball[] = new GraphicalComponent[3];
     private     Rectangle           mViewPort;
     private     int                 mRaceTimer;
-    private     Football            mFootball;
+    private     LinkedList<Football> mFootballs = new LinkedList<Football>();
     private     int                 mDeaths;
     private     boolean             mWasIReallyKilled = true;
     public      ScoreTracker        mScoreTracker;
@@ -99,11 +100,14 @@ public class PlayerEntity extends AIEntity
         mHUDArrow.setDimentionsToImage();
         //mHUDArrow.setMaintainRatio(true); 
 
-        mHUDFootball = new GraphicalComponent(sGraphicsManager.getGUIContext(), new Vector2f(0,0), new Vector2f(0,0));
-        GUIManager.use(mGUIManager).addRootComponent(mHUDFootball);
-        mHUDFootball.setImage("assets/characters/football.png");
-        mHUDFootball.setDimentionsToImage();
-        mHUDFootball.setIsVisible(false);
+        for (int i = 0; i < 3; i++)
+        {
+            mHUDFootball[i] = new GraphicalComponent(sGraphicsManager.getGUIContext(), new Vector2f(0,0), new Vector2f(0,0));
+            GUIManager.use(mGUIManager).addRootComponent(mHUDFootball[i]);
+            mHUDFootball[i].setImage("assets/characters/football.png");
+            mHUDFootball[i].setDimentionsToImage();
+            mHUDFootball[i].setIsVisible(false);
+        }
         
         mTooltipWindow = new GraphicalComponent(sGraphicsManager.getGUIContext(), new Vector2f(50,50), new Vector2f(0,0));
         GUIManager.use(mGUIManager).addRootComponent(mTooltipWindow);
@@ -457,6 +461,7 @@ public class PlayerEntity extends AIEntity
                 mCheckPoint.renderRaceState(mRaceTimer);
                 float rotation = 0;
                 boolean renderArrow = false;
+                int footballCount = 0;
                 if(mCheckPoint.getNext() != null)
                 {
                     Vec2 direction = mCheckPoint.getNext().getPosition().sub(getBody().getPosition());
@@ -464,7 +469,7 @@ public class PlayerEntity extends AIEntity
                     rotation = (float)Math.atan2(direction.y, direction.x);
                     renderArrow = true;
                 }
-                else if (mFootball != null)
+                else for (Football mFootball: mFootballs)
                 {
                     Vec2 nativeScreenDim = new Vec2(1500,900);
                     Vec2 location = nativeScreenDim.clone();
@@ -500,17 +505,20 @@ public class PlayerEntity extends AIEntity
                         location.x = location.x * ((direction.x * dimScale) + 0.5f);
                     }
                     float locationLength = sWorld.translateToPhysics(location).sub(mBody.getPosition()).normalize();
-                    if (locationLength > length)
+                    Vec2 trans = sWorld.getPixelTranslation();
+                    Vec2 pos = mFootball.getBody().getPosition().mul(64);
+                    if (new Rectangle(-trans.x,-trans.y,mViewPort.getWidth(),mViewPort.getHeight()).contains(pos.x, pos.y))
                     {
-                        mHUDFootball.setIsVisible(false);
+                        mHUDFootball[footballCount].setIsVisible(false);
                     }
                     else
                     {
-                        mHUDFootball.setIsVisible(true);
+                        mHUDFootball[footballCount].setIsVisible(true);
                     }
-                    mHUDFootball.setLocalTranslation(new Vector2f(location.x, location.y).add(mHUDFootball.getDimensions()));
+                    mHUDFootball[footballCount].setLocalTranslation(new Vector2f(location.x, location.y).add(mHUDFootball[footballCount].getDimensions()));
                     rotation = (float)Math.atan2(direction.y, direction.x);
                     //renderArrow = true;
+                    footballCount++;
                 }
                 if (StateGame.getGameType().equals(StateGame.GameType.eRace))
                 {
@@ -628,7 +636,17 @@ public class PlayerEntity extends AIEntity
 
     public void setFootball(Football _football)
     {
-        mFootball = _football;
+        for (GraphicalComponent mFootball: mHUDFootball)
+        {
+            mFootball.setIsVisible(false);
+        }
+        mFootballs.clear();
+        if (_football != null)
+            mFootballs.add(_football);
+    }
+    public void addFootball(Football _football)
+    {
+        mFootballs.add(_football);
     }
 
     public void displayTooltip(String _text, String _type)

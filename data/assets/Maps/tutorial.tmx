@@ -7,7 +7,7 @@
  <tileset firstgid="105" source="Tilesets/Light.tsx"/>
  <layer name="Level" width="40" height="40">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC+2TsQnAMBADPyNkBO+/pFs1wZ1khTMIXJzBCN2amXVxRu7vfJ8ko389vUkwzf97wkx6/+3RDvEXf91Mev/t0Q7xF3/dTHr/7dEO8Rd/3Ux6/+3RDvEXf91Mev/t0Q7xF3/dTHr/7dEO8fd//m4XMwl4ABkAAA==
+   H4sIAAAAAAAAC+2TQQrAIBAD0yf0Cf7/k16XwrJiS7ORCAEPI4TgDACjcRDuN/LDZGLX6g2DUe53kRn2/1dP3ND+2t+/Gfb/V0+2+dMvBmN/v2Hs77nJNre/64xyP/urnWxz+7vOKPezv9qpNkcDxv3eMfb33FSbowHjfvvMBDxpnS4AGQAA
   </data>
  </layer>
  <layer name="StaticForeground" width="40" height="40">
