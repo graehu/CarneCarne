@@ -30,6 +30,7 @@ class RaceStateMachine implements iEventListener
         eRaceCountDown,
         eRaceInProgress,
         eRaceWon,
+        eRaceCompleted,
         eStatesMax,
     }
     iSkin mCountDownRender;
@@ -44,7 +45,8 @@ class RaceStateMachine implements iEventListener
         sEvents.subscribeToEvent("RaceWonEvent", this);
         sEvents.subscribeToEvent("RaceCountdownStartEvent", this);
         sEvents.subscribeToEvent("RaceCountdownInterruptEvent", this);
-        sEvents.subscribeToEvent("RaceResetEvent", this);
+        sEvents.subscribeToEvent("RaceCompletedEvent", this);
+        sEvents.blockEvent("RaceResetEvent");
         mFont = sFontLoader.scaleFont(sFontLoader.createFont("score"), 2.0f);
         mFont2 = sFontLoader.scaleFont(sFontLoader.createFont("score"), 4.0f);
     }
@@ -69,13 +71,13 @@ class RaceStateMachine implements iEventListener
             mCountDownRender = null;
             mState = State.eRaceNotStarted;
         }
-        else if (_event.getType().equals("RaceResetEvent"))
+        else if (_event.getType().equals("RaceCompletedEvent"))
         {
             if (!mState.equals(State.eRaceNotStarted))
             {
-                sEvents.blockEvent("RaceResetEvent");
-                changeState(State.eRaceNotStarted);
-                sEvents.unblockEvent("RaceResetEvent");
+                //sEvents.blockEvent("RaceResetEvent");
+                changeState(State.eRaceCompleted);
+                //sEvents.unblockEvent("RaceResetEvent");
             }
         }
         return true;
@@ -89,9 +91,20 @@ class RaceStateMachine implements iEventListener
         mTimer++;
         switch (mState)
         {
+            case eRaceNotStarted:
+            {
+            }
             case eRaceWon:
             {
                 if (mTimer == 15 * 60)
+                {
+                    changeState(State.eRaceNotStarted);
+                }
+                break;
+            }
+            case eRaceCompleted:
+            {
+                if (mTimer == 50 * 60)
                 {
                     changeState(State.eRaceNotStarted);
                 }
@@ -199,7 +212,14 @@ class RaceStateMachine implements iEventListener
         {
             case eRaceNotStarted:
             {
+                sEvents.unblockEvent("RaceResetEvent");
                 sEvents.triggerEvent(new RaceResetEvent());
+                sEvents.blockEvent("RaceResetEvent");
+                mTimer = 0;
+                break;
+            }
+            case eRaceCompleted:
+            {
                 mTimer = 0;
                 break;
             }

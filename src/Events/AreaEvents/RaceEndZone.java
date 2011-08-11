@@ -6,6 +6,7 @@ package Events.AreaEvents;
 
 import Entities.AIEntity;
 import Entities.PlayerEntity;
+import Events.GenericEvent;
 import Events.RaceResetEvent;
 import Events.RaceWonEvent;
 import Events.iEvent;
@@ -49,7 +50,9 @@ public class RaceEndZone extends CheckPointZone implements iEventListener
             }
             else if (mWonPlayers.size() == 4)
             {
+                sEvents.triggerDelayedEvent(new GenericEvent("RaceCompletedEvent"));
                 sEvents.triggerDelayedEvent(new RaceResetEvent());
+                _entity.placeCheckPoint(new RaceLostFakeZone(mCheckPointNumber, mWonPlayers.size()));
             }
             else
             {

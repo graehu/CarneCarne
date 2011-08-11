@@ -41,7 +41,7 @@ public class FootballNormalState extends FootballState
     private int mRandomEventTimer;
     private int mGoalScoreRenderTimer;
     private int mShowTeamTimer;
-    UnicodeFont mShowTeamFont;
+    private iSkin mRedTeam, mBlueTeam;
     public FootballNormalState(FootballMode _mode, Vec2 _ballSpawnPosition, int _justScored)
     {
         super(_mode, true);
@@ -60,21 +60,23 @@ public class FootballNormalState extends FootballState
         mRandomEventRender = sSkinFactory.create("static", params);
         mRandomEventTimer = 2000;
         
-        mShowTeamFont = sFontLoader.getDefaultFont();
         if (mFont == null)
         {
-            mFont = sFontLoader.scaleFont(mShowTeamFont, 2.0f);
+            mFont = sFontLoader.scaleFont(sFontLoader.getDefaultFont(), 2.0f);
         }
         if (_justScored == -1)
         {
             mShowTeamTimer = 0;
+            params.put("ref", "BlueTeam");
+            mBlueTeam = sSkinFactory.create("static", params);
+            params.put("ref", "RedTeam");
+            mRedTeam = sSkinFactory.create("static", params);
         }
         else
         {
             mGoalScoreRender = mGoalScoreRenders[_justScored];
             mGoalScoreRenderTimer = 120;
             mShowTeamTimer = 300;
-            mShowTeamFont = null;
         }
     }
     
@@ -85,11 +87,11 @@ public class FootballNormalState extends FootballState
         {
             mShowTeamTimer++;
             Vec2 s = sGraphicsManager.getTrueScreenDimensions().mul(0.5f);
-            mShowTeamFont.drawString(0, 0, "You are in\n RED team!", Color.red);
-            mShowTeamFont.drawString(0, s.y, "You are in\n RED team!", Color.red);
+            mRedTeam.render(0, 0);
+            mRedTeam.render(0, s.y);
             
-            mShowTeamFont.drawString(s.x, 0, "You are in\n BLUE team!", Color.blue);
-            mShowTeamFont.drawString(s.x, s.y, "You are in\n BLUE team!", Color.blue);
+            mBlueTeam.render(s.x, 0);
+            mBlueTeam.render(s.x, s.y);
         }
         if (mRandomEventTimer != 2000)
         {
