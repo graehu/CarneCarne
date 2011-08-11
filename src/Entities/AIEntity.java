@@ -133,9 +133,24 @@ public class AIEntity extends Entity
                 collisionNorm.negateLocal();
             }
             collisionNorm.normalize();
-//            if (other.m_filter.categoryBits == (1 << sWorld.BodyCategories.eEnemy.ordinal())||
-//                other.m_filter.categoryBits == (1 << sWorld.BodyCategories.ePlayer.ordinal()))
-//                mJumpContacts++;
+            if (other.m_filter.categoryBits == (1 << sWorld.BodyCategories.eEnemy.ordinal())||
+                other.m_filter.categoryBits == (1 << sWorld.BodyCategories.ePlayer.ordinal()))
+            {
+                if(!other.isSensor() && edge.contact.isTouching())
+                {
+                    if(other.m_body.getPosition().sub(mBody.getPosition()).y > 0) //if below entity allow jump
+                    {
+                        mTouchingBody = other.m_body;
+                        mTouchingTile = null;
+                        mJumpContacts++;
+                    }
+                }
+            }
+            else
+            {
+                mTouchingBody = null;
+            }
+                
 
             //if (other.getUserData() != null)
             {
@@ -184,12 +199,6 @@ public class AIEntity extends Entity
                 {
                     if(edge.contact.isTouching())
                     {
-                        //if colliding with 
-                        if (other.m_filter.categoryBits == (1 << sWorld.BodyCategories.eEnemy.ordinal()) ||
-                                other.m_filter.categoryBits == (1 << sWorld.BodyCategories.ePlayer.ordinal()))
-                        {
-                            
-                        }
                         if(((Tile)other.getUserData()) != null && !other.isSensor() )
                         {
                             mTouchingTile = ((Tile)other.getUserData());
@@ -387,6 +396,13 @@ public class AIEntity extends Entity
                     {
                         sParticleManager.createSystem(mTouchingTile.getAnimationsName(AnimationType.eJump) + "Jump", sWorld.translateToWorld(getBody().getPosition()).sub(sWorld.getPixelTranslation()).add(new Vec2(32,64)), 1f);
                         sSound.playPositional(SoundScape.Sound.ePlayerJump, mBody.getPosition(), mTouchingTile.getTileType());
+                    }
+                    else if(mTouchingBody != null)
+                    {
+                        getBody().setLinearVelocity(new Vec2(getBody().getLinearVelocity().x, canJump * 0.8f));
+                        mTouchingBody.applyLinearImpulse(new Vec2(0, -canJump *0.5f), mTouchingBody.getWorldCenter());
+                        sParticleManager.createSystem("cloud", sWorld.translateToWorld(getBody().getPosition()).sub(sWorld.getPixelTranslation()).add(new Vec2(32,64)), 1f);
+                        sSound.playPositional(SoundScape.Sound.ePlayerJump, mBody.getPosition(), TileType.eEmpty);
                     }
                     else if (mLastTouchingTile != null)
                     {

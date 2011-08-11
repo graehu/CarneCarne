@@ -15,6 +15,7 @@ import org.jbox2d.common.Vec2;
  */
 public class TiledSkin implements iSkin
 {
+    boolean mAlwaysOnTop = false;
     ArrayList<CaveInSearcher.TempTile> mTiles;
     CaveInSearcher.TempTile tiles[][];
     public TiledSkin(ArrayList<CaveInSearcher.TempTile> _tiles, int _width, int _height)
@@ -140,6 +141,10 @@ public class TiledSkin implements iSkin
 
     public void setAlpha(String _animation, float _alpha) {
         throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void setAlwaysOnTop(boolean _isAlwaysOnTop) {
+        mAlwaysOnTop = _isAlwaysOnTop;
     }
 
     

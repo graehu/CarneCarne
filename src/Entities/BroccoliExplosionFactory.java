@@ -115,7 +115,7 @@ public class BroccoliExplosionFactory implements iEntityFactory
     }
     private void grahamIsAFatCunt(int x, int y)
     {
-        int health = 200;
+        int health = 140;
         DirectionSearch last, search;
         last = search = new DirectionSearch(x,y, 0,1);
         search = search.setNext(new DirectionSearch(x,y, 1,0));

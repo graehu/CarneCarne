@@ -61,9 +61,10 @@ public class TongueStateMachine {
     
     //static members
     static Vec2 mUp = new Vec2(0,-1);
-    static int tongueFiringTimeout = 10;
+    static int tongueFiringTimeout = 5;
     static int actionDelay = 10;
     static float tongueLength = 6.0f;
+    static float hammerLength = 3.0f;
     static int idleAnimationTrigger = 1000;
     
     //members (protected to allow access by PlayerInputController
@@ -130,7 +131,10 @@ public class TongueStateMachine {
     }
     private Tile extendTongue(boolean _grabBlock)
     {
-        float currentLength = ((float)mCurrentStateTimer/(float)tongueFiringTimeout)*tongueLength;
+        float length = tongueLength;
+        if(mState.equals(State.eFiringHammer) || mState.equals(State.eRetractingHammer))
+            length = hammerLength;
+        float currentLength = ((float)mCurrentStateTimer/(float)tongueFiringTimeout)*length;
         setTongue(mTongueDir, currentLength);
         
         Vec2 tongueOffset = mTongueDir.mul(currentLength);
@@ -139,7 +143,7 @@ public class TongueStateMachine {
         //update end of tongue sprite's position
         if (mCurrentTongueEndSprite != null)
         {
-            mCurrentTongueEndSprite.setPosition(mTonguePosition.add(new Vec2(0.25f,0.25f)).mul(64));
+            mCurrentTongueEndSprite.setPosition(mTonguePosition.add(new Vec2(0.25f,0.25f)).mul(64).add(mTongueDir.mul(16)));
             if (mMouthParticles != null)
             {
                 mMouthParticles.setPosition(mTonguePosition.sub(mAIController.mEntity.getBody().getPosition()).add(new Vec2(0.25f,0.25f))); /// This actually sets the offset in this implementation
@@ -153,7 +157,7 @@ public class TongueStateMachine {
     }
     private boolean hammerCollide()
     {                
-        Vec2 tongueOffset = mTongueDir.mul(((float)mCurrentStateTimer/(float)tongueFiringTimeout)*tongueLength);
+        Vec2 tongueOffset = mTongueDir.mul(((float)mCurrentStateTimer/(float)tongueFiringTimeout)*hammerLength);
         return mAIController.hammer(mAIController.mEntity.getBody().getPosition().add(tongueOffset));
     }
     protected float getWeight()
@@ -312,6 +316,7 @@ public class TongueStateMachine {
                 if (hammerCollide())
                 {
                     changeState(State.eRetractingHammer);
+                    mCurrentStateTimer = 0;
                 }
                 else if (mCurrentStateTimer >= tongueFiringTimeout)
                 {
@@ -322,11 +327,11 @@ public class TongueStateMachine {
             case eRetractingHammer:
             {
                 mCurrentStateTimer--;
-                extendTongue(false);
                 if (mCurrentStateTimer <= 0)
                 {
                     changeState(State.eFoodInMouth);
                 }
+                extendTongue(false);
                 break;
             }
             case eSpittingBlock:
