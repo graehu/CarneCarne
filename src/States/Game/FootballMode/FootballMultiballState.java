@@ -13,6 +13,7 @@ import Graphics.sGraphicsManager;
 import java.util.ArrayList;
 import java.util.HashMap;
 import org.jbox2d.common.Vec2;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.Font;
 
 /**
@@ -45,7 +46,9 @@ public class FootballMultiballState extends FootballState
         }
         for (PlayerEntity player: mMode.players)
         {
-            player.setFootball(null);
+            player.setFootball(mBalls.get(0));
+            player.addFootball(mBalls.get(1));
+            player.addFootball(mBalls.get(2));
         }
         HashMap params = new HashMap();
         params.put("ref", "MultiBall");
@@ -66,13 +69,13 @@ public class FootballMultiballState extends FootballState
     void render(int _score1, int _score2)
     {
         Vec2 s = sGraphicsManager.getTrueScreenDimensions().mul(0.5f);
-        s.y -= mFont.getHeight(_score1 + ":" + _score2)*0.65f ;
-        s.x -= mFont.getWidth(_score1 + " ") + (mFont.getWidth(":")*0.5f);
-        mFont.drawString(s.x, s.y, _score1 + " ");
-        s.x += mFont.getWidth(_score1 + " ");
+        s.y -= mFont.getHeight(_score2 + ":" + _score1)*0.65f ;
+        s.x -= mFont.getWidth(_score2 + " ") + (mFont.getWidth(":")*0.5f);
+        mFont.drawString(s.x, s.y, _score2 + " ", new Color(255,0,0));
+        s.x += mFont.getWidth(_score2 + " ");
         mFont.drawString(s.x, s.y,":");
         s.x += mFont.getWidth(":") + mFont.getWidth(" ");
-        mFont.drawString(s.x, s.y, String.valueOf(_score2));
+        mFont.drawString(s.x, s.y, _score1 + " ", new Color(0,0,255));
         if (mSkin != null)
         {
             mSkin.render(mSkinPosition, 0);
@@ -122,7 +125,7 @@ public class FootballMultiballState extends FootballState
         }
         if (mBalls.isEmpty())
         {
-            return new FootballNormalState(mMode, mBallSpawnPosition);
+            return new FootballNormalState(mMode, mBallSpawnPosition, _team);
         }
         return this;
     }
@@ -133,7 +136,7 @@ public class FootballMultiballState extends FootballState
         mBalls.remove(_football);
         if (mBalls.isEmpty())
         {
-            return new FootballNormalState(mMode, mBallSpawnPosition);
+            return new FootballNormalState(mMode, mBallSpawnPosition, -1);
         }
         return this;
     }

@@ -142,7 +142,12 @@ public class FootballMode implements iGameMode, iEventListener
         int seconds = _timer / 60;
         int minutes = seconds / 60;
         seconds -= minutes * 60;
-        return minutes + ":" + seconds;
+        String secondsString = String.valueOf(seconds);
+        if (secondsString.length() < 2)
+        {
+            secondsString = "0" + secondsString;
+        }
+        return minutes + ":" + secondsString;
     }
 
     public boolean trigger(iEvent _event)

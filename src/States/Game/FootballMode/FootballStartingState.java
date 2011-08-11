@@ -36,6 +36,8 @@ public class FootballStartingState extends FootballState
     void render(int _score1, int _score2)
     {
         Vec2 s = sGraphicsManager.getTrueScreenDimensions().mul(0.5f);
+        Vec2 dims = new Vec2(1148, 471).mul(0.5f);
+        s = s.sub(dims);
         mStateRender.render(s.x, s.y);
     }
 
@@ -55,7 +57,7 @@ public class FootballStartingState extends FootballState
             parameters.put("position",mSpawnPosition);
             Football football = (Football)sEntityFactory.create("Football",parameters);
             football.setGameMode(mMode);
-            FootballState state = new FootballNormalState(mMode, mSpawnPosition);
+            FootballState state = new FootballNormalState(mMode, mSpawnPosition, -1);
             state.spawnFootball(football);
             return state;
         }
