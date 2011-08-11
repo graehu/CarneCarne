@@ -27,14 +27,14 @@ class IntroSmashSection extends IntroSection implements iEventListener
         sEvents.unblockEvent("MapClickEvent"+"TongueHammer"+mPlayerNumber);
         sEvents.subscribeToEvent("MapClickEvent"+"TongueHammer"+mPlayerNumber, this);
         HashMap params = new HashMap();
-        params.put("ref", "SignTutorialSmash");
+        params.put("ref", "TutorialSmash");
         mSkin = sSkinFactory.create("static", params);
     }
     
     @Override
     public IntroSection updateImpl()
     {
-        Vec2 tile = mPosition.sub(new Vec2(1,3));
+        Vec2 tile = mPosition.add(new Vec2(2,-3));
         if (sLevel.getPathInfo((int)tile.x,(int)tile.y).equals(sLevel.PathInfo.eAir))
         {
             sEvents.unsubscribeToEvent("MapClickEvent"+"TongueHammer"+mPlayerNumber, this);

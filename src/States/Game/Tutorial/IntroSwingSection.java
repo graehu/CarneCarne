@@ -25,7 +25,7 @@ class IntroSwingSection extends IntroSection implements iEventListener
     public IntroSwingSection(Vec2 _position, int _playerNumber)
     {
         super(_position, _playerNumber, "XBoxTop", "XBoxTopTongue", 1.85f);
-        Vec2 tile = mPosition.sub(new Vec2(1,3));
+        Vec2 tile = mPosition.add(new Vec2(2,-3));
         sEvents.unblockEvent("MapClickEvent"+"Tongue"+mPlayerNumber);
         sEvents.unblockEvent("MapClickReleaseEvent"+"Tongue"+mPlayerNumber);
         sEvents.unblockEvent("MapClickEvent"+"TongueHammer"+mPlayerNumber);
@@ -34,7 +34,7 @@ class IntroSwingSection extends IntroSection implements iEventListener
         sEvents.subscribeToEvent("MapClickEvent"+"TongueHammer"+mPlayerNumber, this);
         sLevel.placeTile((int)tile.x,(int)tile.y, 17);
         HashMap params = new HashMap();
-        params.put("ref", "SignTutorialSwing");
+        params.put("ref", "TutorialSwing");
         mSkin = sSkinFactory.create("static", params);
         sEvents.subscribeToEvent("PlayerSwingEvent" + mPlayerNumber, this);
         mSection = this;

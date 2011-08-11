@@ -23,8 +23,11 @@ class IntroEndSection extends IntroSection implements iEventListener
     {
         super(_position, _playerNumber, null, null, 0.0f);
         HashMap params = new HashMap();
-        params.put("ref", "SignTutorialFinish");
-        mSkin = sSkinFactory.create("static", params);
+        params.put("ref", "TutorialEnd");
+        params.put("width", 1792/4);
+        params.put("height", 300);
+        mSkin = sSkinFactory.create("animated", params);
+        mSkin.stop();
         sEvents.unblockEvent("MapClickEvent"+"Spit"+mPlayerNumber);
         sEvents.unblockEvent("MapClickReleaseEvent"+"Spit"+mPlayerNumber);
         sEvents.subscribeToEvent("AllPlayersTutorialEndedEvent", this);
@@ -55,6 +58,7 @@ class IntroEndSection extends IntroSection implements iEventListener
     public boolean trigger(iEvent _event)
     {
         mNewTimer = 120;
+        mSkin.restart();
         return false;
     }
     

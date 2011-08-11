@@ -28,7 +28,7 @@ class IntroGrabSection extends IntroSection implements iEventListener
         sEvents.unblockEvent("MapClickReleaseEvent"+"TongueHammer"+mPlayerNumber);
         sEvents.subscribeToEvent("MapClickEvent"+"TongueHammer"+mPlayerNumber, this);
         HashMap params = new HashMap();
-        params.put("ref", "SignTutorialEat");
+        params.put("ref", "TutorialEat");
         mSkin = sSkinFactory.create("static", params);
     }
 
