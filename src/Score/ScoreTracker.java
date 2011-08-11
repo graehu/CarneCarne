@@ -7,9 +7,7 @@ package Score;
 import Entities.PlayerEntity;
 import Events.NewHighScoreEvent;
 import Events.sEvents;
-import GUI.Components.GraphicalComponent;
 import GUI.Components.Text;
-import GUI.GUIManager;
 import Graphics.Particles.sParticleManager;
 import Graphics.sGraphicsManager;
 import Utils.sFontLoader;
@@ -51,7 +49,10 @@ abstract public class ScoreTracker
         {
             if (mWon)
             {
-                mScoreDisplay.drawString(100, 0, "Time: " + getTimeString(mBestTime));
+                Vec2 topLeft = new Vec2(mEntity.getViewport().getX(),mEntity.getViewport().getY());
+                float width = mEntity.getViewport().getWidth();
+                topLeft.x += width *0.5f;
+                mScoreDisplay.drawString(topLeft.x, topLeft.y, "Time: " + getTimeString(mBestTime));
             }
             
         }
