@@ -19,6 +19,7 @@ import Sound.sSound;
 import World.BreakableTongueAnchor;
 import World.sWorld;
 import java.util.Stack;
+import javax.swing.JOptionPane;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.Fixture;
@@ -268,7 +269,7 @@ public class AIEntity extends Entity
                 mContactParticleTimer = 0;
                 ParticleSysBase sys = null;
                 if (mTouchingTile == null)
-                    sys = sParticleManager.createSystem("cloud", sWorld.translateToWorld(getBody().getPosition()).sub(sWorld.getPixelTranslation()).add(new Vec2(32,32)).add(_dir.mul(-32)), 1f);
+                    sys = sParticleManager.createSystem("Cloud", sWorld.translateToWorld(getBody().getPosition()).sub(sWorld.getPixelTranslation()).add(new Vec2(32,32)).add(_dir.mul(-32)), 1f);
                 else
                     sys = sParticleManager.createSystem(mTouchingTile.getAnimationsName(AnimationType.eJump) + "Jump", sWorld.translateToWorld(getBody().getPosition()).sub(sWorld.getPixelTranslation()).add(new Vec2(32,32)).add(_dir.mul(-32)), 1f);
                 float angle = (float) Math.acos(Vec2.dot(_dir, new Vec2(0,-1)));
@@ -401,7 +402,7 @@ public class AIEntity extends Entity
                     {
                         getBody().setLinearVelocity(new Vec2(getBody().getLinearVelocity().x, canJump * 0.8f));
                         mTouchingBody.applyLinearImpulse(new Vec2(0, -canJump *0.5f), mTouchingBody.getWorldCenter());
-                        sParticleManager.createSystem("cloud", sWorld.translateToWorld(getBody().getPosition()).sub(sWorld.getPixelTranslation()).add(new Vec2(32,64)), 1f);
+                        sParticleManager.createSystem("Cloud", sWorld.translateToWorld(getBody().getPosition()).sub(sWorld.getPixelTranslation()).add(new Vec2(32,64)), 1f);
                         sSound.playPositional(SoundScape.Sound.ePlayerJump, mBody.getPosition(), TileType.eEmpty);
                     }
                     else if (mLastTouchingTile != null)
@@ -411,7 +412,7 @@ public class AIEntity extends Entity
                     }       
                     else
                     {
-                        sParticleManager.createSystem("cloud", sWorld.translateToWorld(getBody().getPosition()).sub(sWorld.getPixelTranslation()).add(new Vec2(32,64)), 1f);
+                        sParticleManager.createSystem("Cloud", sWorld.translateToWorld(getBody().getPosition()).sub(sWorld.getPixelTranslation()).add(new Vec2(32,64)), 1f);
                         sSound.playPositional(SoundScape.Sound.ePlayerJump, mBody.getPosition(), TileType.eEmpty);
                     }
                 }

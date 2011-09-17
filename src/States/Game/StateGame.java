@@ -26,8 +26,12 @@ import States.Game.Tutorial.IntroMode;
 import States.Menu.StateMenu;
 import States.StateChanger;
 import World.sWorld;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.jbox2d.common.Vec2;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
@@ -38,7 +42,6 @@ import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.BlobbyTransition;
 import org.newdawn.slick.state.transition.FadeInTransition;
 import org.newdawn.slick.state.transition.FadeOutTransition;
-import org.newdawn.slick.state.transition.HorizontalSplitTransition;
 import org.newdawn.slick.state.transition.VerticalSplitTransition;
 
 /**
@@ -114,26 +117,26 @@ public class StateGame extends BasicGameState implements iEventListener {
             _sbg.enterState(getID(),null, new VerticalSplitTransition());
         }
         if(die) _gc.exit();
-        
+
         //update sounds
         sSound.poll(_delta);
-        
+
         //update input
         sInput.update(_delta);
-        
+
         //update game
         if(mGameMode != null)
             mGameMode = mGameMode.update(_gc.getGraphics(), _delta);
-        
+
         if(mGameMode == null) //this is to catch requests for exiting to title by the game mode
             _sbg.enterState(2,new FadeOutTransition(Color.black,100), new FadeInTransition(Color.black,100));
-        
+
         //update particles
         sParticleManager.update(_delta);
-        
+
         //update GUI
         GUIManager.get().update(_delta);
-        
+
     }
     public void render(GameContainer _gc, StateBasedGame _sbg, Graphics _grphcs) throws SlickException
     {

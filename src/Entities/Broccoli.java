@@ -354,10 +354,10 @@ public class Broccoli extends AIEntity
                     sEntityFactory.create("BroccoliExplosion", params);
                     sSound.playPositional(SoundScape.Sound.eBroccoliExplode, mBody.getPosition());
                     
-                    ParticleSysBase sys = sParticleManager.createSystem("broccoliExplode1", 
+                    ParticleSysBase sys = sParticleManager.createSystem("BroccoliExplode1", 
                         sWorld.translateToWorld(mBody.getPosition()).sub(sWorld.getPixelTranslation()).add(new Vec2(32,32))
                         , 0.001f);
-                    sParticleManager.createSystem("broccoliExplode2", 
+                    sParticleManager.createSystem("BroccoliExplode2", 
                         sWorld.translateToWorld(mBody.getPosition()).sub(sWorld.getPixelTranslation()).add(new Vec2(32,32))
                         , 0.001f);
                     kill(CauseOfDeath.eMundane, this);

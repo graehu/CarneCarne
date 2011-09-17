@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <system additive="false" points="false">
-<emitter imageName="particleSystems/sizzle.png" name="NewEmitter_1312588452592" renderType="inherit" useAdditive="false" useOriented="false">
+<emitter imageName="particleSystems/Sizzle.png" name="NewEmitter_1312588452592" renderType="inherit" useAdditive="false" useOriented="false">
 <spawnInterval enabled="true" max="1000.0" min="1000.0"/>
 <spawnCount enabled="true" max="1.0" min="1.0"/>
 <initialLife enabled="false" max="1000.0" min="1000.0"/>

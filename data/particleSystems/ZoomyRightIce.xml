@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <system additive="false" points="false">
-<emitter imageName="particleSystems/zoomy.png" name="Default" renderType="inherit" useAdditive="false" useOriented="false">
+<emitter imageName="particleSystems/Zoomy.png" name="Default" renderType="inherit" useAdditive="false" useOriented="false">
 <spawnInterval enabled="true" max="50.0" min="20.0"/>
 <spawnCount enabled="true" max="7.0" min="4.0"/>
 <initialLife enabled="true" max="500.0" min="300.0"/>

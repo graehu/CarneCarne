@@ -7,11 +7,14 @@ import Graphics.Particles.sParticleManager;
 import Graphics.sGraphicsManager;
 import Input.sInput;
 import Sound.sSound;
+import java.io.FileNotFoundException;
 import org.newdawn.slick.*;
 import States.Game.StateGame;
 import States.Menu.StateMenu;
 import States.Splash.StateSplash;
 import States.Title.StateTitle;
+import java.io.File;
+import java.io.PrintStream;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -22,8 +25,11 @@ public class Main extends StateBasedGame
         super("CarneCarne!");
     }
     
-    public static void main(String[] arguments)
+    public static void main(String[] arguments) throws FileNotFoundException
     {        
+        File outputFile = new File("appOut.txt");
+        PrintStream errorStream = new PrintStream(outputFile);
+        System.setOut(errorStream);
         try
         {            
             AppGameContainer app = new AppGameContainer(new Main());
@@ -32,9 +38,9 @@ public class Main extends StateBasedGame
             app.setShowFPS(false);
             app.setVSync(true);
             //app.setTargetFrameRate(60);
-            app.start();            
+            app.start();
         }
-        catch(SlickException e)
+        catch(Exception e)
         {
             e.printStackTrace();
         }

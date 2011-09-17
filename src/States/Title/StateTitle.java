@@ -86,7 +86,7 @@ public class StateTitle extends BasicGameState
             mCurrentLeftGUIState = mGUIManagerLeftOptions;
 
             //initalise music
-            sSound.loadFile("menu1", "assets/music/Menu1.ogg");
+            //sSound.loadFile("menu1", "assets/music/Menu1.ogg");
 
             //initialise fonts
             mUIFont = sFontLoader.createFont("title",72);    
@@ -345,7 +345,7 @@ public class StateTitle extends BasicGameState
         GUIManager.use(mCurrentGUIState).setAcceptingInput(true);
         GUIManager.use(mGUIManagerCenterMain).gotoFirstSelectable();
         //container.setMouseCursor("ui/title/mouse.png", 0, 62); //FIXME: break in fullscreen
-        sSound.playAsMusic("menu1", true);
+        //sSound.playAsMusic("menu1", true);
         super.enter(_gc, _sbg);
     }
 
@@ -353,7 +353,7 @@ public class StateTitle extends BasicGameState
     public void leave(GameContainer container, StateBasedGame game) throws SlickException {
         super.leave(container, game);
         container.setDefaultMouseCursor();
-        sSound.stop("menu1");
+        //sSound.stop("menu1");
         GUIManager.use(mCurrentGUIState).setAcceptingInput(false);
         sInput.update(16);
     }

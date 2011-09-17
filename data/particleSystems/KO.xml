@@ -48,7 +48,7 @@
 <step b="0.8" g="0.8" offset="1.0" r="0.8"/>
 </color>
 </emitter>
-<emitter imageName="particleSystems/dot.png" name="NewEmitter_1312586657577_clone" renderType="inherit" useAdditive="false" useOriented="false">
+<emitter imageName="particleSystems/Dot.png" name="NewEmitter_1312586657577_clone" renderType="inherit" useAdditive="false" useOriented="false">
 <spawnInterval enabled="true" max="1000.0" min="1000.0"/>
 <spawnCount enabled="true" max="1.0" min="1.0"/>
 <initialLife enabled="false" max="1000.0" min="1000.0"/>
@@ -144,7 +144,7 @@
 <step b="0.8" g="0.8" offset="1.0" r="0.8"/>
 </color>
 </emitter>
-<emitter imageName="particleSystems/dot.png" name="NewEmitter_1312586657577_clone_clone_clone" renderType="inherit" useAdditive="false" useOriented="false">
+<emitter imageName="particleSystems/Dot.png" name="NewEmitter_1312586657577_clone_clone_clone" renderType="inherit" useAdditive="false" useOriented="false">
 <spawnInterval enabled="true" max="1000.0" min="1000.0"/>
 <spawnCount enabled="true" max="1.0" min="1.0"/>
 <initialLife enabled="false" max="1000.0" min="1000.0"/>

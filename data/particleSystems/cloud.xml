@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <system additive="false" points="false">
-<emitter imageName="particleSystems/cloud.png" name="Default" renderType="inherit" useAdditive="false" useOriented="false">
+<emitter imageName="particleSystems/Cloud.png" name="Default" renderType="inherit" useAdditive="false" useOriented="false">
 <spawnInterval enabled="true" max="400.0" min="400.0"/>
 <spawnCount enabled="true" max="5.0" min="4.0"/>
 <initialLife enabled="true" max="400.0" min="400.0"/>
