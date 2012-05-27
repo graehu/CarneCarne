@@ -22,18 +22,33 @@
     <property name="webstart.dir" value="${target.dir}/webstart" />
 	
 	<target name="-pre-compile">
-		<!-- setup native lib directories -->
-        <mkdir dir="${lib.dir}/natives-win32" />
-        <unzip src="${lib.dir}/natives/natives-win32.jar" dest="${lib.dir}/natives-win32" />
+		<!-- setup lib directory for build-->
+		<delete dir="${lib.dir}/natives"/>
+        <unzip src="${lib.dir}/natives-win32.jar" dest="${lib.dir}" />
 		<copy todir="${obj.dir}/lib">
             <fileset dir="${lib.dir}" />
         </copy>
-		<delete dir="${obj.dir}/lib/natives" />
+		<!-- copy lib directory from build to dist-->
 		<copy todir="${dist.dir}/lib">
             <fileset dir="${lib.dir}" />
         </copy>
-		<delete dir="${dist.dir}/lib/natives" />
-		<delete dir="${dist.dir}/assets" />
+		<!-- Copy data packages to build and dist -->
+		<mkdir dir="${dist.dir}/data" />
+		<copy todir="${dist.dir}/data">
+            <fileset dir="${data.dir}" />
+        </copy>
+		<mkdir dir="${obj.dir}/data" />
+		<copy todir="${obj.dir}/data">
+            <fileset dir="${data.dir}" />
+        </copy>
+		<!-- compress data to jar in dist -->
+		<mkdir dir="${dist.dir}/temp" />
+		<mkdir dir="${dist.dir}/temp/data" />
+		<copy todir="${dist.dir}/temp/data">
+            <fileset dir="${dist.dir}/data" />
+        </copy>
+		<zip destfile="${dist.dir}/data.jar" basedir="${dist.dir}/temp"/>
+		<delete dir="${dist.dir}/temp"/>
 	</target>
 	
 	<target name="-post-jar">

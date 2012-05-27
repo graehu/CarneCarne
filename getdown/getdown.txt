@@ -20,6 +20,7 @@ resource = lib/TWL.jar
 resource = lib/slf4j-api-1.6.1.jar
 resource = lib/xpp3-1.1.4c.jar
 
+uresource = data.jar
 uresource = [windows-i386] lib/natives-win32.jar
 uresource = [windows-x86] lib/natives-win32.jar
 uresource = [windows-x86_64] lib/natives-win64.jar

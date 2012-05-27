@@ -1,2 +1,2 @@
-java -Djava.library.path=lib/natives-win32 -jar CarneCarne.jar
+java -Djava.library.path=lib/natives -jar CarneCarne.jar
 PAUSE
