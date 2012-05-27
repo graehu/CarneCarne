@@ -497,7 +497,6 @@ public class TongueStateMachine {
         {
             case eStart:
             {
-                sHud.addHudElement(mAIController.mPlayer, "TryTonguing", new Vec2(0,0), 120, true);
                 break;
             }
             case eFiringTongue:

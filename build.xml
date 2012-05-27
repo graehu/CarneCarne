@@ -24,11 +24,7 @@
 	<target name="-pre-compile">
 		<!-- setup native lib directories -->
         <mkdir dir="${lib.dir}/natives-win32" />
-        <mkdir dir="${lib.dir}/natives-mac" />
-        <mkdir dir="${lib.dir}/natives-linux" />
         <unzip src="${lib.dir}/natives/natives-win32.jar" dest="${lib.dir}/natives-win32" />
-        <unzip src="${lib.dir}/natives/natives-mac.jar" dest="${lib.dir}/natives-mac" />
-        <unzip src="${lib.dir}/natives/natives-linux.jar" dest="${lib.dir}/natives-linux" />
 		<copy todir="${obj.dir}/lib">
             <fileset dir="${lib.dir}" />
         </copy>

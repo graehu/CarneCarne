@@ -63,7 +63,6 @@ public class AdventureMode implements iGameMode, iEventListener
                 }
             }
         }
-        
         sLevel.update();
         sWorld.update(_graphics, _dt);
         sEvents.processEvents();

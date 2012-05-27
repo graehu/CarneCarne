@@ -26,12 +26,8 @@ import States.Game.Tutorial.IntroMode;
 import States.Menu.StateMenu;
 import States.StateChanger;
 import World.sWorld;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.LinkedList;
 import java.util.Queue;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.jbox2d.common.Vec2;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
@@ -108,34 +104,46 @@ public class StateGame extends BasicGameState implements iEventListener {
     {
         return 3;
     }
-
+    private float mDeltaTimeRemainder;
     public void update(GameContainer _gc, StateBasedGame _sbg, int _delta) throws SlickException 
-    {        
-        if(mReEnterSelf)
+    {       
+        int fixedStep = 16;
+        if(_delta > 2000)
+            _delta = fixedStep;
+        
+        mDeltaTimeRemainder += _delta;
+        
+        while(mDeltaTimeRemainder > fixedStep)
         {
-            mReEnterSelf = false;
-            _sbg.enterState(getID(),null, new VerticalSplitTransition());
+            mDeltaTimeRemainder -= fixedStep;
+            _delta = fixedStep;
+            
+            if(mReEnterSelf)
+            {
+                mReEnterSelf = false;
+                _sbg.enterState(getID(),null, new VerticalSplitTransition());
+            }
+            if(die) _gc.exit();
+
+            //update sounds
+            sSound.poll(_delta);
+
+            //update input
+            sInput.update(_delta);
+
+            //update game
+            if(mGameMode != null)
+                mGameMode = mGameMode.update(_gc.getGraphics(), _delta);
+
+            if(mGameMode == null) //this is to catch requests for exiting to title by the game mode
+                _sbg.enterState(2,new FadeOutTransition(Color.black,100), new FadeInTransition(Color.black,100));
+
+            //update particles
+            sParticleManager.update(_delta);
+
+            //update GUI
+            GUIManager.get().update(_delta);
         }
-        if(die) _gc.exit();
-
-        //update sounds
-        sSound.poll(_delta);
-
-        //update input
-        sInput.update(_delta);
-
-        //update game
-        if(mGameMode != null)
-            mGameMode = mGameMode.update(_gc.getGraphics(), _delta);
-
-        if(mGameMode == null) //this is to catch requests for exiting to title by the game mode
-            _sbg.enterState(2,new FadeOutTransition(Color.black,100), new FadeInTransition(Color.black,100));
-
-        //update particles
-        sParticleManager.update(_delta);
-
-        //update GUI
-        GUIManager.get().update(_delta);
 
     }
     public void render(GameContainer _gc, StateBasedGame _sbg, Graphics _grphcs) throws SlickException
@@ -160,7 +168,7 @@ public class StateGame extends BasicGameState implements iEventListener {
     //callback for when the game enters this state
     public void enter(GameContainer container, StateBasedGame game) throws SlickException 
     {        
-        
+        System.gc();
         //set GUI to this
         GUIManager.set(mGUIRef);
         container.setMouseGrabbed(true);

@@ -1,5 +1,5 @@
 
-appbase = https://sites.google.com/site/carnecarne2011/game/
+appbase = http://carnecarne.com/game/
 
 code = CarneCarne.jar
 class = main.Main
@@ -9,7 +9,7 @@ ui.name = Carne Carne
 jvmarg = -Djava.library.path=%APPDIR%/lib/natives
 
 resource = lib/ibxm.jar
-resource = lib/jbox2d-library-2.1.2-alpha-v2.jar
+resource = lib/jbox2d-library-2.1.2(with_contact_fix).jar
 resource = lib/jinput.jar
 resource = lib/jogg-0.0.7.jar
 resource = lib/jorbis-0.0.15.jar

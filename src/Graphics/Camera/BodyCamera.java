@@ -70,7 +70,8 @@ public class BodyCamera extends iCamera implements iEventListener
         super(_viewPort);
         mFourPlayerReady = _fourPlayerReady;
         mBody = _body;
-        ((PlayerEntity)_body.getUserData()).setClip(_viewPort);
+        if(mBody != null)
+            ((PlayerEntity)_body.getUserData()).setClip(_viewPort);
         mTopSplit = _topSplit;
         mTimer = 0;
         mLookChangeTimer = 0;
@@ -89,6 +90,8 @@ public class BodyCamera extends iCamera implements iEventListener
     
     private void calculateLookOffset()
     {
+        if(mBody == null) return;
+        
         mLookOffset.y = 0;
         float v = mBody.getLinearVelocity().x;
         v = ((PlayerInputController)((AIEntity)mBody.getUserData()).getController()).mPlayerDir.x;
@@ -146,6 +149,7 @@ public class BodyCamera extends iCamera implements iEventListener
     public void resize(Rectangle _viewPort) 
     {
         super.resize(_viewPort);
+        if(mBody == null) return;
         ((PlayerEntity)mBody.getUserData()).setClip(_viewPort);
         try 
         {//resize light blend base
@@ -200,6 +204,7 @@ public class BodyCamera extends iCamera implements iEventListener
     }
     public void render(Graphics _graphics)
     {
+        if(mBody == null) return;
         sGraphicsManager.setClip(mViewPort);
         sGraphicsManager.beginTransform();
         {
@@ -263,6 +268,7 @@ public class BodyCamera extends iCamera implements iEventListener
     }
     protected void calculatePosition()
     {
+        if(mBody == null) return;
         mPosition = mBody.getPosition();
         mPosition = mPosition.add(new Vec2(0.5f,0.5f));
         calculateLookOffset();

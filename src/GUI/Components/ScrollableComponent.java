@@ -104,6 +104,13 @@ public class ScrollableComponent extends GraphicalComponent
         mAbsMaxScroll = new Vector2f(absScrollX, absScrollY);
     }
     
+    public void setAbsScroll(float x, float y)
+    {
+        float absScrollX = Math.max(0,x);
+        float absScrollY = Math.max(0,y);
+        mAbsMaxScroll = new Vector2f(absScrollX, absScrollY);
+    }
+    
     //relative (0-1)
     public final void scrollHorizontalBy(float _dx)
     {

@@ -131,7 +131,8 @@ public class IntroMode implements iGameMode, iEventListener
         }
         for (IntroSection section: mSections)
         {
-            section.cleanup();
+            if(section != null)
+                section.cleanup();
         }
         sEvents.unblockAllEvents();
         sEvents.unsubscribeToEvent("TutorialSpawnEvent", this);

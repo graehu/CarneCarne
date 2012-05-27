@@ -157,7 +157,7 @@
 <step b="0.3529412" g="0.40392157" offset="1.0" r="0.6745098"/>
 </color>
 </emitter>
-<emitter imageName="particlesystems/Smash.png" name="NewEmitter_1311845376801" renderType="inherit" useAdditive="false" useOriented="false">
+<emitter imageName="particleSystems/Smash.png" name="NewEmitter_1311845376801" renderType="inherit" useAdditive="false" useOriented="false">
 <spawnInterval enabled="true" max="1000.0" min="1000.0"/>
 <spawnCount enabled="true" max="1.0" min="1.0"/>
 <initialLife enabled="false" max="1000.0" min="1000.0"/>

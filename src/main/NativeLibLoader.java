@@ -4,7 +4,6 @@
 
 package main;
 
-import java.net.URL;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Set;
@@ -71,23 +70,8 @@ public class NativeLibLoader {
     private String findCurrentDirectory()
     {
         String output = "";
-        //try{
             output = System.getProperty("user.dir");
             output = NativeLibLoader.class.getProtectionDomain().getCodeSource().getLocation().getPath();
-            //output = new File(this.getClass().getProtectionDomain().getCodeSource().getLocation().toURI()).getParent();
-        //}
-//        catch(URISyntaxException URIe){
-//            try{
-//                URIe.printStackTrace();
-//                output = new File(".").getCanonicalPath();
-//            }
-//            catch(IOException IOe)
-//            {
-//                IOe.printStackTrace();
-//                //JOptionPane.showMessageDialog(this, "Failed to locate native library directory. " + "Error:\n" + IOe.toString(),"Error", JOptionPane.ERROR_MESSAGE);
-//                System.exit(-1);
-//            }
-//        }
         return output;
     }
 }

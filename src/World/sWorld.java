@@ -535,30 +535,24 @@ public class sWorld
         return useFactory("CharacterFactory",parameters);
     }*/
     private static int mBodyCount;
-    public static void update(Graphics _graphics, float _time)
-    {
-        
-        float secondsPerFrame = 16.666f;
+    public static void update(Graphics _graphics, float _dt)
+    {   
         //try
-        {
-            mWorld.step(secondsPerFrame/1000.0f, 6, 4);
-        }
-        //catch (ArrayIndexOutOfBoundsExbeception e)
-        {
-            
-        }
+        {            
+            mWorld.step(_dt/1000.0f, 6, 4);
 
-        mBodyCount = 0;
-        Body body = mWorld.getBodyList();
-        while (body != null)
-        {
-            mBodyCount++;
-            Entity entity = (Entity)body.getUserData();
-            if (entity != null)
-                entity.update();
-            body = body.getNext();
+            mBodyCount = 0;
+            Body body = mWorld.getBodyList();
+            while (body != null)
+            {
+                mBodyCount++;
+                Entity entity = (Entity)body.getUserData();
+                if (entity != null)
+                    entity.update();
+                body = body.getNext();
+            }
+            mCamera.update(_graphics);
         }
-        mCamera.update(_graphics);
     }
 
     public static iCamera getCamera()

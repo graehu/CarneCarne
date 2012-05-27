@@ -54,7 +54,7 @@ public class GraphicalComponent extends iComponent{
             try 
             {
                 mImage = new Image(_ref);
-                mImage.setFilter(Image.FILTER_LINEAR); //for smooth scaling
+                mImage.setFilter(Image.FILTER_LINEAR);
             } 
             catch (SlickException ex) {
                 Logger.getLogger(GraphicalComponent.class.getName()).log(Level.SEVERE, null, ex);
@@ -64,12 +64,47 @@ public class GraphicalComponent extends iComponent{
     
     public void setDimentionsToImage()
     {
-        setDimensions(new Vector2f(mImage.getWidth(), mImage.getHeight()));
+        if(mImage != null)
+            setDimensions(new Vector2f(mImage.getWidth(), mImage.getHeight()));
     }
     
-    public int getImageWidth(){return mImage.getWidth();}
-    public int getImageHeight(){return mImage.getHeight();}
+    public int getImageWidth()
+    {
+        if(mImage != null)
+            return mImage.getWidth();
+        else
+            return this.getWidth();
+    }
+    public int getImageHeight()
+    {
+        if(mImage != null)
+            return mImage.getHeight();
+        else
+            return this.getHeight();
+    }
     
-    public float getAlpha() {return mImage.getAlpha();}
-    public void setAlpha(float _value){mImage.setAlpha(_value);}
+    public float getAlpha() 
+    {
+        if(mImage != null)
+            return mImage.getAlpha();
+        else
+            return 1;
+    }
+    public void setAlpha(float _value)
+    {
+        if(mImage != null)
+            mImage.setAlpha(_value);
+    }
+    
+    @Override
+    protected void destroyInternal()
+    {
+        try {
+            mImage.destroy();
+        } catch (SlickException ex) {
+            Logger.getLogger(GraphicalComponent.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        super.destroyInternal();
+        
+    }
 }

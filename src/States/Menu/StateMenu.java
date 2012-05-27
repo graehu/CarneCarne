@@ -104,6 +104,7 @@ public class StateMenu extends BasicGameState implements iEventListener
     @Override
     public void enter(GameContainer container, StateBasedGame game) throws SlickException 
     {
+        System.gc();
         //update menu text
         mPausedByPlayerText.setTextString("Paused by Player " + (mPlayer+1));
         mPausedByPlayerText.resizeToText();

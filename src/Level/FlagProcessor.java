@@ -26,6 +26,8 @@ import Graphics.Particles.sParticleManager;
 import Level.Lighting.sLightsManager;
 import Level.sLevel.TileType;
 import Sound.sSound;
+import States.Game.sGameStateInfo;
+import World.sWorld;
 import java.util.HashMap;
 import java.util.Stack;
 import java.util.Vector;
@@ -282,7 +284,8 @@ public class FlagProcessor
                     }
                     else if (spawn.equals("Tutorial"))
                     {
-                        sEvents.triggerEvent(new TutorialSpawnEvent(i,ii, 3 - tutorialPlayers++));
+                        if(tutorialPlayers < sGameStateInfo.mPlayerCount)
+                            sEvents.triggerEvent(new TutorialSpawnEvent(i,ii, tutorialPlayers++));
                     }
                     else if (spawn.equals("Platform"))
                     {                        
@@ -343,7 +346,7 @@ public class FlagProcessor
             }
             else
             {
-                startZone = new RaceStartZone(raceStartZone.x, raceStartZone.y, raceStartZone.x2, raceStartZone.y2, zone, playerPositions.size());
+                startZone = new RaceStartZone(raceStartZone.x, raceStartZone.y, raceStartZone.x2, raceStartZone.y2, zone, sGameStateInfo.mPlayerCount);
             }
         }
         for (int i = goals.size()-1; i >= 0; i--)
@@ -352,8 +355,11 @@ public class FlagProcessor
             GoalZone zone = new GoalZone(params.x, params.y, params.x2, params.y2, i);
             sEvents.triggerEvent(new GoalSpawnEvent(zone));
         }
-        int players = playerPositions.size();
-        while (!playerPositions.isEmpty())
+        int players =  sGameStateInfo.mPlayerCount;
+        //int players = sGameStateInfo.mPlayerCount;
+        if(players == 3)
+            sWorld.addPlayer(null); //add an extra view port so we have 2x2
+        while (!playerPositions.isEmpty() && players > 0)
         {
             Vec2 position = playerPositions.remove(playerPositions.size()-1);
             parameters.put("position", position);
